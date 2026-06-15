@@ -35,3 +35,12 @@ papers for the [foundation models for structured data (fm4sd) seminar](https://m
     - [do-pfn](https://arxiv.org/abs/2506.06039)
   - group 12
     - [use what you know](https://arxiv.org/abs/2602.14972)
+
+## how 2 set up
+
+i can not host the papers and their sources in this repo because of licenses. but you should definitely grab the tex sources and put them in `papers/` (gitignored):
+
+```sh
+wget https://arxiv.org/pdf/<id>   # pdf
+wget https://arxiv.org/src/<id>   # tex source
+```
