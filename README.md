@@ -14,7 +14,7 @@ papers for the [foundation models for structured data (fm4sd) seminar](https://m
     - [talent](https://arxiv.org/pdf/2407.04057)
     - [tabarena](https://arxiv.org/abs/2506.16791)
   - group 4
-    - [statistical foundation of prior-data fitted networks](https://proceedings.mlr.press/v202/nagler23a)
+    - [statistical foundation of prior-data fitted networks](https://proceedings.mlr.press/v202/nagler23a) ([arxiv](https://arxiv.org/abs/2305.11097))
 - time series
   - group 5
     - [fev-bench](https://arxiv.org/abs/2509.26468)
