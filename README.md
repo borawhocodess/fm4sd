@@ -45,3 +45,5 @@ i can not host the papers and their sources in this repo because of licenses. bu
 wget https://arxiv.org/pdf/<id>   # pdf
 wget https://arxiv.org/src/<id>   # tex source
 ```
+
+then feed the source + [`skills/teacher.md`](skills/teacher.md) to your agent and happy working :)
