@@ -1,0 +1,50 @@
+% Statistical Foundations of Prior-Data Fitted Networks --- fm4sd seminar talk
+% Beamer / metropolis. Build with: make  (latexmk + lualatex)
+\documentclass[aspectratio=169,10pt]{beamer}
+
+\usetheme{metropolis}
+\metroset{progressbar=frametitle, numbering=fraction, block=fill}
+
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,fit,backgrounds,calc,matrix}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{xcolor}
+\usepackage{xurl}
+
+% --- palette ---------------------------------------------------------------
+\definecolor{accent}{HTML}{C1121F}
+\definecolor{ink}{HTML}{2B2D42}
+\definecolor{muted}{HTML}{6C757D}
+\definecolor{good}{HTML}{2A9D8F}
+\setbeamercolor{frametitle}{bg=ink}
+\setbeamercolor{background canvas}{bg=white}
+\setbeamercolor{normal text}{fg=ink, bg=white}
+\setbeamercolor{progress bar}{fg=accent}
+\setbeamercolor{alerted text}{fg=accent}
+
+\newcommand{\hl}[1]{{\color{accent}\textbf{#1}}}
+\newcommand{\gd}[1]{{\color{good}\textbf{#1}}}
+\newcommand{\mut}[1]{{\color{muted}#1}}
+
+% compact citation marks (we keep refs informal on slides)
+\newcommand{\cit}[1]{{\scriptsize\color{muted}[#1]}}
+
+\title{Statistical Foundations of Prior-Data Fitted Networks \cit{Nagler '23}}
+\author{Salih \underline{Bora} Öztürk \;\&\; \underline{Gurmeher} Singh Puri}
+\institute{University of Freiburg \\ \footnotesize Seminar on Foundation Models for Structured Data - SS26 \\ Group 4}
+\date{19 June 2026}
+\titlegraphic{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=south east] at ([xshift=-8mm,yshift=6mm]current page.south east) {\includegraphics[height=3cm]{img/logo-ufr.png}};
+  \end{tikzpicture}%
+}
+
+\begin{document}
+
+\maketitle
+
+\end{document}
