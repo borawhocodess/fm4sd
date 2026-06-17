@@ -321,4 +321,53 @@
 \end{itemize}
 \end{frame}
 
+% --- the paper's original result ------------------------------------------
+\begin{frame}{The paper's result \cit{Nagler '23}}
+\centering
+\includegraphics[width=0.92\linewidth]{img/paper-bias-variance.pdf}\\[0.6em]
+\mut{\footnotesize TabPFN vs localized TabPFN:\ variance $\sim 1/n$;\ bias \textbf{plateaus}, but localization keeps reducing it past $n=1000$}
+\end{frame}
+
+% --- reproduction of the numerical validation -----------------------------
+\begin{frame}{We redid the experiment}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.44\textwidth}
+  \footnotesize
+  setup \cit{Nagler '23}:
+  \begin{itemize}\setlength\itemsep{0.4em}
+    \item $p_0(1\mid\bX)=\tfrac12+\tfrac12\sin(\mathbf{1}^\top\bX)$
+    \item $\bX\sim\mathcal{N}(\mathbf{0},I_5)$,\ $Y\in\{0,1\}$
+    \item 100 datasets, 2 models:
+    \begin{itemize}
+      \item TabPFN v2.5
+      \item nanoTabPFN
+    \end{itemize}
+    \item avg.\ squared bias \& variance over 100 test points
+  \end{itemize}
+\end{column}
+\begin{column}{0.54\textwidth}
+\centering
+\includegraphics[width=\linewidth]{img/expt-bias-variance.png}
+\end{column}
+\end{columns}
+\vspace{0.3em}
+\mut{\footnotesize variance $\sim 1/n$;\ TabPFN bias drops then \textbf{plateaus};\ localization helps the weaker model / harder targets}
+\end{frame}
+
+% --- extensions beyond the paper ------------------------------------------
+\begin{frame}{Beyond the paper}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.5\textwidth}
+\centering
+\includegraphics[width=\linewidth]{img/expt-frequency-sweep.png}\\[2pt]
+\mut{\footnotesize harder (higher-freq) targets $\Rightarrow$ bigger bias}
+\end{column}
+\begin{column}{0.5\textwidth}
+\centering
+\includegraphics[width=\linewidth]{img/expt-structures.png}\\[2pt]
+\mut{\footnotesize bias \& localization gain across target structures}
+\end{column}
+\end{columns}
+\end{frame}
+
 \end{document}
