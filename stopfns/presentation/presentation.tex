@@ -20,6 +20,7 @@
 \definecolor{ink}{HTML}{2B2D42}
 \definecolor{muted}{HTML}{6C757D}
 \definecolor{good}{HTML}{2A9D8F}
+\definecolor{post}{HTML}{2D6CDF}
 \setbeamercolor{frametitle}{bg=ink}
 \setbeamercolor{background canvas}{bg=white}
 \setbeamercolor{normal text}{fg=ink, bg=white}
@@ -29,6 +30,7 @@
 \newcommand{\hl}[1]{{\color{accent}\textbf{#1}}}
 \newcommand{\gd}[1]{{\color{good}\textbf{#1}}}
 \newcommand{\mut}[1]{{\color{muted}#1}}
+\newcommand{\pp}[1]{{\color{post}#1}}
 
 % compact citation marks (we keep refs informal on slides)
 \newcommand{\cit}[1]{{\scriptsize\color{muted}[#1]}}
@@ -187,7 +189,49 @@
 \end{columns}
 \end{frame}
 
-\begin{frame}{Bayesian view}
+% --- Bayesian view: the PPD -----------------------------------------------
+\begin{frame}{Posterior Predictive Distribution}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.54\textwidth}
+  \vspace{0.6em}
+  \gd{PPD} averages every model,
+  \[ {\color{good}\pi(y\mid\bx,\Dn)} = \int p(y\mid\bx)\,d\pp{\Pi(p\mid\Dn)} \]
+  \vspace{2em}
+
+  weighted by its \pp{posterior}
+
+  $\pp{\Pi(p\mid\Dn)}$: how plausible model $p$ is, given $\Dn$
+\end{column}
+\begin{column}{0.44\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=6.2cm, height=5.4cm,
+  axis lines=left, clip=false,
+  xmin=0, xmax=6, ymin=0, ymax=3.2,
+  xtick=\empty, ytick=\empty,
+  xlabel={$\bx$}, ylabel={$y$},
+  x label style={at={(axis description cs:1,0)}, anchor=north east},
+  y label style={at={(axis description cs:0,1)}, anchor=south east, rotate=-90},
+]
+  % low-posterior models (poor fit): faint
+  \addplot[muted, opacity=0.35, line width=0.5pt, domain=0.3:5.7, samples=70]{1.0+0.28*sin(60*x)};
+  \addplot[muted, opacity=0.35, line width=0.5pt, domain=0.3:5.7, samples=70]{2.2+0.28*sin(60*x+90)};
+  % medium-posterior models
+  \addplot[muted, opacity=0.7, line width=0.7pt, domain=0.3:5.7, samples=70]{1.32+0.26*sin(60*x+40)};
+  \addplot[muted, opacity=0.7, line width=0.7pt, domain=0.3:5.7, samples=70]{1.95+0.26*sin(60*x+120)};
+  % high-posterior model (best fit): dark, passes through the data
+  \addplot[ink, line width=1pt, domain=0.3:5.7, samples=70]{1.65+0.22*sin(60*x+70)};
+  % the observed data
+  \addplot[only marks, mark=*, mark size=2.6pt, ink] coordinates {(2,1.612) (4,1.481)};
+  % PPD = posterior-weighted average over models
+  \addplot[good, line width=1.7pt, domain=0.3:5.7, samples=70]{1.66+0.16*sin(60*x+70)};
+  \node[good, anchor=west, font=\scriptsize] at (axis cs:5.0,2.55) {PPD};
+  \draw[good, line width=0.5pt] (axis cs:5.0,2.5) -- (axis cs:5.2,1.78);
+\end{axis}
+\end{tikzpicture}
+\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{PFNs training}
