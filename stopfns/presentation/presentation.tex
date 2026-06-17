@@ -91,6 +91,49 @@
 \end{frame}
 
 \begin{frame}{PFNs approximate PPD}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.50\textwidth}
+  \vspace{1.4em}
+  \begin{itemize}
+    \item Why should you care about the PPD?
+    \begin{itemize}
+      \item \gd{sum over all possible models}
+    \end{itemize}
+  \end{itemize}
+\end{column}
+\begin{column}{0.48\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=6.6cm, height=5.6cm,
+  axis lines=left, clip=false,
+  xmin=0, xmax=6.6, ymin=0, ymax=4.6,
+  xtick=\empty, ytick=\empty,
+  xlabel={$x$}, ylabel={$y$},
+  x label style={at={(axis description cs:1,0)}, anchor=north east},
+  y label style={at={(axis description cs:0,1)}, anchor=south east, rotate=-90},
+]
+  % vertical guide at the test point (drawn first, behind everything)
+  \draw[ink!50, dashed] (axis cs:3,0) -- (axis cs:3,4.2);
+  % many candidate models, all passing through the two data points
+  \foreach \a in {-1.2,-0.85,-0.5,-0.15,0.2,0.55,0.9,1.25}{
+    \addplot[muted, line width=0.5pt, domain=0.3:5.7, samples=110, smooth]
+      {1.5 + 0.375*(x-1) + \a*sin(45*(x-1))};
+  }
+  % PPD = distribution of model values at the test point (bimodal, asymmetric)
+  \addplot[good, line width=1pt, fill=good, fill opacity=0.18,
+           domain=0.3:4.3, samples=140, variable=\t]
+    ({3 + 0.60*exp(-((\t-1.75)^2)/0.18) + 0.95*exp(-((\t-2.85)^2)/0.30)}, {\t});
+  % the two given (training) points
+  \addplot[only marks, mark=*, mark size=2.6pt, ink]
+    coordinates {(1,1.5) (5,3.0)};
+  % labels
+  \node[ink, anchor=north] at (axis cs:3,-0.08) {\scriptsize test $x$};
+  \node[good, anchor=south] at (axis cs:3.5,4.15) {\scriptsize PPD};
+\end{axis}
+\end{tikzpicture}
+\end{column}
+\end{columns}
 \end{frame}
 
 % --- next slide (empty) ---------------------------------------------------
