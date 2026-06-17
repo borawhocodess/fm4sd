@@ -40,6 +40,7 @@
 \newcommand{\bX}{\mathbf{X}}
 \newcommand{\Dn}{\mathcal{D}_n}
 \newcommand{\iid}{\overset{\text{iid}}{\sim}}
+\newcommand{\btheta}{\boldsymbol{\theta}}
 
 \title{Statistical Foundations of Prior-Data Fitted Networks \cit{Nagler '23}}
 \author{Salih \underline{Bora} Öztürk \;\&\; \underline{Gurmeher} Singh Puri}
@@ -280,10 +281,31 @@
 \mut{(even if $p_0\notin\mathcal{P}$)}
 \end{frame}
 
-\begin{frame}{PFNs training}
+% --- PFN training recipe --------------------------------------------------
+\begin{frame}{PFNs pretraining \& inference}
+
+% (drawings go here)
+
+\vfill
+
+\mut{\footnotesize training size $N\sim\Pi_N$ regularizes PPD complexity\; (TabPFN: $N\le 1023$)}\\[2pt]
+\mut{\footnotesize $\widehat{\btheta}\to\btheta^*$ as Monte-Carlo size $m\to\infty$\; ($\sqrt{m}$ rate); complex models need larger $m$ \;\cit{App.~B}}
+\vspace*{-9.8em}
 \end{frame}
 
-\begin{frame}{PFNs approximate PPD}
+% --- the tipping point: Bayesian -> frequentist ---------------------------
+\begin{frame}{The puzzle}
+\vspace{0.5em}
+\begin{itemize}\setlength\itemsep{0.6em}
+  \item no reason it behaves like a PPD for unseen sizes
+  \item a frozen $q_{\widehat{\btheta}}$ at large $n$ is \textbf{not} a PPD $\Rightarrow$ Theorem 3.1 no longer applies
+\end{itemize}
+\vfill
+\begin{center}
+  {\Large why does a PFN pre-trained on $\le 1000$ samples\\[0.5em]
+   \gd{improve when fed larger datasets at inference??}}
+\end{center}
+\vfill
 \end{frame}
 
 \end{document}
