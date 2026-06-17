@@ -47,6 +47,45 @@
 
 \maketitle
 
+% --- What does PFN stand for? --------------------------------------------
+% arrow lives inside the (otherwise blank) dark title strip, pointing right -> left
+% width 9cm, centered -> spans the P..N letters (which sit at x = +/-4.5, also centered)
+\begin{frame}{\makebox[\linewidth][c]{\raisebox{1.2mm}[0pt][0pt]{\tikz[baseline]{%
+    \draw[-{Stealth[length=5mm,width=6mm]}, line width=2.4pt, white] (10.6,0) -- (0,0);}}}}
+\vfill
+\centering
+\begin{tikzpicture}[>=Stealth]
+  % huge letters P F N
+  \node[font=\fontsize{88}{88}\selectfont\bfseries, ink] (P) at (-4.5,0) {P};
+  \node[font=\fontsize{88}{88}\selectfont\bfseries, ink] (F) at ( 0  ,0) {F};
+  \node[font=\fontsize{88}{88}\selectfont\bfseries, ink] (N) at ( 4.5,0) {N};
+
+  % --- Network (under N, shown from the start) ---------------------------
+  \node[font=\Large\bfseries, ink] (Nw) at (4.5,-2.2) {Network};
+  % small, label-free neural net under "Network"
+  \begin{scope}[shift={(4.5,-4.1)}]
+    \foreach \i in {0,1,2}   \coordinate (i\i) at (-1.1,{(\i-1)*0.7});
+    \foreach \i in {0,1,2,3} \coordinate (h\i) at ( 0  ,{(\i-1.5)*0.7});
+    \foreach \i in {0,1}     \coordinate (o\i) at ( 1.1,{(\i-0.5)*0.7});
+    \foreach \i in {0,1,2}   \foreach \j in {0,1,2,3} \draw[ink!35,line width=0.4pt] (i\i)--(h\j);
+    \foreach \i in {0,1,2,3} \foreach \j in {0,1}     \draw[ink!35,line width=0.4pt] (h\i)--(o\j);
+    \foreach \i in {0,1,2}   \fill[ink] (i\i) circle(3pt);
+    \foreach \i in {0,1,2,3} \fill[ink] (h\i) circle(3pt);
+    \foreach \i in {0,1}     \fill[ink] (o\i) circle(3pt);
+  \end{scope}
+
+  % --- Fitted (under F, click 1) -----------------------------------------
+  \onslide<2->{\node[font=\Large\bfseries, ink] at (0,-2.2) {Fitted};}
+
+  % --- Prior + its symbol (under P, click 2) -----------------------------
+  \onslide<3->{%
+    \node[font=\Large\bfseries, ink] (Pr) at (-4.5,-2.2) {Prior};
+    \node[font=\huge, ink] at (-4.5,-3.5) {$\Pi$};
+  }
+\end{tikzpicture}
+\vfill
+\end{frame}
+
 \begin{frame}{PFNs approximate PPD}
 \end{frame}
 
