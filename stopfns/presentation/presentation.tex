@@ -33,6 +33,12 @@
 % compact citation marks (we keep refs informal on slides)
 \newcommand{\cit}[1]{{\scriptsize\color{muted}[#1]}}
 
+% --- math shortcuts (faithful to the paper) --------------------------------
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\bX}{\mathbf{X}}
+\newcommand{\Dn}{\mathcal{D}_n}
+\newcommand{\iid}{\overset{\text{iid}}{\sim}}
+
 \title{Statistical Foundations of Prior-Data Fitted Networks \cit{Nagler '23}}
 \author{Salih \underline{Bora} Öztürk \;\&\; \underline{Gurmeher} Singh Puri}
 \institute{University of Freiburg \\ \footnotesize Seminar on Foundation Models for Structured Data - SS26 \\ Group 4}
@@ -138,6 +144,47 @@
 
 % --- next slide (empty) ---------------------------------------------------
 \begin{frame}
+\end{frame}
+
+% --- the statistical model (generative story) -----------------------------
+\begin{frame}{The statistical model}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.56\textwidth}
+  \vspace{0.8em}
+  Data is generated in \textbf{two steps}:
+  {\small
+  \begin{enumerate}
+    \item draw a model\; $p \sim \Pi$
+    \item draw data\; $\Dn = (Y_i,\bX_i)_{i=1}^{n},\ (Y,\bX)\iid p$
+  \end{enumerate}}
+\end{column}
+\begin{column}{0.42\textwidth}
+\centering
+\begin{tikzpicture}[>=Stealth]
+  % --- prior: a distribution over tasks ---
+  \node[draw=ink, rounded corners, minimum width=4.6cm, minimum height=2.0cm] (prior) at (0,2.6) {};
+  \node[ink, anchor=north west] at ([shift={(3pt,-3pt)}]prior.north west) {$\Pi$};
+  \begin{scope}[shift={(prior.center)}]
+    \draw[muted, smooth, samples=40, domain=-2:2] plot (\x,{0.35*sin(120*\x)});
+    \draw[muted, smooth, samples=40, domain=-2:2] plot (\x,{-0.15+0.22*\x});
+    \draw[muted, smooth, samples=40, domain=-2:2] plot (\x,{0.30*cos(150*\x)-0.1});
+  \end{scope}
+  % --- arrow: draw one task ---
+  \draw[->, ink, line width=0.9pt] (prior.south) -- node[right=1pt]{$p\sim\Pi$} (0,0.95);
+  % --- one drawn task with its sampled data ---
+  \node[draw=ink, rounded corners, minimum width=4.6cm, minimum height=2.0cm] (task) at (0,-0.15) {};
+  \begin{scope}[shift={(task.center)}]
+    \draw[ink, thick, smooth, samples=50, domain=-2:2] plot (\x,{0.45*sin(80*\x+40)});
+    % training data D_n lie ON the curve (sampled from this model)
+    \foreach \x in {-1.7,-1.05,-0.35,0.45,1.15,1.75}
+      \fill[ink] (\x,{0.45*sin(80*\x+40)}) circle (1.5pt);
+    % the test point (X,Y), also drawn from the model
+    \fill[accent] (0.8,{0.45*sin(80*0.8+40)}) circle (1.9pt);
+  \end{scope}
+  \node[anchor=north, font=\scriptsize, ink] at (task.south) {data $\Dn \cup (\bX,Y) \iid p$};
+\end{tikzpicture}
+\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Bayesian view}
