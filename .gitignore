@@ -1,4 +1,5 @@
 papers/
 build/
+workdir/
 
 .DS_Store
