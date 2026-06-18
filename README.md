@@ -57,8 +57,10 @@ i recommend working with cli tools - [claude](https://code.claude.com/docs/en/ov
 some papers i find related:
 
 - pfns — [arxiv](https://arxiv.org/abs/2112.10510)
-- tabpfn-3 — [arxiv](https://arxiv.org/abs/2605.13986)
 - priorfitted — [arxiv](https://arxiv.org/abs/2505.23947)
+- nanotabpfn — [arxiv](https://arxiv.org/abs/2511.03634)
+- modded-nanotabpfn — [arxiv](https://arxiv.org/abs/2606.03681)
+- tabpfn-3 — [arxiv](https://arxiv.org/abs/2605.13986)
 - tabdpt — [arxiv](https://arxiv.org/abs/2410.18164)
 - limix — [arxiv](https://arxiv.org/abs/2509.03505)
 - tabh2o — [arxiv](https://arxiv.org/abs/2605.18383)
