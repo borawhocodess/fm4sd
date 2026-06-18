@@ -273,6 +273,41 @@
 \end{columns}
 \end{frame}
 
+% --- two presenters, two priors, one world --------------------------------
+\begin{frame}
+\centering
+\begin{tikzpicture}[>=Stealth, scale=0.9,
+    guy/.pic={
+      \draw[ink,line width=0.9pt] (0,0) circle (0.2);
+      \draw[ink,line width=0.9pt] (0,-0.2) -- (0,-0.78);
+      \draw[ink,line width=0.9pt] (-0.28,-0.5) -- (0,-0.5) -- (0.28,-0.5);    % arms
+      \draw[ink,line width=0.9pt] (0,-0.78) -- (-0.22,-1.18);                 % legs
+      \draw[ink,line width=0.9pt] (0,-0.78) -- ( 0.22,-1.18);
+    }]
+
+  % --- the homeland capsule wraps only the parents, light dashed ----------
+  \draw[muted, line width=0.5pt, dashed, rounded corners=18pt]
+        (-0.15,3.3) rectangle (1.55,-3.5);
+  \pic[scale=1.25] at (0.7, 1.85) {guy};  \node[ink] at (0.7, 2.6) {indian};
+  \pic[scale=1.25] at (0.7,-1.55) {guy};  \node[ink] at (0.7,-0.95) {turkish};
+
+  % --- the kids, small, just outside the homeland -------------------------
+  \pic[scale=0.62] at (2.2, 1.35) {guy};  \node[ink,font=\small] at (2.3, 1.75) {gurmeher};
+  \pic[scale=0.62] at (2.2,-2.05) {guy};  \node[ink,font=\small] at (2.25,-1.68) {bora};
+
+  % --- the world (one shared circle) --------------------------------------
+  \draw[ink, line width=1pt] (8.4,0) circle (3.0);
+  \pic at (7.7, 1.5) {guy};
+  \pic at (7.8,-0.9) {guy};
+
+  % --- the kids grow up and go out into the world -------------------------
+  \draw[->, ink, line width=0.9pt]
+    (2.5,1.15) .. controls (4.2,1.15) and (5.8,1.5) .. (7.3,1.5);
+  \draw[->, ink, line width=0.9pt]
+    (2.5,-2.25) .. controls (4.4,-2.6) and (6.1,-1.5) .. (7.45,-1.0);
+\end{tikzpicture}
+\end{frame}
+
 % --- posterior consistency (Theorem 3.1) ----------------------------------
 \begin{frame}{Posterior consistency}
 \begin{columns}[T,onlytextwidth]
