@@ -50,4 +50,4 @@ rm <id>.tar.gz
 
 then feed the source + [`skills/teacher.md`](skills/teacher.md) to your agent and happy working :)
 
-i recommend working with cli tools: [claude](https://code.claude.com/docs/en/overview) · [codex](https://developers.openai.com/codex/cli) · [cursor](https://cursor.com/docs/cli/overview)
+i recommend working with cli tools - [claude](https://code.claude.com/docs/en/overview) · [codex](https://developers.openai.com/codex/cli) · [cursor](https://cursor.com/docs/cli/overview)
