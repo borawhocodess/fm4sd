@@ -56,21 +56,25 @@ i recommend working with cli tools - [claude](https://code.claude.com/docs/en/ov
 
 some papers i find related:
 
-- pfns — [arxiv](https://arxiv.org/abs/2112.10510)
-- priorfitted — [arxiv](https://arxiv.org/abs/2505.23947)
-- nanotabpfn — [arxiv](https://arxiv.org/abs/2511.03634)
-- modded-nanotabpfn — [arxiv](https://arxiv.org/abs/2606.03681)
-- tabpfn-3 — [arxiv](https://arxiv.org/abs/2605.13986)
-- tabdpt — [arxiv](https://arxiv.org/abs/2410.18164)
-- limix — [arxiv](https://arxiv.org/abs/2509.03505)
-- tabh2o — [arxiv](https://arxiv.org/abs/2605.18383)
-- realmlp — [arxiv](https://arxiv.org/abs/2407.04491)
-- metafeatures — [arxiv](https://arxiv.org/abs/2605.28418)
-- toto-2 — [arxiv](https://arxiv.org/abs/2605.20119)
-- tabcausal — [arxiv](https://arxiv.org/abs/2605.31156)
-- ts-icl — [arxiv](https://arxiv.org/abs/2606.05878)
-- tabpfn-ts — [arxiv](https://arxiv.org/abs/2501.02945)
-- tiny-tsm — [arxiv](https://arxiv.org/abs/2511.19272)
-- tabpfnunderstandcausal — [arxiv](https://arxiv.org/abs/2511.07236)
-- tempopfn — [arxiv](https://arxiv.org/abs/2510.25502)
-- tabpfnv2closerlook — [arxiv](https://arxiv.org/abs/2502.17361)
+- general
+  - pfns — [arxiv](https://arxiv.org/abs/2112.10510)
+  - priorfitted — [arxiv](https://arxiv.org/abs/2505.23947)
+- tabular
+  - nanotabpfn — [arxiv](https://arxiv.org/abs/2511.03634)
+  - modded-nanotabpfn — [arxiv](https://arxiv.org/abs/2606.03681)
+  - tabpfn-3 — [arxiv](https://arxiv.org/abs/2605.13986)
+  - tabdpt — [arxiv](https://arxiv.org/abs/2410.18164)
+  - limix — [arxiv](https://arxiv.org/abs/2509.03505)
+  - tabh2o — [arxiv](https://arxiv.org/abs/2605.18383)
+  - realmlp — [arxiv](https://arxiv.org/abs/2407.04491)
+  - metafeatures — [arxiv](https://arxiv.org/abs/2605.28418)
+  - tabpfnv2closerlook — [arxiv](https://arxiv.org/abs/2502.17361)
+- time series
+  - tabpfn-ts — [arxiv](https://arxiv.org/abs/2501.02945)
+  - toto-2 — [arxiv](https://arxiv.org/abs/2605.20119)
+  - ts-icl — [arxiv](https://arxiv.org/abs/2606.05878)
+  - tiny-tsm — [arxiv](https://arxiv.org/abs/2511.19272)
+  - tempopfn — [arxiv](https://arxiv.org/abs/2510.25502)
+- causal
+  - tabcausal — [arxiv](https://arxiv.org/abs/2605.31156)
+  - tabpfnunderstandcausal — [arxiv](https://arxiv.org/abs/2511.07236)
