@@ -39,11 +39,13 @@ papers for the [foundation models for structured data (fm4sd) seminar](https://m
 
 ## how 2 set up
 
-i can not host the papers and their sources in this repo because of licenses. but you should definitely grab the tex sources and put them in `papers/` (gitignored):
+i can not host the papers and their sources in this repo because of licenses, but you should definitely grab the tex sources and download under `papers/papername` (gitignored):
 
 ```sh
-wget https://arxiv.org/pdf/<id>   # pdf
-wget https://arxiv.org/src/<id>   # tex source
+wget https://arxiv.org/pdf/<id> -O <id>.pdf      # pdf
+wget https://arxiv.org/src/<id> -O <id>.tar.gz   # tex
+mkdir -p src && tar -xzf <id>.tar.gz -C src
+rm <id>.tar.gz
 ```
 
 then feed the source + [`skills/teacher.md`](skills/teacher.md) to your agent and happy working :)
