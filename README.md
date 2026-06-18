@@ -1,6 +1,6 @@
 # ufr ss26 fm4sd papers
 
-papers for the [foundation models for structured data (fm4sd) seminar](https://ml.informatik.uni-freiburg.de/teaching/summer-semester-2026/seminar-seminar-on-foundation-models-for-structured-data/) at the university of freiburg, summer semester 2026.
+papers for the [foundation models for structured data (fm4sd) seminar](https://ml.informatik.uni-freiburg.de/teaching/summer-semester-2026/seminar-seminar-on-foundation-models-for-structured-data/) at the [university of freiburg](https://www.tf.uni-freiburg.de/en/studies-and-teaching).
 
 - tabular foundation models
   - group 1
