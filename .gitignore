@@ -1,2 +1,13 @@
 papers/
 build/
+
+# macOS junk
+.DS_Store
+**/.DS_Store
+
+# personal notes / talk tracks (kept local, not shared)
+Notes Gurmeher/
+stopfns/presentation/slide-explainers/
+stopfns/presentation/speaker-notes.md
+stopfns/presentation/Extra/speaker-notes.md
+stopfns/presentation/Extra/teach-checklist.md

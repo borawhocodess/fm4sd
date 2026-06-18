@@ -14,6 +14,7 @@
 \pgfplotsset{compat=1.18}
 \usepackage{xcolor}
 \usepackage{xurl}
+\usepackage{pdfpages}   % to splice in Bora's slides (a PDF)
 
 % --- palette ---------------------------------------------------------------
 \definecolor{accent}{HTML}{C1121F}
@@ -51,19 +52,10 @@
 
 \begin{document}
 
-\maketitle
-
-\begin{frame}{PFNs approximate PPD}
-\end{frame}
-
-\begin{frame}{Bayesian view}
-\end{frame}
-
-\begin{frame}{PFNs training}
-\end{frame}
-
-\begin{frame}{PFNs approximate PPD}
-\end{frame}
+% ===========================================================================
+% ===  BORA'S PART (his draft deck, spliced in as a PDF) --- presented first
+% ===========================================================================
+\includepdf[pages=-]{bora.pdf}
 
 % ===========================================================================
 % ===  GURMEHER'S PART  —  Section 5: the frequentist view of PFNs        ===
