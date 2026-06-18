@@ -611,10 +611,10 @@
    {\color{accent}$\bullet$}~sample $X_i$ near $x$\quad {\color{muted}$\bullet$}~sample $X_j$ far from $x$ \mut{(also a sample)}}}
   \vspace{0.4em}
 
-  \onslide<2->{\centering Inside the ring (\gd{near $x$}, red) drives the answer; the \mut{far (grey) points are ignored}.\par}
+  \onslide<1->{\centering Inside the ring (\gd{near $x$}, red) drives the answer; the \mut{far (grey) points are ignored}.\par}
   \vspace{0.2em}
 
-  \onslide<3->{\centering
+  \onslide<1->{\centering
     {\footnotesize\mut{\cit{Thm 5.4} an \emph{unbiased} predictor must be \hl{local}: flip the far-away labels $\to$ the prediction doesn't change.}}\par}
 \end{frame}
 
@@ -643,10 +643,10 @@
   \end{columns}}
   \vspace{0.4em}
 
-  \onslide<2->{\centering Far points \hl{always leak in} $\Rightarrow$ you \emph{can't} flip them freely $\Rightarrow$ \hl{not local}.\par}
+  \onslide<1->{\centering Far points \hl{always leak in} $\Rightarrow$ you \emph{can't} flip them freely $\Rightarrow$ \hl{not local}.\par}
   \vspace{0.2em}
 
-  \onslide<3->{\centering {\footnotesize\mut{$\Rightarrow$ the bias does \emph{not} vanish --- TabPFN's bias flattens out around $n\approx1000$ \cit{Fig.\ 1}.}}\par}
+  \onslide<1->{\centering {\footnotesize\mut{$\Rightarrow$ the bias does \emph{not} vanish --- TabPFN's bias flattens out around $n\approx1000$ \cit{Fig.\ 1}.}}\par}
 \end{frame}
 
 % --- G10: the fix — localized PFN ------------------------------------------
@@ -681,10 +681,10 @@
     {\color{accent}$\bullet$}~near samples $X_i$ (kept)\quad {\color{muted}$\bullet$}~far samples $X_j$ (dropped)}\par}
   \vspace{0.4em}
 
-  \onslide<2->{\centering \textbf{Why it works:} near $x$ the truth is $\approx$ \hl{flat} $\Rightarrow$ easy to fit $\Rightarrow$ \gd{bias drops}. \;\mut{\footnotesize (cost: fewer points $\Rightarrow$ slightly more variance.)}\par}
+  \onslide<1->{\centering \textbf{Why it works:} near $x$ the truth is $\approx$ \hl{flat} $\Rightarrow$ easy to fit $\Rightarrow$ \gd{bias drops}. \;\mut{\footnotesize (cost: fewer points $\Rightarrow$ slightly more variance.)}\par}
   \vspace{0.2em}
 
-  \onslide<3->{\centering Does it actually break the bias floor? \;\mut{\footnotesize We'll put it to the test at the end \cit{Fig.\ 1}.}\par}
+  \onslide<1->{\centering Does it actually break the bias floor? \;\mut{\footnotesize We'll put it to the test at the end \cit{Fig.\ 1}.}\par}
 \end{frame}
 
 % ===========================================================================
@@ -704,7 +704,7 @@
   \end{enumerate}}
   \vspace{1.4em}
 
-  \onslide<2->{\centering \mut{\footnotesize (the Localized PFN above is the third.)}\par}
+  \onslide<1->{\centering \mut{\footnotesize (the Localized PFN above is the third.)}\par}
 \end{frame}
 
 % --- 1. Window smoother (formula explained notation-by-notation) -----------
@@ -823,7 +823,7 @@
         \foreach \s in {0.9,1.8} \draw[muted] (\s,-0.08)--(\s,0.08);
       \end{tikzpicture}}
     \column{0.5\textwidth}\centering
-      \onslide<3->{\textbf{\footnotesize weight $w_k=$ how well tree $k$ fits $\mathcal D_n$}\\[6pt]
+      \onslide<2->{\textbf{\footnotesize weight $w_k=$ how well tree $k$ fits $\mathcal D_n$}\\[6pt]
       \begin{tikzpicture}[scale=0.72, font=\tiny]
         \fill[muted] (0,0) rectangle (0.45,0.18);
         \fill[good]  (0.75,0) rectangle (1.2,1.4);
@@ -837,71 +837,61 @@
   \end{columns}
   \vspace{0.3em}
 
-  \onslide<4->{\centering {\gd{$n$ grows $\Rightarrow$ best-fitting tree wins $\Rightarrow$ bias drops.}}\par}
+  \onslide<2->{\centering {\gd{$n$ grows $\Rightarrow$ best-fitting tree wins $\Rightarrow$ bias drops.}}\par}
 \end{frame}
 
 % ===========================================================================
 % ===  EXPERIMENT — the empirical test (paper Fig. 1)                      ===
 % ===========================================================================
 
-% --- Experiment 1: the setup ----------------------------------------------
-\begin{frame}[t]{Experiment: the setup \cit{Fig.\ 1}}
+% --- Experiment: setup (click 1) + graph (click 2) + arrows (clicks 3,4,5) -
+\begin{frame}[t]{Experiment \cit{Fig.\ 1}}
 
+  % ---- setup: click 1 ----
   \onslide<1->{\centering The truth: \;
     $p_0(1\mid x)=\tfrac12\bigl(1+\sin(\mathbf 1^\top x)\bigr)$
     \;\;\mut{\footnotesize$x\sim\mathcal N(\mathbf 0,I_5)$}.\par}
-  \vspace{1.0em}
+  \vspace{0.3em}
 
-  \onslide<2->{\centering
-  \begin{tikzpicture}[>=Latex, font=\footnotesize, node distance=5mm,
-      pbox/.style={draw=ink, fill=ink!5, rounded corners=2pt, align=center, inner sep=4pt, minimum height=11mm, text width=22mm}]
+  \onslide<1->{\centering
+  \begin{tikzpicture}[>=Latex, font=\scriptsize, node distance=4mm,
+      pbox/.style={draw=ink, fill=ink!5, rounded corners=2pt, align=center, inner sep=3pt, minimum height=8mm, text width=21mm}]
     \node[pbox] (a) {draw \textbf{500} datasets $\mathcal D_n$};
     \node[pbox, right=of a] (b) {run the \textbf{frozen} TabPFN};
-    \node[pbox, right=of b] (c) {avg.\ squared \textbf{bias} \& \textbf{variance}\\ over 100 test pts};
+    \node[pbox, right=of b] (c) {avg.\ squared \textbf{bias} \& \textbf{variance}};
     \node[pbox, right=of c] (d) {sweep the size $n$};
-    \draw[->, line width=0.8pt] (a)--(b); \draw[->, line width=0.8pt] (b)--(c); \draw[->, line width=0.8pt] (c)--(d);
+    \draw[->, line width=0.7pt] (a)--(b); \draw[->, line width=0.7pt] (b)--(c); \draw[->, line width=0.7pt] (c)--(d);
   \end{tikzpicture}}
-  \vspace{1.0em}
+  \vspace{0.3em}
 
-  \onslide<3->{\centering Run \emph{two} predictors head-to-head:\;
+  \onslide<1->{\centering {\footnotesize Two predictors:\;
     {\color{ink}\textbf{TabPFN}} \;vs\; {\color{accent}\textbf{Localized TabPFN}}
-    \;\mut{\footnotesize$\bigl(k_n=\min\{500,\lceil n^{4/(d+4)}\rceil\}\bigr)$}.\par}
-  \vspace{0.8em}
+    \;\mut{$\bigl(k_n=\min\{500,\lceil n^{4/(d+4)}\rceil\}\bigr)$}.}\par}
+  \vspace{0.25em}
 
-  \onslide<4->{\centering {\footnotesize\mut{Theory predicts: variance $\to 0$ at rate $1/n$;\; bias drops until $n\approx1000$, then \emph{stalls}.}}\par}
-\end{frame}
-
-% --- Experiment 2: the result, with arrows revealed step by step -----------
-\begin{frame}[t]{Experiment: the result \cit{Fig.\ 1}}
-
-  \centering
+  % ---- graph (click 2) + arrows (clicks 3,4,5) ----
+  \onslide<2->{\centering
   \begin{tikzpicture}
     \node[anchor=south west, inner sep=0] (img) at (0,0)
-      {\includegraphics[width=0.66\textwidth]{img/bias-variance.pdf}};
+      {\includegraphics[width=0.46\textwidth]{img/bias-variance.pdf}};
     \begin{scope}[x={(img.south east)}, y={(img.north west)}]
-      % coords measured from the figure (full image = [0,1]x[0,1]).
-      % LEFT panel: dark TabPFN flat at y~0.60; blue Localized descends to y~0.49.
-      % RIGHT panel: blue Localized upper (~0.42) above dark TabPFN (~0.34).
-      % --- callout A: the dark (TabPFN) flat line, labelled above it ---
-      \onslide<2->{%
-        \node[ink, font=\scriptsize, align=center, anchor=south] at (0.33,0.71)
-          {\textbf{TabPFN:} bias\\ \textbf{flattens}};
-        \draw[ink, ->, line width=1pt] (0.34,0.695) -- (0.365,0.608);}
-      % --- callout B: the blue (Localized) descending line, labelled below it ---
+      % normalized image coords [0,1]x[0,1]
       \onslide<3->{%
-        \node[biasc, font=\scriptsize, align=center, anchor=north] at (0.28,0.40)
-          {\textbf{Localized:}\\ keeps dropping};
-        \draw[biasc, ->, line width=1pt] (0.355,0.415) -- (0.435,0.505);}
-      % --- callout C: the blue (Localized) upper line in the variance panel ---
+        \node[ink, font=\tiny, align=center, anchor=south] at (0.33,0.73)
+          {\textbf{TabPFN:} bias \textbf{flattens}};
+        \draw[ink, ->, line width=0.9pt] (0.34,0.705) -- (0.365,0.608);}
       \onslide<4->{%
-        \node[biasc, font=\scriptsize, align=center, anchor=south] at (0.80,0.62)
-          {Localized a bit\\ \textbf{higher} (cost)};
-        \draw[biasc, ->, line width=1pt] (0.845,0.605) -- (0.875,0.435);}
+        \node[biasc, font=\tiny, align=center, anchor=north] at (0.27,0.37)
+          {\textbf{Localized:} keeps dropping};
+        \draw[biasc, ->, line width=0.9pt] (0.355,0.405) -- (0.435,0.505);}
+      \onslide<5->{%
+        \node[biasc, font=\tiny, align=center, anchor=south] at (0.80,0.66)
+          {Localized \textbf{higher} (cost)};
+        \draw[biasc, ->, line width=0.9pt] (0.845,0.635) -- (0.875,0.435);}
     \end{scope}
-  \end{tikzpicture}
+  \end{tikzpicture}}
 
-  \vspace{0.3em}
-  \onslide<5->{\centering {\gd{$\Rightarrow$ localizing breaks the bias floor, at a small variance cost.}}\par}
+  \onslide<5->{\centering {\footnotesize\gd{$\Rightarrow$ localizing breaks the bias floor, at a small variance cost.}}\par}
 \end{frame}
 
 % bora again
