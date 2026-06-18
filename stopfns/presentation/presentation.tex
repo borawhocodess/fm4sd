@@ -486,44 +486,67 @@
   \end{columns}
 \end{frame}
 
-% --- G5: symmetry (setup + dartboard f vs f-tilde + the two formulas) ------
+% --- G5: symmetry (rows/shuffled-rows + dartboard f vs f-tilde + formulas) --
 \begin{frame}[t]{Symmetry}
 
   \onslide<1->{\centering
-    Shuffle the training rows $\Rightarrow$ \hl{same answer}. \mut{(iid: order means nothing.)}\\[3pt]
-    {\footnotesize {\color{ink}\textbf{$f$}}: not symmetric \qquad {\color{good!55!black}\textbf{$\tilde f$}}: symmetrized.}\par}
-  \vspace{0.7em}
+    A predictor is \hl{symmetric} if shuffling the training rows never changes its answer.\\[2pt]
+    {\footnotesize\mut{(rows are iid $\Rightarrow$ their order is meaningless.)}}\par}
+  \vspace{0.4em}
 
-  \onslide<2->{\centering
-  \begin{tikzpicture}[>=Latex, ring/.style={draw=muted,line width=0.4pt}]
-    % board f --- scattered
-    \begin{scope}
-      \draw[ring](0,0)circle(0.8);\draw[ring](0,0)circle(0.53);\draw[ring](0,0)circle(0.27);
-      \foreach \dx/\dy in {0.55/0.5,0.1/0.45,0.6/0.0,0.15/0.1,0.65/0.35,0.0/0.3}
-        \fill[ink](\dx,\dy)circle(0.05);
-      \draw[good,line width=0.8pt](-0.1,0)--(0.1,0)(0,-0.1)--(0,0.1);
-      \fill[accent](0.34,0.28)circle(0.05);
-      \node[font=\footnotesize] at (0,-1.15){$f$};
-    \end{scope}
-    \draw[->,line width=1pt,accent] (1.35,0)--(2.45,0)
-      node[midway,above,font=\scriptsize,text=ink]{symmetrize};
-    % board f-tilde --- tight, SAME centre
-    \begin{scope}[shift={(3.8,0)}]
-      \draw[ring](0,0)circle(0.8);\draw[ring](0,0)circle(0.53);\draw[ring](0,0)circle(0.27);
-      \foreach \dx/\dy in {0.30/0.25,0.38/0.30,0.33/0.32,0.37/0.24,0.31/0.27,0.36/0.29}
-        \fill[good!55!black](\dx,\dy)circle(0.05);
-      \draw[good,line width=0.8pt](-0.1,0)--(0.1,0)(0,-0.1)--(0,0.1);
-      \fill[accent](0.34,0.28)circle(0.05);
-      \node[font=\footnotesize] at (0,-1.15){$\tilde f$};
-    \end{scope}
-    \node[accent,font=\scriptsize] at (1.9,-1.15){\textbullet\ same centre};
-  \end{tikzpicture}}
-  \vspace{0.6em}
+  \begin{columns}[c]
+    % ---- left: rows -> shuffled rows ----
+    \column{0.5\textwidth}
+      \onslide<1->{\centering
+      \begin{tikzpicture}[font=\scriptsize,
+          rrow/.style={rounded corners=1.5pt, draw=muted, line width=0.4pt,
+                       minimum width=11mm, minimum height=4.4mm, inner sep=0pt}]
+        \node[font=\tiny, muted] at (0,1.62){$\mathcal D_n$};
+        \node[rrow, fill=accent!18] at (0,1.2){1};
+        \node[rrow, fill=biasc!18]  at (0,0.72){2};
+        \node[rrow, fill=good!18]   at (0,0.24){3};
+        \node[rrow, fill=muted!25]  at (0,-0.24){4};
+        \draw[->, line width=0.8pt, accent] (0.85,0.48)--(1.75,0.48)
+          node[midway, above, font=\tiny, text=ink]{shuffle};
+        \node[font=\tiny, muted] at (2.6,1.62){same set};
+        \node[rrow, fill=good!18]   at (2.6,1.2){3};
+        \node[rrow, fill=accent!18] at (2.6,0.72){1};
+        \node[rrow, fill=muted!25]  at (2.6,0.24){4};
+        \node[rrow, fill=biasc!18]  at (2.6,-0.24){2};
+      \end{tikzpicture}\\[3pt]
+      {\footnotesize\mut{same rows, new order $\Rightarrow$ a \hl{symmetric} $f$ gives the same answer.}}}
+    % ---- right: dartboards f and f-tilde ----
+    \column{0.5\textwidth}
+      \onslide<2->{\centering
+      \begin{tikzpicture}[>=Latex, scale=0.82, ring/.style={draw=muted,line width=0.4pt}]
+        \begin{scope}
+          \draw[ring](0,0)circle(0.8);\draw[ring](0,0)circle(0.53);\draw[ring](0,0)circle(0.27);
+          \foreach \dx/\dy in {0.55/0.5,0.1/0.45,0.6/0.0,0.15/0.1,0.65/0.35,0.0/0.3}
+            \fill[ink](\dx,\dy)circle(0.055);
+          \draw[good,line width=0.7pt](-0.1,0)--(0.1,0)(0,-0.1)--(0,0.1);
+          \fill[accent](0.34,0.28)circle(0.055);
+          \node[font=\footnotesize] at (0,-1.1){$f$};
+        \end{scope}
+        \draw[->,line width=1pt,accent] (1.25,0)--(2.25,0)
+          node[midway,above,font=\tiny,text=ink]{symmetrize};
+        \begin{scope}[shift={(3.5,0)}]
+          \draw[ring](0,0)circle(0.8);\draw[ring](0,0)circle(0.53);\draw[ring](0,0)circle(0.27);
+          \foreach \dx/\dy in {0.30/0.25,0.38/0.30,0.33/0.32,0.37/0.24,0.31/0.27,0.36/0.29}
+            \fill[good!55!black](\dx,\dy)circle(0.055);
+          \draw[good,line width=0.7pt](-0.1,0)--(0.1,0)(0,-0.1)--(0,0.1);
+          \fill[accent](0.34,0.28)circle(0.055);
+          \node[font=\footnotesize] at (0,-1.1){$\tilde f$};
+        \end{scope}
+      \end{tikzpicture}\\[2pt]
+      {\footnotesize\mut{{\color{ink}$f$}: any predictor;\; {\color{good!55!black}$\tilde f$}: $f$ averaged over all orders.\\
+        spread shrinks, \hl{centre stays}.}}}
+  \end{columns}
+  \vspace{0.5em}
 
   \onslide<3->{\centering\Large
     $\textcolor{biasc}{\mathbb E[\tilde f]=\mathbb E[f]}$ \qquad\qquad
     $\textcolor{accent}{\operatorname{Var}[\tilde f]\le\operatorname{Var}[f]}$\par}
-  \vspace{0.1em}
+  \vspace{0.05em}
   \onslide<3->{\centering
     {\footnotesize \textcolor{biasc}{same bias} \qquad\qquad \textcolor{accent}{lower variance}}\par}
 \end{frame}
