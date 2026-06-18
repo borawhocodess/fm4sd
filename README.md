@@ -51,3 +51,18 @@ rm <id>.tar.gz
 then feed the source + [`skills/teacher.md`](skills/teacher.md) to your agent and happy working :)
 
 i recommend working with cli tools - [claude](https://code.claude.com/docs/en/overview) · [codex](https://developers.openai.com/codex/cli) · [cursor](https://cursor.com/docs/cli/overview)
+
+## other papers
+
+some papers i find related:
+
+- pfns — [arxiv](https://arxiv.org/abs/2112.10510)
+- tabpfn-3 — [arxiv](https://arxiv.org/abs/2605.13986)
+- priorfitted — [arxiv](https://arxiv.org/abs/2505.23947)
+- tabdpt — [arxiv](https://arxiv.org/abs/2410.18164)
+- limix — [arxiv](https://arxiv.org/abs/2509.03505)
+- tabh2o — [arxiv](https://arxiv.org/abs/2605.18383)
+- realmlp — [arxiv](https://arxiv.org/abs/2407.04491)
+- metafeatures — [arxiv](https://arxiv.org/abs/2605.28418)
+- toto-2 — [arxiv](https://arxiv.org/abs/2605.20119)
+- tabcausal — [arxiv](https://arxiv.org/abs/2605.31156)
