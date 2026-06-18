@@ -373,12 +373,22 @@
 % --- timeline -------------------------------------------------------------
 \begin{frame}{Timeline}
 \begin{itemize}\setlength\itemsep{0.7em}
-  \item \textbf{2021} \quad--\quad PFN
-  \item \textbf{2022} \quad--\quad TabPFN
-  \item \textbf{2023} \quad--\quad \gd{this paper}
-  \item \textbf{2025} \quad--\quad TabPFNv2,\ nanoTabPFN,\ TabPFN v2.5
-  \item \textbf{2026} \quad--\quad \gd{modded nanoTabPFN},\ TabPFNv3
+  \item<1-> \textbf{2021} \quad--\quad PFN
+  \item<1-> \textbf{2022} \quad--\quad TabPFN
+  \item<1-> \textbf{2023} \quad--\quad \gd{this paper} \quad \mut{\footnotesize\itshape ``The full potential of PFNs is yet to be explored.''}
+  \item<2-> \textbf{2025} \quad--\quad TabPFNv2,\ nanoTabPFN,\ TabPFN v2.5
+  \item<3-> \textbf{2026} \quad--\quad \textbf{modded-nanoTabPFN},\ TabPFNv3
 \end{itemize}
+% arrow down the rightmost side, ending in the paper's open-ended note
+\onslide<4->
+\begin{tikzpicture}[remember picture, overlay, >=Stealth]
+  \draw[-{Stealth[length=4mm,width=5mm]}, line width=2pt, good]
+    ([xshift=-2.6cm,yshift=-1.7cm]current page.north east) --
+    ([xshift=-2.6cm,yshift= 2.2cm]current page.south east);
+  \node[good, font=\bfseries\small, align=center, anchor=north]
+    at ([xshift=-2.6cm,yshift=2.0cm]current page.south east)
+    {still so much more\\to explore!};
+\end{tikzpicture}
 \end{frame}
 
 % --- closing --------------------------------------------------------------
