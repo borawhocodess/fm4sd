@@ -138,6 +138,80 @@
 \vfill
 \end{frame}
 
+% --- PFN training recipe --------------------------------------------------
+\begin{frame}{PFNs pretraining \& inference}
+  \centering
+  \begin{tikzpicture}[>=Stealth, font=\small, scale=0.85, transform shape,
+      sheet/.style={draw=ink, line width=0.9pt, rounded corners=2pt, fill=white,
+                    minimum width=1.15cm, minimum height=1.15cm},
+      box/.style={draw=ink, line width=0.9pt, rounded corners=2pt, fill=white,
+                    minimum width=0.55cm, minimum height=0.55cm},
+      learn/.style={good, line width=1.1pt},
+      infer/.style={infc, line width=1.1pt}]
+
+    % fixed extent so the picture doesn't shift between overlays
+    \useasboundingbox (-1.1,-3.3) rectangle (9.85,3.7);
+
+    % ===== build 1: prior + model ==========================================
+    \begin{scope}[shift={(0.7,1.9)}]
+      \foreach \i in {3,2,1,0}{ \node[sheet] at ({-\i*0.15},{\i*0.15}) {}; }
+      \node[ink] at (0,0) {$\Pi$};
+    \end{scope}
+    \node[muted, font=\footnotesize] at (0.3,3.4) {prior};
+    \draw[ink,line width=0.7pt] (1.36,2.45) -- (1.51,2.45) -- (1.51,1.35) -- (1.36,1.35);
+    \node[ink] at (1.85,1.9) {$\Pi_N$};
+    % diagonal bracket on the bottom-left of the stack, labelled m
+    \draw[ink,line width=0.7pt] (0.21,1.268) -- (0.069,1.127) -- (-0.523,1.719) -- (-0.382,1.86);
+    \node[ink, font=\large] at (-0.5,1.16) {$m$};
+    \node[muted, font=\footnotesize] at (0.55,0.7) {synthetic datasets};
+    % model: a small transformer (6 layers x 4 heads)
+    \draw[ink,line width=1pt] (4.4,-0.65) rectangle (6.95,0.85);
+    \foreach \L in {0,...,5}{
+      \pgfmathsetmacro{\lx}{4.675 + \L*0.4}
+      \draw[ink!45,line width=0.5pt]
+          (\lx-0.16,-0.52) rectangle (\lx+0.16,0.72);
+      \foreach \H in {0,...,3}{
+        \pgfmathsetmacro{\hy}{-0.365 + \H*0.31}
+        \draw[ink!45,line width=0.4pt]
+            (\lx-0.12,\hy-0.12) rectangle (\lx+0.12,\hy+0.12);
+      }
+    }
+    \node[ink, font=\footnotesize] at (5.675,-0.95) {model with $\btheta$};
+
+    % ===== build 2: pretraining / learning =================================
+    \onslide<2->{
+      \draw[learn,->] (1.95,1.55) .. controls (3,1.05) and (3.4,0.55) .. (4.3,0.4);
+      \node[ink] at (9.3,0.05) {$\widehat{y}$};
+      \draw[learn,->] (7.1,0.4) to[bend left=16] (8.95,0.2);
+      \draw[learn,->,dashed] (8.95,0.55) to[bend right=34] (7.0,0.72);
+      \node[good, font=\footnotesize] at (7.9,1.12) {learning};
+      \node[good, font=\scriptsize] at (8.05,1.6)
+           {$\widehat\btheta=\arg\max\limits_{\btheta}\sum_{j=1}^{m}\log q_{\btheta}(Y_j\mid\bX_j,\mathcal D^{(j)})$};
+    }
+
+    % ===== build 3: real data appears ======================================
+    \onslide<3->{
+      \node[sheet] at (0.7,-2.1) {};
+      \node[muted, font=\footnotesize] at (0.7,-3.05) {real data};
+    }
+
+    % ===== build 4: inference ==============================================
+    \onslide<4->{
+      \draw[infer,->] (1.4,-1.85) .. controls (2.6,-1.2) and (3.4,-0.55) .. (4.3,-0.2);
+      \draw[infer,->] (7.1,-0.3) to[bend right=16] (8.95,-0.12);
+      \node[infc, font=\footnotesize] at (8.05,-0.78) {inference};
+      \node[infc, font=\scriptsize] at (8.05,-1.24)
+           {$q_{\widehat\btheta}(y\mid x,\mathcal D_n)$};
+    }
+  \end{tikzpicture}
+
+  \vspace{0.6em}
+  \onslide<5->{%
+  \mut{\footnotesize training size $N\sim\Pi_N$ regularizes PPD complexity\; (TabPFN: $N\le 1023$)}\\[2pt]
+  \mut{\footnotesize $\widehat{\btheta}\to\btheta^*$ as Monte-Carlo size $m\to\infty$\; ($\sqrt{m}$ rate); complex models need larger $m$ \;\cit{App.~B}}%
+  }
+\end{frame}
+
 \begin{frame}{PFNs approximate PPD}
 \begin{columns}[T,onlytextwidth]
 \begin{column}{0.50\textwidth}
@@ -184,8 +258,39 @@
 \end{columns}
 \end{frame}
 
-% --- next slide (empty) ---------------------------------------------------
+% --- two presenters, two priors, one world --------------------------------
 \begin{frame}
+  \centering
+  \begin{tikzpicture}[>=Stealth, scale=0.9,
+      guy/.pic={
+        \draw[ink,line width=0.9pt] (0,0) circle (0.2);
+        \draw[ink,line width=0.9pt] (0,-0.2) -- (0,-0.78);
+        \draw[ink,line width=0.9pt] (-0.28,-0.5) -- (0,-0.5) -- (0.28,-0.5);    % arms
+        \draw[ink,line width=0.9pt] (0,-0.78) -- (-0.22,-1.18);                 % legs
+        \draw[ink,line width=0.9pt] (0,-0.78) -- ( 0.22,-1.18);
+      }]
+
+    % --- the homeland capsule wraps only the parents, light dashed ----------
+    \draw[muted, line width=0.5pt, dashed, rounded corners=18pt]
+          (-0.15,3.3) rectangle (1.55,-3.5);
+    \pic[scale=1.25] at (0.7, 1.85) {guy};  \node[ink] at (0.7, 2.6) {indian};
+    \pic[scale=1.25] at (0.7,-1.55) {guy};  \node[ink] at (0.7,-0.95) {turkish};
+
+    % --- the kids, small, just outside the homeland -------------------------
+    \pic[scale=0.62] at (2.2, 1.35) {guy};  \node[ink,font=\small] at (2.3, 1.75) {gurmeher};
+    \pic[scale=0.62] at (2.2,-2.05) {guy};  \node[ink,font=\small] at (2.25,-1.68) {bora};
+
+    % --- the world (one shared circle) --------------------------------------
+    \draw[ink, line width=1pt] (8.4,0) circle (3.0);
+    \pic at (7.7, 1.5) {guy};
+    \pic at (7.8,-0.9) {guy};
+
+    % --- the kids grow up and go out into the world -------------------------
+    \draw[->, ink, line width=0.9pt]
+      (2.5,1.15) .. controls (4.2,1.15) and (5.8,1.5) .. (7.3,1.5);
+    \draw[->, ink, line width=0.9pt]
+      (2.5,-2.25) .. controls (4.4,-2.6) and (6.1,-1.5) .. (7.45,-1.0);
+  \end{tikzpicture}
 \end{frame}
 
 % --- the statistical model (generative story) -----------------------------
@@ -274,41 +379,6 @@
 \end{columns}
 \end{frame}
 
-% --- two presenters, two priors, one world --------------------------------
-\begin{frame}
-\centering
-\begin{tikzpicture}[>=Stealth, scale=0.9,
-    guy/.pic={
-      \draw[ink,line width=0.9pt] (0,0) circle (0.2);
-      \draw[ink,line width=0.9pt] (0,-0.2) -- (0,-0.78);
-      \draw[ink,line width=0.9pt] (-0.28,-0.5) -- (0,-0.5) -- (0.28,-0.5);    % arms
-      \draw[ink,line width=0.9pt] (0,-0.78) -- (-0.22,-1.18);                 % legs
-      \draw[ink,line width=0.9pt] (0,-0.78) -- ( 0.22,-1.18);
-    }]
-
-  % --- the homeland capsule wraps only the parents, light dashed ----------
-  \draw[muted, line width=0.5pt, dashed, rounded corners=18pt]
-        (-0.15,3.3) rectangle (1.55,-3.5);
-  \pic[scale=1.25] at (0.7, 1.85) {guy};  \node[ink] at (0.7, 2.6) {indian};
-  \pic[scale=1.25] at (0.7,-1.55) {guy};  \node[ink] at (0.7,-0.95) {turkish};
-
-  % --- the kids, small, just outside the homeland -------------------------
-  \pic[scale=0.62] at (2.2, 1.35) {guy};  \node[ink,font=\small] at (2.3, 1.75) {gurmeher};
-  \pic[scale=0.62] at (2.2,-2.05) {guy};  \node[ink,font=\small] at (2.25,-1.68) {bora};
-
-  % --- the world (one shared circle) --------------------------------------
-  \draw[ink, line width=1pt] (8.4,0) circle (3.0);
-  \pic at (7.7, 1.5) {guy};
-  \pic at (7.8,-0.9) {guy};
-
-  % --- the kids grow up and go out into the world -------------------------
-  \draw[->, ink, line width=0.9pt]
-    (2.5,1.15) .. controls (4.2,1.15) and (5.8,1.5) .. (7.3,1.5);
-  \draw[->, ink, line width=0.9pt]
-    (2.5,-2.25) .. controls (4.4,-2.6) and (6.1,-1.5) .. (7.45,-1.0);
-\end{tikzpicture}
-\end{frame}
-
 % --- posterior consistency (Theorem 3.1) ----------------------------------
 \begin{frame}{Posterior consistency}
 \begin{columns}[T,onlytextwidth]
@@ -355,92 +425,18 @@
 \mut{(even if $p_0\notin\mathcal{P}$)}
 \end{frame}
 
-% --- PFN training recipe --------------------------------------------------
-\begin{frame}{PFNs pretraining \& inference}
-\centering
-\begin{tikzpicture}[>=Stealth, font=\small, scale=0.85, transform shape,
-    sheet/.style={draw=ink, line width=0.9pt, rounded corners=2pt, fill=white,
-                  minimum width=1.15cm, minimum height=1.15cm},
-    box/.style={draw=ink, line width=0.9pt, rounded corners=2pt, fill=white,
-                  minimum width=0.55cm, minimum height=0.55cm},
-    learn/.style={good, line width=1.1pt},
-    infer/.style={infc, line width=1.1pt}]
-
-  % fixed extent so the picture doesn't shift between overlays
-  \useasboundingbox (-1.1,-3.3) rectangle (9.85,3.7);
-
-  % ===== build 1: prior + model ==========================================
-  \begin{scope}[shift={(0.7,1.9)}]
-    \foreach \i in {3,2,1,0}{ \node[sheet] at ({-\i*0.15},{\i*0.15}) {}; }
-    \node[ink] at (0,0) {$\Pi$};
-  \end{scope}
-  \node[muted, font=\footnotesize] at (0.3,3.4) {prior};
-  \draw[ink,line width=0.7pt] (1.36,2.45) -- (1.51,2.45) -- (1.51,1.35) -- (1.36,1.35);
-  \node[ink] at (1.85,1.9) {$\Pi_N$};
-  % diagonal bracket on the bottom-left of the stack, labelled m
-  \draw[ink,line width=0.7pt] (0.21,1.268) -- (0.069,1.127) -- (-0.523,1.719) -- (-0.382,1.86);
-  \node[ink, font=\large] at (-0.5,1.16) {$m$};
-  \node[muted, font=\footnotesize] at (0.55,0.7) {synthetic datasets};
-  % model: a small transformer (6 layers x 4 heads)
-  \draw[ink,line width=1pt] (4.4,-0.65) rectangle (6.95,0.85);
-  \foreach \L in {0,...,5}{
-    \pgfmathsetmacro{\lx}{4.675 + \L*0.4}
-    \draw[ink!45,line width=0.5pt]
-        (\lx-0.16,-0.52) rectangle (\lx+0.16,0.72);
-    \foreach \H in {0,...,3}{
-      \pgfmathsetmacro{\hy}{-0.365 + \H*0.31}
-      \draw[ink!45,line width=0.4pt]
-          (\lx-0.12,\hy-0.12) rectangle (\lx+0.12,\hy+0.12);
-    }
-  }
-  \node[ink, font=\footnotesize] at (5.675,-0.95) {model with $\btheta$};
-
-  % ===== build 2: pretraining / learning =================================
-  \onslide<2->{
-    \draw[learn,->] (1.95,1.55) .. controls (3,1.05) and (3.4,0.55) .. (4.3,0.4);
-    \node[ink] at (9.3,0.05) {$\widehat{y}$};
-    \draw[learn,->] (7.1,0.4) to[bend left=16] (8.95,0.2);
-    \draw[learn,->,dashed] (8.95,0.55) to[bend right=34] (7.0,0.72);
-    \node[good, font=\footnotesize] at (7.9,1.12) {learning};
-    \node[good, font=\scriptsize] at (8.05,1.6)
-         {$\widehat\btheta=\arg\max\limits_{\btheta}\sum_{j=1}^{m}\log q_{\btheta}(Y_j\mid\bX_j,\mathcal D^{(j)})$};
-  }
-
-  % ===== build 3: real data appears ======================================
-  \onslide<3->{
-    \node[sheet] at (0.7,-2.1) {};
-    \node[muted, font=\footnotesize] at (0.7,-3.05) {real data};
-  }
-
-  % ===== build 4: inference ==============================================
-  \onslide<4->{
-    \draw[infer,->] (1.4,-1.85) .. controls (2.6,-1.2) and (3.4,-0.55) .. (4.3,-0.2);
-    \draw[infer,->] (7.1,-0.3) to[bend right=16] (8.95,-0.12);
-    \node[infc, font=\footnotesize] at (8.05,-0.78) {inference};
-    \node[infc, font=\scriptsize] at (8.05,-1.24)
-         {$q_{\widehat\btheta}(y\mid x,\mathcal D_n)$};
-  }
-\end{tikzpicture}
-
-\vspace{0.6em}
-\onslide<5->{%
-\mut{\footnotesize training size $N\sim\Pi_N$ regularizes PPD complexity\; (TabPFN: $N\le 1023$)}\\[2pt]
-\mut{\footnotesize $\widehat{\btheta}\to\btheta^*$ as Monte-Carlo size $m\to\infty$\; ($\sqrt{m}$ rate); complex models need larger $m$ \;\cit{App.~B}}%
-}
-\end{frame}
-
 % --- the tipping point: Bayesian -> frequentist ---------------------------
 \begin{frame}{The puzzle}
 \vspace{0.5em}
-\begin{itemize}\setlength\itemsep{0.6em}
-  \item no reason it behaves like a PPD for unseen sizes
-  \item a frozen $q_{\widehat{\btheta}}$ at large $n$ is \textbf{not} a PPD $\Rightarrow$ Theorem 3.1 no longer applies
-\end{itemize}
-\vfill
 \begin{center}
   {\Large why does a PFN pre-trained on $\le 1000$ samples\\[0.5em]
    \gd{improve when fed larger datasets at inference??}}
 \end{center}
+\vfill
+\begin{itemize}\setlength\itemsep{0.6em}
+  \item no reason it behaves like a PPD for unseen sizes
+  \item a frozen $q_{\widehat{\btheta}}$ at large $n$ is \textbf{not} a PPD $\Rightarrow$ Theorem 3.1 no longer applies
+\end{itemize}
 \vfill
 \end{frame}
 
