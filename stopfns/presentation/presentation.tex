@@ -20,6 +20,7 @@
 \definecolor{ink}{HTML}{2B2D42}
 \definecolor{muted}{HTML}{6C757D}
 \definecolor{good}{HTML}{2A9D8F}
+\definecolor{biasc}{HTML}{2A6F97}
 \setbeamercolor{frametitle}{bg=ink}
 \setbeamercolor{background canvas}{bg=white}
 \setbeamercolor{normal text}{fg=ink, bg=white}
@@ -32,6 +33,11 @@
 
 % compact citation marks (we keep refs informal on slides)
 \newcommand{\cit}[1]{{\scriptsize\color{muted}[#1]}}
+
+% compact math for the bias-variance decomposition slide
+\newcommand{\qd}{q_{\hat\theta}(y\mid x,\mathcal D_n)}
+\newcommand{\Eqd}{\mathbb E_{\mathcal D_n\sim p_0^n}[q_{\hat\theta}(y\mid x,\mathcal D_n)]}
+\newcommand{\px}{p_0(y\mid x)}
 
 \title{Statistical Foundations of Prior-Data Fitted Networks \cit{Nagler '23}}
 \author{Salih \underline{Bora} Öztürk \;\&\; \underline{Gurmeher} Singh Puri}
@@ -57,6 +63,574 @@
 \end{frame}
 
 \begin{frame}{PFNs approximate PPD}
+\end{frame}
+
+% ===========================================================================
+% ===  GURMEHER'S PART  —  Section 5: the frequentist view of PFNs        ===
+% ===========================================================================
+
+% --- Bridge slide: WHY a frequentist view (visuals only; talk-track in notes)
+\begin{frame}[t]{Why a frequentist view of PFNs?}
+
+  % ---- Beat 1: the lens swap ----
+  \centering
+  \begin{tikzpicture}[>=Latex, font=\footnotesize,
+      tag/.style={rounded corners=2pt, draw, line width=0.7pt, align=center, inner sep=5pt, minimum width=34mm}]
+    \node[tag, draw=muted, text=muted] (bay) {\textbf{Bayesian}\\ Prior $\to$ PPD $\to$ PFN};
+    \node[tag, draw=accent, fill=accent!6, right=26mm of bay] (freq) {\textbf{Frequentist}\\ PFN $=$ a predictor};
+    \draw[->, accent, line width=1pt] (bay) -- node[above, text=ink, font=\scriptsize]{switch lens} (freq);
+  \end{tikzpicture}
+
+  \pause
+  \vspace{0.4em}
+  % ---- Beats 2 & 3 side by side: the puzzle (plot) + the reframe (estimator) -
+  \begin{columns}[T]
+    \column{0.44\textwidth}
+      \centering \textbf{The puzzle}\\[6pt]
+      \begin{tikzpicture}[>=Latex, scale=1.0]
+        \fill[good!12] (2.2,0) rectangle (4.2,2.55);
+        \draw[->] (0,0) -- (4.4,0) node[right, font=\scriptsize]{$n$};
+        \draw[->] (0,0) -- (0,2.8) node[above, font=\scriptsize]{error};
+        \draw[accent, line width=1pt] (0.25,2.45) .. controls (1.1,1.3) and (2.0,0.75) .. (4.1,0.5);
+        \draw[dashed, ink] (2.2,0) -- (2.2,2.55);
+        \node[muted, font=\tiny] at (1.1,0.35) {Bayes (Thm 3.1)};
+        \node[ink, align=center, font=\tiny] at (2.2,-0.42) {trained up to\\ $n\approx 1000$};
+        \node[good!55!black, align=center, font=\scriptsize] at (3.2,1.55) {still\\ improves!};
+      \end{tikzpicture}
+      \\[6pt] {\footnotesize\mut{Bayes is silent past $1000$.}}
+    \pause
+    \column{0.56\textwidth}
+      \centering \textbf{The reframe: a PFN is just a predictor}\\[10pt]
+      \begin{tikzpicture}[>=Latex, font=\footnotesize]
+        \node[align=center, text=accent] (d) {$\mathcal{D}_n$\\[-2pt]\scriptsize random data};
+        \node[draw=ink, fill=ink!5, rounded corners=2pt, line width=0.7pt, align=center,
+              minimum width=22mm, minimum height=12mm, right=7mm of d] (q)
+              {$q_{\hat\theta}$\\[-2pt]\scriptsize frozen net};
+        \node[align=center, right=7mm of q] (pred) {$\hat q(\cdot\mid x)$\\[-2pt]\scriptsize prediction};
+        \draw[->, line width=0.8pt] (d) -- (q);
+        \draw[->, line width=0.8pt] (q) -- (pred);
+        \node[below=1mm of q, font=\scriptsize, text=muted, align=center] {$\hat\theta$: tuned once, offline};
+        \node[below=12mm of pred, align=center, text=muted] (truth) {$p_0(\cdot\mid x)$\\[-2pt]\scriptsize true, fixed};
+        \draw[<->, dashed, accent, line width=0.7pt] (pred) -- (truth)
+              node[midway, right=1pt, font=\scriptsize, text=accent] {error};
+      \end{tikzpicture}
+      \\[12pt]
+      {\small error $=$ \textbf{\color{ink}bias} $\;+\;$ \textbf{\color{accent}variance}}\\[1pt]
+      {\footnotesize\mut{wrong on average \quad wobble from random $\mathcal{D}_n$}}
+  \end{columns}
+
+\end{frame}
+
+% --- Slide G2: bias & variance in plain terms (dartboard) -------------------
+\begin{frame}[t]{Bias and variance}
+
+  \onslide<1->{\centering Each {\color{accent}\textbf{dart}} $=$ a prediction from one random dataset;\quad
+    the {\color{good}\textbf{bullseye}} $=$ the truth $p_0$.\par}
+  \vspace{0.8em}
+
+  \begin{columns}[T]
+    \column{0.40\textwidth}
+      \onslide<2->{%
+        {\color{ink}\textbf{Variance}} $=$ how \hl{scattered} the darts are.
+      }\\[1.6em]
+      \onslide<3->{%
+        {\color{ink}\textbf{Bias}} $=$ how far the darts' \hl{centre} is from the bullseye.\\[1.2em]
+        {\gd{Want:}} small bias \emph{and} small variance \,(top-left).
+      }
+    \column{0.60\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.05,
+          ring/.style={draw=muted, line width=0.4pt},
+          dart/.style={fill=accent, draw=none},
+          hdr/.style={font=\scriptsize\bfseries, text=ink}]
+        % boards: rings
+        \foreach \cx/\cy in {0/0, 2.4/0, 0/-2.4, 2.4/-2.4}{%
+          \draw[ring] (\cx,\cy) circle(0.75);
+          \draw[ring] (\cx,\cy) circle(0.50);
+          \draw[ring] (\cx,\cy) circle(0.25);
+        }
+        % darts: TL = small bias, small variance
+        \foreach \dx/\dy in {0.06/0.04,-0.05/0.07,0.03/-0.06,-0.07/-0.03,0.08/0.01,-0.02/0.09}
+          \fill[dart] (\dx,\dy) circle(0.045);
+        % TR = small bias, large variance
+        \foreach \dx/\dy in {0.35/0.25,-0.4/0.15,0.15/-0.45,-0.3/-0.35,0.5/-0.1,-0.1/0.5}
+          \fill[dart] ({2.4+\dx},{\dy}) circle(0.045);
+        % BL = large bias, small variance (tight cluster, offset)
+        \foreach \dx/\dy in {0.36/0.33,0.30/0.35,0.34/0.26,0.29/0.29,0.39/0.31,0.32/0.38}
+          \fill[dart] ({\dx},{-2.4+\dy}) circle(0.045);
+        % BR = large bias, large variance
+        \foreach \dx/\dy in {0.5/0.5,0.1/0.45,0.55/0.1,0.15/0.15,0.6/0.35,0.05/0.55}
+          \fill[dart] ({2.4+\dx},{-2.4+\dy}) circle(0.045);
+        % bullseyes on top (green crosshair)
+        \foreach \cx/\cy in {0/0, 2.4/0, 0/-2.4, 2.4/-2.4}{%
+          \draw[good, line width=0.7pt] (\cx-0.10,\cy)--(\cx+0.10,\cy) (\cx,\cy-0.10)--(\cx,\cy+0.10);
+        }
+        % headers
+        \node[hdr] at (0,1.05) {small variance};
+        \node[hdr] at (2.4,1.05) {large variance};
+        \node[hdr, rotate=90] at (-1.2,0) {small bias};
+        \node[hdr, rotate=90] at (-1.2,-2.4) {large bias};
+      \end{tikzpicture}
+  \end{columns}
+
+\end{frame}
+
+% --- G2b: bias-variance decomposition (paper eq., terms light up one by one) -
+\begin{frame}[t]{Bias and variance: the decomposition}
+
+  \onslide<1->{\centering\footnotesize
+  \begin{align*}
+    &\underbrace{\alt<2->{\textcolor{ink}{\qd-\px}}{\textcolor{black!30}{\qd-\px}}}_{\alt<2->{\textcolor{ink}{\textbf{error}}}{\textcolor{black!35}{\text{error}}}}\\[2pt]
+    &\;=\underbrace{\alt<3->{\textcolor{accent}{\qd-\Eqd}}{\textcolor{black!30}{\qd-\Eqd}}}_{\alt<3->{\textcolor{accent}{\textbf{variance}}}{\textcolor{black!35}{\text{variance}}}}\\[4pt]
+    &\phantom{\;=}+\underbrace{\alt<4->{\textcolor{biasc}{\Eqd-\px}}{\textcolor{black!30}{\Eqd-\px}}}_{\alt<4->{\textcolor{biasc}{\textbf{bias}}}{\textcolor{black!35}{\text{bias}}}}
+  \end{align*}\par}
+  \vspace{0.2em}
+
+  \begin{columns}[T]
+    \column{0.42\textwidth}
+      \centering
+      \begin{tikzpicture}[>=Latex, scale=1.3, ring/.style={draw=muted,line width=0.4pt}]
+        \draw[ring](0,0)circle(0.9);\draw[ring](0,0)circle(0.6);\draw[ring](0,0)circle(0.3);
+        \draw[good,line width=0.9pt](-0.12,0)--(0.12,0)(0,-0.12)--(0,0.12);
+        \node[good!55!black, font=\tiny, anchor=north] at (0,-0.15){$p_0$};
+        \foreach \dx/\dy in {0.45/0.38,0.58/0.46,0.34/0.46,0.52/0.28,0.38/0.30,0.50/0.50}
+          \fill[accent](\dx,\dy)circle(0.038);
+        \node[accent, font=\tiny, anchor=west] at (0.64,0.5){$q_{\hat\theta}$};
+        \fill[ink] (0.46,0.40) circle(0.03);
+        \node[ink, font=\tiny, anchor=north west] at (0.49,0.31){$\bar q$ (avg)};
+        % variance = spread  [reveal 3, red]
+        \draw<3->[accent, dashed, line width=0.6pt] (0.46,0.40) circle(0.24);
+        \node<3->[accent, font=\tiny] at (0.46,0.76){variance};
+        % bias = offset, centre -> bullseye  [reveal 4, blue]
+        \draw<4->[->, biasc, line width=0.9pt] (0.43,0.37) -- (0.03,0.03);
+        \node<4->[biasc, font=\tiny, anchor=south east] at (0.27,0.205){bias};
+      \end{tikzpicture}
+    \column{0.58\textwidth}
+      {\footnotesize
+      \onslide<1->{\mut{$\bar q=\mathbb E_{\mathcal D_n}[q_{\hat\theta}]$ --- the average prediction.}\par}
+      \medskip
+      \onslide<2->{{\color{ink}\textbf{error}}:\; $q_{\hat\theta}=$ our prediction,\; $p_0=$ the truth.\par}\smallskip
+      \onslide<3->{{\color{accent}\textbf{variance}}:\; prediction $q_{\hat\theta}$ vs its average $\bar q$.\par}\smallskip
+      \onslide<4->{{\color{biasc}\textbf{bias}}:\; average $\bar q$ vs the truth $p_0$.\par}}
+  \end{columns}
+\end{frame}
+
+% --- G3: how to reduce bias and variance (methods) -------------------------
+\begin{frame}[t]{How can we reduce bias and variance?}
+
+  \onslide<1->{\centering We can reduce each part of the error with its \hl{own tool}:\par}
+  \vspace{1.2em}
+
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+      \onslide<2->{\begin{block}{Variance \;\normalfont\small\mut{the scatter}}
+        \begin{itemize}\setlength\itemsep{4pt}
+          \item Symmetry
+          \item Diminishing sensitivity
+        \end{itemize}
+      \end{block}}
+    \column{0.5\textwidth}
+      \onslide<3->{\begin{block}{Bias \;\normalfont\small\mut{the offset}}
+        \begin{itemize}\setlength\itemsep{4pt}
+          \item Locality
+        \end{itemize}
+      \end{block}}
+  \end{columns}
+\end{frame}
+
+% --- G5: symmetry (setup + dartboard f vs f-tilde + the two formulas) ------
+\begin{frame}[t]{Symmetry}
+
+  \onslide<1->{\centering
+    Shuffle the training rows $\Rightarrow$ \hl{same answer}. \mut{(iid: order means nothing.)}\\[3pt]
+    {\footnotesize {\color{ink}\textbf{$f$}}: not symmetric \qquad {\color{good!55!black}\textbf{$\tilde f$}}: symmetrized.}\par}
+  \vspace{0.7em}
+
+  \onslide<2->{\centering
+  \begin{tikzpicture}[>=Latex, ring/.style={draw=muted,line width=0.4pt}]
+    % board f --- scattered
+    \begin{scope}
+      \draw[ring](0,0)circle(0.8);\draw[ring](0,0)circle(0.53);\draw[ring](0,0)circle(0.27);
+      \foreach \dx/\dy in {0.55/0.5,0.1/0.45,0.6/0.0,0.15/0.1,0.65/0.35,0.0/0.3}
+        \fill[ink](\dx,\dy)circle(0.05);
+      \draw[good,line width=0.8pt](-0.1,0)--(0.1,0)(0,-0.1)--(0,0.1);
+      \fill[accent](0.34,0.28)circle(0.05);
+      \node[font=\footnotesize] at (0,-1.15){$f$};
+    \end{scope}
+    \draw[->,line width=1pt,accent] (1.35,0)--(2.45,0)
+      node[midway,above,font=\scriptsize,text=ink]{symmetrize};
+    % board f-tilde --- tight, SAME centre
+    \begin{scope}[shift={(3.8,0)}]
+      \draw[ring](0,0)circle(0.8);\draw[ring](0,0)circle(0.53);\draw[ring](0,0)circle(0.27);
+      \foreach \dx/\dy in {0.30/0.25,0.38/0.30,0.33/0.32,0.37/0.24,0.31/0.27,0.36/0.29}
+        \fill[good!55!black](\dx,\dy)circle(0.05);
+      \draw[good,line width=0.8pt](-0.1,0)--(0.1,0)(0,-0.1)--(0,0.1);
+      \fill[accent](0.34,0.28)circle(0.05);
+      \node[font=\footnotesize] at (0,-1.15){$\tilde f$};
+    \end{scope}
+    \node[accent,font=\scriptsize] at (1.9,-1.15){\textbullet\ same centre};
+  \end{tikzpicture}}
+  \vspace{0.6em}
+
+  \onslide<3->{\centering\Large
+    $\textcolor{biasc}{\mathbb E[\tilde f]=\mathbb E[f]}$ \qquad\qquad
+    $\textcolor{accent}{\operatorname{Var}[\tilde f]\le\operatorname{Var}[f]}$\par}
+  \vspace{0.1em}
+  \onslide<3->{\centering
+    {\footnotesize \textcolor{biasc}{same bias} \qquad\qquad \textcolor{accent}{lower variance}}\par}
+\end{frame}
+
+% --- G6: diminishing sensitivity (intuition + result) ----------------------
+\begin{frame}[t]{Diminishing sensitivity}
+
+  \onslide<1->{\centering Change \emph{one} of the $n$ data points --- how much does the prediction move?\\[2pt]
+    {\footnotesize\mut{attention weights sum to $1$, so each sample gets weight $\approx 1/n$ --- more rows, the weight spreads out:}}\par}
+  \vspace{0.5em}
+
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+      \onslide<1->{\centering \textbf{few samples}\\[4pt]
+      \begin{tikzpicture}[scale=0.55]
+        \draw[muted,line width=0.4pt](-0.1,0)--(2.7,0);
+        \foreach \i in {0,1,2,3} \fill[accent] (\i*0.62,0) rectangle (\i*0.62+0.42,1.8);
+      \end{tikzpicture}\\[2pt]
+      {\footnotesize\mut{flip one $\Rightarrow$ big swing $(\approx\tfrac14)$}}}
+    \column{0.5\textwidth}
+      \onslide<1->{\centering \textbf{many samples}\\[4pt]
+      \begin{tikzpicture}[scale=0.55]
+        \draw[muted,line width=0.4pt](-0.1,0)--(3.1,0);
+        \foreach \i in {0,...,13} \fill[accent] (\i*0.21,0) rectangle (\i*0.21+0.13,0.5);
+      \end{tikzpicture}\\[2pt]
+      {\footnotesize\mut{flip one $\Rightarrow$ tiny swing $(\approx\tfrac1n)$}}}
+  \end{columns}
+  \vspace{0.5em}
+
+  \onslide<2->{\centering
+    Swap one sample $\mathcal D_n\to\textcolor{accent}{\mathcal D_n'}$ --- the prediction moves by \emph{at most}:\\[5pt]
+    $\bigl|\,q_{\hat\theta}(\mathcal D_n)-q_{\hat\theta}(\textcolor{accent}{\mathcal D_n'})\,\bigr|\;\le\;\textcolor{good!55!black}{L}\;\textcolor{biasc}{n^{-\alpha}}$\par}
+  \vspace{0.5em}
+
+  \onslide<3->{\centering {\footnotesize
+    {\color{accent}$\mathcal D_n'$}: $\mathcal D_n$ with \textbf{one sample swapped}\quad
+    {\color{good!55!black}$L$}: a fixed constant\quad
+    {\color{biasc}$n^{-\alpha}$}: \textbf{shrinks as $n$ grows} \,($\alpha$ $=$ how fast)\par}
+    \smallskip
+    {\footnotesize\mut{$\Rightarrow$ more rows $\Rightarrow$ each single sample's influence \hl{diminishes}.}}\par}
+\end{frame}
+
+% --- G8: locality (what it is) ---------------------------------------------
+\begin{frame}[t]{Locality: only nearby points should count}
+
+  \onslide<1->{\centering \mut{Variance handled} --- now the \textbf{bias}. The tool: \hl{locality}.\\[2pt]
+    To predict at the query $x$, which training points should matter?\par}
+  \vspace{0.5em}
+
+  \onslide<1->{\centering
+  \begin{tikzpicture}[>=Latex]
+    \draw[muted, rounded corners] (0,0) rectangle (5.4,3.0);
+    \node[muted, font=\tiny, anchor=north east] at (5.35,2.92){feature space};
+    \draw[dashed, good, line width=0.9pt] (2.7,1.5) circle(1.0);
+    \fill[ink] (2.7,1.5) circle(0.08); \node[ink, font=\scriptsize, anchor=north] at (2.7,1.38){$x$};
+    \foreach \p in {(2.2,1.85),(3.25,1.3),(2.9,2.15),(2.15,1.1),(3.3,1.9)} \fill[accent] \p circle(0.06);
+    \foreach \p in {(0.6,0.5),(4.7,0.6),(0.7,2.5),(4.6,2.5),(5.0,1.5),(0.4,1.5),(2.7,0.35)} \fill[muted] \p circle(0.06);
+    \node[accent, font=\scriptsize, anchor=north] at (3.25,1.16){$X_i$};
+    \node[muted, font=\scriptsize, anchor=west] at (4.85,0.6){$X_j$};
+  \end{tikzpicture}\\[3pt]
+  {\scriptsize {\color{ink}$\bullet$}~$x$ (the query)\quad
+   {\color{accent}$\bullet$}~sample $X_i$ near $x$\quad {\color{muted}$\bullet$}~sample $X_j$ far from $x$ \mut{(also a sample)}}}
+  \vspace{0.4em}
+
+  \onslide<2->{\centering Inside the ring (\gd{near $x$}, red) drives the answer; the \mut{far (grey) points are ignored}.\par}
+  \vspace{0.2em}
+
+  \onslide<3->{\centering
+    {\footnotesize\mut{\cit{Thm 5.4} an \emph{unbiased} predictor must be \hl{local}: flip the far-away labels $\to$ the prediction doesn't change.}}\par}
+\end{frame}
+
+% --- G9: transformers aren't local -----------------------------------------
+\begin{frame}[t]{Transformers aren't local}
+
+  \onslide<1->{\centering Attention is a \hl{soft} weighting: it favours samples similar to $x$, but never drops the far ones to zero.\par}
+  \vspace{0.6em}
+
+  \onslide<1->{%
+  \begin{columns}[T]
+    \column{0.5\textwidth}\centering \textbf{\footnotesize attention (soft)}\\[4pt]
+      \begin{tikzpicture}[>=Latex, scale=0.95]
+        \draw[->](0,0)--(3.0,0) node[right,font=\tiny]{distance};
+        \draw[->](0,0)--(0,2.0) node[above,font=\tiny]{weight};
+        \draw[accent, line width=1pt] (0.1,1.75) .. controls (0.9,0.7) and (1.8,0.45) .. (2.8,0.42);
+        \node[ink, font=\tiny, align=center] at (2.0,1.1){never\\ hits 0};
+      \end{tikzpicture}
+    \column{0.5\textwidth}\centering \textbf{\footnotesize a local window (hard)}\\[4pt]
+      \begin{tikzpicture}[>=Latex, scale=0.95]
+        \draw[->](0,0)--(3.0,0) node[right,font=\tiny]{distance};
+        \draw[->](0,0)--(0,2.0) node[above,font=\tiny]{weight};
+        \draw[good!60!black, line width=1pt] (0.1,1.35)--(1.15,1.35)--(1.15,0.0)--(2.8,0.0);
+        \node[ink, font=\tiny, align=center] at (2.05,0.95){$=0$ past\\ the edge};
+      \end{tikzpicture}
+  \end{columns}}
+  \vspace{0.4em}
+
+  \onslide<2->{\centering Far points \hl{always leak in} $\Rightarrow$ you \emph{can't} flip them freely $\Rightarrow$ \hl{not local}.\par}
+  \vspace{0.2em}
+
+  \onslide<3->{\centering {\footnotesize\mut{$\Rightarrow$ the bias does \emph{not} vanish --- TabPFN's bias flattens out around $n\approx1000$ \cit{Fig.\ 1}.}}\par}
+\end{frame}
+
+% --- G10: the fix — localized PFN ------------------------------------------
+\begin{frame}[t]{Localized PFNs}
+
+  \onslide<1->{\centering A simple add-on to \emph{any} frozen PFN --- localize at prediction time.\par}
+  \vspace{0.7em}
+
+  \onslide<1->{\centering
+  \begin{tikzpicture}[>=Latex, font=\footnotesize, scale=0.92]
+    \draw[muted, rounded corners] (0,0) rectangle (3.0,2.4);
+    \node[muted, font=\tiny, anchor=north east] at (2.95,2.33){feature space};
+    \draw[dashed, good, line width=0.8pt] (1.4,1.2) circle(0.72);
+    % query
+    \fill[ink] (1.4,1.2) circle(0.06);
+    \node[ink, font=\scriptsize, anchor=east] at (1.28,1.2){$x$};
+    % near samples (red) = the k_n nearest, inside the ring
+    \foreach \p in {(1.18,1.5),(1.72,1.4),(1.66,0.96),(1.12,0.92)} \fill[accent] \p circle(0.05);
+    \node[accent, font=\tiny, anchor=east] at (1.62,1.42){$X_i$};
+    % far samples (grey) = ignored, outside the ring
+    \foreach \p in {(0.42,0.45),(2.62,0.55),(0.5,2.0),(2.55,1.95)} \fill[muted] \p circle(0.05);
+    \node[muted, font=\tiny, anchor=south west] at (2.66,0.6){$X_j$};
+    \node[muted, font=\tiny, anchor=north] at (1.4,-0.12){keep $k_n$ nearest to $x$};
+    \draw[->,line width=0.8pt] (3.2,1.2)--(3.95,1.2);
+    \node[draw=ink, fill=ink!5, rounded corners, minimum width=14mm, minimum height=10mm] (q) at (4.75,1.2) {$q_{\hat\theta}$};
+    \draw[->,line width=0.8pt] (5.55,1.2)--(6.3,1.2);
+    \node at (7.05,1.2) {$\hat q(\cdot\mid x)$};
+  \end{tikzpicture}}
+  \vspace{0.4em}
+
+  \onslide<1->{\centering {\scriptsize {\color{ink}$\bullet$}~$x$ (query)\quad
+    {\color{accent}$\bullet$}~near samples $X_i$ (kept)\quad {\color{muted}$\bullet$}~far samples $X_j$ (dropped)}\par}
+  \vspace{0.4em}
+
+  \onslide<2->{\centering \textbf{Why it works:} near $x$ the truth is $\approx$ \hl{flat} $\Rightarrow$ easy to fit $\Rightarrow$ \gd{bias drops}. \;\mut{\footnotesize (cost: fewer points $\Rightarrow$ slightly more variance.)}\par}
+  \vspace{0.2em}
+
+  \onslide<3->{\centering Does it actually break the bias floor? \;\mut{\footnotesize We'll put it to the test at the end \cit{Fig.\ 1}.}\par}
+\end{frame}
+
+% ===========================================================================
+% ===  SECTION 6 — specific PFNs (concrete examples)                       ===
+% ===========================================================================
+
+% --- Section-6 overview: the specific PFNs we'll look at -------------------
+\begin{frame}[t]{Specific PFNs}
+
+  \onslide<1->{\centering Two more concrete predictors, each with a different bias/variance behaviour:\par}
+  \vspace{2.0em}
+
+  {\large
+  \begin{enumerate}\setlength\itemsep{1.2em}
+    \item \textbf{Window smoother}
+    \item \textbf{Classification trees}
+  \end{enumerate}}
+  \vspace{1.4em}
+
+  \onslide<2->{\centering \mut{\footnotesize (the Localized PFN above is the third.)}\par}
+\end{frame}
+
+% --- 1. Window smoother (formula explained notation-by-notation) -----------
+\begin{frame}[t]{Window smoother}
+
+  \onslide<1->{\centering
+  \[
+    q_\theta(y\mid x,\mathcal D_n)\;=\;
+    \frac{\sum_{i}\, \alt<3->{\textcolor{accent}{\mathbf{1}(Y_i=y)}}{\textcolor{black!30}{\mathbf{1}(Y_i=y)}}\;
+                       \alt<2->{\textcolor{good!55!black}{\mathbf{1}(\|X_i-x\|<\theta)}}{\textcolor{black!30}{\mathbf{1}(\|X_i-x\|<\theta)}}}
+         {\sum_{i}\, \alt<2->{\textcolor{good!55!black}{\mathbf{1}(\|X_i-x\|<\theta)}}{\textcolor{black!30}{\mathbf{1}(\|X_i-x\|<\theta)}}}
+  \]\par}
+  \vspace{0.4em}
+
+  \begin{columns}[T]
+    \column{0.44\textwidth}
+      \onslide<1->{\centering
+      \begin{tikzpicture}[>=Latex]
+        \draw[good, dashed, line width=0.9pt] (0,0) circle(1.2);
+        \draw[good!55!black, line width=0.5pt] (0,0) -- (1.2,0) node[midway, below, font=\scriptsize]{$\theta$};
+        \fill[ink] (0,0) circle(0.06);
+        \node[ink, font=\scriptsize, below=0pt] at (0,-0.04){$x$};
+        \fill[accent] (0.45,0.5) circle(0.075);
+        \node[accent, font=\scriptsize, above right=-3pt] at (0.45,0.5){$X_i$};
+        \foreach \p in {(-0.55,0.35),(0.25,-0.6)} \fill[accent] \p circle(0.075);
+        \fill[biasc] (-0.45,-0.45) circle(0.075);
+        \foreach \p in {(1.75,0.7),(-1.8,0.5),(1.6,-0.9),(-1.5,-1.05),(0.1,1.75)} \fill[muted] \p circle(0.075);
+      \end{tikzpicture}\\[4pt]
+      {\scriptsize {\color{accent}$\bullet$}~label $y$\quad {\color{biasc}$\bullet$}~other\quad {\color{muted}$\bullet$}~outside}}
+    \column{0.56\textwidth}
+      {\footnotesize
+      \onslide<1->{dots $=$ training points $X_i$ (with label $Y_i$);\; $x$ $=$ the query.\par}\medskip
+      \onslide<2->{{\color{good!55!black}$\|X_i-x\|<\theta$}: $X_i$ is \textbf{inside the window}.\par}\medskip
+      \onslide<3->{{\color{accent}$\mathbf{1}(Y_i=y)$}: its label is $y$ (red).\par}\medskip
+      \onslide<4->{$q_\theta=\dfrac{\#\{\text{inside \& }y\}}{\#\{\text{inside}\}}=\dfrac{3}{4}$.\par}}
+  \end{columns}
+\end{frame}
+
+% --- 1b. Window smoother: shrink the window -> bias -> 0 -------------------
+\begin{frame}[t]{Window smoother --- shrink the window, kill the bias}
+
+  \onslide<1->{\centering Now let the radius \emph{shrink with $n$}: replace $\theta$ by $\textcolor{accent}{a_n}\,\theta$.
+  \[
+    q_\theta(y\mid x,\mathcal D_n)=
+    \frac{\sum_i \mathbf{1}(Y_i=y)\,\mathbf{1}(\|X_i-x\|<\textcolor{accent}{a_n}\theta)}
+         {\sum_i \mathbf{1}(\|X_i-x\|<\textcolor{accent}{a_n}\theta)}.
+  \]\par}
+  \vspace{1.2em}
+
+  \onslide<2->{\centering Optimal schedule \;\hl{$a_n=n^{-1/(4+d)}$}\; \mut{\footnotesize($d=$ \#features)}: \;\gd{bias $\to 0$ as data grows}.\par}
+\end{frame}
+
+% --- 2a. Classification trees: what they are + how they predict -----------
+\begin{frame}[t]{Classification trees}
+
+  \onslide<1->{\centering A tree \hl{cuts feature space into bins}; to predict at $x$, report the \hl{label-mix} of $x$'s bin.\par}
+  \vspace{0.7em}
+
+  % --- 1-D number-line bins (the nice visualization) ---
+  \onslide<1->{\centering
+  \begin{tikzpicture}[>=Latex, scale=1.0]
+    \fill[good!12] (3.0,0) rectangle (5.4,0.95);
+    \draw[->] (0,0) -- (8.0,0) node[right, font=\scriptsize]{feature axis};
+    \foreach \tx/\lab in {3.0/$\theta_1$, 5.4/$\theta_2$}{
+      \draw[muted, line width=0.6pt] (\tx,-0.08)--(\tx,0.95);
+      \node[muted, font=\scriptsize, below] at (\tx,-0.1){\lab};}
+    \node[muted, font=\scriptsize] at (1.5,1.12){bin 1};
+    \node[good!55!black, font=\scriptsize] at (4.2,1.12){bin 2};
+    \node[muted, font=\scriptsize] at (6.7,1.12){bin 3};
+    \foreach \p in {(0.8,0.4),(1.9,0.55),(2.4,0.3)} \fill[muted] \p circle(0.07);
+    \foreach \p in {(3.4,0.5),(4.1,0.35),(4.8,0.55),(5.1,0.3)} \fill[accent] \p circle(0.07);
+    \foreach \p in {(6.0,0.45),(7.2,0.5)} \fill[muted] \p circle(0.07);
+    \fill[ink] (4.3,0) circle(0.09); \node[ink, font=\scriptsize, below] at (4.3,-0.06){$x$};
+  \end{tikzpicture}\\[2pt]
+  {\footnotesize\mut{$x$ lands in \gd{bin 2} $\Rightarrow$ use only the points there.}}}
+  \vspace{0.6em}
+
+  % --- the prediction formula, decoded term by term ---
+  \onslide<2->{\centering
+  \[
+    q_\theta(y\mid x,\mathcal D_n)=\sum_{j}\;
+      \alt<2->{\textcolor{good!55!black}{\mathbf 1(x\in \mathrm{bin}_j)}}{\textcolor{black!30}{\mathbf 1(x\in \mathrm{bin}_j)}}\;
+      \frac{\sum_i \alt<4->{\textcolor{accent}{\mathbf 1(Y_i=y)}}{\textcolor{black!30}{\mathbf 1(Y_i=y)}}\,
+             \alt<3->{\textcolor{biasc}{\mathbf 1(X_i\in \mathrm{bin}_j)}}{\textcolor{black!30}{\mathbf 1(X_i\in \mathrm{bin}_j)}}}
+           {\sum_i \alt<3->{\textcolor{biasc}{\mathbf 1(X_i\in \mathrm{bin}_j)}}{\textcolor{black!30}{\mathbf 1(X_i\in \mathrm{bin}_j)}}}
+  \]\par}
+
+  \onslide<2->{\centering\footnotesize
+    {\color{good!55!black}which bin holds $x$}%
+    \onslide<3->{\;\;\; {\color{biasc}the points in it}}%
+    \onslide<4->{\;\;\; {\color{accent}\dots\ with label $y$} $\;\Rightarrow\;$ the bin's \textbf{label fraction}}\par}
+\end{frame}
+
+% --- 2b. Classification trees: bias is stuck -> vote among many trees ------
+\begin{frame}[t]{Classification trees: the bias is stuck}
+
+  \onslide<1->{\centering
+  \[ \text{bias}=\underbrace{\Pr_0(Y=y\mid X\in\mathrm{bin})}_{\text{truth averaged over the bin}}
+      -\underbrace{p_0(y\mid x)}_{\text{truth at }x} \]\par}
+
+  \onslide<1->{\centering Bins are \hl{fixed} $\Rightarrow$ each bin blurs the same patch $\Rightarrow$ \hl{bias can't shrink} \mut{\footnotesize(more data $=$ tighter, not truer)}.\par}
+  \vspace{0.5em}
+
+  \onslide<2->{\centering \gd{Fix:} average \hl{many trees} with \emph{different} splits:\; $q=\sum_k w_k\,q_k$.\par}
+  \vspace{0.2em}
+
+  \begin{columns}[T]
+    \column{0.5\textwidth}\centering
+      \onslide<2->{\textbf{\footnotesize many different trees}\\[6pt]
+      \begin{tikzpicture}[>=Latex, scale=0.72, font=\tiny]
+        \draw[muted] (0,1.4)--(2.6,1.4); \node[muted, left] at (-0.1,1.4){$T_1$};
+        \draw[muted] (1.2,1.32)--(1.2,1.48);
+        \draw[muted] (0,0.7)--(2.6,0.7); \node[muted, left] at (-0.1,0.7){$T_2$};
+        \foreach \s in {0.7,1.4,2.0} \draw[muted] (\s,0.62)--(\s,0.78);
+        \draw[muted] (0,0.0)--(2.6,0.0); \node[muted, left] at (-0.1,0.0){$T_3$};
+        \foreach \s in {0.9,1.8} \draw[muted] (\s,-0.08)--(\s,0.08);
+      \end{tikzpicture}}
+    \column{0.5\textwidth}\centering
+      \onslide<3->{\textbf{\footnotesize weight $w_k=$ how well tree $k$ fits $\mathcal D_n$}\\[6pt]
+      \begin{tikzpicture}[scale=0.72, font=\tiny]
+        \fill[muted] (0,0) rectangle (0.45,0.18);
+        \fill[good]  (0.75,0) rectangle (1.2,1.4);
+        \fill[muted] (1.5,0) rectangle (1.95,0.13);
+        \draw[->](-0.12,0)--(2.2,0);
+        \node[muted, below] at (0.225,-0.02){$T_1$};
+        \node[good!55!black, below] at (0.975,-0.02){$T_2$};
+        \node[muted, below] at (1.725,-0.02){$T_3$};
+      \end{tikzpicture}\\[1pt]
+      {\scriptsize\mut{predicts the real labels better $\Rightarrow$ bigger weight}}}
+  \end{columns}
+  \vspace{0.3em}
+
+  \onslide<4->{\centering {\gd{$n$ grows $\Rightarrow$ best-fitting tree wins $\Rightarrow$ bias drops.}}\par}
+\end{frame}
+
+% ===========================================================================
+% ===  EXPERIMENT — the empirical test (paper Fig. 1)                      ===
+% ===========================================================================
+
+% --- Experiment 1: the setup ----------------------------------------------
+\begin{frame}[t]{Experiment: the setup \cit{Fig.\ 1}}
+
+  \onslide<1->{\centering The truth: \;
+    $p_0(1\mid x)=\tfrac12\bigl(1+\sin(\mathbf 1^\top x)\bigr)$
+    \;\;\mut{\footnotesize$x\sim\mathcal N(\mathbf 0,I_5)$}.\par}
+  \vspace{1.0em}
+
+  \onslide<2->{\centering
+  \begin{tikzpicture}[>=Latex, font=\footnotesize, node distance=5mm,
+      pbox/.style={draw=ink, fill=ink!5, rounded corners=2pt, align=center, inner sep=4pt, minimum height=11mm, text width=22mm}]
+    \node[pbox] (a) {draw \textbf{500} datasets $\mathcal D_n$};
+    \node[pbox, right=of a] (b) {run the \textbf{frozen} TabPFN};
+    \node[pbox, right=of b] (c) {avg.\ squared \textbf{bias} \& \textbf{variance}\\ over 100 test pts};
+    \node[pbox, right=of c] (d) {sweep the size $n$};
+    \draw[->, line width=0.8pt] (a)--(b); \draw[->, line width=0.8pt] (b)--(c); \draw[->, line width=0.8pt] (c)--(d);
+  \end{tikzpicture}}
+  \vspace{1.0em}
+
+  \onslide<3->{\centering Run \emph{two} predictors head-to-head:\;
+    {\color{ink}\textbf{TabPFN}} \;vs\; {\color{accent}\textbf{Localized TabPFN}}
+    \;\mut{\footnotesize$\bigl(k_n=\min\{500,\lceil n^{4/(d+4)}\rceil\}\bigr)$}.\par}
+  \vspace{0.8em}
+
+  \onslide<4->{\centering {\footnotesize\mut{Theory predicts: variance $\to 0$ at rate $1/n$;\; bias drops until $n\approx1000$, then \emph{stalls}.}}\par}
+\end{frame}
+
+% --- Experiment 2: the result, with arrows revealed step by step -----------
+\begin{frame}[t]{Experiment: the result \cit{Fig.\ 1}}
+
+  \centering
+  \begin{tikzpicture}
+    \node[anchor=south west, inner sep=0] (img) at (0,0)
+      {\includegraphics[width=0.66\textwidth]{img/bias-variance.pdf}};
+    \begin{scope}[x={(img.south east)}, y={(img.north west)}]
+      % coords measured from the figure (full image = [0,1]x[0,1]).
+      % LEFT panel: dark TabPFN flat at y~0.60; blue Localized descends to y~0.49.
+      % RIGHT panel: blue Localized upper (~0.42) above dark TabPFN (~0.34).
+      % --- callout A: the dark (TabPFN) flat line, labelled above it ---
+      \onslide<2->{%
+        \node[ink, font=\scriptsize, align=center, anchor=south] at (0.33,0.71)
+          {\textbf{TabPFN:} bias\\ \textbf{flattens}};
+        \draw[ink, ->, line width=1pt] (0.34,0.695) -- (0.365,0.608);}
+      % --- callout B: the blue (Localized) descending line, labelled below it ---
+      \onslide<3->{%
+        \node[biasc, font=\scriptsize, align=center, anchor=north] at (0.28,0.40)
+          {\textbf{Localized:}\\ keeps dropping};
+        \draw[biasc, ->, line width=1pt] (0.355,0.415) -- (0.435,0.505);}
+      % --- callout C: the blue (Localized) upper line in the variance panel ---
+      \onslide<4->{%
+        \node[biasc, font=\scriptsize, align=center, anchor=south] at (0.80,0.62)
+          {Localized a bit\\ \textbf{higher} (cost)};
+        \draw[biasc, ->, line width=1pt] (0.845,0.605) -- (0.875,0.435);}
+    \end{scope}
+  \end{tikzpicture}
+
+  \vspace{0.3em}
+  \onslide<5->{\centering {\gd{$\Rightarrow$ localizing breaks the bias floor, at a small variance cost.}}\par}
 \end{frame}
 
 \end{document}
