@@ -163,80 +163,6 @@
 \vfill
 \end{frame}
 
-% --- PFN training recipe --------------------------------------------------
-\begin{frame}{PFNs pretraining \& inference}
-  \centering
-  \begin{tikzpicture}[>=Stealth, font=\small, scale=0.85, transform shape,
-      sheet/.style={draw=ink, line width=0.9pt, rounded corners=2pt, fill=white,
-                    minimum width=1.15cm, minimum height=1.15cm},
-      box/.style={draw=ink, line width=0.9pt, rounded corners=2pt, fill=white,
-                    minimum width=0.55cm, minimum height=0.55cm},
-      learn/.style={good, line width=1.1pt},
-      infer/.style={infc, line width=1.1pt}]
-
-    % fixed extent so the picture doesn't shift between overlays
-    \useasboundingbox (-1.1,-3.3) rectangle (9.85,3.7);
-
-    % ===== build 1: prior + model ==========================================
-    \begin{scope}[shift={(0.7,1.9)}]
-      \foreach \i in {3,2,1,0}{ \node[sheet] at ({-\i*0.15},{\i*0.15}) {}; }
-      \node[ink] at (0,0) {$\Pi$};
-    \end{scope}
-    \node[muted, font=\footnotesize] at (0.3,3.4) {prior};
-    \draw[ink,line width=0.7pt] (1.36,2.45) -- (1.51,2.45) -- (1.51,1.35) -- (1.36,1.35);
-    \node[ink] at (1.85,1.9) {$\Pi_N$};
-    % diagonal bracket on the bottom-left of the stack, labelled m
-    \draw[ink,line width=0.7pt] (0.21,1.268) -- (0.069,1.127) -- (-0.523,1.719) -- (-0.382,1.86);
-    \node[ink, font=\large] at (-0.5,1.16) {$m$};
-    \node[muted, font=\footnotesize] at (0.55,0.7) {synthetic datasets};
-    % model: a small transformer (6 layers x 4 heads)
-    \draw[ink,line width=1pt] (4.4,-0.65) rectangle (6.95,0.85);
-    \foreach \L in {0,...,5}{
-      \pgfmathsetmacro{\lx}{4.675 + \L*0.4}
-      \draw[ink!45,line width=0.5pt]
-          (\lx-0.16,-0.52) rectangle (\lx+0.16,0.72);
-      \foreach \H in {0,...,3}{
-        \pgfmathsetmacro{\hy}{-0.365 + \H*0.31}
-        \draw[ink!45,line width=0.4pt]
-            (\lx-0.12,\hy-0.12) rectangle (\lx+0.12,\hy+0.12);
-      }
-    }
-    \node[ink, font=\footnotesize] at (5.675,-0.95) {model with $\btheta$};
-
-    % ===== build 2: pretraining / learning =================================
-    \onslide<2->{
-      \draw[learn,->] (1.95,1.55) .. controls (3,1.05) and (3.4,0.55) .. (4.3,0.4);
-      \node[ink] at (9.3,0.05) {$\widehat{y}$};
-      \draw[learn,->] (7.1,0.4) to[bend left=16] (8.95,0.2);
-      \draw[learn,->,dashed] (8.95,0.55) to[bend right=34] (7.0,0.72);
-      \node[good, font=\footnotesize] at (7.9,1.12) {learning};
-      \node[good, font=\scriptsize] at (8.05,1.6)
-           {$\widehat\btheta=\arg\max\limits_{\btheta}\sum_{j=1}^{m}\log q_{\btheta}(Y_j\mid\bX_j,\mathcal D^{(j)})$};
-    }
-
-    % ===== build 3: real data appears ======================================
-    \onslide<3->{
-      \node[sheet] at (0.7,-2.1) {};
-      \node[muted, font=\footnotesize] at (0.7,-3.05) {real data};
-    }
-
-    % ===== build 4: inference ==============================================
-    \onslide<4->{
-      \draw[infer,->] (1.4,-1.85) .. controls (2.6,-1.2) and (3.4,-0.55) .. (4.3,-0.2);
-      \draw[infer,->] (7.1,-0.3) to[bend right=16] (8.95,-0.12);
-      \node[infc, font=\footnotesize] at (8.05,-0.78) {inference};
-      \node[infc, font=\scriptsize] at (8.05,-1.24)
-           {$q_{\widehat\btheta}(y\mid x,\mathcal D_n)$};
-    }
-  \end{tikzpicture}
-
-  \vspace{0.6em}
-  \onslide<5->{%
-  \mut{\footnotesize $N\sim\Pi_N$ regularizes PPD complexity\; (TabPFN: $N\le 1023$)}\\[2pt]
-  \mut{\footnotesize $\widehat{\btheta}\to\btheta^*$ as $m\to\infty$\; ($\sqrt{m}$ rate) $m$ \;\cit{App.~B}}%
-  }
-\end{frame}
-
 % --- the statistical model (generative story) -----------------------------
 \begin{frame}{The statistical model}
 \begin{columns}[T,onlytextwidth]
@@ -317,52 +243,6 @@
   \addplot[good, line width=1.7pt, domain=0.3:5.7, samples=70]{1.66+0.16*sin(60*x+70)};
   \node[good, anchor=west, font=\scriptsize] at (axis cs:5.0,2.55) {PPD};
   \draw[good, line width=0.5pt] (axis cs:5.0,2.5) -- (axis cs:5.2,1.78);
-\end{axis}
-\end{tikzpicture}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}{PFNs approximate PPD}
-\begin{columns}[T,onlytextwidth]
-\begin{column}{0.50\textwidth}
-  \vspace{1.4em}
-  \begin{itemize}
-    \item Why should you care about the PPD?
-    \begin{itemize}
-      \item \gd{sum over all possible models}
-    \end{itemize}
-  \end{itemize}
-\end{column}
-\begin{column}{0.48\textwidth}
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-  width=6.6cm, height=5.6cm,
-  axis lines=left, clip=false,
-  xmin=0, xmax=6.6, ymin=0, ymax=4.6,
-  xtick=\empty, ytick=\empty,
-  xlabel={$x$}, ylabel={$y$},
-  x label style={at={(axis description cs:1,0)}, anchor=north east},
-  y label style={at={(axis description cs:0,1)}, anchor=south east, rotate=-90},
-]
-  % vertical guide at the test point (drawn first, behind everything)
-  \draw[ink!50, dashed] (axis cs:3,0) -- (axis cs:3,4.2);
-  % many candidate models, all passing through the two data points
-  \foreach \a in {-1.2,-0.85,-0.5,-0.15,0.2,0.55,0.9,1.25}{
-    \addplot[muted, line width=0.5pt, domain=0.3:5.7, samples=110, smooth]
-      {1.5 + 0.375*(x-1) + \a*sin(45*(x-1))};
-  }
-  % PPD = distribution of model values at the test point (bimodal, asymmetric)
-  \addplot[good, line width=1pt, fill=good, fill opacity=0.18,
-           domain=0.3:4.3, samples=140, variable=\t]
-    ({3 + 0.60*exp(-((\t-1.75)^2)/0.18) + 0.95*exp(-((\t-2.85)^2)/0.30)}, {\t});
-  % the two given (training) points
-  \addplot[only marks, mark=*, mark size=2.6pt, ink]
-    coordinates {(1,1.5) (5,3.0)};
-  % labels
-  \node[ink, anchor=north] at (axis cs:3,-0.08) {\scriptsize test $x$};
-  \node[good, anchor=south] at (axis cs:3.5,4.15) {\scriptsize PPD};
 \end{axis}
 \end{tikzpicture}
 \end{column}
@@ -450,6 +330,126 @@
 \vspace{0.4em}
 \gd{takeaway:} more data $\to$ best model the prior allows
 \mut{(even if $p_0\notin\mathcal{P}$)}
+\end{frame}
+
+% --- PFN training recipe --------------------------------------------------
+\begin{frame}{PFNs pretraining \& inference}
+  \centering
+  \begin{tikzpicture}[>=Stealth, font=\small, scale=0.85, transform shape,
+      sheet/.style={draw=ink, line width=0.9pt, rounded corners=2pt, fill=white,
+                    minimum width=1.15cm, minimum height=1.15cm},
+      box/.style={draw=ink, line width=0.9pt, rounded corners=2pt, fill=white,
+                    minimum width=0.55cm, minimum height=0.55cm},
+      learn/.style={good, line width=1.1pt},
+      infer/.style={infc, line width=1.1pt}]
+
+    % fixed extent so the picture doesn't shift between overlays
+    \useasboundingbox (-1.1,-3.3) rectangle (9.85,3.7);
+
+    % ===== build 1: prior + model ==========================================
+    \begin{scope}[shift={(0.7,1.9)}]
+      \foreach \i in {3,2,1,0}{ \node[sheet] at ({-\i*0.15},{\i*0.15}) {}; }
+      \node[ink] at (0,0) {$\Pi$};
+    \end{scope}
+    \node[muted, font=\footnotesize] at (0.3,3.4) {prior};
+    \draw[ink,line width=0.7pt] (1.36,2.45) -- (1.51,2.45) -- (1.51,1.35) -- (1.36,1.35);
+    \node[ink] at (1.85,1.9) {$\Pi_N$};
+    % diagonal bracket on the bottom-left of the stack, labelled m
+    \draw[ink,line width=0.7pt] (0.21,1.268) -- (0.069,1.127) -- (-0.523,1.719) -- (-0.382,1.86);
+    \node[ink, font=\large] at (-0.5,1.16) {$m$};
+    \node[muted, font=\footnotesize] at (0.55,0.7) {synthetic datasets};
+    % model: a small transformer (6 layers x 4 heads)
+    \draw[ink,line width=1pt] (4.4,-0.65) rectangle (6.95,0.85);
+    \foreach \L in {0,...,5}{
+      \pgfmathsetmacro{\lx}{4.675 + \L*0.4}
+      \draw[ink!45,line width=0.5pt]
+          (\lx-0.16,-0.52) rectangle (\lx+0.16,0.72);
+      \foreach \H in {0,...,3}{
+        \pgfmathsetmacro{\hy}{-0.365 + \H*0.31}
+        \draw[ink!45,line width=0.4pt]
+            (\lx-0.12,\hy-0.12) rectangle (\lx+0.12,\hy+0.12);
+      }
+    }
+    \node[ink, font=\footnotesize] at (5.675,-0.95) {model with $\btheta$};
+
+    % ===== build 2: pretraining / learning =================================
+    \onslide<2->{
+      \draw[learn,->] (1.95,1.55) .. controls (3,1.05) and (3.4,0.55) .. (4.3,0.4);
+      \node[ink] at (9.3,0.05) {$\widehat{y}$};
+      \draw[learn,->] (7.1,0.4) to[bend left=16] (8.95,0.2);
+      \draw[learn,->,dashed] (8.95,0.55) to[bend right=34] (7.0,0.72);
+      \node[good, font=\footnotesize] at (7.9,1.12) {learning};
+      \node[good, font=\scriptsize] at (8.05,1.6)
+           {$\widehat\btheta=\arg\max\limits_{\btheta}\sum_{j=1}^{m}\log q_{\btheta}(Y_j\mid\bX_j,\mathcal D^{(j)})$};
+    }
+
+    % ===== build 3: real data appears ======================================
+    \onslide<3->{
+      \node[sheet] at (0.7,-2.1) {};
+      \node[muted, font=\footnotesize] at (0.7,-3.05) {real data};
+    }
+
+    % ===== build 4: inference ==============================================
+    \onslide<4->{
+      \draw[infer,->] (1.4,-1.85) .. controls (2.6,-1.2) and (3.4,-0.55) .. (4.3,-0.2);
+      \draw[infer,->] (7.1,-0.3) to[bend right=16] (8.95,-0.12);
+      \node[infc, font=\footnotesize] at (8.05,-0.78) {inference};
+      \node[infc, font=\scriptsize] at (8.05,-1.24)
+           {$q_{\widehat\btheta}(y\mid x,\mathcal D_n)$};
+    }
+  \end{tikzpicture}
+
+  \vspace{0.6em}
+  \onslide<5->{%
+  \mut{\footnotesize $N\sim\Pi_N$ regularizes PPD complexity\; (TabPFN: $N\le 1023$)}\\[2pt]
+  \mut{\footnotesize $\widehat{\btheta}\to\btheta^*$ as $m\to\infty$\; ($\sqrt{m}$ rate) $m$ \;\cit{App.~B}}%
+  }
+\end{frame}
+
+\begin{frame}{PFNs approximate PPD}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.50\textwidth}
+  \vspace{1.4em}
+  \begin{itemize}
+    \item Why should you care about the PPD?
+    \begin{itemize}
+      \item \gd{sum over all possible models}
+    \end{itemize}
+  \end{itemize}
+\end{column}
+\begin{column}{0.48\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=6.6cm, height=5.6cm,
+  axis lines=left, clip=false,
+  xmin=0, xmax=6.6, ymin=0, ymax=4.6,
+  xtick=\empty, ytick=\empty,
+  xlabel={$x$}, ylabel={$y$},
+  x label style={at={(axis description cs:1,0)}, anchor=north east},
+  y label style={at={(axis description cs:0,1)}, anchor=south east, rotate=-90},
+]
+  % vertical guide at the test point (drawn first, behind everything)
+  \draw[ink!50, dashed] (axis cs:3,0) -- (axis cs:3,4.2);
+  % many candidate models, all passing through the two data points
+  \foreach \a in {-1.2,-0.85,-0.5,-0.15,0.2,0.55,0.9,1.25}{
+    \addplot[muted, line width=0.5pt, domain=0.3:5.7, samples=110, smooth]
+      {1.5 + 0.375*(x-1) + \a*sin(45*(x-1))};
+  }
+  % PPD = distribution of model values at the test point (bimodal, asymmetric)
+  \addplot[good, line width=1pt, fill=good, fill opacity=0.18,
+           domain=0.3:4.3, samples=140, variable=\t]
+    ({3 + 0.60*exp(-((\t-1.75)^2)/0.18) + 0.95*exp(-((\t-2.85)^2)/0.30)}, {\t});
+  % the two given (training) points
+  \addplot[only marks, mark=*, mark size=2.6pt, ink]
+    coordinates {(1,1.5) (5,3.0)};
+  % labels
+  \node[ink, anchor=north] at (axis cs:3,-0.08) {\scriptsize test $x$};
+  \node[good, anchor=south] at (axis cs:3.5,4.15) {\scriptsize PPD};
+\end{axis}
+\end{tikzpicture}
+\end{column}
+\end{columns}
 \end{frame}
 
 % --- the tipping point: Bayesian -> frequentist ---------------------------
