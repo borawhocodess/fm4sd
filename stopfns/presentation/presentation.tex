@@ -1099,4 +1099,70 @@
   {\large Questions?}
 \end{frame}
 
+% ===========================================================================
+% ===  BACKUP SLIDES — every formula from sections 1–4 (+ key appendices)  ===
+% ===========================================================================
+\appendix
+
+% --- Backup: statistical model & PPD (Sec 2.1–2.2) ------------------------
+\begin{frame}{Backup --- statistical model \& PPD \cit{Sec 2.1--2.2}}
+  \small
+  \textbf{Generative model.}\; 1.~draw $p\sim\Pi$;\; 2.~draw $\Dn=(Y_i,\bX_i)_{i=1}^n$ and $(Y,\bX)\iid p$.
+  \medskip
+
+  \textbf{PPD} (definition):
+  \[ \pi(y\mid\bx,\Dn)=\Pr(Y=y\mid\bX=\bx,\Dn). \]
+
+  If the prior factorizes into independent $p(y\mid\bx)$ and $p(\bx)$ --- the posterior mean:
+  \[ \pi(y\mid\bx,\Dn)=\int p(y\mid\bx)\,d\Pi(p\mid\Dn). \]
+
+  \mut{A non-factorizing prior would instead give} $\displaystyle\;\pi(y\mid\bx,\Dn)=\int p(y\mid\bx)\,d\Pi(p\mid\bx,\Dn)$.
+\end{frame}
+
+% --- Backup: PFNs as PPD maximizers (Sec 2.3 + App A.1) -------------------
+\begin{frame}{Backup --- PFNs maximize the conditional likelihood \cit{Sec 2.3, App A.1}}
+  \small
+  Over all conditional densities $q\in\mathcal Q=\bigl\{q:\sum_{y\in\mathcal Y}q(y\mid\cdot,\cdot)=1\bigr\}$:
+  \[ \pi=\arg\max_{q\in\mathcal Q}\;\mathbb E_\Pi[\log q(Y\mid\bX,\Dn)]. \]
+  \mut{Proof: $\mathrm{KL}(q\,\|\,\pi)\ge0\;\Rightarrow\;\mathbb E_\Pi[\log\pi]\ge\mathbb E_\Pi[\log q]$.}
+  \medskip
+
+  Parametric KL-optimal target (averaged over sizes $N\sim\Pi_N$) and its Monte-Carlo estimate:
+  \[ \btheta^*=\arg\max_{\btheta}\;\mathbb E_{\Pi_N}\mathbb E_\Pi[\log q_{\btheta}(Y\mid\bX,\mathcal D_N)], \]
+  \[ \widehat\btheta=\arg\max_{\btheta}\;\sum_{j=1}^m \log q_{\btheta}(Y_j\mid\bX_j,\mathcal D^{(j)}). \]
+\end{frame}
+
+% --- Backup: posterior consistency (Sec 3 + App A.2) ----------------------
+\begin{frame}{Backup --- posterior consistency, Thm 3.1 \cit{Sec 3, App A.2}}
+  \small
+  Support $\mathcal P=\{p:\Pi(p)>0\}$. Under (A1)--(A2), as $n\to\infty$,
+  \[ \pi(y\mid\bx,\Dn)\;\to\;p^*(y\mid\bx)\quad\text{a.s.},\qquad
+     p^*=\arg\min_{p\in\mathcal P}\mathrm{KL}(p^*\,\|\,p_0). \]
+  \smallskip
+  \textbf{(A1)}\; unique $p^*\in\mathcal P$ with $\mathrm{KL}(p^*\,\|\,p_0)<\infty$.\\[2pt]
+  \textbf{(A2)}\; for every $\alpha\in(0,\tfrac12)$ there are $B_1,\dots,B_{J(\alpha)}$ with
+  \[ \mathcal P\subseteq\bigcup_{j} B_j,\qquad
+     \sup_{p,p'\in B_j}H(p,p')\le 4(\alpha^2/2)^{1/\alpha},\qquad
+     \sum_{j}\Pi(B_j)^{\alpha}<\infty. \]
+  \mut{Key step (de Blasi--Walker '13): $\Pi_n\{p:H(p,p^*)>\epsilon\}\to0$, with $\Pi_n(A)=\int_A d\Pi(p\mid\Dn)$.}
+\end{frame}
+
+% --- Backup: PFN approximation / Monte-Carlo rate (Sec 4 + App B) ---------
+\begin{frame}{Backup --- PFN parameter approximation \cit{Sec 4, App B}}
+  \small
+  Size-specific optimum $\displaystyle\btheta^*_n=\arg\max_{\btheta}\mathbb E_\Pi[\log q_{\btheta}(Y\mid\bX,\Dn)]$;\quad
+  overall $\widehat\btheta=\btheta^*+O_p(m^{-1/2})$.
+  \medskip
+
+  \textbf{Estimator.}\; $\widehat\btheta\to\btheta^*$ in probability, and
+  \[ \sqrt m\,(\widehat\btheta-\btheta^*)\to\mathcal N(\mathbf 0,\Sigma_{\btheta^*}),\qquad
+     \Sigma_{\btheta^*}=I_{\btheta^*}^{-1}V_{\btheta^*}I_{\btheta^*}^{-1}, \]
+  \[ I_{\btheta^*}=\mathbb E_{\Pi_N}\mathbb E_\Pi[\nabla_{\btheta}^2\log q_{\btheta^*}],\quad
+     V_{\btheta^*}=\mathbb E_{\Pi_N}\mathbb E_\Pi[\nabla_{\btheta}\log q_{\btheta^*}\,\nabla_{\btheta}^\top\log q_{\btheta^*}]. \]
+
+  \textbf{Predictor.}\; $\sqrt m\,(q_{\widehat\btheta}-q_{\btheta^*})\Rightarrow\mathcal G$ (mean-zero Gaussian process),
+  \[ \operatorname{Var}\!\bigl(q_{\widehat\btheta}(y\mid\bx,\Dn)\bigr)\approx
+     \tfrac1m\,\nabla_{\btheta}q_{\btheta^*}^\top\,\Sigma_{\btheta^*}\,\nabla_{\btheta}q_{\btheta^*}. \]
+\end{frame}
+
 \end{document}
