@@ -237,87 +237,6 @@
   }
 \end{frame}
 
-\begin{frame}{PFNs approximate PPD}
-\begin{columns}[T,onlytextwidth]
-\begin{column}{0.50\textwidth}
-  \vspace{1.4em}
-  \begin{itemize}
-    \item Why should you care about the PPD?
-    \begin{itemize}
-      \item \gd{sum over all possible models}
-    \end{itemize}
-  \end{itemize}
-\end{column}
-\begin{column}{0.48\textwidth}
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-  width=6.6cm, height=5.6cm,
-  axis lines=left, clip=false,
-  xmin=0, xmax=6.6, ymin=0, ymax=4.6,
-  xtick=\empty, ytick=\empty,
-  xlabel={$x$}, ylabel={$y$},
-  x label style={at={(axis description cs:1,0)}, anchor=north east},
-  y label style={at={(axis description cs:0,1)}, anchor=south east, rotate=-90},
-]
-  % vertical guide at the test point (drawn first, behind everything)
-  \draw[ink!50, dashed] (axis cs:3,0) -- (axis cs:3,4.2);
-  % many candidate models, all passing through the two data points
-  \foreach \a in {-1.2,-0.85,-0.5,-0.15,0.2,0.55,0.9,1.25}{
-    \addplot[muted, line width=0.5pt, domain=0.3:5.7, samples=110, smooth]
-      {1.5 + 0.375*(x-1) + \a*sin(45*(x-1))};
-  }
-  % PPD = distribution of model values at the test point (bimodal, asymmetric)
-  \addplot[good, line width=1pt, fill=good, fill opacity=0.18,
-           domain=0.3:4.3, samples=140, variable=\t]
-    ({3 + 0.60*exp(-((\t-1.75)^2)/0.18) + 0.95*exp(-((\t-2.85)^2)/0.30)}, {\t});
-  % the two given (training) points
-  \addplot[only marks, mark=*, mark size=2.6pt, ink]
-    coordinates {(1,1.5) (5,3.0)};
-  % labels
-  \node[ink, anchor=north] at (axis cs:3,-0.08) {\scriptsize test $x$};
-  \node[good, anchor=south] at (axis cs:3.5,4.15) {\scriptsize PPD};
-\end{axis}
-\end{tikzpicture}
-\end{column}
-\end{columns}
-\end{frame}
-
-% --- two presenters, two priors, one world --------------------------------
-\begin{frame}
-  \centering
-  \begin{tikzpicture}[>=Stealth, scale=0.9,
-      guy/.pic={
-        \draw[ink,line width=0.9pt] (0,0) circle (0.2);
-        \draw[ink,line width=0.9pt] (0,-0.2) -- (0,-0.78);
-        \draw[ink,line width=0.9pt] (-0.28,-0.5) -- (0,-0.5) -- (0.28,-0.5);    % arms
-        \draw[ink,line width=0.9pt] (0,-0.78) -- (-0.22,-1.18);                 % legs
-        \draw[ink,line width=0.9pt] (0,-0.78) -- ( 0.22,-1.18);
-      }]
-
-    % --- the homeland capsule wraps only the parents, light dashed ----------
-    \draw[muted, line width=0.5pt, dashed, rounded corners=18pt]
-          (-0.15,3.3) rectangle (1.55,-3.5);
-    \pic[scale=1.25] at (0.7, 1.85) {guy};  \node[ink] at (0.7, 2.6) {indian};
-    \pic[scale=1.25] at (0.7,-1.55) {guy};  \node[ink] at (0.7,-0.95) {turkish};
-
-    % --- the kids, small, just outside the homeland -------------------------
-    \pic[scale=0.62] at (2.2, 1.35) {guy};  \node[ink,font=\small] at (2.3, 1.75) {gurmeher};
-    \pic[scale=0.62] at (2.2,-2.05) {guy};  \node[ink,font=\small] at (2.25,-1.68) {bora};
-
-    % --- the world (one shared circle) --------------------------------------
-    \draw[ink, line width=1pt] (8.4,0) circle (3.0);
-    \pic at (7.7, 1.5) {guy};
-    \pic at (7.8,-0.9) {guy};
-
-    % --- the kids grow up and go out into the world -------------------------
-    \draw[->, ink, line width=0.9pt]
-      (2.5,1.15) .. controls (4.2,1.15) and (5.8,1.5) .. (7.3,1.5);
-    \draw[->, ink, line width=0.9pt]
-      (2.5,-2.25) .. controls (4.4,-2.6) and (6.1,-1.5) .. (7.45,-1.0);
-  \end{tikzpicture}
-\end{frame}
-
 % --- the statistical model (generative story) -----------------------------
 \begin{frame}{The statistical model}
 \begin{columns}[T,onlytextwidth]
@@ -402,6 +321,87 @@
 \end{tikzpicture}
 \end{column}
 \end{columns}
+\end{frame}
+
+\begin{frame}{PFNs approximate PPD}
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.50\textwidth}
+  \vspace{1.4em}
+  \begin{itemize}
+    \item Why should you care about the PPD?
+    \begin{itemize}
+      \item \gd{sum over all possible models}
+    \end{itemize}
+  \end{itemize}
+\end{column}
+\begin{column}{0.48\textwidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=6.6cm, height=5.6cm,
+  axis lines=left, clip=false,
+  xmin=0, xmax=6.6, ymin=0, ymax=4.6,
+  xtick=\empty, ytick=\empty,
+  xlabel={$x$}, ylabel={$y$},
+  x label style={at={(axis description cs:1,0)}, anchor=north east},
+  y label style={at={(axis description cs:0,1)}, anchor=south east, rotate=-90},
+]
+  % vertical guide at the test point (drawn first, behind everything)
+  \draw[ink!50, dashed] (axis cs:3,0) -- (axis cs:3,4.2);
+  % many candidate models, all passing through the two data points
+  \foreach \a in {-1.2,-0.85,-0.5,-0.15,0.2,0.55,0.9,1.25}{
+    \addplot[muted, line width=0.5pt, domain=0.3:5.7, samples=110, smooth]
+      {1.5 + 0.375*(x-1) + \a*sin(45*(x-1))};
+  }
+  % PPD = distribution of model values at the test point (bimodal, asymmetric)
+  \addplot[good, line width=1pt, fill=good, fill opacity=0.18,
+           domain=0.3:4.3, samples=140, variable=\t]
+    ({3 + 0.60*exp(-((\t-1.75)^2)/0.18) + 0.95*exp(-((\t-2.85)^2)/0.30)}, {\t});
+  % the two given (training) points
+  \addplot[only marks, mark=*, mark size=2.6pt, ink]
+    coordinates {(1,1.5) (5,3.0)};
+  % labels
+  \node[ink, anchor=north] at (axis cs:3,-0.08) {\scriptsize test $x$};
+  \node[good, anchor=south] at (axis cs:3.5,4.15) {\scriptsize PPD};
+\end{axis}
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+% --- two presenters, two priors, one world --------------------------------
+\begin{frame}
+  \centering
+  \begin{tikzpicture}[>=Stealth, scale=0.9,
+      guy/.pic={
+        \draw[ink,line width=0.9pt] (0,0) circle (0.2);
+        \draw[ink,line width=0.9pt] (0,-0.2) -- (0,-0.78);
+        \draw[ink,line width=0.9pt] (-0.28,-0.5) -- (0,-0.5) -- (0.28,-0.5);    % arms
+        \draw[ink,line width=0.9pt] (0,-0.78) -- (-0.22,-1.18);                 % legs
+        \draw[ink,line width=0.9pt] (0,-0.78) -- ( 0.22,-1.18);
+      }]
+
+    % --- the homeland capsule wraps only the parents, light dashed ----------
+    \draw[muted, line width=0.5pt, dashed, rounded corners=18pt]
+          (-0.15,3.3) rectangle (1.55,-3.5);
+    \pic[scale=1.25] at (0.7, 1.85) {guy};  \node[ink] at (0.7, 2.6) {indian};
+    \pic[scale=1.25] at (0.7,-1.55) {guy};  \node[ink] at (0.7,-0.95) {turkish};
+
+    % --- the kids, small, just outside the homeland -------------------------
+    \pic[scale=0.62] at (2.2, 1.35) {guy};  \node[ink,font=\small] at (2.3, 1.75) {gurmeher};
+    \pic[scale=0.62] at (2.2,-2.05) {guy};  \node[ink,font=\small] at (2.25,-1.68) {bora};
+
+    % --- the world (one shared circle) --------------------------------------
+    \draw[ink, line width=1pt] (8.4,0) circle (3.0);
+    \pic at (7.7, 1.5) {guy};
+    \pic at (7.8,-0.9) {guy};
+
+    % --- the kids grow up and go out into the world -------------------------
+    \draw[->, ink, line width=0.9pt]
+      (2.5,1.15) .. controls (4.2,1.15) and (5.8,1.5) .. (7.3,1.5);
+    \draw[->, ink, line width=0.9pt]
+      (2.5,-2.25) .. controls (4.4,-2.6) and (6.1,-1.5) .. (7.45,-1.0);
+  \end{tikzpicture}
 \end{frame}
 
 % --- posterior consistency (Theorem 3.1) ----------------------------------
