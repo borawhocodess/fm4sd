@@ -138,22 +138,27 @@
   \draw[ink, line width=1.1pt] (0,-1.1) -- ( 0.5,-1.9);
   \node[ink, align=center, font=\footnotesize\bfseries] at (0,-2.5) {human\\network};
 
-  % --- branches ------------------------------------------------------------
-  \draw[->, ink, line width=1pt] (0.8,0.25)  to[bend left=6]  (3.1,2.3);
-  \draw[->, ink, line width=1pt] (0.8,-0.35) to[bend right=6] (3.1,-2.3);
+  % fixed extent so the picture doesn't shift between overlays
+  \useasboundingbox (-1,-3.1) rectangle (9,4.3);
 
-  % --- top branch: the prior  ~  school  =  pretraining --------------------
-  \begin{scope}[shift={(4.2,2.3)}]
-    \foreach \i in {0,1,2,3}{ \node[sheet] at ({\i*0.16},{(3-\i)*0.16}) {}; }
-  \end{scope}
-  \node[muted, font=\footnotesize] at (4.5,4.0) {prior};
-  \node[ink, font=\bfseries] at (7.4,2.55) {pretraining};
-  \node[muted, font=\footnotesize] at (7.4,1.95) {school};
+  % --- top branch: the prior  ~  school  =  pretraining  (click 1) ---------
+  \onslide<2->{
+    \draw[->, ink, line width=1pt] (0.8,0.25) to[bend left=6] (3.1,2.3);
+    \begin{scope}[shift={(4.2,2.3)}]
+      \foreach \i in {0,1,2,3}{ \node[sheet] at ({\i*0.16},{(3-\i)*0.16}) {}; }
+    \end{scope}
+    \node[muted, font=\footnotesize] at (4.5,4.0) {prior};
+    \node[ink, font=\bfseries] at (7.4,2.55) {pretraining};
+    \node[muted, font=\footnotesize] at (7.4,1.95) {school};
+  }
 
-  % --- bottom branch: the real world  =  inference ------------------------
-  \node[sheet] at (4.2,-2.3) {};
-  \node[ink, font=\bfseries] at (7.4,-2.05) {inference};
-  \node[muted, font=\footnotesize] at (7.4,-2.65) {real world};
+  % --- bottom branch: the real world  =  inference  (click 2) -------------
+  \onslide<3->{
+    \draw[->, ink, line width=1pt] (0.8,-0.35) to[bend right=6] (3.1,-2.3);
+    \node[sheet] at (4.2,-2.3) {};
+    \node[ink, font=\bfseries] at (7.4,-2.05) {inference \mbox{\footnotesize(ICL)}};
+    \node[muted, font=\footnotesize] at (7.4,-2.65) {real world};
+  }
 \end{tikzpicture}
 \vfill
 \end{frame}
