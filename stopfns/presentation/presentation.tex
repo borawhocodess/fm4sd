@@ -551,42 +551,67 @@
     {\footnotesize \textcolor{biasc}{same bias} \qquad\qquad \textcolor{accent}{lower variance}}\par}
 \end{frame}
 
-% --- G6: diminishing sensitivity (intuition + result) ----------------------
+% --- G6: diminishing sensitivity (weights picture, no formula) -------------
 \begin{frame}[t]{Diminishing sensitivity}
 
-  \onslide<1->{\centering Change \emph{one} of the $n$ data points --- how much does the prediction move?\\[2pt]
-    {\footnotesize\mut{attention weights sum to $1$, so each sample gets weight $\approx 1/n$ --- more rows, the weight spreads out:}}\par}
-  \vspace{0.5em}
+  \onslide<1->{\centering The prediction is a \hl{weighted average of the rows}; attention gives each row weight $\approx\tfrac1n$ \mut{(the weights sum to $1$)}.\par}
+  \vspace{0.9em}
 
   \begin{columns}[T]
     \column{0.5\textwidth}
-      \onslide<1->{\centering \textbf{few samples}\\[4pt]
-      \begin{tikzpicture}[scale=0.55]
-        \draw[muted,line width=0.4pt](-0.1,0)--(2.7,0);
-        \foreach \i in {0,1,2,3} \fill[accent] (\i*0.62,0) rectangle (\i*0.62+0.42,1.8);
-      \end{tikzpicture}\\[2pt]
-      {\footnotesize\mut{flip one $\Rightarrow$ big swing $(\approx\tfrac14)$}}}
+      \onslide<1->{\centering \textbf{few rows} \,($n=4$)\\[8pt]
+      \begin{tikzpicture}[font=\tiny]
+        \fill[ink!22] (0,0) rectangle (0.8,0.7);
+        \fill[accent] (0.8,0) rectangle (1.6,0.7);
+        \fill[ink!22] (1.6,0) rectangle (2.4,0.7);
+        \fill[ink!22] (2.4,0) rectangle (3.2,0.7);
+        \draw[white,line width=1.2pt] (0.8,0)--(0.8,0.7) (1.6,0)--(1.6,0.7) (2.4,0)--(2.4,0.7);
+        \draw[muted,line width=0.4pt] (0,0) rectangle (3.2,0.7);
+        \node[accent, font=\scriptsize, anchor=south] at (1.2,0.74){$\tfrac14$};
+      \end{tikzpicture}\\[6pt]
+      {\footnotesize\mut{each row $=\tfrac14$ (high) $\Rightarrow$ swap one $\Rightarrow$ \hl{big} swing.}}}
     \column{0.5\textwidth}
-      \onslide<1->{\centering \textbf{many samples}\\[4pt]
-      \begin{tikzpicture}[scale=0.55]
-        \draw[muted,line width=0.4pt](-0.1,0)--(3.1,0);
-        \foreach \i in {0,...,13} \fill[accent] (\i*0.21,0) rectangle (\i*0.21+0.13,0.5);
-      \end{tikzpicture}\\[2pt]
-      {\footnotesize\mut{flip one $\Rightarrow$ tiny swing $(\approx\tfrac1n)$}}}
+      \onslide<1->{\centering \textbf{many rows} \,(large $n$)\\[8pt]
+      \begin{tikzpicture}[font=\tiny]
+        \foreach \i in {0,...,13} \fill[ink!22] (\i*0.2286,0) rectangle (\i*0.2286+0.2286,0.7);
+        \fill[accent] (1.143,0) rectangle (1.3716,0.7);
+        \foreach \i in {1,...,13} \draw[white,line width=0.7pt] (\i*0.2286,0)--(\i*0.2286,0.7);
+        \draw[muted,line width=0.4pt] (0,0) rectangle (3.2,0.7);
+        \node[accent, font=\scriptsize, anchor=south] at (1.257,0.74){$\approx\tfrac1n$};
+      \end{tikzpicture}\\[6pt]
+      {\footnotesize\mut{each row $\approx\tfrac1n$ (thin) $\Rightarrow$ swap one $\Rightarrow$ \gd{tiny} swing.}}}
   \end{columns}
-  \vspace{0.5em}
+  \vspace{1.0em}
 
   \onslide<2->{\centering
-    Swap one sample $\mathcal D_n\to\textcolor{accent}{\mathcal D_n'}$ --- the prediction moves by \emph{at most}:\\[5pt]
-    $\bigl|\,q_{\hat\theta}(\mathcal D_n)-q_{\hat\theta}(\textcolor{accent}{\mathcal D_n'})\,\bigr|\;\le\;\textcolor{good!55!black}{L}\;\textcolor{biasc}{n^{-\alpha}}$\par}
-  \vspace{0.5em}
+    More rows $\Rightarrow$ each row matters \hl{less} $\Rightarrow$ the prediction barely changes between datasets\\[2pt]
+    $\Rightarrow$ it is \gd{stable} $\Rightarrow$ \gd{variance shrinks} (and $\to 0$).\par}
+\end{frame}
 
-  \onslide<3->{\centering {\footnotesize
-    {\color{accent}$\mathcal D_n'$}: $\mathcal D_n$ with \textbf{one sample swapped}\quad
-    {\color{good!55!black}$L$}: a fixed constant\quad
-    {\color{biasc}$n^{-\alpha}$}: \textbf{shrinks as $n$ grows} \,($\alpha$ $=$ how fast)\par}
-    \smallskip
-    {\footnotesize\mut{$\Rightarrow$ more rows $\Rightarrow$ each single sample's influence \hl{diminishes}.}}\par}
+% --- G6b: diminishing sensitivity --- the formula (intuition -> formalize) --
+\begin{frame}[t]{Diminishing sensitivity --- the formula}
+
+  \onslide<1->{\centering Swap one row $\mathcal D_n\to\textcolor{accent}{\mathcal D_n'}$. How far can the answer move? The formula \hl{caps} it:
+  \[ \underbrace{\bigl|\, q_{\hat\theta}(\mathcal D_n) - q_{\hat\theta}(\textcolor{accent}{\mathcal D_n'}) \,\bigr|}_{\text{\footnotesize how much the answer moved}}
+     \;\le\; \underbrace{\textcolor{good!55!black}{L}\;\textcolor{biasc}{n^{-\alpha}}}_{\text{\footnotesize a small, shrinking ceiling}} \]\par}
+  \vspace{0.2em}
+
+  \onslide<2->{\centering {\footnotesize Changing a single row moves the answer by \emph{at most} $\textcolor{good!55!black}{L}\,\textcolor{biasc}{n^{-\alpha}}$ --- more rows ($n$ bigger) $\Rightarrow$ \hl{smaller ceiling}.\\
+    \gd{Transformers: $\alpha=1$} \mut{(attention weights sum to $1$ $\Rightarrow$ each row $\approx 1/n$).}}\par}
+  \vspace{0.6em}
+
+  \onslide<3->{\centering\footnotesize
+  \begin{tabular}{@{}rcl@{}}
+    \toprule
+    $n$ & ceiling $\approx 1/n$ & swap one row moves it \\
+    \midrule
+    $4$        & $0.25$   & a \hl{lot} \\
+    $100$      & $0.01$   & a little \\
+    $1000$     & $0.001$  & barely \\
+    $10{,}000$ & $0.0001$ & \gd{$\approx$ nothing} \\
+    \bottomrule
+  \end{tabular}\\[4pt]
+  {\mut{$\Rightarrow$ on big data one row barely matters $\Rightarrow$ stable $\Rightarrow$ \gd{variance $\to 0$}.}}}
 \end{frame}
 
 % --- G8: locality (what it is) ---------------------------------------------
@@ -851,29 +876,29 @@
   \onslide<1->{\centering The truth: \;
     $p_0(1\mid x)=\tfrac12\bigl(1+\sin(\mathbf 1^\top x)\bigr)$
     \;\;\mut{\footnotesize$x\sim\mathcal N(\mathbf 0,I_5)$}.\par}
-  \vspace{0.3em}
+  \vspace{0.15em}
 
   \onslide<1->{\centering
-  \begin{tikzpicture}[>=Latex, font=\scriptsize, node distance=4mm,
-      pbox/.style={draw=ink, fill=ink!5, rounded corners=2pt, align=center, inner sep=3pt, minimum height=8mm, text width=21mm}]
-    \node[pbox] (a) {draw \textbf{500} datasets $\mathcal D_n$};
-    \node[pbox, right=of a] (b) {run the \textbf{frozen} TabPFN};
-    \node[pbox, right=of b] (c) {avg.\ squared \textbf{bias} \& \textbf{variance}};
-    \node[pbox, right=of c] (d) {sweep the size $n$};
+  \begin{tikzpicture}[>=Latex, font=\scriptsize, node distance=3.5mm,
+      pbox/.style={draw=ink, fill=ink!5, rounded corners=2pt, align=center, inner sep=3pt, minimum height=6.5mm, text width=22mm}]
+    \node[pbox] (a) {draw \textbf{500} sets $\mathcal D_n$};
+    \node[pbox, right=of a] (b) {run \textbf{frozen} TabPFN};
+    \node[pbox, right=of b] (c) {avg.\ \textbf{bias}$^2$ \& \textbf{variance}};
+    \node[pbox, right=of c] (d) {sweep size $n$};
     \draw[->, line width=0.7pt] (a)--(b); \draw[->, line width=0.7pt] (b)--(c); \draw[->, line width=0.7pt] (c)--(d);
   \end{tikzpicture}}
-  \vspace{0.3em}
+  \vspace{0.15em}
 
   \onslide<1->{\centering {\footnotesize Two predictors:\;
     {\color{ink}\textbf{TabPFN}} \;vs\; {\color{accent}\textbf{Localized TabPFN}}
     \;\mut{$\bigl(k_n=\min\{500,\lceil n^{4/(d+4)}\rceil\}\bigr)$}.}\par}
-  \vspace{0.25em}
+  \vspace{0.15em}
 
   % ---- graph (click 2) + arrows (clicks 3,4,5) ----
   \onslide<2->{\centering
   \begin{tikzpicture}
     \node[anchor=south west, inner sep=0] (img) at (0,0)
-      {\includegraphics[width=0.46\textwidth]{img/bias-variance.pdf}};
+      {\includegraphics[width=0.56\textwidth]{img/bias-variance.pdf}};
     \begin{scope}[x={(img.south east)}, y={(img.north west)}]
       % normalized image coords [0,1]x[0,1]
       \onslide<3->{%
