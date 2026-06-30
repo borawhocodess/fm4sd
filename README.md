@@ -71,6 +71,7 @@ some papers i find related:
   - metafeatures — [arxiv](https://arxiv.org/abs/2605.28418)
   - tabpfnv2closerlook — [arxiv](https://arxiv.org/abs/2502.17361)
   - beyondarena — [arxiv](https://arxiv.org/abs/2606.30410)
+  - tfm-retouche — [arxiv](https://arxiv.org/abs/2605.06047)
 - time series
   - tabpfn-ts — [arxiv](https://arxiv.org/abs/2501.02945)
   - toto-2 — [arxiv](https://arxiv.org/abs/2605.20119)
