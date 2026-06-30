@@ -65,6 +65,7 @@ some papers i find related:
   - tabpfn-3 — [arxiv](https://arxiv.org/abs/2605.13986)
   - tabdpt — [arxiv](https://arxiv.org/abs/2410.18164)
   - limix — [arxiv](https://arxiv.org/abs/2509.03505)
+  - limix-2m — [arxiv](https://arxiv.org/abs/2606.04485)
   - tabh2o — [arxiv](https://arxiv.org/abs/2605.18383)
   - realmlp — [arxiv](https://arxiv.org/abs/2407.04491)
   - metafeatures — [arxiv](https://arxiv.org/abs/2605.28418)
