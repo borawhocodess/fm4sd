@@ -69,6 +69,7 @@ some papers i find related:
   - realmlp — [arxiv](https://arxiv.org/abs/2407.04491)
   - metafeatures — [arxiv](https://arxiv.org/abs/2605.28418)
   - tabpfnv2closerlook — [arxiv](https://arxiv.org/abs/2502.17361)
+  - beyondarena — [arxiv](https://arxiv.org/abs/2606.30410)
 - time series
   - tabpfn-ts — [arxiv](https://arxiv.org/abs/2501.02945)
   - toto-2 — [arxiv](https://arxiv.org/abs/2605.20119)
