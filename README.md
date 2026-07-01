@@ -4,8 +4,8 @@ papers for [foundation models for structured data (fm4sd) seminar](https://ml.in
 
 - tabular foundation models
   - group 1
-    - tabpfn — [arxiv](https://arxiv.org/abs/2207.01848)
-    - tabpfnv2 — [nature](https://www.nature.com/articles/s41586-024-08328-6) · [pmc](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11711098/) · [video](https://youtu.be/qFnYgM2Yvfs)
+    - tabpfn — [arxiv](https://arxiv.org/abs/2207.01848) · [video](https://www.youtube.com/watch?v=9cE8lqQiLyM)
+    - tabpfnv2 — [nature](https://www.nature.com/articles/s41586-024-08328-6) · [pmc](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11711098/) · [video](https://youtu.be/qFnYgM2Yvfs) · [video](https://www.youtube.com/watch?v=SOXK7AJLOY4) · [video](https://www.youtube.com/watch?v=9IkwXGe2Gaw)
     - tabpfn 2.5 — [arxiv](https://arxiv.org/abs/2511.08667) · [video](https://www.youtube.com/watch?v=IpqBLWueeog)
   - group 2
     - tabicl — [arxiv](https://arxiv.org/abs/2502.05564)
@@ -57,7 +57,7 @@ i recommend working with cli tools - [claude](https://code.claude.com/docs/en/ov
 some papers i find related:
 
 - general
-  - pfns — [arxiv](https://arxiv.org/abs/2112.10510) · [video](https://youtu.be/XnngBWe2WYE)
+  - pfns — [arxiv](https://arxiv.org/abs/2112.10510) · [video](https://youtu.be/XnngBWe2WYE) · [video](https://www.youtube.com/watch?v=0Pi9ARZjIGg)
   - priorfitted — [arxiv](https://arxiv.org/abs/2505.23947)
 - tabular
   - nanotabpfn — [arxiv](https://arxiv.org/abs/2511.03634)
@@ -81,4 +81,4 @@ some papers i find related:
   - tempopfn — [arxiv](https://arxiv.org/abs/2510.25502)
 - causal
   - tabcausal — [arxiv](https://arxiv.org/abs/2605.31156)
-  - tabpfnunderstandcausal — [arxiv](https://arxiv.org/abs/2511.07236)
+  - tabpfnunderstandcausal — [arxiv](https://arxiv.org/abs/2511.07236) · [video](https://www.youtube.com/watch?v=9_on4JV9zDg)
