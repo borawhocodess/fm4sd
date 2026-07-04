@@ -23,7 +23,7 @@ papers for [foundation models for structured data (fm4sd) seminar](https://ml.in
   - group 6
     - patch-tst — [arxiv](https://arxiv.org/abs/2211.14730) · [video](https://www.youtube.com/watch?v=Z3-NrohddJw)
   - group 7
-    - chronos-2 — [arxiv](https://arxiv.org/abs/2510.15821) · [video](https://www.youtube.com/watch?v=wSc76uFpFKg)
+    - chronos-2 — [arxiv](https://arxiv.org/abs/2510.15821) · [video](https://www.youtube.com/watch?v=wSc76uFpFKg) · [video](https://www.youtube.com/watch?v=PeJReI9Sm0U)
     - chronos (brief summary) — [arxiv](https://arxiv.org/abs/2403.07815) · [video](https://www.youtube.com/watch?v=EEZ6DefhCvE) · [video](https://www.youtube.com/watch?v=6eDVkNBxURo)
   - group 8
     - panda — [arxiv](https://arxiv.org/abs/2505.13755)
