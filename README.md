@@ -81,4 +81,8 @@ some papers i find related:
   - tempopfn — [arxiv](https://arxiv.org/abs/2510.25502)
 - causal
   - tabcausal — [arxiv](https://arxiv.org/abs/2605.31156)
+  - causalfm — [arxiv](https://arxiv.org/abs/2506.10914)
+  - dcd-pfn — [arxiv](https://arxiv.org/abs/2606.21212)
+  - foundcause — [arxiv](https://arxiv.org/abs/2606.17516)
+  - tabpfn-cfm — [arxiv](https://arxiv.org/abs/2606.26467)
   - tabpfnunderstandcausal — [arxiv](https://arxiv.org/abs/2511.07236) · [video](https://www.youtube.com/watch?v=9_on4JV9zDg)
