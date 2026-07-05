@@ -34,11 +34,11 @@
 
 \section{Abstract}
 
-\begin{frame}{Abstract (setup)}
+\begin{frame}{Abstract}
 Prior-data fitted networks (PFNs) were recently proposed as a new paradigm for machine learning. Instead of training the network to an observed training set, a fixed model is pre-trained offline on small, simulated training sets from a variety of tasks. The pre-trained model is then used to infer class probabilities in-context on fresh training sets with arbitrary size and distribution.
 \end{frame}
 
-\begin{frame}{Abstract (findings)}
+\begin{frame}{Abstract}
 Empirically, PFNs achieve state-of-the-art performance on tasks with similar size to the ones used in pre-training. Surprisingly, their accuracy further improves when passed larger data sets during inference.
 
 This article establishes a theoretical foundation for PFNs and illuminates the statistical mechanisms governing their behavior. While PFNs are motivated by Bayesian ideas, a purely frequentistic interpretation of PFNs as pre-tuned, but untrained predictors explains their behavior.
@@ -46,89 +46,89 @@ This article establishes a theoretical foundation for PFNs and illuminates the s
 A predictor's variance vanishes if its sensitivity to individual training samples does and the bias vanishes only if it is appropriately localized around the test feature. The transformer architecture used in current PFN implementations ensures only the former. These findings shall prove useful for designing architectures with favorable empirical behavior.
 \end{frame}
 
-\section{Introduction}
-\subsection{PFNs in a Nutshell}
+\section{1 Introduction}
+\subsection{1.1 PFNs in a Nutshell}
 
-\begin{frame}{PFNs in a Nutshell}
+\begin{frame}{1.1 PFNs in a Nutshell}
 Prior-data fitted networks (PFNs) were proposed by Müller et al.\ (2021) as a new approach to machine learning, motivated by ideas from Bayesian nonparametrics and meta-learning. The goal is to compute a posterior predictive distribution (PPD) for a test feature given observed training data. To approximate the PPD, a transformer network is trained offline through meta-learning.
 
 After simulating several training data sets from a variety of tasks, a transformer network imitating the PPD on these sets is trained. After this pre-training phase, the network is treated as fixed. In the inference phase, a fresh training set and some test features are passed to the pre-trained network, which computes predictions for the test labels in a single forward pass.
 \end{frame}
 
-\begin{frame}{PFNs in a Nutshell (cont.)}
+\begin{frame}{1.1 PFNs in a Nutshell}
 This approach is different from usual machine learning methods. Here, one would set up a model for the relationship between label and feature, and train the model parameters on a specific data set. The main benefit of PFNs is that no training or tuning is necessary at the inference stage, and predictions are delivered in split seconds.
 \end{frame}
 
-\subsection{Empirical Findings}
+\subsection{1.2 Empirical Findings}
 
-\begin{frame}{Empirical Findings}
+\begin{frame}{1.2 Empirical Findings}
 Empirically, Müller et al.\ (2021) found that PFNs can indeed approximate a given PPD and perform well on real prediction tasks. While this pilot study was limited to tiny data sets, the TabPFN model of Hollmann et al.\ (2022) made a leap forward to classification tasks on moderately large tabular data sets. In particular, they pre-train a network with simulated data sets of size up to $n \approx 1000$ and report state-of-the-art performance on several benchmarks.
 
 And surprisingly, the network's predictions continue to improve at the inference stage when fed data sets with more than 1000 samples. This is an example of \emph{in-context learning (ICL)}: a pre-trained network learns from the context provided in the prompt (here: the fresh training data) without updating its parameters.
 \end{frame}
 
-\subsection{Summary}
+\subsection{1.3 Summary}
 
-\begin{frame}{Summary}
+\begin{frame}{1.3 Summary}
 The main contribution of this work is establishing the theoretical foundation for PFNs and identifying statistical mechanisms explaining their empirical behavior.
 \end{frame}
 
-\begin{frame}{Summary --- Theoretical Framework}
+\begin{frame}{1.3 Summary}
 As a preliminary step, we give precise definitions of the PPD, the statistical model behind it, and its PFN approximation.
 \end{frame}
 
-\begin{frame}{Summary --- When PPDs can Learn}
+\begin{frame}{1.3 Summary}
 Since PPDs are the main motivation behind PFNs, we first ask when a PPD can learn from training data. This can be approached from the perspective of Bayesian nonparametrics. If the prior has large enough support and does not concentrate too much away from the true hypothesis, one can guarantee that the PPD converges to a close approximation of the true predictive distribution.
 \end{frame}
 
-\begin{frame}{Summary --- How PFNs Approximate PPDs}
+\begin{frame}{1.3 Summary}
 The optimal PFN approximation is characterized by a Kullback-Leibler criterion. To allow for accurate approximation of the conditional class probabilities, we need sufficiently complex PFN models and prior. Practically, a PFN is trained on simulated data sets.
 
 The larger these data sets are, the more complex the PPD we approximate. The training set size can therefore be understood as a regularizer on the expected complexity of the network. The Monte-Carlo approximation of the optimal PFN is discussed briefly, but rather uneventful and of minor importance for PFNs' inference behavior.
 \end{frame}
 
-\begin{frame}{Summary --- Why PFNs can Learn}
+\begin{frame}{1.3 Summary}
 The most intriguing question is: Why can a pre-trained network still learn in the inference phase? Although we know now why a PPD does, a PFN is not a valid PPD, and it is only trained to approximate the PPD for limited training sizes. The learning phenomenon can be understood through a purely frequentistic interpretation of PFNs as untrained predictors with many hyperparameters.
 
 During pre-training, these hyperparameters are tuned to be optimal for a set of tasks defined by the `prior'. Whether the PFN predictor can learn at inference depends on its structural properties. We show that the variance of a fixed network vanishes if its sensitivity to individual samples does, and that the network's bias can only vanish if it is sufficiently localized.
 \end{frame}
 
-\begin{frame}{Summary --- Insights on Specific PFNs}
+\begin{frame}{1.3 Summary}
 We look at some specific PFN models: window smoothers, classification trees, and transformer networks. The examples cover cases where the bias is constant, increasing, or decreasing with $n$. We show that if the model is well-designed, it can implicitly select or average over sub-models, making the bias decrease with the sample size.
 
 Transformer networks allow for vanishing variance and model selection through multi-head attention, but not for localization. However, TabPFN's bias can be improved further with a simple post-hoc localization method.
 \end{frame}
 
-\begin{frame}{Summary --- Outlook}
+\begin{frame}{1.3 Summary}
 The discussion concludes with suggestions for future research. All proofs are given in the appendix.
 \end{frame}
 
-\subsection{Related Work}
+\subsection{1.4 Related Work}
 
-\begin{frame}{Related Work --- ICL in Large Language Models}
+\begin{frame}{1.4 Related Work}
 The recent interest in ICL was spurred by the success of \emph{large language models (LLMs)}. These models are pre-trained on a sequence prediction task on a large corpus of text. When deployed, large models show the ability to solve tasks that they haven't seen during pre-training (e.g., mathematical reasoning problems), only from the prompt context.
 
 In particular, no parameter updates are conducted after deployment. ICL has become a new paradigm for natural language processing and is intimately linked to the transformer architecture. Dong et al.\ (2023) provide an up-to-date survey of the large body of LLM-related research on in-context learning.
 \end{frame}
 
-\begin{frame}{Related Work --- ICL on Numeric Data}
+\begin{frame}{1.4 Related Work}
 ICL has also been observed in more classical statistical learning tasks: classification and regression from tabular data. Müller et al.\ (2021) proposed the concept of PFNs and illustrated the abilities of a transformer model on toy examples. The TabPFN model of Hollmann et al.\ (2022) implements a matured version of this idea and shows superb performance on benchmarks with small tabular data.
 
 Concurrently, Nguyen \& Grover (2022) proposed Transformer Neural Processes following essentially the same idea. They also consider non-\emph{iid} settings and show promising results in applications to image completion, contextual bandits, and Bayesian Optimization. This paper illuminates the statistical foundations of such models in the \emph{iid}-setting and disentangles the prior from the model architecture.
 \end{frame}
 
-\begin{frame}{Related Work --- Mechanics of Transformer-based ICL}
+\begin{frame}{1.4 Related Work}
 Garg et al.\ (2022) show that transformers can learn target functions generated from linear models, two-layer neural networks, and decision trees. Several other works provide arguments and experiments on how in-context learning emerges through implicit gradient descent. Olsson et al.\ (2022) identify a pattern of several attention heads working together, closely related to the discussion after the transformer-bias theorem in this paper. Kirsch et al.\ (2022) experimentally investigates other architectural features (layers, memory, etc.). This work sheds further light on the mechanisms and architectural features enabling ICL.
 \end{frame}
 
-\begin{frame}{Related Work --- Overall}
+\begin{frame}{1.4 Related Work}
 Overall, the current work complements the existing ICL literature, by providing a theoretical foundation for the empirical findings and deriving new insights from the perspective of statistical generalization theory.
 \end{frame}
 
-\section{Theoretical Framework}
-\subsection{Statistical Model}
+\section{2 Theoretical Framework}
+\subsection{2.1 Statistical Model}
 
-\begin{frame}{Statistical Model}
+\begin{frame}{2.1 Statistical Model}
 Consider a classification problem with class label $Y \in \Ycal$ and features $\bX \in \Xcal \subseteq \R^d$. Suppose we have \emph{iid} training data $\Dcal_n = (Y_{i}, \bX_{ i})_{i = 1}^{n}$ from some distribution $p_0$.
 
 The goal is to predict the conditional class probabilities $p_0(y \mid \bx) = \Pr(Y = y \mid \bX = \bx)$.
@@ -136,7 +136,7 @@ The goal is to predict the conditional class probabilities $p_0(y \mid \bx) = \P
 From the perspective of Bayesian nonparametrics, we view $p_0$ as a realization of a random, infinite-dimensional parameter $p \in \Pcal$ with distribution $\Pi$. The distribution $\Pi$ is called \emph{prior} and expresses our beliefs about $p$ before seeing any data.
 \end{frame}
 
-\begin{frame}{Statistical Model --- Generative Mechanism}
+\begin{frame}{2.1 Statistical Model}
 Under this model, data sets $\Dcal_n \cup (Y, \bX)$ are generated by the following mechanism:
 \begin{enumerate}
 	\item Draw $p \sim \Pi$.
@@ -144,9 +144,9 @@ Under this model, data sets $\Dcal_n \cup (Y, \bX)$ are generated by the followi
 \end{enumerate}
 \end{frame}
 
-\subsection{Posterior Predictive Distribution}
+\subsection{2.2 Posterior Predictive Distribution}
 
-\begin{frame}{Posterior Predictive Distribution}
+\begin{frame}{2.2 Posterior Predictive Distribution}
 For every $n$, the statistical model gives the tuple $(\Dcal_n \cup (Y, \bX), p)$ a well-defined joint distribution. For every $n$, we can then approximate $p_0(y \mid \bx)$ by the posterior predictive distribution (PPD)
 \begin{align*}
 	\pi(y \mid \bx, \Dcal_n) = \Pr(Y = y \mid \bX = \bx, \Dcal_n).
@@ -154,7 +154,7 @@ For every $n$, the statistical model gives the tuple $(\Dcal_n \cup (Y, \bX), p)
 This defines a family of PPDs indexed by $n$.
 \end{frame}
 
-\begin{frame}{PPD --- Factorized Form}
+\begin{frame}{2.2 Posterior Predictive Distribution}
 If the prior $\Pi$ factorizes into independent parts for $p(y \mid \bx)$ and $p(\bx)$, the PPD can be written as
 \begin{align*}
 	\pi(y \mid \bx, \Dcal_n) = \int p(y \mid \bx) d\Pi(p \mid \Dcal_n),
@@ -162,7 +162,7 @@ If the prior $\Pi$ factorizes into independent parts for $p(y \mid \bx)$ and $p(
 where the \emph{posterior} $\Pi(\cdot \mid \Dcal_n)$ is the conditional distribution of $p$ given the data $\Dcal_n$. The PPD $\pi(y \mid \bx, \Dcal_n)$ is then simply the posterior mean over conditional distributions $p(y \mid \bx)$.
 \end{frame}
 
-\begin{frame}{Remark --- Non-Factorizing Priors}
+\begin{frame}{2.2 Posterior Predictive Distribution}
 \begin{remark}
 In their implementation of PFNs, Müller et al.\ (2021) and Hollmann et al.\ (2022) use priors that factorize as above, but do not mention it explicitly to justify it. Priors that do not factorize this way would lead to a different form of $\pi(y \mid \bx, \Dcal)$:
 \begin{align*}
@@ -172,9 +172,9 @@ Here, observing the test feature $\bx$ would be informative about the conditiona
 \end{remark}
 \end{frame}
 
-\subsection{PFNs}
+\subsection{2.3 PFNs}
 
-\begin{frame}{PFNs --- KL Motivation}
+\begin{frame}{2.3 PFNs}
 A PFN is a numerical approximation of the family of PPDs. It is based on the insight that, for all $n$, the PPDs maximize the expected conditional likelihood
 \begin{align*}
 	\E_{\Pi} [\log q(Y \mid \bX, \Dcal_n)],
@@ -182,7 +182,7 @@ A PFN is a numerical approximation of the family of PPDs. It is based on the ins
 where $\E_{\Pi}$ is an expectation over $(Y, \bX) \cup \Dcal_n$ generated as in the statistical model above.
 \end{frame}
 
-\begin{frame}{Theorem --- PPD is KL-optimal}
+\begin{frame}{2.3 PFNs}
 \begin{theorem}\label{thm:idea}
 Let
 \begin{align*}
@@ -193,19 +193,19 @@ $$\pi = \arg\max_{q \in \Qcal}\E_\Pi [\log q(Y \mid \bX, \Dcal_n)].$$
 \end{theorem}
 \end{frame}
 
-\begin{frame}{Remark --- KL Interpretation}
+\begin{frame}{2.3 PFNs}
 \begin{remark}
 Maximizing the expected conditional likelihood can also be interpreted as minimizing expected KL divergence between $q(\cdot \mid \bX, \Dcal_n)$ and $\pi(\cdot \mid \bX, \Dcal_n)$.
 \end{remark}
 \end{frame}
 
-\begin{frame}{PFNs --- Model Class}
+\begin{frame}{2.3 PFNs}
 To approximate the PPDs, we train a model $q_{\btheta}$ parametrized by $\btheta$. To be precise, for every parameter value $\btheta$, there is an entire family of functions
 $$\{q_{\btheta, n}\colon (\Ycal \times \Xcal)_{i = 1}^{n + 1} \to [0, 1], n \in \N\},$$
 but we shall not make this explicit in notation.
 \end{frame}
 
-\begin{frame}{PFNs --- Training Objective}
+\begin{frame}{2.3 PFNs}
 To find the best parameters for given PPDs, Müller et al.\ (2021) propose to solve
 \begin{align*}
 	\btheta^* = \arg\max_{\btheta} \E_{\Pi_N}\E_{\Pi} [\log q_{\btheta}(Y \mid \bX, \Dcal_N)],
@@ -213,11 +213,11 @@ To find the best parameters for given PPDs, Müller et al.\ (2021) propose to so
 where $\Pi_N$ is a probability distribution over the sample size $N$. The expectation over $N$ makes $q_{\btheta^*}$ mimic the \emph{family} of PPDs, not just its $n$th element.
 \end{frame}
 
-\begin{frame}{PFNs --- Misspecification}
+\begin{frame}{2.3 PFNs}
 The model $q_{\btheta}$ will normally be misspecified; that is, there is no parameter $\btheta$ such that $q_{\btheta}$ equals $\pi$. In this case, the training objective above defines a KL-optimal approximation of $\pi$ over the class $\{q_{\btheta}\colon \btheta \in \Theta\}$.
 \end{frame}
 
-\begin{frame}{PFNs --- Monte-Carlo Approximation}
+\begin{frame}{2.3 PFNs}
 In practice, the expectation above is approximated by Monte-Carlo integration, i.e., averaging over \emph{iid} data sets $(Y_j, \bX_j) \cup \Dcal^{(j)}$ of size $N_j + 1$ generated as in the statistical model and $N_j \sim \Pi_N$. We approximate $\btheta^*$ by solving
 \begin{align*}
 	\wh \btheta = \arg\max_{\btheta} \sum_{j = 1}^m \log q_{\btheta}(Y_j \mid \bX_j, \Dcal^{(j)}).
@@ -225,15 +225,15 @@ In practice, the expectation above is approximated by Monte-Carlo integration, i
 This is of course an idealization of the training process. Sophisticated PFNs are large and usually trained in a single epoch. The maximum above is never reached. This does not affect the main results of the following sections, which largely consider arbitrary $\btheta$.
 \end{frame}
 
-\begin{frame}{Remark --- Transformer PFNs and Test Size}
+\begin{frame}{2.3 PFNs}
 \begin{remark}
 Hollmann et al.\ (2022) use a transformer network for $q_{\btheta}$. For such architectures, any fixed network $q_{\btheta}$ accepts an arbitrary number of feature vectors $\bx_1, \dots, \bx_{n_\test}$ and a data set $\Dcal_{n}$ of arbitrary length. The output $q_{\btheta}( \cdot \mid \bx_1, \dots, \bx_{n_\test}, \Dcal_{n})$ are $n_{\test}$ vectors of conditional class probabilities. Each vector contains predictions for the conditional class probabilities $p(\cdot \mid \bx_j)$. The test size $n_{\test}$ is irrelevant in what follows, so we take $n_{\test} = 1$ for simplicity.
 \end{remark}
 \end{frame}
 
-\section{When PPDs can Learn}
+\section{3 When PPDs can Learn}
 
-\begin{frame}{When PPDs can Learn}
+\begin{frame}{3 When PPDs can Learn}
 The PPDs
 \begin{align*}
 	\pi(y\mid \bx, \Dcal_n)
@@ -242,11 +242,11 @@ The PPDs
 are fully characterized by the prior $\Pi$. If $\Dcal_n$ is a data set generated from $p_0$, we hope that $\Pi(p \mid \bx, \Dcal_n)$ concentrates around $p_0$ as the size of $\Dcal_n$ increases.
 \end{frame}
 
-\begin{frame}{When PPDs can Learn --- The Trouble with Priors}
+\begin{frame}{3 When PPDs can Learn}
 Setting a good prior is tricky in a nonparametric context. Finding a prior supporting a large enough subset of possible functions isn't trivial. And even if, the prior may wash out very slowly or not at all if it puts too much mass in unfavorable regions. But also if $p_0$ is outside the support $\Pcal = \{p\colon \Pi(p) > 0\}$ of $\Pi$, PPDs can learn from data if the prior is sufficiently well-behaved:
 \end{frame}
 
-\begin{frame}{Theorem --- Posterior Consistency}
+\begin{frame}{3 When PPDs can Learn}
 \begin{theorem}\label{thm:posterior-consistency}
 Under regularity conditions (uniqueness of the KL-projection, and a covering condition --- see appendix), there is $p^* \in \Pcal$ such that
 \begin{align*}
@@ -257,52 +257,52 @@ for $P_0$-almost every $(y, \bx)$. Moreover, $p^*$ is a KL-optimal approximation
 Exact conditions and a proof are given in the appendix.
 \end{frame}
 
-\begin{frame}{When PPDs can Learn --- Takeaway}
+\begin{frame}{3 When PPDs can Learn}
 If $\Pcal$ is sufficiently large, the KL-optimal $p^* \in \Pcal$ is close to $p_0$. This explains why PPDs can learn when fed more data. If this was not the case, trying to approximate them with PFNs would be pointless. And the better we choose $\Pi$, the more attractive the PPDs become as an approximation target.
 \end{frame}
 
-\section{PFN Approximation of the PPD}
+\section{4 PFN Approximation of the PPD}
 
-\begin{frame}{PFN Approximation --- Four Factors}
+\begin{frame}{4 PFN Approximation of the PPD}
 Four factors influence the PFN approximation: the data prior $\Pi$, the size prior $\Pi_N$, the model $q_{\btheta}$, and the Monte-Carlo size $m$. Since a PFN is pre-trained, the model class $\{q_{\btheta}\colon \btheta \in \Theta\}$ can be considered fixed relative to the number of Monte-Carlo sets $m$. The approximation quality of $\wh \btheta$ then follows from standard results on empirical risk minimization. In particular, we can expect $\wh \btheta = \btheta^* + O_p(m^{-1/2})$, see appendix for more details. The other factors are more interesting.
 \end{frame}
 
-\begin{frame}{PFN Approximation --- Model and Prior Capacity}
+\begin{frame}{4 PFN Approximation of the PPD}
 If $\Pi$ consists of only simple models, the optimal PFN $q_{\btheta^*}$ likely also produces only simple functions of $(y, \bx)$. Conversely, simple models $\{q_{\btheta}\colon \btheta \in \Theta\}$ cannot benefit much from complex $\Pi$. For the pre-trained PFN to work well on diverse tasks, we need sufficient capacity in both $\{q_{\btheta}\colon \btheta \in \Theta\}$ and $\Pi$.
 \end{frame}
 
-\begin{frame}{PFN Approximation --- Sample Size as Regularizer}
+\begin{frame}{4 PFN Approximation of the PPD}
 When pre-training the PFN, we sample data sets $\Dcal^{(j)}$ with random sample size $N_j$. Let us define the KL-optimal parameter $\btheta^*_n$ for a given sample size:
 \begin{align*}
 	\btheta^*_{n} = \arg\max_{\btheta} \E_{\Pi} [\log q_{\btheta}(Y \mid \bX, \Dcal_{n})].
 \end{align*}
 \end{frame}
 
-\begin{frame}{PFN Approximation --- Sample Size as Regularizer (cont.)}
+\begin{frame}{4 PFN Approximation of the PPD}
 The PPD $\pi(y \mid \bx, \Dcal_{n})$ we are trying to approximate changes with $n$. Hence, the KL-optimal parameter $\btheta^*_{n}$ may change with $n$ as well. Seen as a function of $(y, \bx)$, we should expect the complexity of $\pi(y \mid \bx, \Dcal_n)$ to increase in $n$. Similarly, we should expect the parameter $\btheta^*_{n}$ to favor more complex models. At the other extreme, $n = 1$, the true PPD is close to the average model in our prior and normally close to constant.
 
 The training set sizes $N_j$ can thus be seen as a regularizer on model complexity. By optimizing an average over random sizes $N_j$, $\btheta_*$ also averages $\btheta^*_{N_j}$. The distribution $\Pi_N$ lets us emphasize some ranges of sample sizes more than others. The TabPFN of Hollmann et al.\ (2022) was trained with a uniform distribution over $\{1, \dots, 1023\}$ for $\Pi_N$. The restriction to small sample sizes has computational reasons: the cost of evaluating a transformer network scales quadratically in $N_j$.
 \end{frame}
 
-\begin{frame}{PFN Approximation --- The Puzzle}
+\begin{frame}{4 PFN Approximation of the PPD}
 Since TabPFN has never seen sample sizes larger than around 1000 during pre-training, it is curious that it improves its predictions when fed larger data sets. Whether such behavior occurs depends in a non-obvious way on the family $\{q_{\wh \btheta}(\cdot \mid \cdot, \Dcal_n), n \in \N\}$. The family learned by TabPFN seems to have some structure that allows extrapolating nicely to larger $n$. This structure may come from the architecture of the network $q_{\btheta}$ or from learning $\btheta^*$ for a given $\Pi$. The following section looks closer into the mechanisms at play.
 \end{frame}
 
-\section{Why PFNs can Learn In-Context}
+\section{5 Why PFNs can Learn In-Context}
 
-\begin{frame}{Why PFNs can Learn In-Context}
+\begin{frame}{5 Why PFNs can Learn In-Context}
 There is no reason to believe the PFN behaves like a PPD family for some (implicit) prior when encountering sample sizes never seen in pre-training. So even though PPDs serve as a theoretical motivation for PFNs, the posterior consistency theorem does not apply to $q_{\wh{\btheta}}$. So why does a PFN $q_{\wh{\btheta}}$ pre-trained on up to $1000$ samples improve when feeding larger data sets during inference?
 \end{frame}
 
-\subsection{PFNs as Untrained Predictors}
+\subsection{5.1 PFNs as Untrained Predictors}
 
-\begin{frame}{PFNs as Untrained Predictors}
+\begin{frame}{5.1 PFNs as Untrained Predictors}
 To understand what is going on, we take a frequentist perspective. For any data size $n$ encountered at inference, we may treat the pre-tuned network $q_{\wh{\btheta}}(y \mid \bx, \cdot)$ as an untrained predictor for $p_0(y \mid \bx)$, i.e., a function $(\Ycal \times \Xcal)^n \to \Pcal_{Y \mid \bX}$ that maps a data set $\Dcal_n$ to an element of the space $\Pcal_{Y \mid \bX}$ of conditional distribution functions. In that view, $\btheta$ is a collection of tuning parameters of the predictor, selected through meta-learning in the pre-training phase.
 
 Further, the `priors' $\Pi$ and $\Pi_N$ are simply distributions over tasks for which we want the predictor to do well.
 \end{frame}
 
-\begin{frame}{Bias-Variance Decomposition}
+\begin{frame}{5.1 PFNs as Untrained Predictors}
 Now decompose the estimation error into bias and variance components:
 \begin{align*}
 	 &\quad \quad \; q_{\btheta}(y \mid \bx, \Dcal_n)  - p_0(y \mid \bx) \\
@@ -311,17 +311,17 @@ Now decompose the estimation error into bias and variance components:
 \end{align*}
 \end{frame}
 
-\begin{frame}{Bias-Variance --- What Needs Explaining}
+\begin{frame}{5.1 PFNs as Untrained Predictors}
 Empirically, the error above decreases with $n$. So what structural features of PFNs can explain this?
 \end{frame}
 
-\subsection{Symmetry}
+\subsection{5.2 Symmetry}
 
-\begin{frame}{Symmetry}
+\begin{frame}{5.2 Symmetry}
 Standard transformers are symmetric functions of the individual samples in $\Dcal_n$. If the samples in $\Dcal_n$ are \emph{iid}, this is most natural.
 \end{frame}
 
-\begin{frame}{Lemma --- Symmetrization}
+\begin{frame}{5.2 Symmetry}
 \begin{lemma}\label{thm:symmetry}
 Let $f \colon (\Ycal \times \Xcal)^n \to \Pcal_{Y \mid \bX}$ be any predictor. Then there is a symmetrized version $\wt f$ of $f$ such that, for every probability measure $P$,
 \begin{align*}
@@ -331,13 +331,13 @@ Let $f \colon (\Ycal \times \Xcal)^n \to \Pcal_{Y \mid \bX}$ be any predictor. T
 \end{lemma}
 \end{frame}
 
-\begin{frame}{Symmetry --- Not Enough for Learning}
+\begin{frame}{5.2 Symmetry}
 Thus, using symmetric $f$ is optimal in an MSE sense. However, symmetry itself does not have any meaningful consequences for learning. For example, $q(y \mid \bx, \Dcal_n) = 1 / |\Ycal|$ is a symmetric function that is incapable of learning anything.
 \end{frame}
 
-\subsection{Variance and Diminishing Sensitivity}
+\subsection{5.3 Variance and Diminishing Sensitivity}
 
-\begin{frame}{Variance and Diminishing Sensitivity}
+\begin{frame}{5.3 Variance and Diminishing Sensitivity}
 There is other structure we can reasonably expect from $q_{\btheta}$. When passed larger data sets $\Dcal_n$, the influence of individual elements should diminish. This allows to bound the variance of the predictor $q_{\btheta}$. Formally, suppose there are $\alpha > 0$ and $L < \infty$, such that for large enough $n$ and almost all data sets $\Dcal_n, \Dcal_n'$ differing only in one sample,
 \begin{align*}
          \bigl| q_{\btheta}\bigl(y \mid \bx, \Dcal_n\bigr) - q_{\btheta}(y \mid \bx, \Dcal_n') \bigr|
@@ -345,7 +345,7 @@ There is other structure we can reasonably expect from $q_{\btheta}$. When passe
 \end{align*}
 \end{frame}
 
-\begin{frame}{Theorem --- Variance Bound}
+\begin{frame}{5.3 Variance and Diminishing Sensitivity}
 \begin{theorem}\label{thm:variance}
 If the sensitivity condition above holds, then
 \begin{align*}
@@ -355,11 +355,11 @@ with high probability.
 \end{theorem}
 \end{frame}
 
-\begin{frame}{Variance Vanishes if $\alpha > 1/2$}
+\begin{frame}{5.3 Variance and Diminishing Sensitivity}
 If $\alpha > 1/2$, we get $\lim_{n \to \infty} n^{1/2 - \alpha} = 0$, so the variance caused by $\Dcal_n$ vanishes. In that case, the difference above vanishes almost surely.
 \end{frame}
 
-\begin{frame}{Lemma --- Almost Sure Variance Vanishing}
+\begin{frame}{5.3 Variance and Diminishing Sensitivity}
 \begin{lemma}\label{thm:variance-as}
 If the sensitivity condition holds with $\alpha > 1/2$, then
 \begin{align*}
@@ -368,13 +368,13 @@ If the sensitivity condition holds with $\alpha > 1/2$, then
 \end{lemma}
 \end{frame}
 
-\begin{frame}{Variance is Only Half the Story}
+\begin{frame}{5.3 Variance and Diminishing Sensitivity}
 This only partially explains how pre-trained PFNs can still learn at inference. The remaining error is due to bias.
 \end{frame}
 
-\subsection{Bias and the Need for Locality}
+\subsection{5.4 Bias and the Need for Locality}
 
-\begin{frame}{Bias and the Need for Locality}
+\begin{frame}{5.4 Bias and the Need for Locality}
 The bias is determined by the behavior of the sequence $\E[q_{\btheta}(y \mid \bx, \Dcal_n)]$. It is reasonable to assume that
 \begin{align*}
 	 \E[q_{\btheta}(y \mid \bx, \Dcal_n)] \stackrel{n \to \infty}\rightarrow  \bar q_{\btheta}(y \mid \bx),
@@ -382,11 +382,11 @@ The bias is determined by the behavior of the sequence $\E[q_{\btheta}(y \mid \b
 for some function $\bar q_{\btheta}$. Without a specific model $q_{\btheta}$ at hand, we cannot say much more. In the next section we shall see examples where the bias is constant, and other examples where the bias decreases or increases with $n$.
 \end{frame}
 
-\begin{frame}{Bias --- Necessary Condition: Locality}
+\begin{frame}{5.4 Bias and the Need for Locality}
 We can give necessary conditions for a vanishing bias, however. A predictor that has vanishing bias on a sufficiently rich class of functions must be \emph{local}: asymptotically, only samples $(Y_i, \bX_i) \in \Dcal_n$ with $\bX_i$ close to $\bx$ should contribute to $q_{\btheta}(y \mid \bx, \Dcal_n)$.
 \end{frame}
 
-\begin{frame}{Theorem --- Vanishing Bias Implies Locality}
+\begin{frame}{5.4 Bias and the Need for Locality}
 \small
 \begin{theorem}\label{thm:unbiased}
 Let $\Pcal$ be a set of distributions. Suppose that for every $p \in \Pcal$,
@@ -407,21 +407,21 @@ where $\Dcal_n = (Y_i, \bX_i)_{i = 1}^n$ and $\wt \Dcal_n = (Y_i', \bX_i)_{i = 1
 \end{theorem}
 \end{frame}
 
-\begin{frame}{Locality --- Interpretation}
+\begin{frame}{5.4 Bias and the Need for Locality}
 So if $q_{\btheta}$ is unbiased for rich enough $\Pcal$, we can flip the labels of samples away from $\bx$ almost arbitrarily without changing the behavior of $q_{\btheta}$; only samples $(Y_i, \bX_i)$ with $\bX_i$ close to $\bx$ matter.
 \end{frame}
 
-\begin{frame}{Locality --- Scope of the Result}
+\begin{frame}{5.4 Bias and the Need for Locality}
 The result bears little meaning if the class $\Pcal$ is too small, and meaningless if $\Pcal$ contains only one $p$. Even for rich $\Pcal$, it only provides necessary conditions for a vanishing bias. A constant predictor $q_{\btheta} = 1$ is local in the sense above, but its bias does not change with $n$. However, if $\Pcal$ is rich and the bias does vanish for all $p \in \Pcal$, the predictor $q_{\btheta}$ can effectively only use $\epsilon_n n = o(n)$ samples, so the sensitivity condition is unlikely to hold with $\alpha = 1$. This is in line with the lower bounds on the bias-variance trade-off derived in prior work (Derumigny \& Francq, 2020).
 \end{frame}
 
-\section{Insights on Specific PFNs}
+\section{6 Insights on Specific PFNs}
 
-\begin{frame}{Insights on Specific PFNs}
+\begin{frame}{6 Insights on Specific PFNs}
 We now consider some concrete examples of PFNs $q_{\btheta}$, to shed further light on the factors facilitating learning in the inference phase. Before turning to transformer networks, we briefly discuss two simpler models to illustrate some key mechanisms. The following result will be helpful.
 \end{frame}
 
-\begin{frame}{Lemma --- Generic Smoother}
+\begin{frame}{6 Insights on Specific PFNs}
 \begin{lemma}\label{lem:generic-smoother}
 Let $g$ be a function bounded by $K < \infty$ and
 \begin{align*}
@@ -433,9 +433,9 @@ for some $\eta \in (0, 1/2)$ and $c > 0$, then $q_{\btheta}$ satisfies the condi
 \end{lemma}
 \end{frame}
 
-\subsection{Window Smoother}
+\subsection{6.1 Window Smoother}
 
-\begin{frame}{Window Smoother}
+\begin{frame}{6.1 Window Smoother}
 For $\theta \in (0, \infty)$, define
 \begin{align*}
 	q_{\theta}(y \mid \bx, \Dcal_n)
@@ -444,7 +444,7 @@ For $\theta \in (0, \infty)$, define
 This corresponds to a window smoother with bandwidth $\theta$. Then $\theta^*$ is the KL-optimal bandwidth for datasets from the prior. The fitted PFN is therefore just a window smoother with its hyperparameter tuned to such data sets.
 \end{frame}
 
-\begin{frame}{Window Smoother --- Constant Bias}
+\begin{frame}{6.1 Window Smoother}
 According to the generic smoother lemma, $q_\theta$ satisfies the sensitivity condition with $\alpha = 1$. The bias
 \begin{align*}
 	&\quad \: \E[q_{\theta}(y \mid \bx, \Dcal_n)]  - p_0(y \mid \bx) \\
@@ -453,7 +453,7 @@ According to the generic smoother lemma, $q_\theta$ satisfies the sensitivity co
 is constant, but optimized for data sizes from $\Pi \times \Pi_N$. Despite constant bias, the PFN learns from more data at inference, but only through reducing its variance.
 \end{frame}
 
-\begin{frame}{Window Smoother --- Adaptive Bandwidth}
+\begin{frame}{6.1 Window Smoother}
 Now consider some sequence $(a_n)_{n \in \N}$ and
 \begin{align*}
 	q_{\theta}(y \mid \bx, \Dcal_n)
@@ -466,13 +466,13 @@ If $a_n$ increases with $n$, the width of the smoothing window does too. This ch
 typically increases with $n$.
 \end{frame}
 
-\begin{frame}{Window Smoother --- Optimal Shrinking Bandwidth}
+\begin{frame}{6.1 Window Smoother}
 If we instead choose $a_n \to 0$ and $p_0$ is sufficiently smooth, we can get rid of the bias. The scaling $a_n = n^{-1/(4 + d)}$ is known to be optimal in an MSE sense, with squared bias and variance decreasing at rate $n^{-4/(4 + d)}$. Indeed, we have $a_n\Pr_0(\| \bX - \bx\| < a_n\theta) \to p_0(\bx)$, so this is the convergence rate implied by the generic smoother lemma and the variance theorem. The hyperparameter $\theta^*$ reduces to a prefactor, tuned to be (asymptotically) optimal for data sets generated from $\Pi$ of arbitrary size.
 \end{frame}
 
-\subsection{Classification Trees}
+\subsection{6.2 Classification Trees}
 
-\begin{frame}{Classification Trees}
+\begin{frame}{6.2 Classification Trees}
 To keep the notation simple, suppose for the moment that $\Xcal \subseteq \R$. Define
 \begin{align*}
 	&\quad \; q_{\btheta}(y \mid x, \Dcal) \\
@@ -481,7 +481,7 @@ To keep the notation simple, suppose for the moment that $\Xcal \subseteq \R$. D
 as a classification tree with parameters $\btheta \in \R^{S}$ and $\theta_0 = -\infty, \theta_{S + 1} = +\infty$ by convention. The (hyper-)parameters are the split locations of the tree. The split locations are trained offline, to work best on sets from the prior $\Pi \times \Pi_N$. The generic smoother lemma yields that the variance theorem holds with $\alpha = 1$.
 \end{frame}
 
-\begin{frame}{Classification Trees --- Constant Bias}
+\begin{frame}{6.2 Classification Trees}
 The bias is
 \begin{align*}
      \sum_{j = 1}^{S}  \ind_{(\theta_j, \theta_{j + 1}]}(x)  \Pr_0(Y = y \mid X \in ( \theta_{j},  \theta_{j + 1}]) - p_0(y \mid x),
@@ -489,7 +489,7 @@ The bias is
 which is independent of $n$. To reduce the bias as in the previous example, we would need to grow the number $S$ of split locations with $n$. But the model is considered fixed in the inference phase and we cannot change the number of parameters.
 \end{frame}
 
-\begin{frame}{Classification Trees --- Ensemble with Model Averaging}
+\begin{frame}{6.2 Classification Trees}
 Instead, we could set up an ensemble of classification trees with Bayesian model averaging. Let $q_{\btheta_1}, \dots, q_{\btheta_K}$ be classification trees as above, and
 \begin{align*}
 	q_{\btheta}(y \mid x, \Dcal_n) = \frac{1}{K} \sum_{k = 1}^K q_{\btheta_k}(y \mid x, \Dcal_n) w(\Dcal_n; \btheta_k),
@@ -504,13 +504,13 @@ and
 \end{align*}
 \end{frame}
 
-\begin{frame}{Classification Trees --- Ensemble Behavior as $n$ Grows}
+\begin{frame}{6.2 Classification Trees}
 As $n$ grows, the model $q_{\btheta}$ drifts towards a weighted average of the best-performing ensemble members. We can thus expect the bias to reduce with $n$, approaching the bias of the best ensemble members. The role of the hyperparameters $\btheta$ is the same as for a single tree. But now, the KL-optimal parameter $\btheta^*$ likely induces more complex and diverse ensemble members.
 \end{frame}
 
-\subsection{Transformer Networks}
+\subsection{6.3 Transformer Networks}
 
-\begin{frame}{Transformer Networks --- Definition}
+\begin{frame}{6.3 Transformer Networks}
 \small
 We now consider a transformer network with one layer. Let $\Dcal_n = \{\bV_i\}_{i = 1}^n$ with $\bV_i = (Y_i, \bX_i) \in \{0, 1\} \times \R^{d}$ and $\bv = (0, \bx)$. Similar to Thickstun (2021), define
 \begin{align*}
@@ -524,7 +524,7 @@ We now consider a transformer network with one layer. Let $\Dcal_n = \{\bV_i\}_{
 where  $W_{q}^{(h)}, W_{v}^{(h)} \in \R^{(d + 1) \times (d + 1)}$, $W_{r, 1}, W_{r, 2}^\top \in \R^{m \times (d + 1)}$, and $ W_{o} \in \R^{|\Ycal| \times (d + 1)}$. The parameter $\btheta$ collects all these matrices.
 \end{frame}
 
-\begin{frame}{Transformer Networks --- Operations}
+\begin{frame}{6.3 Transformer Networks}
 The $\softmax$, $\layernorm$, and $\relu$ operations are defined as
 \begin{align*}
 	\softmax(\bv)            & = \frac{\exp(\bv)}{\sum_{j=1}^d \exp(v_j)} ,  \\
@@ -535,11 +535,11 @@ The $\softmax$, $\layernorm$, and $\relu$ operations are defined as
 with $\exp$ and $\max$ acting componentwise on vectors. Here and in everything that follows, the norm $\| \cdot \|$ is understood as $\| \cdot \|_2$ for both vectors and matrices.
 \end{frame}
 
-\begin{frame}{Transformer Networks --- Attention as Emphasis}
+\begin{frame}{6.3 Transformer Networks}
 The first two equations describe an \emph{attention mechanism} with $H$ heads. By definition, $a_1^{(h)} + \cdots + a_n^{(h)} = 1$. The idea is that within every head, the attention weights $a_j^{(h)}$ emphasize specific samples $\bV_j \in \Dcal_n$. Emphasis is put on those $\bV_j$ that are `similar' to $\bv$ in a sense measured by $\bv^\top W_{q}^{(h)} \bV_j$. Each attention head allows for a different definition of similarity. With the help of the variance theorem and a Lipschitz bound on the network, we can show that the variance of this predictor vanishes.
 \end{frame}
 
-\begin{frame}{Theorem --- Transformer Variance}
+\begin{frame}{6.3 Transformer Networks}
 \begin{theorem}\label{thm:transformer-variance}
 For $\Xcal = \{\bx\colon \|\bx\| \le K\}$ and $\|W_{q}^{(h)}\|, \|W_{v}^{(h)}\|,  \|W_{r, 1}\|, \|W_{r, 2}\|, \|W_o\| < \infty$, it holds
 \begin{align*}
@@ -549,11 +549,11 @@ with high probability.
 \end{theorem}
 \end{frame}
 
-\begin{frame}{Transformer Variance --- Why it Vanishes}
+\begin{frame}{6.3 Transformer Networks}
 The variance vanishes irrespective of the parameter $\btheta$. This is because the attention mechanism necessarily gives diminishing weight to individual samples (see the proof in the appendix).
 \end{frame}
 
-\begin{frame}{Theorem --- Transformer Bias}
+\begin{frame}{6.3 Transformer Networks}
 \small
 The bias depends heavily on the choice of $\btheta$.
 \begin{theorem}\label{thm:transformer-bias}
@@ -569,7 +569,7 @@ where $\bar q_{\theta}(\cdot \mid \bx)$ is defined as $q_{\btheta}(\cdot \mid \b
 \end{theorem}
 \end{frame}
 
-\begin{frame}{Figure --- Bias and Variance of Pre-trained TabPFN}
+\begin{frame}{6.3 Transformer Networks}
 \centering
 \includegraphics[width=0.75\textwidth]{../../papers/sfopfn/src/bias-variance.pdf}
 
@@ -577,25 +577,25 @@ where $\bar q_{\theta}(\cdot \mid \bx)$ is defined as $q_{\btheta}(\cdot \mid \b
 {\footnotesize Average squared bias and variance of the pre-trained TabPFN of Hollmann et al.\ (2022) on simulated data sets.}
 \end{frame}
 
-\begin{frame}{Transformer Bias --- Exponential Tilting}
+\begin{frame}{6.3 Transformer Networks}
 The measure $g_h$ is an exponentially tilted version of $p_0$. The tilt can be understood as an infinitesimal form of the attention mechanism. Relative to $p_0$, the tilted measure lifts the likelihood of values $\bs$ that are similar to $\bv$ (with similarity measured by $\bv^\top W_{q}^{(h)} \bs$) and discounts the likelihood of others. Each attention head $h$ assesses a certain aspect of the unknown distribution $p_0$ (characterized by $W_{q}^{(h)}$). If the matrices $(W_{q}^{(h)})_{h = 1}^H$ are specified well, the aspect views distinguish distinct feature values.
 \end{frame}
 
-\begin{frame}{Transformer Bias --- Why it Does Not Vanish}
+\begin{frame}{6.3 Transformer Networks}
 This localizes the predictor to some degree, but not in the sense of the locality theorem. Although we upweight the influence of samples ``similar to'' $\bv$, there always remains an influence of samples away from $\bv$. We cannot flip the labels of such samples without changing the predictor (asymptotically), so we should not expect the bias to vanish.
 \end{frame}
 
-\begin{frame}{Transformer Bias --- Aspect Summaries}
+\begin{frame}{6.3 Transformer Networks}
 Nevertheless, the limiting bias $\bar q_{\theta}(y \mid  \bx) - p_0(y \mid \bx)$ may be small if the remaining network processes \emph{the sum} of aspect summaries $W_{v}^{(h)} \E_{\bV \sim g_h}[\bV]$ into a good approximation of $p_0$. The relevance of individual aspect summaries depends on the true measure $p_0$, and less relevant aspects may also contribute less to the sum. On small samples, this effect is milder. At the extreme end, $n = 1$, all attention weights $a_j^{(h)}$ equal 1, so all aspects contribute equally.
 \end{frame}
 
-\begin{frame}{Transformer Bias --- Role of Multiple Heads}
+\begin{frame}{6.3 Transformer Networks}
 This suggests that the bias of the transformer network may decrease --- provided the hyperparameters downstream make meaningful use of the aspect views. For example, Olsson et al.\ (2022) identified powerful patterns of several attention heads working together. This effect is similar to that of the model averaging layer in the classification tree ensemble. Key to this is the presence of multiple attention heads ($H > 1$). However, this applies only to sample sizes the parameter $\btheta$ has been tuned to. For larger sample sizes, there is no reason to expect a tuned network's bias to decrease.
 \end{frame}
 
-\subsection{Localized PFNs}
+\subsection{6.4 Localized PFNs}
 
-\begin{frame}{Localized PFNs --- Post-hoc Procedure}
+\begin{frame}{6.4 Localized PFNs}
 According to the locality theorem, we need to localize the network to make its bias decrease. A simple post-hoc approach applicable to any pre-trained network is the following. To predict the label at a new feature $\bx$:
 \begin{enumerate}
 	\item Construct a reduced training set $\Dcal_n(\bx)$ by excluding all but the $k_n$ nearest neighbors of $\bx$ from $\Dcal_n$.
@@ -603,50 +603,50 @@ According to the locality theorem, we need to localize the network to make its b
 \end{enumerate}
 \end{frame}
 
-\begin{frame}{Localized PFNs --- Intuition}
+\begin{frame}{6.4 Localized PFNs}
 Intuitively, restricting to a neighborhood is like stretching/flattening the target $p(y \mid \cdot)$ at the cost of a reduction in sample size. Flatter functions are easier to approximate. This is the mechanism behind the window smoother from the earlier example. If the model $q_\theta$ approximates constant functions well, localization should improve the bias.
 \end{frame}
 
-\begin{frame}{Numerical Validation --- Setup}
+\begin{frame}{6.4 Localized PFNs}
 \small
 Since the key mechanism acting on $\Dcal_n$ remains intact if we add more layers to the network, the findings likely transfer to larger networks. The main predictions from our theoretical considerations are: $(i)$ the variance vanishes at rate $1/n$, $(ii)$ the bias does not vanish, but decreases until $n \approx 1000$. To confirm this empirically, we simulate 500 data sets $\Dcal_n$ from the model $p_0(1 \mid \bX) = 1/2 + \sin(\bm 1^\top \bX) / 2$ with $Y \in \{0, 1\}$, $\bX \sim \Ncal( \bnull, I_5)$, and run the pre-trained TabPFN of Hollmann et al.\ (pip version 0.1.8).
 \end{frame}
 
-\begin{frame}{Numerical Validation --- Results}
+\begin{frame}{6.4 Localized PFNs}
 We compute the average squared bias and variance over 100 samples $\bX_{\text{test}} \sim \Ncal(\bnull, I_5)$. The results (see the figure above) confirm that the variance indeed decreases at rate $1/n$ and that the bias decreases until $n \approx 1000$, but does not vanish.
 \end{frame}
 
-\begin{frame}{Numerical Validation --- Localized TabPFN}
+\begin{frame}{6.4 Localized PFNs}
 The analysis shows that, for larger sample sizes at inference, TabPFN learns mainly through decreasing its variance. This variance reduction is a consequence of the transformer architecture and takes place irrespective of the tuned parameters $\wh \btheta$. The figure also shows the results of a localized version of TabPFN (with $k_n = \min\{500, \lceil n^{4/(d + 4)} \rceil\}$). Here, the bias continues to decrease beyond $n = 1000$ at the cost of a slightly larger variance.
 \end{frame}
 
-\section{Discussion}
+\section{7 Discussion}
 
-\begin{frame}{Discussion --- The Role of the Prior}
+\begin{frame}{7 Discussion}
 As explained earlier, the prior $\Pi$ characterizes tasks we want the predictor to do well on. Hollmann et al.\ (2022) propose a new kind of prior based on structural causal models that is interesting on its own. Their intuitive idea is that the pair $(Y, \bX)$ is generated by some noisy, causal mechanism (not necessarily in the direction $\bX \to Y$). Because the mechanisms can be arbitrarily complex, the prior is essentially nonparametric. The rate at which corresponding posteriors contract is a complex issue and poses an interesting open question.
 \end{frame}
 
-\begin{frame}{Discussion --- Key Factors for Learning}
+\begin{frame}{7 Discussion}
 The key factors driving PFNs capability to learn are their sensitivity to individual samples, their ability to choose submodels, and localization. These insights may help to inform architecture design. In the window smoother and localized PFN sections, we found a way to make the bias vanish at the cost of increased sensitivity to the training instances.
 \end{frame}
 
-\begin{frame}{Discussion --- Architecture Design Implications}
+\begin{frame}{7 Discussion}
 This was achieved by introducing a scaling of the tuning parameters adapted to the training set size $n$. Whether this is possible and what a good scaling is depends on the model architecture. The localization approach is simple and can be applied post-hoc to any pre-trained network $q_\theta$. More serious architecture design should account for the entire training pipeline and computational efficiency.
 \end{frame}
 
-\begin{frame}{Discussion --- Future Directions}
+\begin{frame}{7 Discussion}
 Additional improvements can be expected if localization is incorporated into pre-training. Thinking about ways to adapt the transformer architecture appropriately could be a promising path. Another possible improvement is to augment the architecture with a Bayesian averaging mechanism similar to the classification tree ensemble.
 \end{frame}
 
-\begin{frame}{Discussion --- Scalability Limits}
+\begin{frame}{7 Discussion}
 Hollmann et al.\ (2022) acknowledge constraints on the feature dimension and sample size as a major limitation of current PFN implementations. Owing to the standard transformer architecture, the maximal feature size is fixed, and the algorithm scales quadratically in the number of samples. To mitigate this, several works proposed scalable modifications of the transformer architecture (Longformer, Big Bird, Reformer).
 \end{frame}
 
-\begin{frame}{Discussion --- PFNs as Ensemble Members}
+\begin{frame}{7 Discussion}
 Hollmann et al.\ (2022) rightfully point out that PFNs are quick enough to be used as ensemble members. The size constraints could therefore be overcome by boosting and bagging techniques akin to random forests or boosted trees.
 \end{frame}
 
-\begin{frame}{Discussion --- Closing}
+\begin{frame}{7 Discussion}
 The full potential of PFNs is yet to be explored.
 \end{frame}
 
@@ -657,9 +657,9 @@ The author is grateful for several helpful comments by Samuel Müller, Noah Holl
 \end{frame}
 
 \appendix
-\section{Appendix: Proofs}
+\section{A Proofs}
 
-\begin{frame}{Proof --- Theorem \ref{thm:idea} (PPD is KL-optimal)}
+\begin{frame}{A.1 Proof of Theorem 2.2}
 \small
 By definition of the KL-divergence,
 \begin{align*}
@@ -675,7 +675,7 @@ Since this holds for any $(\bx, \Dcal)$ it must also hold if we take expectation
 \end{align*}
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:posterior-consistency}: Assumptions}
+\begin{frame}{A.2 Proof of Theorem 3.1}
 We need the following assumptions. Write $\KL(f \mid f')$ for the KL-divergence of $f$ relative to $f'$, and $H(f, f')$ for their Hellinger distance.
 \begin{itemize}
 	\item[(A1)] There is a unique $p^* \in \Pcal$ with $p^* = \arg\min_{p} \KL(p^* \mid p_0)$ and $\KL(p^* \mid p_0) < \infty$.
@@ -686,7 +686,7 @@ We need the following assumptions. Write $\KL(f \mid f')$ for the KL-divergence 
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:posterior-consistency}: Posterior Contraction}
+\begin{frame}{A.2 Proof of Theorem 3.1}
 Now let $\Pi_n(A) = \int_A d\Pi(p \mid \Dcal_n)$ be the posterior measure. From our assumptions and known posterior contraction results (de Blasi et al., 2013, Corollary 1) it follows that for all $\epsilon > 0$,
 \begin{align*}
 	\Pi_n\bigl\{p \in \Pcal\colon H(p, p^*) > \epsilon\bigr\} \to 0,
@@ -694,14 +694,14 @@ Now let $\Pi_n(A) = \int_A d\Pi(p \mid \Dcal_n)$ be the posterior measure. From 
 with probability 1 over sequences $\Dcal_n$.
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:posterior-consistency}: A Bad Set}
+\begin{frame}{A.2 Proof of Theorem 3.1}
 For some $\delta > 0$ and an arbitrary set $A \subseteq \Ycal \times \Xcal$ with $\mu_A = P^*(A) > 0$, define
 \begin{align*}
 	S_{\delta, A} = \biggl\{p \in \Pcal \colon \inf_{(y, \bx) \in A} \bigl|p(y \mid \bx) - p^*(y \mid \bx) \bigr| \ge \delta\biggr\}.
 \end{align*}
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:posterior-consistency}: Bounding $\mu_A \delta$}
+\begin{frame}{A.2 Proof of Theorem 3.1}
 \small
 For any $p \in S_{\delta, A}$, it holds
 \begin{align*}
@@ -716,7 +716,7 @@ For any $p \in S_{\delta, A}$, it holds
 where $\operatorname{TV}(f, f')$ is the total variation distance.
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:posterior-consistency}: Putting it Together}
+\begin{frame}{A.2 Proof of Theorem 3.1}
 \small
 Together with the contraction result above, this implies
 \begin{align*}
@@ -732,7 +732,7 @@ We then get
 \end{align*}
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:posterior-consistency}: Conclusion}
+\begin{frame}{A.2 Proof of Theorem 3.1}
 Since $\delta$ and $A$ were arbitrary, we have shown that
 \begin{align*}
 	\pi(y\mid \bx, \Dcal_n)  \to p^*(y \mid \bx),
@@ -740,13 +740,13 @@ Since $\delta$ and $A$ were arbitrary, we have shown that
 with probability 1 for $P^*$-almost every $(y, \bx)$. Since $\KL(p^* \mid p_0) < \infty$ by (A1), convergence must also take place for $P_0$-almost every $(y, \bx)$.
 \end{frame}
 
-\begin{frame}{Proof --- Lemma \ref{thm:symmetry} (Symmetrization)}
+\begin{frame}{A.3 Proof of Theorem 5.1}
 Let $R_n$ be the set of permutations $\rho\colon (\Ycal \times \Xcal)^n \to  (\Ycal \times \Xcal)^n$. Define the symmetrized function $\wt f$ as
 $$\wt f(\Dcal_n) = \frac 1 {|R_n|} \sum_{\rho \in R_n} (f \circ \rho)(\Dcal_n).$$
 If the elements in $\Dcal_n$ are \emph{iid}, it holds $\E_P[f(\Dcal_n)] = \E_P[(f \circ \rho)(\Dcal_n)]$ and $\var_P[f(\Dcal_n)] = \var_P[(f \circ \rho)(\Dcal_n)]$ for any $\rho \in R_n$. Therefore, $\E_P[f(\Dcal_n)] = \E_P[\wt f(\Dcal_n)]$.
 \end{frame}
 
-\begin{frame}{Proof --- Lemma \ref{thm:symmetry}: Variance Never Increases}
+\begin{frame}{A.3 Proof of Theorem 5.1}
 and
 \begin{align*}
 	\var_P[\wt f(\Dcal_n)]
@@ -755,7 +755,7 @@ and
 with equality for all $P$ if and only if $f$ is symmetric.
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:variance} (Variance Bound)}
+\begin{frame}{A.4 Proof of Theorem 5.2}
 McDiarmid's inequality yields
 \begin{align*}
 \Pr\bigl(	\bigl| q_{\btheta}(y \mid \bx, \Dcal_n) - \E[q_{\btheta}(y \mid \bx, \Dcal_n)] \bigr| > \epsilon\bigr) \le 2\exp\biggl(-\frac{2 \epsilon^2}{L^2 n^{1 - 2\alpha}}\biggr).
@@ -766,7 +766,7 @@ Choosing $\epsilon^2 = \log(\delta)L^2 n^{1 - 2\alpha} / 2$, we get
 \end{align*}
 \end{frame}
 
-\begin{frame}{Proof --- Lemma \ref{thm:variance-as} (Almost Sure Vanishing)}
+\begin{frame}{A.5 Proof of Theorem 5.3}
 Using the first inequality from the previous proof, we get
 \begin{align*}
 	\sum_{n = 1}^\infty \Pr\bigl(	\bigl| q_{\btheta}(y \mid \bx, \Dcal_n) - \E[q_{\btheta}(y \mid \bx, \Dcal_n)] \bigr| > \epsilon\bigr) \le 2 	\sum_{n = 1}^\infty \exp\biggl(-\frac{2 \epsilon^2}{L^2 n^{1 - 2\alpha}}\biggr) < \infty.
@@ -778,7 +778,7 @@ The Borel-Cantelli lemma then implies that, almost surely,
 Since $\epsilon$ was arbitrary the claim follows.
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:unbiased} (Locality)}
+\begin{frame}{A.6 Proof of Theorem 5.4}
 Condition (the vanishing-bias assumption) implies
 \begin{align*}
 	 \E_p[q_{\btheta}(y \mid \bx, \Dcal_n)] - 	 \E_{\wt p}[q_{\btheta}(y \mid \bx, \Dcal_n)]   \to 0,
@@ -790,7 +790,7 @@ for all $p, \wt p \in \Pcal$ with $p(y \mid \bs) = \wt p(y \mid \bs)$ for $\| \b
 Since $\epsilon$ was arbitrary, convergence must also hold for some sequence $\epsilon_n \to 0$.
 \end{frame}
 
-\begin{frame}{Proof --- Lemma \ref{lem:generic-smoother}: Concentration}
+\begin{frame}{A.7 Proof of Theorem 6.1}
 \small
 Let $\Dcal_n = (Y_i, \bX_i)_{i = 1}^n$ and $\Dcal_n' = (Y_i', \bX_i')_{i = 1}^n$ such that $(Y_i, \bX_i) = (Y_i', \bX_i')$ for all $i > 1$. Hoeffding's inequality gives
 \begin{align*}
@@ -806,7 +806,7 @@ and the Borel-Cantelli lemma implies that for large $n$,
 \end{align*}
 \end{frame}
 
-\begin{frame}{Proof --- Lemma \ref{lem:generic-smoother}: Lower Bound on the Count}
+\begin{frame}{A.7 Proof of Theorem 6.1}
 \small
 The remaining inequalities are understood almost surely, for large enough $n$. Because $n^\eta\Pr\{\bX_i \in A_n(\bx)\} \to c$, we get
 \begin{align*}
@@ -820,7 +820,7 @@ which implies
 \end{align*}
 \end{frame}
 
-\begin{frame}{Proof --- Lemma \ref{lem:generic-smoother}: Conclusion}
+\begin{frame}{A.7 Proof of Theorem 6.1}
 Using this bound,
 \begin{align*}
 \quad n^{1- \eta}|q_{\theta}(y \mid \bx, \Dcal_n) - q_{\theta}(y \mid \bx, \Dcal_n')|
@@ -829,14 +829,14 @@ Using this bound,
 which proves the claim.
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:transformer-variance}: Reduction}
+\begin{frame}{A.8 Proof of Theorem 6.2}
 The theorem is a consequence of the variance theorem and the following result. (The norm bounds on $\|\bx\|$ and the weight matrices are arbitrary and can be relaxed.)
 \begin{theorem}\label{thm:transformer-bdiff}
 Let $\Xcal = \{\bx\colon \|\bx\| \le 1\}$ and $\|W_{q}^{(h)}\|, \|W_{v}^{(h)}\|,  \|W_{r, 1}\|, \|W_{r, 2}\|, \|W_o\| \le 1$. Then the network $q_{\btheta}$ satisfies the sensitivity condition with $\alpha = 1$ and $L = O(H|\gamma_1| / |\gamma_2|)$.
 \end{theorem}
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:transformer-bdiff}: Softmax and LayerNorm Bound}
+\begin{frame}{A.8 Proof of Theorem 6.2}
 \small
 Let $\wt \Dcal_n = (\Dcal_n \setminus \bV_n) \cup \wt \bV_n$ and define $\wt a_j^{(h)}$, $\wt \bu'$, $\wt \bu$, $\wt \bz'$, $\wt \bz$ accordingly. Because $\softmax$ is 1-Lipschitz,
 \begin{align*}
@@ -849,7 +849,7 @@ Using the layernorm lemma below, we further get
 \end{align*}
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:transformer-bdiff}: Combining Bounds}
+\begin{frame}{A.8 Proof of Theorem 6.2}
 \small
 Because also $\relu$ is 1-Lipschitz,
 \begin{align*}
@@ -866,7 +866,7 @@ The last displays together yield
 \end{align*}
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:transformer-bdiff}: Bounding $\|\bu' - \wt \bu'\|$}
+\begin{frame}{A.8 Proof of Theorem 6.2}
 \small
 Defining $\wt \bV_i = \bV_i$ for $i < n$, we obtain
 \begin{align*}
@@ -879,14 +879,14 @@ Defining $\wt \bV_i = \bV_i$ for $i < n$, we obtain
 \end{align*}
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:transformer-bdiff}: Bounding $a_n^{(h)}$}
+\begin{frame}{A.8 Proof of Theorem 6.2}
 Let $s_{i} = \bv^\top W_{q}^{(h)} \bV_i$ and note that $|s_i| \le \|\bv\| \|W_{q}^{(h)}\| \max_j\|\bV_j\| \le 4$.
 \begin{align*}
 	|a_n^{(h)}| = \frac{\exp(s_n) }{\sum_{j = 1}^n \exp(s_j)} \le \frac{e^4}{\sum_{j = 1}^n e^{-4}} = \frac{e^8}{n}.
 \end{align*}
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:transformer-bdiff}: Bounding $|\wt a_j^{(h)} - a_j^{(h)}|$}
+\begin{frame}{A.8 Proof of Theorem 6.2}
 \small
 Further,
 \begin{align*}
@@ -902,7 +902,7 @@ The first term on the right is zero if $j \neq n$. For $j = n$, it can be bounde
 \end{align*}
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:transformer-bdiff}: Conclusion}
+\begin{frame}{A.8 Proof of Theorem 6.2}
 Accordingly,
 \begin{align*}
 	\frac 1 H \|\bu' - \wt \bu'\|
@@ -912,7 +912,7 @@ Accordingly,
 Combining the two displays above proves the claim.
 \end{frame}
 
-\begin{frame}{Lemma --- LayerNorm is Lipschitz}
+\begin{frame}{A.8 Proof of Theorem 6.2}
 \begin{lemma}\label{lem:layernorm}
 For any two vectors $\ba, \bb \in \R^d$ it holds
 \begin{align*}
@@ -921,7 +921,7 @@ For any two vectors $\ba, \bb \in \R^d$ it holds
 \end{lemma}
 \end{frame}
 
-\begin{frame}{Proof --- Lemma \ref{lem:layernorm}: Centered Case}
+\begin{frame}{A.8 Proof of Theorem 6.2}
 \small
 Let us first assume $\avg(\ba) = \avg(\bb) = \bnull$ and, without loss of generality, $\|\ba\| \ge \|\bb\|$. It holds,
 \begin{align*}
@@ -936,7 +936,7 @@ Let us first assume $\avg(\ba) = \avg(\bb) = \bnull$ and, without loss of genera
 \end{align*}
 \end{frame}
 
-\begin{frame}{Proof --- Lemma \ref{lem:layernorm}: General Case}
+\begin{frame}{A.8 Proof of Theorem 6.2}
 \small
 If $\avg(\ba) \neq 0$ or $\avg(\bb) \neq 0$, we get
 \begin{align*}
@@ -950,7 +950,7 @@ because
 where we used the triangle inequality in the second step and Jensen's inequality in the last.
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:transformer-bias}: LLN Convergence}
+\begin{frame}{A.9 Proof of Theorem 6.3}
 \small
 We have
 \begin{align*}
@@ -968,7 +968,7 @@ Now, observe that
 \end{align*}
 \end{frame}
 
-\begin{frame}{Proof --- Theorem \ref{thm:transformer-bias}: Conclusion}
+\begin{frame}{A.9 Proof of Theorem 6.3}
 Since all following operations on $\bu'$ are continuous (see the proof of the transformer sensitivity theorem), it also holds
 \begin{align*}
 	\lim_{n \to \infty} \bigl| q_{\btheta}(\cdot \mid \bx, \Dcal_n) - \bar q_{\btheta}(\cdot \mid \bx) \bigr| = 0 \quad \text{almost surely}.
@@ -976,13 +976,13 @@ Since all following operations on $\bu'$ are continuous (see the proof of the tr
 Because the sequence $|q_{\btheta}(\cdot \mid \bx, \Dcal_n) - q_{\btheta}(\cdot \mid \bx)|$ is uniformly bounded by 2, convergence is also in $L_1$. This implies $\lim_{n \to \infty} \E[q_{\btheta}(\cdot \mid \bx, \Dcal_n)] = \bar q_{\theta}(\cdot \mid \bx).$
 \end{frame}
 
-\section{Approximation Results for the PFN Parameter}
+\section{B Approximation Results for the PFN Parameter}
 
-\begin{frame}{PFN Parameter --- Setup}
+\begin{frame}{B Approximation Results for the PFN Parameter}
 Suppose that the parameters $\btheta$ live in a subset of $\R^p$ with $p$ fixed and finite. This assumption would be questionable in the usual machine learning setting, but our situation is different. A PFN is pre-trained offline, using $m$ Monte-Carlo samples from data sets $\Dcal^{(j)}$. Given enough computing power, we can take $m$ as large as we want.
 \end{frame}
 
-\begin{frame}{Theorem --- Asymptotics of $\wh \btheta$}
+\begin{frame}{B Approximation Results for the PFN Parameter}
 \small
 Given sufficient regularity, the following theorems are direct applications of existing results. To keep additional concepts and notation to a minimum, we omit detailed conditions and proofs and refer to the original works for specifics. We start with the behavior of $\wh \btheta$.
 \begin{theorem}\label{thm:asym-theta}
@@ -999,11 +999,11 @@ It holds:
 Proof: Corollary 3.2.3 and Example 3.2.12 in van der Vaart (1996).
 \end{frame}
 
-\begin{frame}{Asymptotics of $\wh \btheta$ --- Interpretation}
+\begin{frame}{B Approximation Results for the PFN Parameter}
 The first part shows that $\wh{\btheta}$ is a valid approximation of $\btheta^*$, the second quantifies its accuracy. This has direct implications for the approximated model $q_{\wh{\btheta}}$.
 \end{frame}
 
-\begin{frame}{Theorem --- Asymptotics of $q_{\wh \btheta}$}
+\begin{frame}{B Approximation Results for the PFN Parameter}
 \small
 \begin{theorem}\label{thm:asym-q}
 It holds:
@@ -1019,7 +1019,7 @@ It holds:
 Part (i) follows from the previous theorem and the continuous mapping theorem; part (ii) from the delta method.
 \end{frame}
 
-\begin{frame}{PFN Parameter --- Variance of $q_{\wh \btheta}$}
+\begin{frame}{B Approximation Results for the PFN Parameter}
 From the second part, we see that the variance of $q_{\wh{\btheta}}(y\mid \bx, \Dcal)$ is approximately
 \begin{align*}
 	\frac 1 m \nabla_{\btheta} q_{\btheta^*}(y\mid \bx, \Dcal)^\top \Sigma_{\btheta^*} \nabla_{\btheta} q_{\btheta^*}(y\mid \bx, \Dcal).
