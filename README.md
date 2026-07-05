@@ -79,6 +79,8 @@ some papers i find related:
   - ts-icl — [arxiv](https://arxiv.org/abs/2606.05878)
   - tiny-tsm — [arxiv](https://arxiv.org/abs/2511.19272)
   - tempopfn — [arxiv](https://arxiv.org/abs/2510.25502)
+  - tirex — [arxiv](https://arxiv.org/abs/2505.23719)
+  - tirex-2 — [arxiv](https://arxiv.org/abs/2607.01204)
 - causal
   - tabcausal — [arxiv](https://arxiv.org/abs/2605.31156)
   - causalfm — [arxiv](https://arxiv.org/abs/2506.10914)
