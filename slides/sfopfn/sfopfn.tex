@@ -166,7 +166,7 @@ where the \emph{posterior} $\Pi(\cdot \mid \Dcal_n)$ is the conditional distribu
 \end{frame}
 
 \begin{frame}{\currentheading}
-\begin{remark}
+\begin{remark}[2.1]
 In their implementation of PFNs, Müller et al.\ (2021) and Hollmann et al.\ (2022) use priors that factorize as above, but do not mention it explicitly to justify it. Priors that do not factorize this way would lead to a different form of $\pi(y \mid \bx, \Dcal)$:
 \begin{align*}
 	\pi(y \mid \bx, \Dcal_n) = \int p(y \mid \bx) d\Pi(p \mid \bx, \Dcal_n),
@@ -186,7 +186,7 @@ where $\E_{\Pi}$ is an expectation over $(Y, \bX) \cup \Dcal_n$ generated as in 
 \end{frame}
 
 \begin{frame}{\currentheading}
-\begin{theorem}\label{thm:idea}
+\begin{theorem}[2.2]\label{thm:idea}
 Let
 \begin{align*}
 	\Qcal = \biggl\{q\colon (\Ycal \times \Xcal)_{i = 1}^{n + 1} \to [0, 1], \sum_{y \in \Ycal} q(y \mid \cdot, \cdot) = 1\biggr\},
@@ -197,7 +197,7 @@ $$\pi = \arg\max_{q \in \Qcal}\E_\Pi [\log q(Y \mid \bX, \Dcal_n)].$$
 \end{frame}
 
 \begin{frame}{\currentheading}
-\begin{remark}
+\begin{remark}[2.3]
 Maximizing the expected conditional likelihood can also be interpreted as minimizing expected KL divergence between $q(\cdot \mid \bX, \Dcal_n)$ and $\pi(\cdot \mid \bX, \Dcal_n)$.
 \end{remark}
 \end{frame}
@@ -229,7 +229,7 @@ This is of course an idealization of the training process. Sophisticated PFNs ar
 \end{frame}
 
 \begin{frame}{\currentheading}
-\begin{remark}
+\begin{remark}[2.4]
 Hollmann et al.\ (2022) use a transformer network for $q_{\btheta}$. For such architectures, any fixed network $q_{\btheta}$ accepts an arbitrary number of feature vectors $\bx_1, \dots, \bx_{n_\test}$ and a data set $\Dcal_{n}$ of arbitrary length. The output $q_{\btheta}( \cdot \mid \bx_1, \dots, \bx_{n_\test}, \Dcal_{n})$ are $n_{\test}$ vectors of conditional class probabilities. Each vector contains predictions for the conditional class probabilities $p(\cdot \mid \bx_j)$. The test size $n_{\test}$ is irrelevant in what follows, so we take $n_{\test} = 1$ for simplicity.
 \end{remark}
 \end{frame}
@@ -250,7 +250,7 @@ Setting a good prior is tricky in a nonparametric context. Finding a prior suppo
 \end{frame}
 
 \begin{frame}{\currentheading}
-\begin{theorem}\label{thm:posterior-consistency}
+\begin{theorem}[3.1]\label{thm:posterior-consistency}
 Under regularity conditions (uniqueness of the KL-projection, and a covering condition --- see appendix), there is $p^* \in \Pcal$ such that
 \begin{align*}
 	 \pi(y\mid \bx, \Dcal_n)  \stackrel{n \to \infty}\rightarrow p^*(y \mid \bx) \quad \text{almost surely},
@@ -325,7 +325,7 @@ Standard transformers are symmetric functions of the individual samples in $\Dca
 \end{frame}
 
 \begin{frame}{\currentheading}
-\begin{lemma}\label{thm:symmetry}
+\begin{lemma}[5.1]\label{thm:symmetry}
 Let $f \colon (\Ycal \times \Xcal)^n \to \Pcal_{Y \mid \bX}$ be any predictor. Then there is a symmetrized version $\wt f$ of $f$ such that, for every probability measure $P$,
 \begin{align*}
 	\E_{\Dcal_n \sim P^n}[\wt f(\Dcal_n)] &= \E_{\Dcal_n \sim P^n}[f(\Dcal_n)], \\
@@ -349,7 +349,7 @@ There is other structure we can reasonably expect from $q_{\btheta}$. When passe
 \end{frame}
 
 \begin{frame}{\currentheading}
-\begin{theorem}\label{thm:variance}
+\begin{theorem}[5.2]\label{thm:variance}
 If the sensitivity condition above holds, then
 \begin{align*}
 	\bigl| q_{\btheta}(y \mid \bx, \Dcal_n) - \E[q_{\btheta}(y \mid \bx, \Dcal_n)] \bigr| \lesssim n^{1/2 - \alpha}
@@ -363,7 +363,7 @@ If $\alpha > 1/2$, we get $\lim_{n \to \infty} n^{1/2 - \alpha} = 0$, so the var
 \end{frame}
 
 \begin{frame}{\currentheading}
-\begin{lemma}\label{thm:variance-as}
+\begin{lemma}[5.3]\label{thm:variance-as}
 If the sensitivity condition holds with $\alpha > 1/2$, then
 \begin{align*}
   q_{\btheta}(y \mid \bx, \Dcal_n) - \E[q_{\btheta}(y \mid \bx, \Dcal_n)]  \stackrel{n \to \infty}\rightarrow 0 \quad \text{almost surely}.
@@ -391,7 +391,7 @@ We can give necessary conditions for a vanishing bias, however. A predictor that
 
 \begin{frame}{\currentheading}
 \small
-\begin{theorem}\label{thm:unbiased}
+\begin{theorem}[5.4]\label{thm:unbiased}
 Let $\Pcal$ be a set of distributions. Suppose that for every $p \in \Pcal$,
 \begin{align*}
 	\E_{\Dcal_n \sim p^n}[q_{\btheta}(y \mid \bx, \Dcal_n)] \stackrel{n \to \infty}\rightarrow p(y \mid \bx).
@@ -425,7 +425,7 @@ We now consider some concrete examples of PFNs $q_{\btheta}$, to shed further li
 \end{frame}
 
 \begin{frame}{\currentheading}
-\begin{lemma}\label{lem:generic-smoother}
+\begin{lemma}[6.1]\label{lem:generic-smoother}
 Let $g$ be a function bounded by $K < \infty$ and
 \begin{align*}
 	q_{\btheta}(y \mid \bx, \Dcal_n) = \frac{\sum_{i = 1}^n g(y, \bx, Y_i, \bX_i)}{\sum_{i = 1}^n  \ind\{\bX_i \in A_n(\bx)\}},
@@ -543,7 +543,7 @@ The first two equations describe an \emph{attention mechanism} with $H$ heads. B
 \end{frame}
 
 \begin{frame}{\currentheading}
-\begin{theorem}\label{thm:transformer-variance}
+\begin{theorem}[6.2]\label{thm:transformer-variance}
 For $\Xcal = \{\bx\colon \|\bx\| \le K\}$ and $\|W_{q}^{(h)}\|, \|W_{v}^{(h)}\|,  \|W_{r, 1}\|, \|W_{r, 2}\|, \|W_o\| < \infty$, it holds
 \begin{align*}
 	\bigl| q_{\btheta}(y \mid \bx, \Dcal_n) - \E[q_{\btheta}(y \mid \bx, \Dcal_n)] \bigr| \lesssim n^{-1/2},
@@ -559,7 +559,7 @@ The variance vanishes irrespective of the parameter $\btheta$. This is because t
 \begin{frame}{\currentheading}
 \small
 The bias depends heavily on the choice of $\btheta$.
-\begin{theorem}\label{thm:transformer-bias}
+\begin{theorem}[6.3]\label{thm:transformer-bias}
 Under the assumptions of the transformer variance theorem,
 \begin{align*}
 	 \E[q_{\btheta}(\cdot \mid \bx, \Dcal_n)] \stackrel{n \to \infty}\rightarrow \bar q_{\theta}(\cdot \mid \bx),
@@ -849,7 +849,7 @@ which proves the claim.
 
 \begin{frame}{\currentheading}
 The theorem is a consequence of the variance theorem and the following result. (The norm bounds on $\|\bx\|$ and the weight matrices are arbitrary and can be relaxed.)
-\begin{theorem}\label{thm:transformer-bdiff}
+\begin{theorem}[A.1]\label{thm:transformer-bdiff}
 Let $\Xcal = \{\bx\colon \|\bx\| \le 1\}$ and $\|W_{q}^{(h)}\|, \|W_{v}^{(h)}\|,  \|W_{r, 1}\|, \|W_{r, 2}\|, \|W_o\| \le 1$. Then the network $q_{\btheta}$ satisfies the sensitivity condition with $\alpha = 1$ and $L = O(H|\gamma_1| / |\gamma_2|)$.
 \end{theorem}
 \end{frame}
@@ -931,7 +931,7 @@ Combining the two displays above proves the claim.
 \end{frame}
 
 \begin{frame}{\currentheading}
-\begin{lemma}\label{lem:layernorm}
+\begin{lemma}[A.2]\label{lem:layernorm}
 For any two vectors $\ba, \bb \in \R^d$ it holds
 \begin{align*}
 	\bigl\| \layernorm(\ba; \bgamma) - \layernorm(\bb; \bgamma) \bigr\| & \le 4\frac{|\gamma_1|}{|\gamma_2|}\|\ba - \bb\|.
@@ -1005,7 +1005,7 @@ Suppose that the parameters $\btheta$ live in a subset of $\R^p$ with $p$ fixed 
 \begin{frame}{\currentheading}
 \small
 Given sufficient regularity, the following theorems are direct applications of existing results. To keep additional concepts and notation to a minimum, we omit detailed conditions and proofs and refer to the original works for specifics. We start with the behavior of $\wh \btheta$.
-\begin{theorem}\label{thm:asym-theta}
+\begin{theorem}[B.1]\label{thm:asym-theta}
 It holds:
 \begin{enumerate}
 	\item[(i)] $	\wh{\btheta} \to \btheta^* $ in probability,
@@ -1025,7 +1025,7 @@ The first part shows that $\wh{\btheta}$ is a valid approximation of $\btheta^*$
 
 \begin{frame}{\currentheading}
 \small
-\begin{theorem}\label{thm:asym-q}
+\begin{theorem}[B.2]\label{thm:asym-q}
 It holds:
 \begin{enumerate}
 	\item[(i)] $\displaystyle \sup_{(y, \bx, \Dcal)}|q_{\wh{\btheta}}(y\mid \bx, \Dcal) - q_{\btheta^*}(y \mid \bx, \Dcal)| \to 0$ in probability,
