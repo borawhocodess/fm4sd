@@ -61,7 +61,7 @@ some papers i find related:
   - priorfitted — [arxiv](https://arxiv.org/abs/2505.23947)
 - tabular
   - nanotabpfn — [arxiv](https://arxiv.org/abs/2511.03634)
-  - modded-nanotabpfn — [arxiv](https://arxiv.org/abs/2606.03681)
+  - modded-nanotabpfn — [github](https://github.com/borawhocodess/modded-nanotabpfn)
   - tabpfn-3 — [arxiv](https://arxiv.org/abs/2605.13986)
   - tabdpt — [arxiv](https://arxiv.org/abs/2410.18164)
   - limix — [arxiv](https://arxiv.org/abs/2509.03505)
