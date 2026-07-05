@@ -45,3 +45,14 @@
   used — in the slides, and presumably in the paper's own compiled PDF too.
   Not fixed since it's the paper's shared source file, not something I was
   asked to touch — just flagging it here in case it's news.
+
+- **Two typos in the paper's own source, confirmed by recompiling it** (not
+  yet decided whether to reproduce them in the slides or keep the cleaned-up
+  version — currently the slides use the cleaned-up version):
+  - Symmetry lemma (Lemma 5.1, `pfn-theory.tex` line 372): stray `P` —
+    `\E_{\Dcal_n \sim P^n}[\wt f(\Dcal_n)] &= \E_{\Dcal_n \sim P^n}P[f(\Dcal_n)]`
+    — renders visibly as an extra floating `P` before the bracket.
+  - Proof of Theorem 3.1 (posterior consistency) conclusion
+    (`pfn-theory.tex` line 721): `p*(y \mid \bx)` missing the `^`, so it
+    renders as a plain asterisk next to `p` instead of a superscript, unlike
+    every other occurrence of `p^*` in the paper.
