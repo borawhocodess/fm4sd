@@ -92,3 +92,21 @@ some papers i find related:
   - lifelongicl — [arxiv](https://arxiv.org/abs/2606.25342)
   - rlfm — [arxiv](https://arxiv.org/abs/2606.18812)
   - lejepa — [arxiv](https://arxiv.org/abs/2511.08544) · [video](https://www.youtube.com/watch?v=gVEr2cnDE_8&t=1944s)
+
+## queue
+
+not grouped yet:
+
+- flextab — [arxiv](https://arxiv.org/abs/2606.30336)
+- enterprisetabgap — [arxiv](https://arxiv.org/abs/2606.30452)
+- gotabpfn — [arxiv](https://arxiv.org/abs/2606.05441)
+- shapinggeometry — [openreview](https://openreview.net/forum?id=IYnHchzvYB)
+- tabgenfm — [arxiv](https://arxiv.org/abs/2605.09424) · [openreview](https://openreview.net/forum?id=RcsaxrdpfE)
+- tabattnbench — [openreview](https://openreview.net/forum?id=rwtcugrpDq)
+- tscausalfm — [openreview](https://openreview.net/forum?id=CAaTQAfq7c)
+- causalfewshot — [openreview](https://openreview.net/forum?id=2yvEiFhNCT)
+- partialcausalid — [openreview](https://openreview.net/forum?id=jCbehzZBsk)
+- causalorder — [openreview](https://openreview.net/forum?id=U4KiOBxY1X)
+- causaltab — [openreview](https://openreview.net/forum?id=og3UVhP7M1)
+- tabshallow — [openreview](https://openreview.net/forum?id=kCnZUf1VYC)
+- tabbarrier — [openreview](https://openreview.net/forum?id=TUYc2XUdwz)
