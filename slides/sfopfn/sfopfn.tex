@@ -53,7 +53,7 @@ A predictor's variance vanishes if its sensitivity to individual training sample
 \subsection{1.1 PFNs in a Nutshell}
 
 \begin{frame}{\currentheading}
-Prior-data fitted networks (PFNs) were proposed by Müller et al.\ (2021) as a new approach to machine learning, motivated by ideas from Bayesian nonparametrics and meta-learning. The goal is to compute a posterior predictive distribution (PPD) for a test feature given observed training data. To approximate the PPD, a transformer network is trained offline through meta-learning.
+Prior-data fitted networks (PFNs) were proposed by Müller et al.\ (2022) as a new approach to machine learning, motivated by ideas from Bayesian nonparametrics and meta-learning. The goal is to compute a posterior predictive distribution (PPD) for a test feature given observed training data. To approximate the PPD, a transformer network is trained offline through meta-learning.
 
 After simulating several training data sets from a variety of tasks, a transformer network imitating the PPD on these sets is trained. After this pre-training phase, the network is treated as fixed. In the inference phase, a fresh training set and some test features are passed to the pre-trained network, which computes predictions for the test labels in a single forward pass.
 \end{frame}
@@ -65,7 +65,7 @@ This approach is different from usual machine learning methods. Here, one would 
 \subsection{1.2 Empirical Findings}
 
 \begin{frame}{\currentheading}
-Empirically, Müller et al.\ (2021) found that PFNs can indeed approximate a given PPD and perform well on real prediction tasks. While this pilot study was limited to tiny data sets, the TabPFN model of Hollmann et al.\ (2022) made a leap forward to classification tasks on moderately large tabular data sets. In particular, they pre-train a network with simulated data sets of size up to $n \approx 1000$ and report state-of-the-art performance on several benchmarks.
+Empirically, Müller et al.\ (2022) found that PFNs can indeed approximate a given PPD and perform well on real prediction tasks. While this pilot study was limited to tiny data sets, the TabPFN model of Hollmann et al.\ (2022) made a leap forward to classification tasks on moderately large tabular data sets. In particular, they pre-train a network with simulated data sets of size up to $n \approx 1000$ and report state-of-the-art performance on several benchmarks.
 
 And surprisingly, the network's predictions continue to improve at the inference stage when fed data sets with more than 1000 samples. This is an example of \emph{in-context learning (ICL)}: a pre-trained network learns from the context provided in the prompt (here: the fresh training data) without updating its parameters.
 \end{frame}
@@ -115,7 +115,7 @@ In particular, no parameter updates are conducted after deployment. ICL has beco
 \end{frame}
 
 \begin{frame}{1.4 Related Work --- In-context-learning on numeric data}
-ICL has also been observed in more classical statistical learning tasks: classification and regression from tabular data. Müller et al.\ (2021) proposed the concept of PFNs and illustrated the abilities of a transformer model on toy examples. The TabPFN model of Hollmann et al.\ (2022) implements a matured version of this idea and shows superb performance on benchmarks with small tabular data.
+ICL has also been observed in more classical statistical learning tasks: classification and regression from tabular data. Müller et al.\ (2022) proposed the concept of PFNs and illustrated the abilities of a transformer model on toy examples. The TabPFN model of Hollmann et al.\ (2022) implements a matured version of this idea and shows superb performance on benchmarks with small tabular data.
 
 Concurrently, Nguyen \& Grover (2022) proposed Transformer Neural Processes following essentially the same idea. They also consider non-\emph{iid} settings and show promising results in applications to image completion, contextual bandits, and Bayesian Optimization. This paper illuminates the statistical foundations of such models in the \emph{iid}-setting and disentangles the prior from the model architecture.
 \end{frame}
@@ -167,7 +167,7 @@ where the \emph{posterior} $\Pi(\cdot \mid \Dcal_n)$ is the conditional distribu
 
 \begin{frame}{\currentheading}
 \begin{remark}[2.1]
-In their implementation of PFNs, Müller et al.\ (2021) and Hollmann et al.\ (2022) use priors that factorize as above, but do not mention it explicitly to justify it. Priors that do not factorize this way would lead to a different form of $\pi(y \mid \bx, \Dcal)$:
+In their implementation of PFNs, Müller et al.\ (2022) and Hollmann et al.\ (2022) use priors that factorize as above, but do not mention it explicitly to justify it. Priors that do not factorize this way would lead to a different form of $\pi(y \mid \bx, \Dcal)$:
 \begin{align*}
 	\pi(y \mid \bx, \Dcal_n) = \int p(y \mid \bx) d\Pi(p \mid \bx, \Dcal_n),
 \end{align*}
@@ -209,7 +209,7 @@ but we shall not make this explicit in notation.
 \end{frame}
 
 \begin{frame}{\currentheading}
-To find the best parameters for given PPDs, Müller et al.\ (2021) propose to solve
+To find the best parameters for given PPDs, Müller et al.\ (2022) propose to solve
 \begin{align*}
 	\btheta^* = \arg\max_{\btheta} \E_{\Pi_N}\E_{\Pi} [\log q_{\btheta}(Y \mid \bX, \Dcal_N)],
 \end{align*}
@@ -415,7 +415,7 @@ So if $q_{\btheta}$ is unbiased for rich enough $\Pcal$, we can flip the labels 
 \end{frame}
 
 \begin{frame}{\currentheading}
-The result bears little meaning if the class $\Pcal$ is too small, and meaningless if $\Pcal$ contains only one $p$. Even for rich $\Pcal$, it only provides necessary conditions for a vanishing bias. A constant predictor $q_{\btheta} = 1$ is local in the sense above, but its bias does not change with $n$. However, if $\Pcal$ is rich and the bias does vanish for all $p \in \Pcal$, the predictor $q_{\btheta}$ can effectively only use $\epsilon_n n = o(n)$ samples, so the sensitivity condition is unlikely to hold with $\alpha = 1$. This is in line with the lower bounds on the bias-variance trade-off derived in prior work (Derumigny \& Francq, 2020).
+The result bears little meaning if the class $\Pcal$ is too small, and meaningless if $\Pcal$ contains only one $p$. Even for rich $\Pcal$, it only provides necessary conditions for a vanishing bias. A constant predictor $q_{\btheta} = 1$ is local in the sense above, but its bias does not change with $n$. However, if $\Pcal$ is rich and the bias does vanish for all $p \in \Pcal$, the predictor $q_{\btheta}$ can effectively only use $\epsilon_n n = o(n)$ samples, so the sensitivity condition is unlikely to hold with $\alpha = 1$. This is in line with the lower bounds on the bias-variance trade-off derived in prior work (Derumigny \& Schmidt-Hieber, 2020).
 \end{frame}
 
 \section{6 Insights on Specific PFNs}
@@ -612,7 +612,7 @@ Intuitively, restricting to a neighborhood is like stretching/flattening the tar
 
 \begin{frame}{\currentheading}
 \small
-Since the key mechanism acting on $\Dcal_n$ remains intact if we add more layers to the network, the findings likely transfer to larger networks. The main predictions from our theoretical considerations are: $(i)$ the variance vanishes at rate $1/n$, $(ii)$ the bias does not vanish, but decreases until $n \approx 1000$. To confirm this empirically, we simulate 500 data sets $\Dcal_n$ from the model $p_0(1 \mid \bX) = 1/2 + \sin(\bm 1^\top \bX) / 2$ with $Y \in \{0, 1\}$, $\bX \sim \Ncal( \bnull, I_5)$, and run the pre-trained TabPFN of Hollmann et al.\ (pip version 0.1.8).
+Since the key mechanism acting on $\Dcal_n$ remains intact if we add more layers to the network, the findings likely transfer to larger networks. The main predictions from our theoretical considerations are: $(i)$ the variance vanishes at rate $1/n$, $(ii)$ the bias does not vanish, but decreases until $n \approx 1000$. To confirm this empirically, we simulate 500 data sets $\Dcal_n$ from the model $p_0(1 \mid \bX) = 1/2 + \sin(\bm 1^\top \bX) / 2$ with $Y \in \{0, 1\}$, $\bX \sim \Ncal( \bnull, I_5)$, and run the pre-trained TabPFN of Hollmann et al.\ (2022, pip version 0.1.8).
 \end{frame}
 
 \begin{frame}{\currentheading}
@@ -693,7 +693,7 @@ We need the following assumptions. Write $\KL(f \mid f')$ for the KL-divergence 
 \end{frame}
 
 \begin{frame}{\currentheading}
-Now let $\Pi_n(A) = \int_A d\Pi(p \mid \Dcal_n)$ be the posterior measure. From our assumptions and known posterior contraction results (de Blasi et al., 2013, Corollary 1) it follows that for all $\epsilon > 0$,
+Now let $\Pi_n(A) = \int_A d\Pi(p \mid \Dcal_n)$ be the posterior measure. From our assumptions and known posterior contraction results (De Blasi \& Walker, 2013, Corollary 1) it follows that for all $\epsilon > 0$,
 \begin{align*}
 	\Pi_n\bigl\{p \in \Pcal\colon H(p, p^*) > \epsilon\bigr\} \to 0,
 \end{align*}
@@ -1016,7 +1016,7 @@ It holds:
 	      \end{align*}
 \end{enumerate}
 \end{theorem}
-Proof: Corollary 3.2.3 and Example 3.2.12 in van der Vaart (1996).
+Proof: Corollary 3.2.3 and Example 3.2.12 in Vaart \& Wellner (1996).
 \end{frame}
 
 \begin{frame}{\currentheading}
