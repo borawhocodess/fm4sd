@@ -14,7 +14,7 @@ papers for [foundation models for structured data (fm4sd) seminar](https://ml.in
     - talent — [arxiv](https://arxiv.org/abs/2407.04057)
     - tabarena — [arxiv](https://arxiv.org/abs/2506.16791) · [video](https://youtu.be/mcPRMcJHW2Y)
   - group 4
-    - stopfns — [arxiv](https://arxiv.org/abs/2305.11097) · [pmlr](https://proceedings.mlr.press/v202/nagler23a)
+    - sfopfn — [arxiv](https://arxiv.org/abs/2305.11097) · [pmlr](https://proceedings.mlr.press/v202/nagler23a)
 - time series
   - group 5
     - fev-bench — [arxiv](https://arxiv.org/abs/2509.26468)
