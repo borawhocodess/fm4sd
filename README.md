@@ -110,3 +110,6 @@ not grouped yet:
 - causaltab — [openreview](https://openreview.net/forum?id=og3UVhP7M1)
 - tabshallow — [openreview](https://openreview.net/forum?id=kCnZUf1VYC)
 - tabbarrier — [openreview](https://openreview.net/forum?id=TUYc2XUdwz)
+- martingale — [arxiv](https://arxiv.org/abs/2103.15671)
+- tjepa — [arxiv](https://arxiv.org/abs/2410.05016)
+- pfnuq — [arxiv](https://arxiv.org/abs/2505.11325)
