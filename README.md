@@ -86,3 +86,7 @@ some papers i find related:
   - foundcause — [arxiv](https://arxiv.org/abs/2606.17516)
   - tabpfn-cfm — [arxiv](https://arxiv.org/abs/2606.26467)
   - tabpfnunderstandcausal — [arxiv](https://arxiv.org/abs/2511.07236) · [video](https://www.youtube.com/watch?v=9_on4JV9zDg)
+- other
+  - lifelongicl — [arxiv](https://arxiv.org/abs/2606.25342)
+  - rlfm — [arxiv](https://arxiv.org/abs/2606.18812)
+  - lejepa — [arxiv](https://arxiv.org/abs/2511.08544) · [video](https://www.youtube.com/watch?v=gVEr2cnDE_8&t=1944s)
