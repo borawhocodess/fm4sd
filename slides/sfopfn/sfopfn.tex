@@ -108,23 +108,23 @@ The discussion concludes with suggestions for future research. All proofs are gi
 
 \subsection{1.4 Related Work}
 
-\begin{frame}{\currentheading}
+\begin{frame}{1.4 Related Work --- In-context-learning in large language models}
 The recent interest in ICL was spurred by the success of \emph{large language models (LLMs)}. These models are pre-trained on a sequence prediction task on a large corpus of text. When deployed, large models show the ability to solve tasks that they haven't seen during pre-training (e.g., mathematical reasoning problems), only from the prompt context.
 
 In particular, no parameter updates are conducted after deployment. ICL has become a new paradigm for natural language processing and is intimately linked to the transformer architecture. Dong et al.\ (2023) provide an up-to-date survey of the large body of LLM-related research on in-context learning.
 \end{frame}
 
-\begin{frame}{\currentheading}
+\begin{frame}{1.4 Related Work --- In-context-learning on numeric data}
 ICL has also been observed in more classical statistical learning tasks: classification and regression from tabular data. Müller et al.\ (2021) proposed the concept of PFNs and illustrated the abilities of a transformer model on toy examples. The TabPFN model of Hollmann et al.\ (2022) implements a matured version of this idea and shows superb performance on benchmarks with small tabular data.
 
 Concurrently, Nguyen \& Grover (2022) proposed Transformer Neural Processes following essentially the same idea. They also consider non-\emph{iid} settings and show promising results in applications to image completion, contextual bandits, and Bayesian Optimization. This paper illuminates the statistical foundations of such models in the \emph{iid}-setting and disentangles the prior from the model architecture.
 \end{frame}
 
-\begin{frame}{\currentheading}
+\begin{frame}{1.4 Related Work --- Mechanics of transformer-based ICL}
 Garg et al.\ (2022) show that transformers can learn target functions generated from linear models, two-layer neural networks, and decision trees. Several other works provide arguments and experiments on how in-context learning emerges through implicit gradient descent. Olsson et al.\ (2022) identify a pattern of several attention heads working together, closely related to the discussion after the transformer-bias theorem in this paper. Kirsch et al.\ (2022) experimentally investigates other architectural features (layers, memory, etc.). This work sheds further light on the mechanisms and architectural features enabling ICL.
 \end{frame}
 
-\begin{frame}{\currentheading}
+\begin{frame}{1.4 Related Work}
 Overall, the current work complements the existing ICL literature, by providing a theoretical foundation for the empirical findings and deriving new insights from the perspective of statistical generalization theory.
 \end{frame}
 
