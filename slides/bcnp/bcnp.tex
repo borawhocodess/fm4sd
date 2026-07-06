@@ -1,0 +1,1401 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+
+\usetheme{metropolis}
+\metroset{progressbar=frametitle, numbering=fraction, block=fill}
+
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{tikz}
+\usetikzlibrary{bayesnet}
+\usetikzlibrary{arrows}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,shadows,fit,backgrounds}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{bm}
+
+\input{../../papers/bcnp/src/math_commands.tex}
+
+% custom commands from the paper's own preamble (main.tex)
+\newcommand{\model}{\mathcal{M}}
+\newcommand{\ycausex}{\model_{Y \to X}}
+\newcommand{\xcausey}{\model_{X \to Y}}
+\newcommand{\xindepy}{\model_{X \indep Y}}
+\newcommand{\indep}{\perp \!\!\! \perp}
+\newcommand{\bfx}{\mathbf{x}}
+\newcommand{\bfy}{\mathbf{y}}
+\newcommand{\xtoy}{X\!\!\to\!\!Y}
+\newcommand{\ytox}{Y\!\!\to\!\!X}
+\newcommand{\nomodelxind}{X\!\!\indep\!\!Y}
+
+% frame title = current subsection if one has been declared, else current section
+\newcommand{\currentheading}{\ifx\insertsubsection\empty\insertsection\else\insertsubsection\fi}
+
+\newcommand{\cit}[1]{{\scriptsize\color{gray}[#1]}}
+
+\title{A Meta-Learning Approach to Bayesian Causal Discovery}
+\subtitle{}
+\author{\cit{Dhir, Ashman, Requeima, van der Wilk '25}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Abstract}
+
+\begin{frame}{Abstract}
+Discovering a unique causal structure is difficult due to both inherent identifiability issues, and the consequences of finite data. As such, uncertainty over causal structures, such as those obtained from a Bayesian posterior, are often necessary for downstream tasks.
+\end{frame}
+
+\begin{frame}{Abstract}
+Finding an accurate approximation to this posterior is challenging, due to the large number of possible causal graphs, as well as the difficulty in the subproblem of finding posteriors over the functional relationships of the causal edges. Recent works have used Bayesian meta learning to view the problem of posterior estimation as a supervised learning task. Yet, these methods are limited as they cannot reliably sample from the posterior over causal structures and fail to encode key properties of the posterior, such as correlation between edges and permutation equivariance with respect to nodes.
+\end{frame}
+
+\begin{frame}{Abstract}
+To address these limitations, we propose a Bayesian meta learning model that allows for sampling causal structures from the posterior and encodes these key properties. We compare our meta-Bayesian causal discovery against existing Bayesian causal discovery methods, demonstrating the advantages of directly learning a posterior over causal structure.
+\end{frame}
+
+\section{1 Introduction}
+
+\begin{frame}{1 Introduction}
+Learning causal structure has the potential to supercharge areas of science with the ability to understand the impact of interacting with complex systems. Learning causal structures with certainty, requires interventional data, which is often impossible or very costly to gather. This makes it preferable to infer as much of the causal structure as possible using observational data, and find a way of dealing with the resulting multiple solutions that cannot be distinguished.
+\end{frame}
+
+\begin{frame}{1 Introduction}
+One way to do this is to use Bayesian inference to express uncertainty over causal structure, which can then be incorporated in downstream tasks, such as effect estimation, or to increase confidence about relations by collecting more data.
+\end{frame}
+
+\begin{frame}{1 Introduction}
+Dhir et al.\ (2024) showed that the Bayesian posterior can distinguish causal structure, even within a Markov equivalence class, using only the implications of priors on functional relationships between variables. This effect occurs because the factorisation assumptions in the prior over functions, implied by the Independent Causal Mechanism (ICM) principle, can contribute to the inference over the causal structure. Hence, inaccuracies in functional inference can also result in inaccurate inference over causal structure.
+\end{frame}
+
+\begin{frame}{1 Introduction}
+Current methods that approximate the posterior on causal graphs make restrictive assumptions on the functions for accurate inference, or rely on approximating the posterior over functions in Bayesian neural networks, which is notoriously difficult to do accurately. Moreover, the high dimensionality of graphs with many variables further complicates effective inference.
+\end{frame}
+
+\begin{frame}{1 Introduction}
+In contrast, Bayesian meta-learning models such as neural processes directly learn a map from a dataset to a posterior distribution. The Bayesian prior is implicitly encoded through a distribution over datasets, while directly predicting the posterior implicitly marginalises out any latent variables. This approach circumvents the need to approximate distributions on functions that is present in previous approaches. Such generative models have also shown strong performance in sampling from high-dimensional distributions, making them well-suited for large graphs.
+\end{frame}
+
+\begin{frame}{1 Introduction}
+However, directly learning a posterior over causal graphs does introduce new challenges from a generative modelling perspective. We need to allow for complex distributions with dependencies between edges, while also constraining to the space of acyclic graphs. Additionally, properties present in the true posterior, such as permutation equivariance with respect to the nodes, must be incorporated.
+\end{frame}
+
+\begin{frame}{1 Introduction}
+Recent efforts to use neural processes for this purpose only targeted the maximum a posteriori value, leading to limitations when considering the full posterior. Some methods lack the ability to explicitly generate acyclic samples while ignoring permutation equivariance, while others fail to capture the dependencies between edges, resulting in an inability to sample from the correct posterior. Thus, their usefulness for downstream tasks, where the full posterior over causal structures is required, is limited.
+\end{frame}
+
+\begin{frame}{1 Introduction}
+We propose the \textit{Bayesian Causal Neural Process} (BCNP) model that addresses these drawbacks. This takes the form of an encoder-decoder transformer that encodes dependencies between edges, and is permutation equivariant with respect to the nodes. Building on recent advances in Charpentier et al.\ (2021) and Annadani et al.\ (2024), our decoder allows for direct sampling over directed acyclic graphs (DAGs), by parametrising a distribution over permutation and lower triangular Bernoulli matrices. The samples are thus acyclic by construction and can allow for sampling multiple valid causal structures that are consistent with a given dataset.
+\end{frame}
+
+\begin{frame}{1 Introduction}
+We show that the BCNP model generates accurate posterior samples compared to previous Bayesian meta-learning approaches. We also demonstrate that the BCNP model outperforms explicit Bayesian models, as well as other meta-learning models when the model is trained on the correct data distribution, and also when the data distribution of a dataset is unknown.
+\end{frame}
+
+\begin{frame}{1 Introduction --- Contributions}
+Our contributions are as follows: 1) We build on previous insights on meta-learning for causal discovery but focus on estimating the full posterior over causal structures. We introduce a decoder and a loss function to achieve this all the while encoding key properties of the posterior. In contrast with other approaches, this allows for sampling from the correct posterior over causal structures.
+\end{frame}
+
+\begin{frame}{1 Introduction --- Contributions}
+2) We show that our changes lead to significant performance increases as well as outperforming explicit Bayesian causal models as well as other meta-learning models on synthetic and semi-synthetic data. We provide code for our method: \texttt{CausalStructureNeuralProcess}.
+\end{frame}
+
+\section{2 Background and Related Work}
+\subsection{2.1 Learning Causal Structure}
+
+\begin{frame}{2.1 Learning Causal Structure}
+We denote a given a dataset of $N$ samples with $D$ variables as $\mathbf{X}$. We assume that the dataset is generated according to a Structural Causal Model (SCM), which is specified by a \textit{directed acyclic graph} (DAG) encoded through its acyclic adjacency matrix $\mathcal{G} \in \{0,1\}^{D \times D}$. The variables are generated by following the DAG as
+\begin{align*}
+    X_d = f_d(X_{\text{PA}_{\mathcal{G}}(d)}, \epsilon_d), \text{ \ for \ } d \in \{d, \ldots,N\}
+\end{align*}
+\end{frame}
+
+\begin{frame}{2.1 Learning Causal Structure}
+where $X_d$ is the $d^{\text{th}}$ variable, $f_d$ is a function, $\text{PA}_{\mathcal{G}}(d)$ is the index set of parents of variable $X_d$ in the DAG $\mathcal{G}$, and $\epsilon_d$ is some arbitrary noise. Our goal is to infer the DAG (or causal structure) that generated a given dataset.
+\end{frame}
+
+\begin{frame}{2.1 Learning Causal Structure}
+To do this, we specify a \textit{Bayesian causal model} $P(\mathbf{X}, \rvf, \mathcal{G}) = P(\mathbf{X} |\rvf, \mathcal{G})P(\rvf, \mathcal{G})$ that specifies our belief of the data generation process, with likelihood $P(\mathbf{X} |\rvf, \mathcal{G})$, and priors over functions $P(\rvf)$ and over DAGs $P(\mathcal{G})$. In the SCM, changing a variable's functional mechanism does not change any other variable's functional mechanisms.
+\end{frame}
+
+\begin{frame}{2.1 Learning Causal Structure}
+This imposes a constraint on the Bayesian causal model in that it must satisfy the \textit{Independent Causal Mechanism} (ICM) assumption. This is achieved by ensuring that prior over functions factorise over the variables, $P(\rvf) = \prod_{d=1}^D P(f_d)$.
+\end{frame}
+
+\begin{frame}{2.1 Learning Causal Structure}
+The posterior, which specifies the model's belief over DAGs can be computed as
+\begin{align*}
+	P(\mathcal{G} | \mathbf{X}) = \frac{P(\mathbf{X} | \mathcal{G})P(\mathcal{G})}{\sum_{\mathcal{G}} P(\mathbf{X}|\mathcal{G})P(\mathcal{G})},
+\end{align*}
+where $P(\mathbf{X} | \mathcal{G})$ is referred to as the \textit{marginal likelihood}. Crucially, the marginal likelihood is the normalization factor for the posterior distribution over the model's functional mechanisms $\rvf$ and thus relies on accurate posterior inference over $\rvf$.
+\end{frame}
+
+\begin{frame}{2.1 Learning Causal Structure}
+\small
+A Bayesian causal model is called \textit{identifiable} if a dataset it generates corresponds uniquely to the correct DAG. In such cases, Dhir et al.\ (2024) demonstrated that, under the ICM assumption, the marginal likelihood---and by extension, the posterior over functions---is sufficient to distinguish causal directions. Thus, inaccurate functional inference can lead to incorrect causal structures being inferred. Furthermore, if a causal model is not identifiable, multiple causal structures may explain the dataset to varying degrees --- a challenge that also arises with finite samples. In these cases, the posterior over causal structures quantifies this uncertainty.
+\end{frame}
+
+\begin{frame}{2.1 Learning Causal Structure}
+Although the marginal likelihood is tractable for simpler models, this can introduce misspecification issues. For more flexible function approximators, such as neural networks, computing the marginal likelihood becomes challenging due to the complexity of functional inference. Additionally, the large space of possible DAGs further complicates this process, as the normalizer is intractable to compute, and sampling efficiently in high-dimensional spaces is difficult.
+\end{frame}
+
+\subsection{2.2 Related Work}
+
+\begin{frame}{2.2 Related Work}
+A lot of causal discovery focuses on identifying a single causal structure that generated a dataset. This is prone to errors in cases where, due to identifiability or finite sample issues, multiple causal structures can explain a dataset. On the other hand, Bayesian causal discovery provides a distribution over possible causal structures that align with the observed data. As our work is concerned with the latter, we review existing approaches in this area.
+\end{frame}
+
+\begin{frame}{2.2 Related Work}
+The challenges of Bayesian causal discovery lie in accurate estimation of the marginal likelihood, which requires accurate inference over functional mechanisms and the large number of graphs. Geiger \& Heckerman (2002) addressed this by limiting their approach to linear Gaussian models and constraining to a single prior, ensuring identical posteriors within a Markov equivalence class, thereby reducing the search space.
+\end{frame}
+
+\begin{frame}{2.2 Related Work}
+Other methods for linear models enable the incorporation of additional priors by using variational inference to tackle the large search space. However, even though inference is accurate, considering only simple functional relationships may lead to misspecification.
+\end{frame}
+
+\begin{frame}{2.2 Related Work}
+\small
+For more expressive models, such as neural networks, methods that combine both sampling and variational inference have been proposed. DiBS (Lorch et al., 2021) uses Bayesian neural networks to model relationships between variables and Stein variational gradient descent (Liu \& Wang, 2016) to perform inference over both the neural networks and the causal structure. A regulariser is used to ensure that the samples are acyclic. However, this approach is computationally expensive with quadratic cost with the number of samples and further samples requires restarting the optimization process.
+\end{frame}
+
+\begin{frame}{2.2 Related Work}
+\small
+In contrast BayesDAG (Annadani et al., 2024) directly parametrise the space of DAGs using upper triangular and permutation matrices (Charpentier et al., 2021), eliminating the need for a regulariser and enabling the use of variational inference. For expressivity, they also use Bayesian neural networks, but use SG-MCMC (Chen et al., 2014) to perform inference over the network weights. Despite these advancements, the accuracy of inference mechanisms for Bayesian neural networks remains uncertain, and as such the quality of the posterior over graphs. Our approach differs by amortizing the entire inference process, which mitigates inaccuracies in the inference of functional relationships between variables and facilitates rapid sampling from the posterior distribution.
+\end{frame}
+
+\begin{frame}{2.2 Related Work}
+The line of work closest to ours is Bayesian meta-learning based causal discovery, where causal discovery is reformulated as a classification problem. Lopez-Paz et al.\ (2015) first proposed this with two variables. The kernel mean embedding of data with known causal relationships (or synthetically generated) was used to train a classifier.
+\end{frame}
+
+\begin{frame}{2.2 Related Work}
+Li et al.\ (2020) extended the approach using neural network embeddings to output the adjacency matrix for multiple variables. A key observation was that the adjacency matrix must be permutation equivariant with respect to the variables, improving the model's statistical efficiency. However, they limited their input features to the correlation coefficients between variables.
+\end{frame}
+
+\begin{frame}{2.2 Related Work}
+\small
+Recent advances like AVICI (Lorch et al., 2022) and CSIvA (Ke et al., 2022) extend the above approach, using transformers on learnt embeddings of the inputs instead of fixed features. Here, attention between nodes and samples of a node are interleaved, ensuring that the final representation is extracted such that it is permutation invariant with respect to the samples. AVICI uses a max pooling operation to achieve this, while CSIvA uses an attention operation. They both also differ in their representation of the adjacency matrix. AVICI decodes the representation using a linear layer to a binary matrix, while CSIvA uses an autoregressive decoder to estimate the probability of each element in sequence.
+\end{frame}
+
+\begin{frame}{2.2 Related Work}
+\small
+Methods such as AVICI and CSIvA aim to approximate the posterior over the causal structure, but only target the maximum a posteriori value. Thus, when considering the full posterior, these approximations fail to capture essential properties, resulting in inaccurate estimates. AVICI only estimates the marginal probabilities of an edge existing, while the use of an acyclicity regulariser directly on the probabilities biases these estimates. Moreover, AVICI can also only provide acyclic samples in expectation and does not provide samples from the actual posterior.
+\end{frame}
+
+\begin{frame}{2.2 Related Work}
+\small
+CSIvA captures dependencies between edges but lacks permutation equivariance, meaning that reordering nodes can change its belief about causal relationships. It also does not guarantee acyclic samples, and its autoregressive approach performs poorly as the number of variables increases. In this work, we allow for sampling acyclic graphs while retaining the performance of these methods. The differences between AVICI, CSIvA, and ours (BCNP) can be seen in the table below.
+\end{frame}
+
+\begin{frame}{Table --- Comparison of Approaches}
+\centering
+\begin{tabular}{cccc}
+\toprule
+& AVICI & CSIvA & BCNP (ours) \\
+\midrule
+Acyclic Samples  &  In expectation  &  No     &  Yes      \\
+Edge Dependency   & No  &  Yes     &   Yes    \\
+Permutation Equivariance  & Yes  &  No      & Yes      \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Comparison of our approach against existing Bayesian meta-learning methods for Bayesian causal discovery (AVICI and CSIvA).}
+\end{frame}
+
+\section{3 Causal Structure Learning as Bayesian Meta Learning}
+
+\begin{frame}{3 Causal Structure Learning as Bayesian Meta Learning}
+The process described in the posterior equation requires positing a causal model including prior beliefs over the causal functions, as well as the causal structure. Due to the presence of the marginal likelihood term, the posterior over the causal structure also requires computing the posterior over the functional parameters. For flexible models, such as neural networks, good approximations to this posterior are hard to obtain. To address this difficulty, we can use neural processes to learn a direct mapping from datasets to posteriors over causal graphs, bypassing the need to approximate the posterior over functions.
+\end{frame}
+
+\begin{frame}{3 Causal Structure Learning as Bayesian Meta Learning}
+\small
+Our goal is to approximate the posterior of the Bayesian causal model of choice, which we refer to as $P_{\text{BCM}}(\rmX, \rvf, \mathcal{G})$. To do so, we use a \textit{Bayesian Causal Neural Process} (BCNP) model $P_{\phi}(\mathcal{G}| \rmX)$ with parameters $\phi$. This model is an encoder-decoder transformer network that takes in a dataset and directly approximates the posterior $P_{\text{BCM}}(\mathcal{G} | \rmX)$. To train it to do so, we minimise the KL-divergence between $P_{\text{BCM}}(\mathcal{G} | \rmX)$ and $P_{\phi}(\mathcal{G}| \rmX)$,
+\begin{align*}
+&\min_{\phi} -  \mathbb{E}_{P_{\text{BCM}}(\rmX)}\left[\operatorname{KL}\left[P_{\text{BCM}}(\mathcal{G} | \rmX) \|  P_{\phi}(\mathcal{G}| \rmX) \right]\right]   \\
+    =& \min_{\phi}-  \mathbb{E}_{P_{\text{BCM}}(\mathcal{G})} \left[ \mathbb{E}_{P_{\text{BCM}}(\rvf)} \left[ \mathbb{E}_{P_{\text{BCM}}(\rmX | \rvf, \mathcal{G})}\left[  \log P_{\phi}(\mathcal{G}| \rmX)  \right] \right]  \right] + C
+\end{align*}
+where $C$ is a constant that does not depend on $\phi$.
+\end{frame}
+
+\begin{frame}{3 Causal Structure Learning as Bayesian Meta Learning}
+\small
+During training, the expectation is computed via a Monte Carlo approximation that requires sampling from the Bayesian causal model $P_{\text{BCM}}(\rmX, \rvf, \mathcal{G})$. Sampling from this model proceeds by first sampling a graph $\mathcal{G} \sim P_{\text{BCM}}(\mathcal{G})$, then a functional mechanism for each of the $D$ variables $\rvf = \{f_1, \ldots, f_D\} \sim P_{\text{BCM}}(\rvf)$, and then $N$ samples of each variable generated according to $\mathcal{G}$ denoted $\rmX \sim P_{\text{BCM}}(\rmX|\rvf, \mathcal{G})$.
+\end{frame}
+
+\begin{frame}{3 Causal Structure Learning as Bayesian Meta Learning}
+\small
+The above procedure applies not only to datasets and causal graphs from an explicitly defined Bayesian causal model but also enables posterior approximation from datasets and causal graphs generated from some unknown distribution. Regardless of the data generating procedure, by directly learning the posterior over graphs, the model $P_{\phi}(\mathcal{G}| \rmX)$ implicitly marginalises out the function $\rvf$, removing the need to approximate the posterior over functions. The above KL-divergence is minimised if and only if the model recovers the true posterior, $P_{\phi}(\mathcal{G}| \rmX) = P_{\text{BCM}}(\mathcal{G} | \rmX)$.
+\end{frame}
+
+\begin{frame}{3 Causal Structure Learning --- Properties to Encode}
+\small
+There are certain properties of the posterior $P_{\text{BCM}} (\mathcal{G} | \rmX)$ that can be encoded directly in $P_{\phi}(\mathcal{G}| \rmX)$. Permuting the samples of a dataset does not change the posterior distribution, which implies that $P_{\phi}(\mathcal{G}| \rmX)$ must be permutation-invariant with respect to the samples. Furthermore, permuting the nodes in the dataset should not change the model's belief, expressed through the posterior, about the existence of a causal relationship.
+\end{frame}
+
+\begin{frame}{3 Causal Structure Learning --- Properties to Encode}
+For example, if a model predicts $X \rightarrow Y$ with a certain probability when given $(X, Y)$ as inputs, it should predict the same relation with the same probability if the inputs are permuted to $(Y,X)$. As causal relationships are expressed through a DAG $\mathcal{G} \in \{0,1\}^{D \times D}$, this requires the probability of sampling a DAG to be permutation-equivariant with respect to the nodes.
+\end{frame}
+
+\begin{frame}{3 Causal Structure Learning --- Properties to Encode}
+In addition to encoding these properties, the model must also be able to sample DAGs from the posterior to be practically useful. Next, we introduce a network that parameterises the distribution $P_{\phi}(\mathcal{G}| \rmX)$ to represent a distribution over DAGs, allowing us to sample acyclic graphs corresponding to valid causal structures. Furthermore, it also ensures that the distribution is permutation invariant with respect to the samples, and permutation equivariant with respect to the nodes.
+\end{frame}
+
+\subsection{3.1 Encoder}
+
+\begin{frame}{Figure --- Encoder}
+\centering
+\resizebox{0.95\textwidth}{!}{
+
+\tikzset{every picture/.style={line width=0.75pt}} %
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+
+\draw  [fill={rgb, 255:red, 255; green, 255; blue, 255 }  ,fill opacity=1 ] (22.4,65.81) -- (48.74,39.47) -- (110.2,39.47) -- (110.2,102.73) -- (83.86,129.07) -- (22.4,129.07) -- cycle ; \draw   (110.2,39.47) -- (83.86,65.81) -- (22.4,65.81) ; \draw   (83.86,65.81) -- (83.86,129.07) ;
+\draw  [fill={rgb, 255:red, 155; green, 155; blue, 155 }  ,fill opacity=1 ] (317.05,70.89) -- (348.94,39) -- (359.87,39) -- (359.87,95.75) -- (327.97,127.64) -- (317.05,127.64) -- cycle ; \draw   (359.87,39) -- (327.97,70.89) -- (317.05,70.89) ; \draw   (327.97,70.89) -- (327.97,127.64) ;
+\draw  [fill={rgb, 255:red, 155; green, 155; blue, 155 }  ,fill opacity=1 ] (332.31,70.89) -- (364.2,39) -- (375.13,39) -- (375.13,95.75) -- (343.23,127.64) -- (332.31,127.64) -- cycle ; \draw   (375.13,39) -- (343.23,70.89) -- (332.31,70.89) ; \draw   (343.23,70.89) -- (343.23,127.64) ;
+\draw  [fill={rgb, 255:red, 155; green, 155; blue, 155 }  ,fill opacity=1 ] (347.02,70.89) -- (378.92,39) -- (389.84,39) -- (389.84,95.75) -- (357.95,127.64) -- (347.02,127.64) -- cycle ; \draw   (389.84,39) -- (357.95,70.89) -- (347.02,70.89) ; \draw   (357.95,70.89) -- (357.95,127.64) ;
+\draw  [fill={rgb, 255:red, 155; green, 155; blue, 155 }  ,fill opacity=1 ] (363.65,70.89) -- (395.54,39) -- (406.47,39) -- (406.47,95.75) -- (374.57,127.64) -- (363.65,127.64) -- cycle ; \draw   (406.47,39) -- (374.57,70.89) -- (363.65,70.89) ; \draw   (374.57,70.89) -- (374.57,127.64) ;
+
+\draw  [fill={rgb, 255:red, 153; green, 79; blue, 0 }  ,fill opacity=1 ] (90.06,65.77) -- (116.06,39.77) -- (127.53,39.77) -- (127.53,104.6) -- (101.53,130.6) -- (90.06,130.6) -- cycle ; \draw   (127.53,39.77) -- (101.53,65.77) -- (90.06,65.77) ; \draw   (101.53,65.77) -- (101.53,130.6) ;
+\draw  [fill={rgb, 255:red, 225; green, 190; blue, 106 }  ,fill opacity=1 ] (640.09,65.63) -- (669.92,35.8) -- (680,35.8) -- (680,96.64) -- (650.17,126.47) -- (640.09,126.47) -- cycle ; \draw   (680,35.8) -- (650.17,65.63) -- (640.09,65.63) ; \draw   (650.17,65.63) -- (650.17,126.47) ;
+\draw  [fill={rgb, 255:red, 155; green, 155; blue, 155 }  ,fill opacity=1 ] (185.67,116.67) -- (211.23,91.1) -- (289,91.1) -- (289,102.74) -- (263.43,128.31) -- (185.67,128.31) -- cycle ; \draw   (289,91.1) -- (263.43,116.67) -- (185.67,116.67) ; \draw   (263.43,116.67) -- (263.43,128.31) ;
+\draw  [fill={rgb, 255:red, 155; green, 155; blue, 155 }  ,fill opacity=1 ] (185.67,100.67) -- (211.23,75.1) -- (289,75.1) -- (289,86.74) -- (263.43,100.67) -- (185.67,100.67) -- cycle ; \draw   (289,75.1) -- (263.43,100.67) -- (185.67,100.67) ; \draw   (263.43,100.67) -- (263.43,112.31) ;
+\draw  [fill={rgb, 255:red, 155; green, 155; blue, 155 }  ,fill opacity=1 ] (185.7,84.27) -- (211.27,58.7) -- (289.03,58.7) -- (289.03,70.34) -- (263.47,95.91) -- (185.7,95.91) -- cycle ; \draw   (289.03,58.7) -- (263.47,84.27) -- (185.7,84.27) ; \draw   (263.47,84.27) -- (263.47,95.91) ;
+\draw  [fill={rgb, 255:red, 155; green, 155; blue, 155 }  ,fill opacity=1 ] (185.7,67.07) -- (211.27,41.5) -- (289.03,41.5) -- (289.03,53.14) -- (263.47,78.71) -- (185.7,78.71) -- cycle ; \draw   (289.03,41.5) -- (263.47,67.07) -- (185.7,67.07) ; \draw   (263.47,67.07) -- (263.47,78.71) ;
+
+\draw  [fill={rgb, 255:red, 0; green, 108; blue, 209 }  ,fill opacity=1 ] (502.99,114.93) -- (528.56,89.37) -- (590.79,89.37) -- (590.79,101.01) -- (565.23,126.57) -- (502.99,126.57) -- cycle ; \draw   (590.79,89.37) -- (565.23,114.93) -- (502.99,114.93) ; \draw   (565.23,114.93) -- (565.23,126.57) ;
+\draw  [fill={rgb, 255:red, 0; green, 108; blue, 209 }  ,fill opacity=1 ] (502.99,98.53) -- (528.56,72.97) -- (590.79,72.97) -- (590.79,84.61) -- (565.23,98.53) -- (502.99,98.53) -- cycle ; \draw   (590.79,72.97) -- (565.23,98.53) -- (502.99,98.53) ; \draw   (565.23,98.53) -- (565.23,110.17) ;
+\draw  [fill={rgb, 255:red, 0; green, 108; blue, 209 }  ,fill opacity=1 ] (503.03,81.73) -- (528.6,56.17) -- (590.83,56.17) -- (590.83,67.81) -- (565.27,93.37) -- (503.03,93.37) -- cycle ; \draw   (590.83,56.17) -- (565.27,81.73) -- (503.03,81.73) ; \draw   (565.27,81.73) -- (565.27,93.37) ;
+\draw  [fill={rgb, 255:red, 0; green, 108; blue, 209 }  ,fill opacity=1 ] (503.03,65.33) -- (528.6,39.77) -- (590.83,39.77) -- (590.83,51.41) -- (565.27,76.97) -- (503.03,76.97) -- cycle ; \draw   (590.83,39.77) -- (565.27,65.33) -- (503.03,65.33) ; \draw   (565.27,65.33) -- (565.27,76.97) ;
+\draw  [fill={rgb, 255:red, 153; green, 79; blue, 0 }  ,fill opacity=1 ] (574.22,116.67) -- (602.45,88.43) -- (612,88.43) -- (612,98.43) -- (583.77,126.67) -- (574.22,126.67) -- cycle ; \draw   (612,88.43) -- (583.77,116.67) -- (574.22,116.67) ; \draw   (583.77,116.67) -- (583.77,126.67) ;
+\draw    (99.13,171.2) -- (98.75,134.6) ;
+\draw [shift={(98.73,132.6)}, rotate = 89.41] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+\draw   (169.45,57.29) .. controls (169.45,42.22) and (181.67,30) .. (196.74,30) -- (412.71,30) .. controls (427.78,30) and (440,42.22) .. (440,57.29) -- (440,139.15) .. controls (440,154.23) and (427.78,166.44) .. (412.71,166.44) -- (196.74,166.44) .. controls (181.67,166.44) and (169.45,154.23) .. (169.45,139.15) -- cycle ;
+\draw  [fill={rgb, 255:red, 153; green, 79; blue, 0 }  ,fill opacity=1 ] (573.83,100.33) -- (602.07,72.1) -- (611.61,72.1) -- (611.61,82.1) -- (583.38,110.33) -- (573.83,110.33) -- cycle ; \draw   (611.61,72.1) -- (583.38,100.33) -- (573.83,100.33) ; \draw   (583.38,100.33) -- (583.38,110.33) ;
+\draw  [fill={rgb, 255:red, 153; green, 79; blue, 0 }  ,fill opacity=1 ] (573.83,84.33) -- (602.07,56.1) -- (611.61,56.1) -- (611.61,66.1) -- (583.38,94.33) -- (573.83,94.33) -- cycle ; \draw   (611.61,56.1) -- (583.38,84.33) -- (573.83,84.33) ; \draw   (583.38,84.33) -- (583.38,94.33) ;
+\draw  [fill={rgb, 255:red, 153; green, 79; blue, 0 }  ,fill opacity=1 ] (573.83,67.33) -- (602.07,39.1) -- (611.61,39.1) -- (611.61,49.1) -- (583.38,77.33) -- (573.83,77.33) -- cycle ; \draw   (611.61,39.1) -- (583.38,67.33) -- (573.83,67.33) ; \draw   (583.38,67.33) -- (583.38,77.33) ;
+\draw   (140,85) -- (152,85) -- (152,80) -- (160,90) -- (152,100) -- (152,95) -- (140,95) -- cycle ;
+\draw    (200,140) -- (264.7,140.29) ;
+\draw [shift={(266.7,140.3)}, rotate = 180.26] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+\draw    (260,140) -- (192,140) ;
+\draw [shift={(190,140)}, rotate = 360] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+\draw    (310,80) -- (310,128) ;
+\draw [shift={(310,130)}, rotate = 270] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+\draw    (310,120) -- (310,72) ;
+\draw [shift={(310,70)}, rotate = 90] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+\draw   (460,85) -- (472,85) -- (472,80) -- (480,90) -- (472,100) -- (472,95) -- (460,95) -- cycle ;
+\draw  [fill={rgb, 255:red, 0; green, 108; blue, 209 }  ,fill opacity=1 ] (513.2,178.07) .. controls (513.2,176.96) and (514.1,176.07) .. (515.2,176.07) -- (521.2,176.07) .. controls (522.3,176.07) and (523.2,176.96) .. (523.2,178.07) -- (523.2,184.07) .. controls (523.2,185.17) and (522.3,186.07) .. (521.2,186.07) -- (515.2,186.07) .. controls (514.1,186.07) and (513.2,185.17) .. (513.2,184.07) -- cycle ;
+\draw  [fill={rgb, 255:red, 0; green, 108; blue, 209 }  ,fill opacity=1 ] (559.4,177.7) .. controls (559.4,176.6) and (560.3,175.7) .. (561.4,175.7) -- (567.4,175.7) .. controls (568.5,175.7) and (569.4,176.6) .. (569.4,177.7) -- (569.4,183.7) .. controls (569.4,184.8) and (568.5,185.7) .. (567.4,185.7) -- (561.4,185.7) .. controls (560.3,185.7) and (559.4,184.8) .. (559.4,183.7) -- cycle ;
+\draw  [fill={rgb, 255:red, 153; green, 79; blue, 0 }  ,fill opacity=1 ] (605.3,178.2) .. controls (605.3,177.1) and (606.2,176.2) .. (607.3,176.2) -- (613.3,176.2) .. controls (614.4,176.2) and (615.3,177.1) .. (615.3,178.2) -- (615.3,184.2) .. controls (615.3,185.3) and (614.4,186.2) .. (613.3,186.2) -- (607.3,186.2) .. controls (606.2,186.2) and (605.3,185.3) .. (605.3,184.2) -- cycle ;
+\draw    (518.4,171) -- (518.21,134.4) ;
+\draw [shift={(518.2,132.4)}, rotate = 89.7] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+\draw    (564.8,171) -- (564.23,133.2) ;
+\draw [shift={(564.2,131.2)}, rotate = 89.14] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+\draw    (610.25,170.25) -- (592.12,132.55) ;
+\draw [shift={(591.25,130.75)}, rotate = 64.31] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+\draw    (229.6,173) -- (229.6,148.6) ;
+\draw [shift={(229.6,146.6)}, rotate = 90] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+\draw    (350,174.2) -- (350,149.8) ;
+\draw [shift={(350,147.8)}, rotate = 90] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+\draw (1,90.53) node [anchor=north west][inner sep=0.75pt]  [font=\large] [align=left] {D};
+\draw (49.87,134.53) node [anchor=north west][inner sep=0.75pt]  [font=\large] [align=left] {N};
+\draw (19.7,38.8) node [anchor=north west][inner sep=0.75pt]  [font=\large] [align=left] {H};
+\draw (50.33,172) node [anchor=north west][inner sep=0.75pt]  [font=\large] [align=left] {\begin{minipage}[lt]{81.65pt}\setlength\topsep{0pt}
+\begin{center}
+Append vector\\of zeros
+\end{center}
+
+\end{minipage}};
+\draw (620.33,77.4) node [anchor=north west][inner sep=0.75pt]    {$=$};
+\draw (637.63,133.1) node [anchor=north west][inner sep=0.75pt]  [font=\large]  {$R^{0}$};
+\draw (424,173.8) node [anchor=north west][inner sep=0.75pt]    {$\operatorname{Attention( K=\ \ \ \ ,\ V=\ \ \ \ ,\ Q=\ \ \ \ \ )}$}[font=\large];
+\draw (397,141.4) node [anchor=north west][inner sep=0.75pt]    {$\times L$};
+\draw (178.33,174) node [anchor=north west][inner sep=0.75pt]  [font=\large] [align=left] {\begin{minipage}[lt]{75.51pt}\setlength\topsep{0pt}
+\begin{center}
+Attention\\over samples\\
+\end{center}
+
+\end{minipage}};
+\draw (307.33,174) node [anchor=north west][inner sep=0.75pt]  [font=\large] [align=left] {\begin{minipage}[lt]{63.28pt}\setlength\topsep{0pt}
+\begin{center}
+Attention\\over nodes\\
+\end{center}
+
+\end{minipage}};
+
+
+\end{tikzpicture}
+}
+
+\vspace{0.2cm}
+{\footnotesize Each dataset contains $D$ nodes and $N$ samples where each data point is embedded into a vector of size $H$, giving a $D \times N \times H$ tensor. A \textit{query vector} of zeros is then appended along the sample axis. The data is passed through $L$ transformer layers which alternate between attention over samples and attention over nodes. The summary representation $R^0$ is constructed using an attention layer where the samples of each node serve as the keys and values and the query vector acting as the query.}
+\end{frame}
+
+\begin{frame}{3.1 Encoder}
+Our encoder follows that of Ke et al.\ (2022); Lorch et al.\ (2022). Inputs are embedded and passed onto transformer layers (Vaswani et al., 2017) that alternate between attention across samples and attention across nodes. Finally a summary representation vector is constructed that summarises the information in each node across all the samples. Crucially, the summary representation vector is constructed such that it is permutation invariant with respect to the samples of each node. The figure above visualises the encoder.
+\end{frame}
+
+\begin{frame}{3.1 Encoder --- Embedding}
+\textbf{Embedding:}\quad
+Each input node and sample $x_{i,d}$ is embedded into a vector of size $H$ using a linear map. As we want the subsequent attention operations to summarise the information across the samples, we concatenate a vector of $0$s, which we call the \textit{query vector}, in the sample dimension. This gives a tensor of size $\mathbf{H}^{0} \in \sR^{D \times N+1 \times H}$.
+\end{frame}
+
+\begin{frame}{3.1 Encoder --- Transformer Layers}
+\textbf{Transformer layers:}\quad
+The tensor $\rmH^0$ is then passed onto a transformer layer that performers attention across samples. That is, parameters are shared across nodes. Following this, a transformer layer is applied that performs attention across nodes, with parameters across samples being shared. This procedure is repeated $L$ times.
+\end{frame}
+
+\begin{frame}{3.1 Encoder --- Summary Representation}
+\textbf{Summary representation:}\quad
+The representation of the data is extracted from the output of the transformer layers $\rmH^L \in \mathbb{R}^{D \times N \times H}$, along with the query vector $\rvq \in \mathbb{R}^{D \times 1 \times H}$. A final cross-attention operation across samples is carried out using $\rmH^L$ as the key and values, and $\rvq$ as the query. The output of this is a summary representation vector $\rmR^0 \in \mathbb{R}^{D \times H}$ that summarises the information in the samples for each node.
+\end{frame}
+
+\begin{frame}{3.1 Encoder --- Summary Representation}
+The cross-attention operation ensures that the summary representation $\rmR^0$ is permutation invariant with respect to the samples. As the nodes are only processed using self-attention, the summary representation is also permutation equivariant with respect to the nodes.
+\end{frame}
+
+\subsection{3.2 Decoder}
+
+\begin{frame}{3.2 Decoder}
+One of the main differences in our architecture from those in Ke et al.\ (2022); Lorch et al.\ (2022) lies in the design of our decoder. Unlike the decoders in these prior works, our proposed decoder is designed to directly sample from the distribution of interest, requiring us to parameterize a distribution over DAGs.
+\end{frame}
+
+\begin{frame}{3.2 Decoder}
+Charpentier et al.\ (2021) show that any DAG $\mathcal{G}$ can be represented by a permutation matrix $\rmQ$, and a lower triangular binary matrix $\rmA$ through $\mathcal{G} = \rmQ \rmA \rmQ^T$. This ensures that samples are acyclic and hence represent valid causal structures. Thus, we can reduce the problem of learning a distribution over DAGs to one of learning a distribution over permutations and over lower triangular binary matrices.
+\end{frame}
+
+\begin{frame}{3.2 Decoder --- Distribution over Permutations}
+\textbf{Distribution over Permutations:}\quad
+Permutation matrices, $\rmQ$, can be parametrised by a matrix $\Theta \in \sR^{D \times D}$ by solving the following non-differentiable problem
+\begin{align*}
+    \rmQ = \argmax_{\rmQ^{\prime}} \langle \rmQ^{\prime}, \Theta   \rangle,
+\end{align*}
+where $\langle A, B \rangle = \text{trace}(A^T B)$ is the Frobenius inner product of matrices. Intuitively, this yields the permutation matrix, which when applied to $\Theta$, maximises the trace. Changing the values of $\Theta$ then changes the permutation matrix that yields the maximum.
+\end{frame}
+
+\begin{frame}{3.2 Decoder --- Distribution over Permutations}
+\small
+To allow for learning with gradients, Mena et al.\ (2018) propose modifying the problem using the differentiable \textit{Sinkhorn} operator $\operatorname{S}(\cdot)$. The Sinkhorn operator consists of repeated normalisations of the rows and columns of the input, converging to a solution in the limit. Mena et al.\ (2018) show that the parametrisation of the permutation matrix can be well approximated by $\operatorname{S}\left(\frac{\Theta}{\tau}\right)$ for $\tau \to 0$, where $\tau$ is some temperature parameter. Further, adding Gumbel noise $\mathbf{G}$ gives a differentiable distribution over permutation matrices called the \textit{Gumbel-Sinkhorn}, $\mathcal{GS}:=\operatorname{S}\left(\frac{\Theta}{\tau} + \mathbf{G}\right)$. This distribution does not have a tractable density but allows for sampling permutations parametrised by $\Theta$.
+\end{frame}
+
+\begin{frame}{3.2 Decoder --- Distribution over Permutations}
+\small
+We follow Annadani et al.\ (2024) and parametrise $\Theta$ using a low rank representation that takes fewer sinkhorn iterations to converge to a solution. The representation from the encoder $\rmR^0 \in \mathbb{R}^{D \times H}$ is first processed using transformer layers to give $\rmR^{L_1}$, and then $\Theta$ is parametrised as
+\begin{align*}
+    \Theta = \rmR^{L_1}\rvo^T, \ \ \ \ \rmQ \sim \mathcal{GS}(\Theta) \
+\end{align*}
+where $\rvo = [1, \ldots, D]$.
+\end{frame}
+
+\begin{frame}{3.2 Decoder --- Distribution over Permutations}
+As the rows of $\rmR^{L_1}$ are permutation equivariant with respect to the nodes, so are the rows of $\Theta$. In practice we use $\tau > 0$ and use the Hungarian algorithm to get discrete permutation matrices for the forward pass. In the backward pass, we use the straight through estimator to optimise through $\rmR^{L_1}$ (Bengio et al., 2013).
+\end{frame}
+
+\begin{frame}{3.2 Decoder --- Distribution over Lower Triangular Matrix}
+\small
+\textbf{Distribution over Lower Triangular Matrix:}\quad
+We model the presence of edges as a lower triangular matrix of Bernoulli random variables. Permuting this lower triangular matrix then orients the edges all the while ensuring acyclicity. To ensure permutation equivariance of this matrix with respect to the nodes, we borrow ideas from attention. Further, to ensure dependence between the permutation and lower triangular binary matrices, we ensure that the distributions share parameters.
+\end{frame}
+
+\begin{frame}{3.2 Decoder --- Distribution over Lower Triangular Matrix}
+\small
+This is done by processing $\rmR^{L_1}$ by further transformer layers to give $\rmR^{L_2}$, which is then used to parametrise the lower triangular matrices through the following operations
+\begin{align*} \operatorname{ParameterAttention}(\mathbf{Q,K}) &:= \mathbf{QK}^T / \sqrt{H} \in \sR^{D \times D}, \\
+    \operatorname{head}_m(\mathbf{R}^{L_2}) &:= \operatorname{ParameterAttention}(\mathbf{R}^{L_2}\mathbf{W}^q_m, \mathbf{R}^{L_2} \mathbf{W}^k_m), \\
+    \operatorname{MHPA}(\mathbf{R}^{L_2}) &:= \operatorname{stack}_{m=1,\ldots,M}(\operatorname{head}_m(\mathbf{R}^{L_2})) \mathbf{W}_o,
+\end{align*}
+where $\mathbf{W}_o \in \sR^{M \times 1}$, $\mathbf{W}^q_h \in \sR^{H \times h_k}$, and $\mathbf{W}^k_m \in \sR^{H \times h_k}$.
+\end{frame}
+
+\begin{frame}{3.2 Decoder --- Distribution over Lower Triangular Matrix}
+$\operatorname{ParameterAttention}$ takes in two matrices and computes the outer product giving a $D \times D$ matrix. $\operatorname{MHPA}$ is a multi-head variant of $\operatorname{ParameterAttention}$. The matrix outputted by $\operatorname{ParameterAttention}$ and thus also by $\operatorname{MHPA}$ is permutation equivariant with respect to the input rows. As we input a linear map of $\rmR^{L_2}$ into these operations, the output is permutation equivariant with respect to the nodes.
+\end{frame}
+
+\begin{frame}{3.2 Decoder --- Distribution over Lower Triangular Matrix}
+The final lower triangular matrix is parametrised as
+\begin{align*}
+    \Phi_{ij}  &= \begin{cases}
+         \text{MHPA}(\mathbf{R}^{L_2})  \text{ if } i < j, \\
+         0 \text{ if } i \geq j,
+     \end{cases}
+\end{align*}
+The final decoder architecture that allows for sampling acylic DAGs can be seen in the figure below.
+\end{frame}
+
+\begin{frame}{Figure --- Decoder}
+\centering
+\resizebox{0.95\textwidth}{!}{
+
+\begin{tikzpicture}[
+    node distance=1.5cm and 2cm,
+    box/.style={
+        draw=blue!50!black,
+        fill=white,
+        rounded corners,
+        minimum width=1cm,
+        minimum height=0.8cm,
+        font=\footnotesize,
+        drop shadow
+    },
+    smallbox/.style={
+        draw=green!50!black,
+        fill=white,
+        rounded corners,
+        minimum width=0.8cm,
+        minimum height=0.6cm,
+        font=\footnotesize,
+        drop shadow
+    },
+    specialbox/.style={
+        draw=orange!80!black,
+        fill=white,
+        rounded corners,
+        minimum width=1cm,
+        minimum height=0.8cm,
+        font=\footnotesize,
+        drop shadow
+    },
+    plate/.style={
+        draw,
+        rounded corners,
+        inner sep=0.25cm,
+        fill=black!5,
+    },
+    arrow/.style={-{Stealth[length=3mm]}, thick, blue!50!black},
+    every edge/.style={draw,arrow},
+    mylabel/.style={font=\footnotesize,align=center},
+    ]
+
+    \node[smallbox] (R0) {$R^0$};
+    \node[smallbox, right=of R0] (RL1) {$R^{L_1}$};
+    \node[smallbox, above right=of RL1] (RL2) {$R^{L_2}$};
+    \node[box, right=of RL1] (theta) {$\Theta$};
+    \node[box, right=2cm of RL2] (phi) {$\Phi$};
+    \node[box, right=of theta] (Q) {$Q_s \sim \mathcal{GS}(\Theta)$};
+    \node[box, right=of Q] (A) {$A_s \sim \text{Bern}(\Phi)$};
+    \node[specialbox, below=1cm of Q] (G) {$G_s = Q_sA_sQ_s^T$};
+
+    \begin{pgfonlayer}{background}
+        \node[plate, fit=(Q) (A) (G)] (plate) {};
+    \end{pgfonlayer}
+    \node[anchor=south east, font=\footnotesize] at (plate.south east) {$s=1,\ldots,S$};
+
+    \path
+        (R0) edge node[mylabel,above] {$T$} (RL1)
+        (RL1) edge node[mylabel,above] {$R^{L_1}o^T$} (theta)
+        (RL1) edge node[mylabel,sloped,above] {$T$} (RL2)
+        (RL2) edge node[mylabel,above] {MHPA} (phi)
+        (theta) edge (Q)
+        (phi) edge (A)
+        (Q) edge (G)
+        (A) edge (G);
+
+    \node[mylabel, below=0.6cm of RL1] (o) {$o = [1 \ldots D]$};
+    \draw[arrow] (o) -- (RL1);
+    \node[mylabel, above=0.2cm of phi] (phimatrix) {$\begin{pmatrix} 0 & 0 \\ \Phi_{i<j} & 0 \end{pmatrix}$};
+    \draw[arrow] (phimatrix) -- (phi);
+\end{tikzpicture}
+
+}
+
+\vspace{0.2cm}
+{\footnotesize Computational graph of the decoder. The decoder takes in the summary representation from the encoder $R^0$ as input. $T$ denotes a transformer layer, $\operatorname{MHPA}$ denote multi headed parameter attention, and $\mathcal{GS}$ is the Gumbel-Sinkhorn distribution (Mena et al., 2018). The network outputs samples of permutation matrices $Q_s$ and lower triangular binary matrices $A_s$ that can be used to construct samples of DAGs $G_s$.}
+\end{frame}
+
+\subsection{3.3 Loss}
+
+\begin{frame}{3.3 Loss}
+\small
+Given a permutation matrix $\rmQ$ and lower triangular binary matrix $\rmA$ a DAG can be constructed as $\mathcal{G} = \rmQ \rmA \rmQ^T$. As $\rmA$ is a lower triangular matrix with Bernoulli random variables with parameters $\Phi$, we can write $P_{\phi}(\mathcal{G}| \rmQ, \Phi, \rmX) = \operatorname{Bernoulli}(\rmQ \Phi \rmQ^T)$. Since $\rmQ$ is sampled from the distribution defined in the decoder section, the log probability of a DAG $\mathcal{G}$ is
+\begin{align*}
+    \log P_{\phi}(\mathcal{G}| \rmX) &= \log \sum_{\rmQ}P_{\phi}(\mathcal{G}| \rmQ, \Phi, \rmX) P_{\phi}(\rmQ|\rmX) \\
+    &\approx \log \frac{1}{S} \sum_{i=1}^SP_{\phi}(\mathcal{G}| \rmQ_i, \Phi, \rmX), \ \ \ \ \ \rmQ_i \sim P_{\phi}(\rmQ|\rmX),
+\end{align*}
+where $P_{\phi}(\rmQ|\rmX) = \mathcal{GS}(\Theta(\rmX))$.
+\end{frame}
+
+\begin{frame}{3.3 Loss}
+Combining the above, the following loss approximates the posterior given datasets and DAGs from the Bayesian causal model:
+\begin{align*}
+    \min_{\phi} - \mathbb{E}_{P_{\text{BCM}(\rmX)}} \left[ \mathbb{E}_{P_{\text{BCM}}(\mathcal{G}| \rmX)} \left[  \log \frac{1}{S} \sum_{i=1}^SP_{\phi}(\mathcal{G}| \rmQ_i, \Phi, \rmX)  \right] \right], \ \ \ \ \  \rmQ_i \sim P_{\phi}(\rmQ|\rmX).
+\end{align*}
+\end{frame}
+
+\section{4 Experiments}
+
+\begin{frame}{4 Experiments}
+After defining the \textit{Bayesian causal neural process} (BCNP) model and the loss function, which approximates the posterior of a Bayesian causal model given samples of datasets and DAGs, we move on to testing the practical performance of the BCNP model. Since real-world datasets with established causal relationships are rare and often disputed (Mooij et al., 2020), we evaluate the BCNP model and baselines using synthetic and semi-synthetic data.
+\end{frame}
+
+\begin{frame}{4 Experiments}
+\small
+With our experiments, we aim to answer the following questions: 1) When the true posterior is known, do the samples from our model match the true posterior? 2) How does the BCNP model perform in comparison with explicit Bayesian models and other meta-learning models? 3) How does the BCNP model and other meta-learning models perform on realistic datasets, where the datasets do not directly inform Bayesian causal model and hence the training data?
+\end{frame}
+
+\begin{frame}{4 Experiments --- Metrics}
+\textbf{Metrics}\quad
+We follow prior work in using the \textit{Area Under the Receiver Operating Curve} (AUC) to assess edge prediction at various probability thresholds for the existence of an edge (Friedman \& Koller, 2000). Additionally, we evaluate the sum of the \textit{log Bernoulli probabilities} for each edge under the model. The AUC reflects the ranking of edge probabilities, while the log probability metric considers the actual probability values. Both metrics focus on marginal edge probabilities.
+\end{frame}
+
+\begin{frame}{4 Experiments --- Metrics}
+\small
+Previous work also considers metrics like the expected \textit{expected Structural Hamming Distance} (expected SHD) and \textit{expected edge F1 score} over samples. However, we argue that these are not necessarily suitable for evaluating Bayesian methods because they average metrics over the posterior, which doesn't reflect how good a prediction based on the uncertainty \emph{in} the posterior is. Nonetheless, we include them as they offer insights into the expected utility of the samples. Lower is better for expected SHD, while higher is better for the rest.
+\end{frame}
+
+\subsection{4.1 Comparing Bayesian Meta-Learning Methods on Two Variable Normalised Linear Gaussian Data}
+
+\begin{frame}{4.1 Two Variable Normalised Linear Gaussian Data}
+\small
+We consider the two variable $X, Y$ case where datasets are either generated from the DAG $X \to Y$ or $Y \to X$. The causes are generated from a normal distribution and the cause to effect relationship is linear with additive Gaussian noise. After generating, both variables are normalised. All the meta-learning models are trained on this data.
+\end{frame}
+
+\begin{frame}{4.1 Two Variable Normalised Linear Gaussian Data}
+This is a known unidentifiable case where the data cannot identify the causal graph at all. A sound Bayesian model should thus generate samples of $X \to Y$ and $Y \to X$ with probability $0.5$ each. To do so will require ensuring that the samples are acyclic, and terms of the adjacency matrix are correlated.
+\end{frame}
+
+\begin{frame}{4.1 Two Variable Normalised Linear Gaussian Data}
+The details of the data generation and model used are in the appendix. We generate $100$ test datasets and $500$ samples from each of the AVICI, CSIvA, and BCNP models. The table below shows the proportion of graph types output by each of the models.
+\end{frame}
+
+\begin{frame}{Table --- Proportion of Graph Types (Two-Variable Case)}
+\centering
+\begin{tabular}{lccc}
+\toprule
+\textbf{DAG Type}     & \textbf{AVICI} & \textbf{CSIvA} & \textbf{BCNP} \\
+\midrule
+No edge between $X_1$ and $X_2$  & 0.3194 & 0.0000 & 0.0124 \\
+$X_1 \rightarrow X_2$            & 0.2587 & 0.4851 & 0.4979 \\
+$X_2 \rightarrow X_1$            & 0.2342 & 0.5147 & 0.4897 \\
+$X_1 \leftrightarrow X_2$ (bidirectional) & 0.1877 & 0.0000 & 0.0000 \\
+Other                            & 0.0000 & 0.0002 & 0.0000 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Proportion of different graphs output in the two-variable unidentifiable case tested with $50\%$ $X_1 \to X_2$ and $50\%$ $X_2 \to X_1$. As AVICI only estimates the marginal probability of each edge, sampling from it does not output graphs from the correct posterior.}
+\end{frame}
+
+\begin{frame}{4.1 Two Variable Normalised Linear Gaussian Data}
+\small
+It shows that while CSIvA and BCNP output reasonable samples, AVICI does not. Although the data is clearly correlated, AVICI outputs samples with no causal relation $32\%$ of the time, and cyclic samples $19\%$ of the time. This is because the decoder in AVICI does not take into account edge dependencies. Even though CSIvA outputs the correct graphs here, it does not explicitly enforce acyclicity or permutation equivariance. In the next section, we will see that with more variables its performance suffers.
+\end{frame}
+
+\subsection{4.2 Comparison on Various Bayesian Causal Models}
+
+\begin{frame}{4.2 Comparison on Various Bayesian Causal Models}
+\small
+To analyse the performance of the Bayesian meta-learning methods as well as explicit Bayesian models, on larger number of nodes, we compare the models on data from $20$ node Bayesian causal models with varying functional distributions. Causal discovery methods tend to perform worse on denser graphs. Therefore, following prior work, we generate graphs from Erdos Renyi (ER) distributions (Erdos et al., 1960) with varying densities, with expected edge counts of 20, 40, and 60.
+\end{frame}
+
+\begin{frame}{4.2 Comparison on Various Bayesian Causal Models}
+\small
+To showcase the advantage of the meta-learning Bayesian approach, we choose functional relationships whose posterior may be hard to approximate with explicit Bayesian models: 1) \textit{Linear:} Linear functions with heteroscedastic noise, 2) \textit{NeuralNet:} Randomly initialised neural networks with a normally distribution latent variable included as an input, 3) \textit{GPCDE:} Random function drawn from a Gaussian process with a latent variable included as an input.
+\end{frame}
+
+\begin{frame}{4.2 Comparison on Various Bayesian Causal Models}
+The exact details of the data generating procedure is in the appendix. For each of the function types and graph densities, we sample $25$ datasets to test the methods on.
+\end{frame}
+
+\begin{frame}{4.2 Comparison on Various Bayesian Causal Models}
+\small
+We compare against the explicit Bayeisan models DiBS, BayesDAG, as well as the Bayesian meta-learning models AVICI and CSIvA. Each meta-learning model is trained on datasets from each of the functional and graph distributions. Details of all the models are in the appendix.
+\end{frame}
+
+\begin{frame}{4.2 Comparison on Various Bayesian Causal Models}
+\small
+Due to memory constraints in the autoregression, the CSIvA model has a lower width than AVICI and BCNP. However we do show that AVICI and BCNP outperform CSIvA with similar widths in the appendix. To see if a single model can perform well across multiple distributions, we also include a single BCNP model trained on all synthetic datasets (labelled BCNP All Data).
+\end{frame}
+
+\begin{frame}{Table --- Results for ER60 Datasets (Linear, NeuralNet, GPCDE)}
+\scriptsize
+\begin{tabular}{lcccc}
+\toprule
+\multicolumn{5}{c}{\textbf{Linear ER60 Dataset}} \\
+\midrule
+\textbf{Model} & \textbf{AUC} & \textbf{Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+DiBS & 0.40 $\pm$ 0.01 & -231.40 $\pm$ 3.69 & 106.64 $\pm$ 1.25 & 0.11 $\pm$ 0.00 \\
+BayesDAG & 0.51 $\pm$ 0.01 & -1509.27 $\pm$ 48.40 & \textbf{63.51 $\pm$ 0.40} & 0.04 $\pm$ 0.01 \\
+AVICI & 0.83 $\pm$ 0.01 & -126.31 $\pm$ 1.71 & 80.90 $\pm$ 0.71 & 0.31 $\pm$ 0.01 \\
+CSIvA & 0.49 $\pm$ 0.01 & -169.49 $\pm$ 0.19 & 102.00 $\pm$ 0.05 & 0.15 $\pm$ 0.00 \\
+\textbf{BCNP ER60} & \textbf{0.85 $\pm$ 0.01} & \textbf{-121.87 $\pm$ 2.29} & 76.52 $\pm$ 0.92 & \textbf{0.36 $\pm$ 0.01} \\
+\textbf{BCNP All Data} & \textbf{0.86 $\pm$ 0.01} & \textbf{-122.02 $\pm$ 2.66} & 72.15 $\pm$ 1.17 & \textbf{0.36 $\pm$ 0.01}\\
+\midrule
+\multicolumn{5}{c}{\textbf{NeuralNet ER60 Dataset}} \\
+\midrule
+\textbf{Model} & \textbf{AUC} & \textbf{Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+DiBS & 0.64 $\pm$ 0.01 & -208.22 $\pm$ 1.82 & \textbf{65.72 $\pm$ 0.17} & 0.13 $\pm$ 0.01 \\
+BayesDAG & 0.58 $\pm$ 0.01 & -170.73 $\pm$ 0.26 & 103.95 $\pm$ 0.09 & 0.19 $\pm$ 0.01 \\
+AVICI & 0.79 $\pm$ 0.01 & -138.04 $\pm$ 1.36 & 85.15 $\pm$ 0.59 & 0.29 $\pm$ 0.01 \\
+CSIvA & 0.50 $\pm$ 0.01 & -169.30 $\pm$ 0.20 & 101.89 $\pm$ 0.05 & 0.15 $\pm$ 0.00 \\
+\textbf{BCNP ER60} & \textbf{0.85 $\pm$ 0.00} & \textbf{-121.09 $\pm$ 1.08} & 70.40 $\pm$ 0.35 & \textbf{0.40 $\pm$ 0.00} \\
+\textbf{BCNP All Data} & 0.83 $\pm$ 0.01 & -127.48 $\pm$ 2.71 & 68.34 $\pm$ 0.91 & \textbf{0.39 $\pm$ 0.01} \\
+\midrule
+\multicolumn{5}{c}{\textbf{GPCDE ER60 Dataset}} \\
+\midrule
+\textbf{Model} & \textbf{AUC} & \textbf{Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+DiBS & 0.67 $\pm$ 0.01 & -199.87 $\pm$ 2.03 & \textbf{64.22 $\pm$ 0.22} & 0.13 $\pm$ 0.00 \\
+BayesDAG & 0.66 $\pm$ 0.01 & -184.48 $\pm$ 5.12 & 107.46 $\pm$ 0.31 & \textbf{0.24 $\pm$ 0.00} \\
+AVICI & 0.71 $\pm$ 0.01 & -151.70 $\pm$ 1.28 & 91.33 $\pm$ 0.36 & 0.21 $\pm$ 0.01 \\
+CSIvA & 0.49 $\pm$ 0.01 & -169.53 $\pm$ 0.19 & 101.62 $\pm$ 0.05 & 0.15 $\pm$ 0.00 \\
+\textbf{BCNP ER60} & 0.72 $\pm$ 0.01 & -149.48 $\pm$ 1.05 & 93.07 $\pm$ 0.34 & 0.22 $\pm$ 0.01 \\
+\textbf{BCNP All Data} & \textbf{0.77 $\pm$ 0.01} & \textbf{-142.97 $\pm$ 1.80} & 80.28 $\pm$ 0.77 & \textbf{0.25 $\pm$ 0.01} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.2cm}
+{\footnotesize Results for the 20 variable Linear ER60, NeuralNet ER60, and GPCDE ER60 datasets (mean $\pm$ std of mean). BCNP ER60 is trained on the specific function type and graph density; BCNP All Data is trained on a mixture of all datasets.}
+\end{frame}
+
+\begin{frame}{4.2 Comparison on Various Bayesian Causal Models}
+\small
+Results for the densest graphs, ER60, are shown above. The rest of the results for the Linear, NeuralNet, and GPCDE datasets are in the appendix. Meta-learning models generally outperform explicit Bayesian models like DiBS and BayesDAG, especially with denser graphs (ER60).
+\end{frame}
+
+\begin{frame}{4.2 Comparison on Various Bayesian Causal Models}
+\small
+Among meta-learning models, CSIvA underperforms, likely due to the challenges of autoregressive adjacency matrix generation with increased variables, as well as missing permutation equivariance with respect to nodes. The challenge in autoregression is also noted by the authors in Ke et al.\ (2022), who resort to adding an auxiliary loss.
+\end{frame}
+
+\begin{frame}{4.2 Comparison on Various Bayesian Causal Models}
+\small
+As the AUC and Log Probability only consider marginal edge probabilities, AVICI and BCNP show comparable performance in these metrics. However, as demonstrated in the two-variable experiment, AVICI faces difficulties in DAG sampling, an issue not captured by these metrics but partially reflected in the expected edge F1 score.
+\end{frame}
+
+\begin{frame}{4.2 Comparison on Various Bayesian Causal Models}
+Training on a mixture of all datasets (BCNP All Data) maintains performance across all datasets (more results in the appendix), suggesting that training on a mixture of distributions can help mitigate model misspecification without a loss of performance on each distribution.
+\end{frame}
+
+\subsection{4.3 Comparison on Syntren}
+
+\begin{frame}{4.3 Comparison on Syntren}
+\small
+Since real data for causal discovery tasks is scarce, we follow prior work and use data generated from simulators. A commonly used simulator is the Syntren generator (Van den Bulcke et al., 2006) which generates gene expression data that matches known experimental data. Each dataset consists of $20$ nodes with $500$ samples each.
+\end{frame}
+
+\begin{frame}{4.3 Comparison on Syntren}
+We use the $10$ datasets generated by Lachapelle et al.\ (2019) to test all the models. To train the meta-learning models, we use a mixture of all the possible function and graph distributions in the previous section. Exact details about the training data used and baselines is in the appendix.
+\end{frame}
+
+\begin{frame}{Table --- Results for the Syntren Dataset}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{ Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+DiBS & \textbf{0.81 ± 0.02} & -83.31 ± 1.68 & 59.83 ± 1.22 & 0.15 ± 0.01 \\
+BayesDAG & 0.52 ± 0.04 & -195.53 ± 16.78 & 99.09 ± 0.90 & 0.10 ± 0.01 \\
+AVICI & 0.66 ± 0.03 & -90.82 ± 4.82 & \textbf{48.94 ± 2.37} & 0.09 ± 0.01 \\
+CSIvA & 0.37 ± 0.03 & -100.59 ± 2.49 & 67.34 ± 1.11 & 0.07 ± 0.00 \\
+\textbf{BCNP} & \textbf{0.84 ± 0.02} & \textbf{-76.35 ± 3.61} & \textbf{50.87 ± 1.92} & \textbf{0.17 ± 0.01} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the Syntren dataset (mean $\pm$ std of mean). Results are over $10$ datasets.}
+\end{frame}
+
+\begin{frame}{4.3 Comparison on Syntren}
+The table above shows that the BCNP is competitive even in the case when the model has not been trained on the exact distribution from which the data is sampled. We found that training on a wide range of distributions helped model performance as well as improving the capacity of the model.
+\end{frame}
+
+\section{5 Discussion and Limitations}
+
+\begin{frame}{5 Discussion and Limitations}
+\small
+Our objective minimises the KL-divergence between the posterior of the Bayesian causal model from which training data is drawn $P_{\text{BCM}}(\mathcal{G}| \rmX)$, and the BCNP model $P_{\phi}(\mathcal{G}| \rmX)$. Datasets and their corresponding causal graphs may also come from an unknown distribution $P_{\text{BCM}}(\mathcal{G}| \rmX)$ instead of an explicit causal model. Nevertheless, given a dataset from $P_{\text{BCM}}(\mathcal{G}| \rmX)$, if our model achieves a KL-divergence of zero, we can expect it to perform well on downstream tasks requiring the posterior from $P_{\text{BCM}}(\mathcal{G}| \rmX)$.
+\end{frame}
+
+\begin{frame}{5 Discussion and Limitations}
+\small
+However, given datasets from a \textit{separate} distribution $\Pi$, what can we say about the performance of our approximate posterior $P_{\phi}(\mathcal{G}| \rmX)$? Note that
+\begin{align*}
+    &\operatorname{KL}[
+    \Pi(\mathcal{G}| \mathbf{X} ) \| P_{\text{BCM}}(\mathcal{G}| \mathbf{X} )] + \operatorname{KL}[
+    P_{\text{BCM}}(\mathcal{G}| \mathbf{X} ) \| P_{\phi}(\mathcal{G}| \mathbf{X} )]
+     = 0  \implies
+    \operatorname{KL}[
+    \Pi(\mathcal{G}| \mathbf{X} ) \| P_{\phi}(\mathcal{G}| \mathbf{X} )]
+     = 0 \nonumber.
+\end{align*}
+\end{frame}
+
+\begin{frame}{5 Discussion and Limitations}
+If the KL-divergence between our model and the BCM is zero, then the performance on datasets drawn from $\Pi$ will depend on how closely $P_{\text{BCM}}(\mathcal{G}| \rmX)$ matches the target distribution $\Pi(\mathcal{G}| \rmX)$.
+\end{frame}
+
+\begin{frame}{5 Discussion and Limitations}
+\small
+If the KL-divergence is not zero, the approximation is likely perform even worse on tasks requiring $\Pi(\mathcal{G}| \rmX)$. Thus, to improve performance, either the BCNP training should be enhanced through more data and higher capacity, or the training data distribution $P_{\text{BCM}}(\mathcal{G}| \rmX)$ should be adjusted to better align with the target distribution. Although results from the Syntren section conform to this intuition a more rigorous treatment of this question would be necessary to make stronger claims.
+\end{frame}
+
+\begin{frame}{5 Discussion and Limitations}
+Unlike other meta-learning approaches, we do not incorporate interventional data in this work. However, similar to these studies, interventional data can be integrated into the BCNP model by appending an indicator vector to the node axis in the encoder section, signaling whether a node has been intervened upon.
+\end{frame}
+
+\section{6 Conclusion}
+
+\begin{frame}{6 Conclusion}
+In this work, we address challenges in causal discovery by employing a Bayesian framework to quantify uncertainty. Meta-learning approaches are useful here as they circumvent complex functional inference and enable efficient sampling from high-dimensional spaces.
+\end{frame}
+
+\begin{frame}{6 Conclusion}
+Building on prior research, we incorporate key properties of the posterior distribution such as permutation equivariance with respect to the nodes and dependency between edges. In contrast to other meta-learning methods, the BCNP model also provides samples of DAGs from the posterior.
+\end{frame}
+
+\begin{frame}{6 Conclusion}
+The BCNP model demonstrates competitive performance compared to both explicit Bayesian and other meta-learning models. Our work suggests that meta-learning holds significant potential for a tractable and accurate Bayesian treatment of causal discovery.
+\end{frame}
+
+\appendix
+\section{A Additional Background}
+\subsection{A.1 Transformers}
+
+\begin{frame}{A.1 Transformers}
+Here we describe a transformer layer (Vaswani et al., 2017).
+\end{frame}
+
+\begin{frame}{A.1 Transformers}
+Given an input from a previous layer $\rmX \in \sR^{N \times d_{\text{model}}}$, the key $\rmK$, query $\rmQ$, and value $\rmV$ matrices are computed as
+\begin{align*}
+    \rmK &= \rmX\rmW^k, \\
+    \rmQ &= \rmX\rmW^q, \\
+    \rmV &= \rmX\rmW^v,
+\end{align*}
+where $\rmW^k, \rmW^q, \rmW^v$ are the key, query, and value weights with $\mathbf{K} \in \sR^{N \times h_k}$, $\mathbf{Q} \in \sR^{N \times h_k}$, and $\mathbf{V} \in \sR^{N \times h_v}$.
+\end{frame}
+
+\begin{frame}{A.1 Transformers}
+We define the dot-product attention on these matrices as
+\begin{align*}
+\operatorname{Attn}(\mathbf{Q,K,V}) := \operatorname{softmax} (\mathbf{QK}^T / \sqrt{h_k})\mathbf{V},
+\end{align*}
+where the softmax is over the last dimension.
+\end{frame}
+
+\begin{frame}{A.1 Transformers}
+Multi-head attention is where multiple query, key, and value pairs are used (indexed by $m$), their results concatenated and the result projected down using $\mathbf{W}^o \in \sR^{M \times h_v}$
+\begin{align*}
+    \operatorname{MHSA}(\rmX) &:= \operatorname{stack}_{m=1,\ldots,M}(\operatorname{head}_m(\rmX)) \mathbf{W}^o, \\
+    \text{where } &\operatorname{head}_m(\rmX)  = \operatorname{Attn} (\rmQ_m,\rmK_m, \rmV_m),
+\end{align*}
+where $\rmQ_m = \rmX \rmW^k_m,\rmK_m = \rmX \rmW^k_m, \text{ and } \rmV_m = \rmX \rmW^v_m$
+\end{frame}
+
+\begin{frame}{A.1 Transformers}
+The final transformer layer is as follows
+\begin{align*}
+    \operatorname{R}(\rmX) &:= \rmX + \operatorname{MHSA}( \operatorname{LN}(\rmX) ), \\
+    \operatorname{T}(\rmX) &:= \operatorname{R}(\rmX) + \operatorname{MLP}(\operatorname{R}(\rmX)),
+\end{align*}
+where $\operatorname{LN}(\cdot)$ is a layer-normalisation operation (Ba et al., 2016), and $\operatorname{MLP}$ is a feed-forward layer.
+\end{frame}
+
+\begin{frame}{A.1 Transformers}
+\small
+A key property of the attention operation is that permuting the rows of $\rmX$ results in the rows of the output of the attention being permuted the same way. That is, applying a permutation $\rmP$ matrix to the input of the layer $\tilde{\rmX} = \rmP \rmX$ results in,
+\begin{align*}
+    \tilde{\rmK} &= \tilde{\rmX}\rmW^k, \\
+    \tilde{\rmQ} &= \tilde{\rmX}\rmW^q, \\
+    \tilde{\rmV} &= \tilde{\rmX}\rmW^v,
+\end{align*}
+\end{frame}
+
+\begin{frame}{A.1 Transformers}
+and
+\begin{align*}
+    \tilde{\rmQ}\tilde{\rmK}^T &= \rmP \rmQ \rmK ^T\rmP^T, \\
+    \operatorname{Softmax}(\tilde{\rmQ}\tilde{\rmK}^T) \tilde{\rmV} &= \rmP \left( \operatorname{Softmax}(\rmQ \rmK^T ) \rmV \right) \\
+    &= \rmP \operatorname{Attn}(\rmQ, \rmK, \rmV).
+\end{align*}
+The transformer architecture thus encodes permutation equivariance with respect rows of the inputs (Lee et al., 2019).
+\end{frame}
+
+\section{B Experiment Details}
+\subsection{B.1 Two Variable Linear Gaussian Experiments Details}
+
+\begin{frame}{B.1 Two Variable Linear Gaussian Experiments Details}
+We generate the data by first sampling a graph for two variables $X,Y$ that either corresponds to $X \to Y$ or $Y \to X$. For an example graph of $X \to Y$, we generate the cause and effects as
+\begin{align*}
+    X &\sim \mathcal{N}(0,1), \\
+    w &\sim \mathcal{N}(0, 10), \\
+    \sigma &\sim \operatorname{Gamma}(2.5, 2.5), \\
+    Y &\sim \mathcal{N}(wX, \sigma^2).
+\end{align*}
+\end{frame}
+
+\begin{frame}{B.1 Two Variable Linear Gaussian Experiments Details}
+After generation, we normalise both $X$ and $Y$ to ensure that the causal direction is not identifiable from data. We generate $200,000$ datasets in total with $1,000$ samples each.
+\end{frame}
+
+\begin{frame}{B.1 Two Variable Linear Gaussian Experiments Details}
+\small
+For all the models, we use Adam (Kingma \& Ba, 2014) with a learning rate of $10^{-4}$ and a batch size of $64$. We train for $2$ epochs and use a linear warmup for $10\%$ of the total iterations. To reduce the memory footprint, we train in $\operatorname{bfloat}16$.
+\end{frame}
+
+\begin{frame}{B.1 Two Variable Linear Gaussian Experiments Details}
+All models used $4$ layers in their encoder, while BCNP and CSIvA used $4$ decoder layers. AVICI directly decodes from the summary representation. For BCNP, we used $100$ permutation samples to approximate the loss, and maximum of $1000$ sinkhorn iterations.
+\end{frame}
+
+\subsection{B.2 Bayesian Causal Model Data Generation Details}
+
+\begin{frame}{B.2 Bayesian Causal Model Data Generation Details}
+\small
+Here, we provide details about the data generation process used to generate training and test data for results in the comparison section. Following recommendations from Reisach et al.\ (2021), we normalise all variables after generation.
+\end{frame}
+
+\begin{frame}{B.2 Bayesian Causal Model Data Generation Details}
+All datasets contain $1000$ samples with $20$ nodes. For training the Bayesian meta-learning models, we generate $500,000$ datasets. Each test set contains $25$ datasets. We generate graphs from the ER distribution (Erdos et al., 1960), and generate datasets for varying densities $20, 40, 60$.
+\end{frame}
+
+\begin{frame}{B.2 Bayesian Causal Model Data Generation Details --- Linear}
+\textit{Linear:}\quad
+Given a graph, we sample all causes from $\mathcal{N}(0,1)$. Samples for each variable $X_d$ are then generated as follows
+\begin{align*}
+    w &\sim \mathcal{N}(0,10), \\
+    \sigma_i &\sim \operatorname{Gamma}(2.5, 2.5), \\
+    (X_d)_i &= \mathcal{N}\left(w^T \left(X_{\operatorname{PA}_{\mathcal{G}}(d)}\right)_i, \sigma_i \right),
+\end{align*}
+where $\left(X_{\operatorname{PA}_{\mathcal{G}}(d)}\right)_i$ is the $i^{th}$ sample of the parents of variable $X_d$ in graph $\mathcal{G}$.
+\end{frame}
+
+\begin{frame}{B.2 Bayesian Causal Model Data Generation Details --- NeuralNet}
+\textit{NeuralNet:}\quad
+We sample each variable as follows
+\begin{align*}
+    \epsilon_i &\sim \mathcal{N}(0,1), \\
+    (X_d)_i  &= \operatorname{NN}_{\theta}\left(\left(X_{\operatorname{PA}_{\mathcal{G}}(d)}\right)_i, \epsilon_i \right),
+\end{align*}
+where $\left(X_{\operatorname{PA}_{\mathcal{G}}(d)}\right)_i$ is the $i^{th}$ sample of the parents of variable $X_d$ in graph $\mathcal{G}$ and $\operatorname{NN}_{\theta}$ is a randomly initialised neural network.
+\end{frame}
+
+\begin{frame}{B.2 Bayesian Causal Model Data Generation Details --- NeuralNet}
+We use a two layer network with Leaky Relu activation and a width of $32$. When a node has no parents, we simply pass the noise $\epsilon$ through the neural network to generate the variable.
+\end{frame}
+
+\begin{frame}{B.2 Bayesian Causal Model Data Generation Details --- GPCDE}
+\textit{GPCDE:}\quad
+Given samples of parents of a node $X_{\operatorname{PA}_{\mathcal{G}}(d)}$ and a scalar noise term $\epsilon\sim \mathcal{N}(0,1)$, we first sample hyperparameters
+\begin{align*}
+    \gamma &\sim \operatorname{Uniform}(0.1, 1), \\
+    \bm{\lambda}
+ &\sim \log \mathcal{N} (-1, 1),
+\end{align*}
+where one $\lambda$ is generated per input (including the scalar noise term), $\bm{\lambda} = \left[ \lambda_1, \ldots, \lambda_{|X_{\operatorname{PA}_{\mathcal{G}}(d)}| + 1} \right]$.
+\end{frame}
+
+\begin{frame}{B.2 Bayesian Causal Model Data Generation Details --- GPCDE}
+\small
+The exponential Gamma kernel is then constructed
+\begin{align*}
+K\left(\left(\left(X_{\operatorname{PA}_{\mathcal{G}}(d)} \right)_i,\epsilon_i\right),  \left(\left(X_{\operatorname{PA}_{\mathcal{G}}(d)} \right)_j,\epsilon_j \right)\right) = \\\exp\left( -\frac{1}{\bm{\lambda}}\left\| \left(\left(X_{\operatorname{PA}_{\mathcal{G}}(d)} \right)_i,\epsilon_i\right) - \left(\left(X_{\operatorname{PA}_{\mathcal{G}}(d)} \right)_j,\epsilon_j\right) \right\|^{2 \gamma}_2 \right)
+\end{align*}
+where one $\lambda$ is generated per input.
+\end{frame}
+
+\begin{frame}{B.2 Bayesian Causal Model Data Generation Details --- GPCDE}
+Sampling the $\gamma$ parameters ensures that we sample functions with varying smoothness. Sampling a different $\lambda$ for each input variable changes how quickly the function changes with respect to an input. Both together ensure that we sample a large variety of functions.
+\end{frame}
+
+\begin{frame}{B.2 Bayesian Causal Model Data Generation Details --- GPCDE}
+We then sample the variable as follows
+\begin{align*}
+    \sigma &\sim \operatorname{Gamma}(1, 10), \\
+    X_{d} &\sim \mathcal{N}\left(0, K + \sigma^2 \mathbb{I} \right).
+\end{align*}
+\end{frame}
+
+\subsection{B.3 Bayesian Causal Model and Real Data Experiment Details}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details}
+\small
+Here, we provide the hyperparameter settings and baseline details for the experiments carried out in the comparison section. We compare against the explicit Bayesian models BayesDAG and DiBS. Here, the authors provide different linear and non-linear estimators. The non-linear estimators are neural networks.
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details}
+\small
+BayesDAG performs inference over the neural network weights by using SG-MCMC (Ma et al., 2015), whereas DiBS using Stein variational gradient descent (Liu \& Wang, 2016). We also compare against the Bayesian meta-learning models AVICI (Lorch et al., 2022) and CSIvA (Ke et al., 2022). The differences between our model BCNP and the other Bayesian meta-learning models can be seen in the comparison table.
+\end{frame}
+
+\begin{frame}{Table --- DiBS Hyperparameters}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Hyperparameters} & \textbf{Linear} & \textbf{NeuralNet} & \textbf{GPCDE}  & \textbf{Syntren}\\
+\midrule
+$\alpha$  & 0.2 & 0.02 & 0.02 & 0.2 \\
+$\gamma_z$    & 5   & 5   & 5 & 5 \\
+$\gamma_{\theta}$    & 500 & 1000 & 1000 & 500 \\
+Number of particles & 64   &  32 & 32 & 32 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Hyperparameters for the DiBS model for the Linear, NeuralNet, GPCDE, and Syntren datasets.}
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details --- DiBS}
+\small
+\textbf{DiBS:}\quad
+DiBS provides a linear and a non-linear model. The hyperparameters include the annealing rate of the acyclicity regulariser term $\alpha$, lengthscale of $\gamma_z$ for the latent kernel, and a lengthscale of $\gamma_{\theta}$ for the parameter kernel. For both models, we use the tuned hyperparameters from Lorch et al.\ (2021) for $20$ variables for the Bayesian causal model datasets. For the Syntren dataset, we use values tuned in Annadani et al.\ (2024).
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details --- DiBS}
+\small
+All the hyperparameters used can be seen in the table above. We provide all the models with the correct graph density, number of variables as well as the graph generating distribution (ER) to construct its prior. For Syntren we used the scale-free (Barab\'asi \& Albert, 1999) graph prior, as it closely matches the structure of the Syntren datasets.
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details --- DiBS}
+\small
+Due to the high memory cost, we optimised $64$ particles for the linear model and $32$ for the non-linear model. As the number of samples are quite low, when these were averaged to find the probability of each edge, the probability of certain edges was $0$. This lead to an infinite log Bernoulli probability value.
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details --- DiBS}
+To deal with this, during testing, we add constants to the log probability from $10^{-8}$ to $10^{-2}$ and pick the highest resultant log probability. We keep all other hyperparameters to the preset value by the authors.
+\end{frame}
+
+\begin{frame}{Table --- BayesDAG Hyperparameters}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Hyperparameters} & \textbf{Linear} & \textbf{NeuralNet} & \textbf{GPCDE} & \textbf{Syntren} \\
+\midrule
+$\lambda_s$  & 500.0 & 10.0 & 1.0 & 300.0 \\
+Number of Chains     & 20    & 10   & 10 & 10 \\
+Scale $\Theta$    & 0.001 & 0.001 & 0.1  & 0.01\\
+Scale $\rvp$ & 1.0   & 0.01  & 0.001 & 0.1 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Hyperparameters for the BayesDAG model for the Linear, NeuralNet, GPCDE, and Syntren datasets.}
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details --- BayesDAG}
+\small
+\textbf{BayesDAG:}\quad
+For the Syntren dataset, we used the values tuned by the authors. For the Bayesian causal model datasets, following Annadani et al.\ (2024), for each function type, we generate $5$ validation sets with graphs drawn from the ER distribution (Erdos et al., 1960) with $20$ expected edges.
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details --- BayesDAG}
+\small
+For the linear and the non-linear models, and for each validation set we sample $20$ hyperparameter configurations from the recommended hyperparameter range settings in the authors' the code. In contrast to the settings used by authors, we normalise the all variables as recommended by Reisach et al.\ (2021).
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details --- BayesDAG}
+\small
+We note that the authors recommend choosing hyperparameters based on the lowest expected SHD score. However, in our experience this lead to nearly empty graphs on the test set. Hence, we choose hyperparameters based on the highest AUC score. The chosen hyperparameters for each function type can be seen in the table above. We keep all other hyperparameters to their preset values.
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details --- Meta-Learning Models}
+\small
+\textbf{Bayesian Meta-Learning Models:}\quad
+For the models AVICI, CSIvA, and ours BCNP, we ensure the same architecture here we highlight key differences. AVICI uses max pooling to construct the summary representation, instead of attention using a query vector. The summary representation is decoded using a linear layer.
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details --- Meta-Learning Models}
+\small
+AVICI also uses an acyclic regulariser on it's marginal edge probabilities which forces the probabilities to be acyclic. Following the values used by the authors, we initialise the weight of the acyclic regulariser to $0$ and update it every $500$ iterations using a regulariser learning rate. This regulariser learning rate is kept at a value of $10^{-4}$ after warming up for $10\%$ of the total iterations.
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details --- Meta-Learning Models}
+In contrast, the only difference with CSIvA is that it uses an autoregressive decoder where each $D^2$ elements of the adjacency are autoregressively generated.
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details --- Meta-Learning Models}
+\small
+All the models have $2$ encoder layers ($4$ transformer layers in total, but attention over samples and nodes is done twice each), while CSIvA, and BCNP also have $4$ decoder layers. For AVICI and BCNP, we use a width of $512$ for the attention layers and a width of $1024$ for the feedforward layers.
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details --- Meta-Learning Models}
+\small
+Due to memory constraints of autoregressive generation, for CSIvA we use a width of $256$ for the attention and $512$ for the feedforward layers. We use $8$ attention heads for each model. We use Adam (Kingma \& Ba, 2014) with a learning rate of $10^{-4}$ with a linear warmup of $10\%$ of the total iterations.
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details --- Meta-Learning Models}
+We use a batch size of $32$ for AVICI and BCNP, and a batch size of $8$ for CSIvA. For BCNP, we used $100$ permutation samples to approximate the loss, and maximum of $1000$ sinkhorn iterations.
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details --- Syntren Training}
+\small
+\textbf{Training details for Bayesian meta-learning models for Syntren:}\quad
+To train the meta-learning models, we generate data from a mixture of all possible choices used in the previous section. We generate graphs from the ER distribution as well as the scale-free distribution. The densities of the graphs are sampled from $20$ to $60$.
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details --- Syntren Training}
+\small
+Each edge function is sampled from the NeuralNet or the GPCDE distributions with equal probability. As the Syntren datasets have $500$ samples per dataset, we sample the same amount. We use $500,000$ datasets to train in total.
+\end{frame}
+
+\begin{frame}{B.3 Bayesian Causal Model and Real Data Experiment Details --- Syntren Training}
+We use the same networks as for the rest of the experiments, but increase the number of attention heads to $16$ and increase the feedforward width of the AVICI and BCNP model to $2048$. For CSIvA we kept the same width as the other experiments due to memory constraints.
+\end{frame}
+
+\section{C Additional Results}
+\subsection{C.1 Results on Data from Bayesian Causal Models}
+
+\begin{frame}{C.1 Results on Data from Bayesian Causal Models}
+\small
+In this section we present the full results for each of the function type and graph density (Section 4.2). Higher is better for AUC, Log Probability, and Expected Edge F1, while lower is better for Expected SHD.
+\end{frame}
+
+\begin{frame}{C.1 Results on Data from Bayesian Causal Models}
+\small
+For the BCNP model, those labelled ER20, ER40, ER60 are trained on datasets from the same distribution as the test dataset. Those labelled ER20-60 are trained on a mixture of the graph densities for a particular function type (Linear, NeuralNet, GPCDE), hence there is one model per function type.
+\end{frame}
+
+\begin{frame}{C.1 Results on Data from Bayesian Causal Models}
+\small
+The model labelled All Data, is a single model that is trained on a mixture of all graph densities and function types. The fact that the single model performs as well (sometimes better, e.g.\ GPCDE datasets), than training on a single distribution type, shows that training on a mixture of datasets can be a useful strategy.
+\end{frame}
+
+\begin{frame}{Table --- Results for Linear ER20}
+\centering
+\scriptsize
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+DiBs & 0.73 ± 0.01 & -70.53 ± 1.64 & 25.41 ± 0.74 & 0.16 ± 0.01 \\
+BayesDAG & 0.52 ± 0.01 & -515.58 ± 18.76 & 23.02 ± 0.54 & 0.03 ± 0.01 \\
+AVICI & \textbf{0.89 ± 0.01} & \textbf{-51.27 ± 1.47} & 26.61 ± 0.59 & 0.31 ± 0.01 \\
+CSIvA & 0.51 ± 0.01 & -79.79 ± 0.13 & 38.36 ± 0.01 & 0.05 ± 0.00 \\
+\textbf{BCNP ER20} & \textbf{0.90 ± 0.01} & \textbf{-52.11 ± 2.77} & \textbf{21.53 ± 0.75} & \textbf{0.44 ± 0.02} \\
+\textbf{BCNP ER20-60} & \textbf{0.89 ± 0.01} & \textbf{-52.47 ± 2.42} & 23.47 ± 0.74 & \textbf{0.41 ± 0.02} \\
+\textbf{BCNP All Data} & \textbf{0.89 ± 0.01} & \textbf{-52.07 ± 2.90} & 23.35 ± 0.75 & \textbf{0.44 ± 0.02}\\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the 20 variable Linear ER20 dataset (mean $\pm$ std of mean).}
+\end{frame}
+
+\begin{frame}{Table --- Results for Linear ER40}
+\centering
+\scriptsize
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+DiBS & 0.53 ± 0.02 & -160.71 ± 4.13 & 72.43 ± 2.08 & 0.11 ± 0.01 \\
+BayesDAG & 0.51 ± 0.01 & -1016.56 ± 47.11 & \textbf{44.07 ± 0.53} & 0.03 ± 0.01 \\
+AVICI & 0.86 ± 0.01 & -94.12 ± 1.82 & 56.22 ± 0.48 & 0.28 ± 0.01 \\
+CSIvA & 0.51 ± 0.01 & -130.16 ± 0.20 & 71.24 ± 0.03 & 0.10 ± 0.00 \\
+\textbf{BCNP ER40} & \textbf{0.89 ± 0.01} & \textbf{-89.38 ± 2.39} & 49.68 ± 0.56 & 0.37 ± 0.01 \\
+\textbf{BCNP ER20-60} & \textbf{0.88 ± 0.01} & \textbf{-90.63 ± 2.36} & 51.17 ± 1.04 & 0.36 ± 0.01 \\
+\textbf{BCNP All Data} & \textbf{0.90 ± 0.01} & \textbf{-86.49 ± 3.03} & 49.01 ± 1.05 & \textbf{0.40 ± 0.01} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the 20 variable Linear ER40 dataset (mean $\pm$ std of mean).}
+\end{frame}
+
+\begin{frame}{Table --- Results for Linear ER60}
+\centering
+\scriptsize
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{Neg. Log Prob.} & \textbf{Expected SHD} & \textbf{Expected Edge F1}\\
+\midrule
+DiBS & 0.40 $\pm$ 0.01 & -231.40 $\pm$ 3.69 & 106.64 $\pm$ 1.25 & 0.11 $\pm$ 0.00\\
+BayesDAG & 0.51 $\pm$ 0.01 & -1509.27 $\pm$ 48.40 & \textbf{63.51 $\pm$ 0.40} & 0.04 $\pm$ 0.01\\
+AVICI & 0.83 $\pm$ 0.01 & -126.31 $\pm$ 1.71 & 80.90 $\pm$ 0.71 & 0.31 $\pm$ 0.01\\
+CSIvA & 0.49 $\pm$ 0.01 & -169.49 $\pm$ 0.19 & 102.00 $\pm$ 0.05 & 0.15 $\pm$ 0.00\\
+\textbf{BCNP ER60} & \textbf{0.85 $\pm$ 0.01} & \textbf{-121.87 $\pm$ 2.29} & 76.52 $\pm$ 0.92 & \textbf{0.36 $\pm$ 0.01}\\
+\textbf{BCNP ER20-60} & \textbf{0.84 $\pm$ 0.01} & -125.42 $\pm$ 2.17 & 74.19 $\pm$ 1.08 & 0.33 $\pm$ 0.01\\
+\textbf{BCNP All Data} & \textbf{0.86 $\pm$ 0.01} & \textbf{-122.02 $\pm$ 2.66} & 72.15 $\pm$ 1.17 & \textbf{0.36 $\pm$ 0.01}\\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the 20 variable Linear ER60 dataset (mean $\pm$ std of mean).}
+\end{frame}
+
+\begin{frame}{Table --- Results for NeuralNet ER20}
+\centering
+\scriptsize
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+DiBS & 0.69 $\pm$ 0.01 & -75.31 $\pm$ 1.19 & 28.48 $\pm$ 0.20 & 0.12 $\pm$ 0.01 \\
+BayesDAG & 0.59 $\pm$ 0.02 & -119.99 $\pm$ 0.27 & 90.21 $\pm$ 0.20 & 0.09 $\pm$ 0.00 \\
+AVICI & 0.84 $\pm$ 0.01 & -59.21 $\pm$ 1.15 & 29.51 $\pm$ 0.37 & 0.24 $\pm$ 0.01 \\
+CSIvA & 0.51 $\pm$ 0.01 & -79.82 $\pm$ 0.21 & 38.01 $\pm$ 0.02 & 0.05 $\pm$ 0.00 \\
+\textbf{BCNP ER20} & \textbf{0.88 $\pm$ 0.00} & -56.07 $\pm$ 0.76 & \textbf{26.73 $\pm$ 0.16} & 0.26 $\pm$ 0.00 \\
+\textbf{BCNP ER20-60} & \textbf{0.88 $\pm$ 0.00} & \textbf{-53.92 $\pm$ 0.98} & 27.55 $\pm$ 0.36 & \textbf{0.38 $\pm$ 0.01} \\
+\textbf{BCNP All Data} & \textbf{0.88 $\pm$ 0.01} & \textbf{-54.00 $\pm$ 1.94} & 30.05 $\pm$ 0.65 & \textbf{0.36 $\pm$ 0.01} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the 20 variable NeuralNet ER20 dataset (mean $\pm$ std of mean).}
+\end{frame}
+
+\begin{frame}{Table --- Results for NeuralNet ER40}
+\centering
+\scriptsize
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+DiBS & 0.67 $\pm$ 0.01 & -139.47 $\pm$ 1.96 & \textbf{46.81 $\pm$ 0.21} & 0.13 $\pm$ 0.01 \\
+BayesDAG & 0.59 $\pm$ 0.01 & -145.35 $\pm$ 0.18 & 97.25 $\pm$ 0.14 & 0.15 $\pm$ 0.00 \\
+AVICI & 0.79 $\pm$ 0.01 & -105.83 $\pm$ 1.21 & 61.11 $\pm$ 0.46 & 0.24 $\pm$ 0.01 \\
+CSIvA & 0.50 $\pm$ 0.01 & -130.44 $\pm$ 0.22 & 71.92 $\pm$ 0.04 & 0.10 $\pm$ 0.00 \\
+\textbf{BCNP ER40} & \textbf{0.86 $\pm$ 0.00} & \textbf{-93.32 $\pm$ 1.43} & 47.38 $\pm$ 0.28 & \textbf{0.39 $\pm$ 0.00} \\
+\textbf{BCNP ER20-60} & 0.86 $\pm$ 0.00 & -95.39 $\pm$ 1.31 & 49.71 $\pm$ 0.38 & 0.37 $\pm$ 0.00 \\
+\textbf{BCNP All Data} & 0.84 $\pm$ 0.01 & -101.49 $\pm$ 3.37 & 53.44 $\pm$ 0.71 & 0.37 $\pm$ 0.01 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the 20 variable NeuralNet ER40 dataset (mean $\pm$ std of mean).}
+\end{frame}
+
+\begin{frame}{Table --- Results for NeuralNet ER60}
+\centering
+\scriptsize
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+DiBS & 0.64 $\pm$ 0.01 & -208.22 $\pm$ 1.82 & \textbf{65.72 $\pm$ 0.17} & 0.13 $\pm$ 0.01 \\
+BayesDAG & 0.58 $\pm$ 0.01 & -170.73 $\pm$ 0.26 & 103.95 $\pm$ 0.09 & 0.19 $\pm$ 0.01 \\
+AVICI & 0.79 $\pm$ 0.01 & -138.04 $\pm$ 1.36 & 85.15 $\pm$ 0.59 & 0.29 $\pm$ 0.01 \\
+CSIvA & 0.50 $\pm$ 0.01 & -169.30 $\pm$ 0.20 & 101.89 $\pm$ 0.05 & 0.15 $\pm$ 0.00 \\
+\textbf{BCNP ER60} & \textbf{0.85 $\pm$ 0.00} & \textbf{-121.09 $\pm$ 1.08} & 70.40 $\pm$ 0.35 & \textbf{0.40 $\pm$ 0.00} \\
+\textbf{BCNP ER20-60} & 0.83 $\pm$ 0.00 & -133.36 $\pm$ 1.59 & 68.34 $\pm$ 0.36 & 0.38 $\pm$ 0.00 \\
+\textbf{BCNP All Data} & 0.83 $\pm$ 0.01 & -127.48 $\pm$ 2.71 & 68.34 $\pm$ 0.91 & \textbf{0.39 $\pm$ 0.01} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the 20 variable NeuralNet ER60 dataset (mean $\pm$ std of mean).}
+\end{frame}
+
+\begin{frame}{Table --- Results for GPCDE ER20}
+\centering
+\scriptsize
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+DiBS & 0.80 $\pm$ 0.01 & \textbf{-63.32 $\pm$ 1.24} & \textbf{26.33 $\pm$ 0.17} & 0.18 $\pm$ 0.01 \\
+BayesDAG & 0.67 $\pm$ 0.02 & -137.93 $\pm$ 2.63 & 99.69 $\pm$ 0.22 & 0.11 $\pm$ 0.00 \\
+AVICI & 0.74 $\pm$ 0.01 & -71.67 $\pm$ 0.64 & 36.27 $\pm$ 0.20 & 0.08 $\pm$ 0.01 \\
+CSIvA & 0.48 $\pm$ 0.01 & -80.19 $\pm$ 0.13 & 37.93 $\pm$ 0.01 & 0.05 $\pm$ 0.00 \\
+\textbf{BCNP ER20} & 0.75 $\pm$ 0.01 & -72.29 $\pm$ 0.87 & 37.31 $\pm$ 0.10 & 0.09 $\pm$ 0.00 \\
+\textbf{BCNP ER20-60} & 0.74 $\pm$ 0.01 & -73.29 $\pm$ 0.92 & 41.23 $\pm$ 1.01 & 0.09 $\pm$ 0.00 \\
+\textbf{BCNP All Data} & \textbf{0.83 $\pm$ 0.01} & \textbf{-63.99 $\pm$ 1.42} & 38.24 $\pm$ 0.85 & \textbf{0.20 $\pm$ 0.01} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the 20 variable GPCDE ER20 dataset (mean $\pm$ std of mean).}
+\end{frame}
+
+\begin{frame}{Table --- Results for GPCDE ER40}
+\centering
+\scriptsize
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+DiBS & 0.74 $\pm$ 0.01 & -125.15 $\pm$ 1.52 & \textbf{45.04 $\pm$ 0.26} & 0.16 $\pm$ 0.00 \\
+BayesDAG & 0.67 $\pm$ 0.02 & -154.09 $\pm$ 2.25 & 103.09 $\pm$ 0.33 & 0.19 $\pm$ 0.01 \\
+AVICI & 0.72 $\pm$ 0.01 & -116.67 $\pm$ 1.21 & 67.68 $\pm$ 0.33 & 0.15 $\pm$ 0.01 \\
+CSIvA & 0.51 $\pm$ 0.01 & -130.29 $\pm$ 0.22 & 71.65 $\pm$ 0.04 & 0.10 $\pm$ 0.00 \\
+\textbf{BCNP ER40} & 0.73 $\pm$ 0.01 & -116.11 $\pm$ 1.26 & 69.68 $\pm$ 0.30 & 0.16 $\pm$ 0.00 \\
+\textbf{BCNP ER20-60} & 0.73 $\pm$ 0.01 & -116.91 $\pm$ 1.33 & 66.95 $\pm$ 1.10 & 0.15 $\pm$ 0.00 \\
+\textbf{BCNP All Data} & \textbf{0.78 $\pm$ 0.01} & \textbf{-108.50 $\pm$ 1.58} & 62.05 $\pm$ 1.17 & \textbf{0.22 $\pm$ 0.01} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the 20 variable GPCDE ER40 dataset (mean $\pm$ std of mean).}
+\end{frame}
+
+\begin{frame}{Table --- Results for GPCDE ER60}
+\centering
+\scriptsize
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+DiBS & 0.67 $\pm$ 0.01 & -199.87 $\pm$ 2.03 & \textbf{64.22 $\pm$ 0.22} & 0.13 $\pm$ 0.00 \\
+BayesDAG & 0.66 $\pm$ 0.01 & -184.48 $\pm$ 5.12 & 107.46 $\pm$ 0.31 & \textbf{0.24 $\pm$ 0.00} \\
+AVICI & 0.71 $\pm$ 0.01 & -151.70 $\pm$ 1.28 & 91.33 $\pm$ 0.36 & 0.21 $\pm$ 0.01 \\
+CSIvA & 0.49 $\pm$ 0.01 & -169.53 $\pm$ 0.19 & 101.62 $\pm$ 0.05 & 0.15 $\pm$ 0.00 \\
+\textbf{BCNP ER60} & 0.72 $\pm$ 0.01 & -149.48 $\pm$ 1.05 & 93.07 $\pm$ 0.34 & 0.22 $\pm$ 0.01 \\
+\textbf{BCNP ER20-60} & 0.71 $\pm$ 0.01 & -153.97 $\pm$ 1.07 & 87.03 $\pm$ 0.67 & 0.19 $\pm$ 0.01 \\
+\textbf{BCNP All Data} & \textbf{0.77 $\pm$ 0.01} & \textbf{-142.97 $\pm$ 1.80} & 80.28 $\pm$ 0.77 & \textbf{0.25 $\pm$ 0.01} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the 20 variable GPCDE ER60 dataset (mean $\pm$ std of mean).}
+\end{frame}
+
+\subsection{C.2 Results for Meta-Learning Models with the Same Width}
+
+\begin{frame}{C.2 Results for Meta-Learning Models with the Same Width}
+\small
+Due to memory constraints, we used a smaller width network for CSIvA than AVICI and BCNP. Here, we train the same width networks for all three to allow for fair comparison. The results show that CSIvA struggles with larger number of nodes.
+\end{frame}
+
+\begin{frame}{Table --- Same-Width Models, Linear ER20}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{ Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+CSIvA & 0.51 ± 0.01 & -79.79 ± 0.13 & 38.36 ± 0.01 & 0.05 ± 0.00 \\
+AVICI & 0.85 ± 0.01 & -61.28 ± 1.54 & 31.91 ± 0.33 & 0.18 ± 0.01 \\
+\textbf{BCNP} & \textbf{0.87 ± 0.01} & \textbf{-54.52 ± 1.56} & \textbf{26.68 ± 0.62} & \textbf{0.31 ± 0.02} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the same width meta-learning models for Linear ER20 (mean $\pm$ std of mean).}
+\end{frame}
+
+\begin{frame}{Table --- Same-Width Models, Linear ER40}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{ Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+CSIvA & 0.51 ± 0.01 & -130.16 ± 0.20 & 71.24 ± 0.03 & 0.10 ± 0.00 \\
+AVICI & 0.82 ± 0.01 & -102.57 ± 0.96 & 60.25 ± 0.34 & 0.21 ± 0.01 \\
+\textbf{BCNP} & \textbf{0.85 ± 0.01} & \textbf{-98.64 ± 1.70} & \textbf{57.44 ± 0.45} & \textbf{0.27 ± 0.01} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the same width meta-learning models for Linear ER40 (mean $\pm$ std of mean).}
+\end{frame}
+
+\begin{frame}{Table --- Same-Width Models, Linear ER60}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{ Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+CSIvA & 0.49 ± 0.00 & -169.49 ± 0.03 & 102.00 ± 0.00 & 0.15 ± 0.00 \\
+AVICI & 0.80 ± 0.00 & -134.23 ± 1.87 & 84.83 ± 0.25 & 0.27 ± 0.00 \\
+\textbf{BCNP} & \textbf{0.82 ± 0.00} & \textbf{-130.28 ± 5.09} & \textbf{82.19 ± 0.30} & \textbf{0.31 ± 0.00} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the same width meta learning models for Linear ER60 (mean $\pm$ variance of mean).}
+\end{frame}
+
+\begin{frame}{Table --- Same-Width Models, NeuralNet ER20}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{ Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+CSIvA & 0.51 ± 0.01 & -79.82 ± 0.21 & 38.01 ± 0.02 & 0.05 ± 0.00 \\
+AVICI & \textbf{0.78 ± 0.01} & \textbf{-68.97 ± 1.13} & \textbf{33.96 ± 0.30} & \textbf{0.11 ± 0.00} \\
+\textbf{BCNP} & 0.70 ± 0.01 & -73.86 ± 0.65 & 37.46 ± 0.19 & 0.08 ± 0.00 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the same width meta-learning models for NeuralNet ER20 (mean $\pm$ std of mean).}
+\end{frame}
+
+\begin{frame}{Table --- Same-Width Models, NeuralNet ER40}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{ Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+CSIvA & 0.50 ± 0.01 & -130.44 ± 0.22 & 71.92 ± 0.04 & 0.10 ± 0.00 \\
+AVICI & \textbf{0.73 ± 0.01} & \textbf{-115.88 ± 0.88} & 64.97 ± 0.37 & \textbf{0.16 ± 0.00} \\
+\textbf{BCNP} & Model diverged & Model diverged & Model diverged & Model diverged \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the same width meta-learning models for NeuralNet ER40 (mean $\pm$ std of mean).}
+\end{frame}
+
+\begin{frame}{Table --- Same-Width Models, NeuralNet ER60}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+CSIvA & 0.50 ± 0.01 & -169.30 ± 0.20 & 101.89 ± 0.05 & 0.15 ± 0.00 \\
+AVICI & 0.75 ± 0.01 & -146.07 ± 1.25 & 88.62 ± 0.48 & 0.23 ± 0.00 \\
+\textbf{BCNP} & \textbf{0.77 ± 0.01} & \textbf{-141.54 ± 1.51} & \textbf{87.53 ± 0.49} & \textbf{0.26 ± 0.00} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the same width meta-learning models for NeuralNet ER60 (mean $\pm$ std of mean).}
+\end{frame}
+
+\begin{frame}{Table --- Same-Width Models, GPCDE ER20}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+CSIvA & 0.48 ± 0.01 & -80.19 ± 0.13 & 37.93 ± 0.01 & 0.05 ± 0.00 \\
+AVICI & \textbf{0.74 ± 0.01} & \textbf{-72.94 ± 0.64} & 36.26 ± 0.20 & \textbf{0.08 ± 0.00} \\
+\textbf{BCNP} & \textbf{0.74 ± 0.01} & \textbf{-72.85 ± 0.87} & \textbf{35.38 ± 0.10} & \textbf{0.08 ± 0.00} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the same width meta learning models for GPCDE ER20 (mean $\pm$ std of mean).}
+\end{frame}
+
+\begin{frame}{Table --- Same-Width Models, GPCDE ER40}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+CSIvA & 0.51 ± 0.01 & -130.29 ± 0.22 & 71.65 ± 0.04 & 0.10 ± 0.00 \\
+AVICI & \textbf{0.72 ± 0.01} & \textbf{-116.70 ± 1.21} & \textbf{67.11 ± 0.33} & \textbf{0.15 ± 0.00} \\
+\textbf{BCNP} & \textbf{0.72 ± 0.01} & \textbf{-116.72 ± 1.22} & \textbf{67.00 ± 0.30} & \textbf{0.15 ± 0.00} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the same width meta learning models for GPCDE ER40 (mean $\pm$ std of mean).}
+\end{frame}
+
+\begin{frame}{Table --- Same-Width Models, GPCDE ER60}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model} & \textbf{AUC} & \textbf{Log Probability} & \textbf{Expected SHD} & \textbf{Expected Edge F1} \\
+\midrule
+CSIvA & 0.49 ± 0.01 & -169.53 ± 0.19 & 101.62 ± 0.05 & 0.15 ± 0.00 \\
+AVICI & \textbf{0.71 ± 0.01} & \textbf{-151.76 ± 1.28} & \textbf{92.79 ± 0.36} & \textbf{0.21 ± 0.00} \\
+\textbf{BCNP} & 0.70 ± 0.01 & \textbf{-152.24 ± 0.76} & 94.27 ± 0.34 & \textbf{0.21 ± 0.00} \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+{\footnotesize Results for the same width meta learning models for GPCDE ER60 (mean $\pm$ std of mean).}
+\end{frame}
+
+\end{document}
