@@ -74,7 +74,15 @@ some papers i find related:
   - tfm-retouche — [arxiv](https://arxiv.org/abs/2605.06047)
   - tabfm — [blog](https://research.google/blog/introducing-tabfm-a-zero-shot-foundation-model-for-tabular-data/)
   - tabpack — [arxiv](https://arxiv.org/abs/2607.05380)
+- relational
   - rdbbench — [arxiv](https://arxiv.org/abs/2607.03659)
+  - rdl-survey — [arxiv](https://arxiv.org/abs/2506.16654)
+  - rt — [arxiv](https://arxiv.org/abs/2510.06377)
+  - kumorfm — [pdf](https://kumo.ai/research/kumo_relational_foundation_model.pdf)
+  - kumorfm-2 — [arxiv](https://arxiv.org/abs/2604.12596)
+  - openrfm — [arxiv](https://arxiv.org/abs/2606.04320)
+  - plurel — [arxiv](https://arxiv.org/abs/2602.04029)
+  - rdblearn — [arxiv](https://arxiv.org/abs/2602.18495) · [arxiv](https://arxiv.org/abs/2602.13697)
 - time series
   - tabpfn-ts — [arxiv](https://arxiv.org/abs/2501.02945)
   - toto-2 — [arxiv](https://arxiv.org/abs/2605.20119)
