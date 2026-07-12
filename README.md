@@ -116,3 +116,5 @@ not grouped yet:
 - martingale — [arxiv](https://arxiv.org/abs/2103.15671)
 - tjepa — [arxiv](https://arxiv.org/abs/2410.05016)
 - pfnuq — [arxiv](https://arxiv.org/abs/2505.11325)
+- kernelicl — [arxiv](https://arxiv.org/abs/2602.02162)
+- baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe)
