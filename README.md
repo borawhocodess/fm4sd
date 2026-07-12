@@ -74,6 +74,7 @@ some papers i find related:
   - tfm-retouche — [arxiv](https://arxiv.org/abs/2605.06047)
   - tabfm — [blog](https://research.google/blog/introducing-tabfm-a-zero-shot-foundation-model-for-tabular-data/)
   - tabpack — [arxiv](https://arxiv.org/abs/2607.05380)
+  - drifttabpfn — [arxiv](https://arxiv.org/abs/2411.10634)
 - relational
   - rdbbench — [arxiv](https://arxiv.org/abs/2607.03659)
   - rdl-survey — [arxiv](https://arxiv.org/abs/2506.16654)
