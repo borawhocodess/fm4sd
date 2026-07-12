@@ -73,6 +73,8 @@ some papers i find related:
   - beyondarena — [arxiv](https://arxiv.org/abs/2606.30410)
   - tfm-retouche — [arxiv](https://arxiv.org/abs/2605.06047)
   - tabfm — [blog](https://research.google/blog/introducing-tabfm-a-zero-shot-foundation-model-for-tabular-data/)
+  - tabpack — [arxiv](https://arxiv.org/abs/2607.05380)
+  - rdbbench — [arxiv](https://arxiv.org/abs/2607.03659)
 - time series
   - tabpfn-ts — [arxiv](https://arxiv.org/abs/2501.02945)
   - toto-2 — [arxiv](https://arxiv.org/abs/2605.20119)
