@@ -1,0 +1,1055 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+
+\usetheme{metropolis}
+\metroset{progressbar=frametitle, numbering=fraction, block=fill}
+
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{adjustbox}
+\usepackage[numbers]{natbib}
+
+% frame title = current subsection if one has been declared, else current section
+\newcommand{\currentheading}{\ifx\insertsubsection\empty\insertsection\else\insertsubsection\fi}
+
+\newcommand{\cit}[1]{{\scriptsize\color{gray}[#1]}}
+
+\title{A Fair Benchmarking of Deep Relational Database Learning Models}
+\subtitle{}
+\author{\cit{Akhter, Samad, Ajendla '26}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Abstract}
+
+\begin{frame}{Abstract}
+Relational databases (RDBs) are the primary data infrastructure in many enterprises, yet recent deep learning methods designed for RDBs have been evaluated under inconsistent experimental protocols, making fair comparison difficult.
+\end{frame}
+
+\begin{frame}{Abstract}
+We present one of the first systematic benchmarking studies of recently released deep learning methods for RDBs, evaluating them across five relational databases, with one classification and one regression task for each.
+\end{frame}
+
+\begin{frame}{Abstract}
+We refactor all deep RDB models to allow the full range of experimental procedures to be applied consistently across all methods.
+\end{frame}
+
+\begin{frame}{Abstract}
+Our findings indicate that the relational transformer (RT) approach delivers the strongest overall performance on both classification and regression tasks compared to the state-of-the-art graph-based modeling and learning of RDBs.
+\end{frame}
+
+\begin{frame}{Abstract}
+Even for single-table learning tasks, deep learning methods designed for RDBs outperform the leading tabular foundation model, TabPFN 2.5.
+\end{frame}
+
+\begin{frame}{Abstract}
+Extending learning from a single table (hop = 0) to multiple tables (hop = 1, 2) by connecting neighboring tables in relational databases enhances performance, but the additional benefit from higher hops diminishes as computational overhead grows.
+\end{frame}
+
+\begin{frame}{Abstract}
+Deep RDB learning methods have the potential to challenge state-of-the-art tabular foundation models, especially on large-scale enterprise data.
+\end{frame}
+
+\begin{frame}{Abstract}
+The source code for this benchmarking study is publicly available at~\footnote{\href{https://github.com/mdsamad001/Benchmarking-Deep-Relational-Database-Models.git}%
+{https://github.com/mdsamad001/Benchmarking-Deep-Relational-Database-Models.git}}.
+\end{frame}
+
+\section{1 Introduction}
+
+\begin{frame}{1 Introduction}
+Relational databases (RDBs) are the backbone of structured data management, where multiple interconnected tables are linked via primary-foreign key relationships.
+\end{frame}
+
+\begin{frame}{1 Introduction}
+Countless services are performed in e-commerce, healthcare, finance, banking and scientific research by managing data in dozens of tables, millions of rows, and hundreds of columns.
+\cit{Robinson et al., 2024; Fey et al., 2024}
+\end{frame}
+
+\begin{frame}{1 Introduction}
+RDBs are designed and optimized to support complex data queries and management, but they do not take into account the requirements of predictive modeling.
+\end{frame}
+
+\begin{frame}{1 Introduction}
+Many consequential predictive problems, including customer churn forecasting, clinical risk scoring, supply-chain demand estimation, and recommendation, can benefit from learning RDBs.
+\cit{Fey et al., 2024}
+\end{frame}
+
+\begin{frame}{1 Introduction}
+However, the sheer volume and breadth of RDB data spread across dozens of interrelated tables and millions of rows pose a unique challenge for developing big-data-driven predictive models.
+\end{frame}
+
+\begin{frame}{1 Introduction}
+The fundamental challenge in applying conventional machine learning paradigms to RDBs stems from the structural distinctions between ``tabular'' and ``relational'' learning.
+\end{frame}
+
+\begin{frame}{1 Introduction}
+In a typical tabular structure, each data sample is a self-contained row where samples are assumed to be independent and identically distributed (i.i.d.).
+\end{frame}
+
+\begin{frame}{1 Introduction}
+RDBs are different from typical tabular data sets in three different ways.
+\end{frame}
+
+\begin{frame}{1 Introduction --- Three Distinctions}
+First, an RDB includes multiple related tables linked by constraints of the primary-key and foreign-key (PK--FK), which also contribute the necessary predictive signals to learn an entity type.
+\cit{Ranjan et al., 2025}
+\end{frame}
+
+\begin{frame}{1 Introduction --- Three Distinctions}
+For example, predicting an entity type, such as customers, would benefit from customer-related information spread across other tables that store transactions, orders, and reviews.
+\end{frame}
+
+\begin{frame}{1 Introduction --- Three Distinctions}
+Second, RDBs commonly include timestamps and historical records, unlike a data table with static information.
+\end{frame}
+
+\begin{frame}{1 Introduction --- Three Distinctions}
+Time information must be properly considered to avoid temporal leakage in predictive modeling tasks.
+\cit{Robinson et al., 2024}
+\end{frame}
+
+\begin{frame}{1 Introduction --- Three Distinctions}
+Third, samples in RDB are inherently dependent, unlike the i.i.d. assumption made in traditional machine learning.
+\end{frame}
+
+\begin{frame}{1 Introduction --- Three Distinctions}
+For example, two customers can order similar products and services or the same patient appears in multiple follow-up visits, introducing statistical dependencies between samples.
+\cit{Fey et al., 2024}
+\end{frame}
+
+\begin{frame}{1 Introduction}
+These three distinctions have motivated recent research efforts in introducing deep learning methods that operate directly on RDBs leveraging the relational information across tables.
+\end{frame}
+
+\begin{frame}{1 Introduction}
+However, deep learning methods for RDBs have been evaluated under varying training configurations and computational budgets against some selective baselines.
+\end{frame}
+
+\begin{frame}{1 Introduction}
+Therefore, it is unclear whether the performance gain reported for the existing methods is significant compared to other competitive baselines.
+\end{frame}
+
+\begin{frame}{1 Introduction}
+The tabular learning community has benefited from extensive benchmarking studies.
+\cit{Grinsztajn et al., 2022; Borisov et al., 2022; Shwartz-Ziv \& Armon, 2022; Gorishniy et al., 2021}
+\end{frame}
+
+\begin{frame}{1 Introduction}
+We argue that recent deep RDB methods have achieved a level of maturity that warrants a first of its kind benchmarking study.
+\end{frame}
+
+\begin{frame}{1 Introduction --- Contribution}
+In this work, we present a systematic evaluation of state-of-the-art deep learning methods for relational databases.
+\end{frame}
+
+\begin{frame}{1 Introduction --- Contribution}
+Our controlled experiments with a common protocol compare across representative architectures that span GNN-based methods, graph transformers, and foundation model approaches.
+\end{frame}
+
+\begin{frame}{1 Introduction --- Contribution}
+We do not intend to propose a new method, but to inform the community with an empirical characterization of state-of-the-art methods to further guide future research and practical deployment decisions.
+\end{frame}
+
+\section{2 Related Work}
+
+\subsection{2.1 Single-Table Tabular Methods}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+Deep learning for tabular data has long struggled to demonstrate robust performance compared to traditional machine learning methods.
+\cit{Borisov et al., 2022; Grinsztajn et al., 2022}
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+Unfortunately, there is no single best learning algorithm for all tabular datasets due to heterogeneity in domains and tabular structures, unlike image and language models.
+\cit{Rabbani et al., 2025}
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+Gradient-boosted decision trees, such as LightGBM, remain one of the dominant methods for tabular prediction tasks due to their robust performance and fast training without the requirement of feature engineering.
+\cit{Grinsztajn et al., 2022}
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+RealMLP has emerged as a competitive deep learning model for tabular data, demonstrating that improved MLP architectures can achieve performance comparable to gradient-boosted decision trees on large tabular benchmarks.
+\cit{Holzm\"uller et al., 2024}
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+Recently, TabPFN 2.5 has topped the tabular model leaderboard, which uses a transformer model trained on millions of synthetic tabular datasets.
+\cit{Hollmann et al., 2025}
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+Training examples, such as synthetic data for TabPFN 2.5, are generated by simulating millions of tabular datasets using structural causal models that create diverse relationships between features and targets and include realistic challenges such as noise, nonlinear transformations, and categorical variables.
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+The final prediction on the test data is achieved using a single forward pass without any gradient-based finetuning.
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+The recent TabPFN model has shown competitive performance, strongly outperforming traditional machine learning baselines in small-to moderate-sized data sets (around 10,000 samples and 500 features).
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+However, a recent study also shows that the TabPFN 2.5 model struggles against tree-based models on large-scale data sets.
+\cit{Ye et al., 2025}
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+Because relational databases involve millions of records across multiple tables, they may pose a real challenge for TabPFN 2.5.
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+All learning methods for tabular data assume a single table with self-contained rows and columns.
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+However, many data tables, namely relations, from business, finance, and medical enterprises appear in RDBs, connected by referential integrity, as shown in the figure.
+\end{frame}
+
+\begin{frame}{Figure --- Multi-Table Hops}
+\centering
+\includegraphics[width=0.95\textwidth,height=0.7\textheight,keepaspectratio]{../../papers/rdbbench/src/database-hops.pdf}
+
+\footnotesize
+Multi-table relationships in a relational database to illustrate hop-based relational neighborhood expansion for a target row $u$ = C1002. Each hop retrieves rows from tables connected via primary--foreign key (PK--FK) links: the \textbf{Customers} table at 0-hop, \textbf{Orders} and \textbf{Reviews} at 1-hop, and \textbf{Products} at 2-hop. The final sample (for 2-hop configuration) concatenates feature columns across all hops, with PK and FK columns removed. The column \texttt{c\_churn} serves as the class label.
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+Therefore, a learning task (e.g., classification or regression) related to a single table in an RDB can benefit from incorporating data drawn from its neighboring tables linked through referential keys.
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+The deep learning methods proposed for single tables can be used by joining multiple related tables into a single table.
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+However, the joining process inevitably loses important relational information and generates missing values when the rows between tables do not have one-to-one mappings.
+\cit{You \& Liu, 2024; Cvitkovic, 2020}
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+Over the past few years, a number of deep architectures have been proposed, tailored to learning the multi-table referential structure of RDBs.
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+Among the proposed architectures, graph neural networks are the most common, where RDBs are modeled using heterogeneous graphs.
+\cit{Fey et al., 2024; Robinson et al., 2024; Chen et al., 2025}
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+The attention mechanism on the relational structure is introduced in the graph transformer.
+\cit{Dwivedi et al., 2025}
+\end{frame}
+
+\begin{frame}{2.1 Single-Table Tabular Methods}
+More recently, graph-based and transformer-based foundation models for relational databases have been proposed to generalize across different database schemas.
+\cit{Wang et al., 2025; Ranjan et al., 2025}
+\end{frame}
+
+\subsection{2.2 Graph-based learning methods}
+
+\begin{frame}{2.2 Graph-based learning methods}
+Joining multiple tables into a single table can compromise useful relationships between tables, which can be preserved by modeling multi-table structures as graphs for processing with neural networks.
+\end{frame}
+
+\begin{frame}{2.2 Graph-based learning methods}
+Griffin models an RDB as a graph with rows as nodes and their relationships (primary-foreign key links between rows across tables) as edges.
+\cit{Wang et al., 2025}
+\end{frame}
+
+\begin{frame}{2.2 Graph-based learning methods}
+Griffin models RDBs in graph structures following two steps.
+\end{frame}
+
+\begin{frame}{2.2 Graph-based learning methods}
+Griffin first obtains an initial representation for each row by aggregating its column-level information.
+\end{frame}
+
+\begin{frame}{2.2 Graph-based learning methods}
+In other words, attention between the column-level cell embeddings of each row is used to obtain the corresponding row embedding.
+\end{frame}
+
+\begin{frame}{2.2 Graph-based learning methods}
+The second step in Griffin involves information exchange between rows across tables in RDBs.
+\end{frame}
+
+\begin{frame}{2.2 Graph-based learning methods}
+A message-passing mechanism is applied to update the row embeddings (representations) by propagating messages across connected rows.
+\end{frame}
+
+\begin{frame}{2.2 Graph-based learning methods}
+The message passing follows the edges in a graph representing the primary-foreign key relationship: a row in one table sends its embedding to connected rows in other tables.
+\end{frame}
+
+\begin{frame}{2.2 Graph-based learning methods}
+Each row updates its embedding by aggregating the incoming messages from connected rows.
+\end{frame}
+
+\begin{frame}{2.2 Graph-based learning methods}
+A special feature of Griffin is that it is designed as a foundation model.
+\end{frame}
+
+\begin{frame}{2.2 Graph-based learning methods}
+It includes pretrained text and numerical encoders to handle diverse data types in RDBs.
+\end{frame}
+
+\begin{frame}{2.2 Graph-based learning methods}
+Griffin is pretrained on both single-table and multi-table databases to learn general representations that transfer across databases and tasks, enabling a single pretrained model to be adapted through task-specific fine-tuning for various downstream applications.
+\end{frame}
+
+\subsection{2.3 Transformer-based learning methods}
+
+\begin{frame}{2.3 Transformer-based learning methods}
+The Relational Transformer (RT) introduces a fine-grained representation of individual tabular cells in RDB.
+\cit{Ranjan et al., 2025}
+\end{frame}
+
+\begin{frame}{2.3 Transformer-based learning methods}
+For each table, every cell value is encoded as a vector representation, including the row, column, and table identifiers of the cell.
+\end{frame}
+
+\begin{frame}{2.3 Transformer-based learning methods}
+For a given prediction task, the model uses the target row sample whose label is to be predicted and combines all cell embeddings of that row and those from rows in other tables linked by primary-foreign key relationships.
+\end{frame}
+
+\begin{frame}{2.3 Transformer-based learning methods}
+The combined cell representations from multiple tables are used to learn a between-cell attention-weighted representation using a transformer.
+\end{frame}
+
+\begin{frame}{2.3 Transformer-based learning methods}
+However, sparse attention is maintained by restricting cell pairs in attention computation.
+\end{frame}
+
+\begin{frame}{2.3 Transformer-based learning methods}
+Cell pairing is regulated using a fixed binary self-attention mask.
+\end{frame}
+
+\begin{frame}{2.3 Transformer-based learning methods}
+The binary mask allows a cell representation to attend to other cells if they belong to the same row (capturing interactions between columns), the same column within a table (capturing interactions between rows), or cells belonging to rows of different tables that are connected via primary-foreign key relationships.
+\end{frame}
+
+\begin{frame}{2.3 Transformer-based learning methods}
+All other cell pairs are masked out in computing attention and do not attend to each other.
+\end{frame}
+
+\subsection{2.4 Hybrid graph-transformer learning methods}
+
+\begin{frame}{2.4 Hybrid graph-transformer learning methods}
+DBFormer uses a hybrid graph-transformer architecture.
+\cit{Pele\v{s}ka \& \v{S}\'{\i}r, 2025}
+\end{frame}
+
+\begin{frame}{2.4 Hybrid graph-transformer learning methods}
+Similarly to graph-based learning methods such as Griffin, the relational structure of the database is represented by rows as nodes and primary-foreign-key relationships as edges.
+\cit{Wang et al., 2025}
+\end{frame}
+
+\begin{frame}{2.4 Hybrid graph-transformer learning methods}
+However, DBFormer differs from Griffin in two important ways: 1) how it processes information within a table through the attention mechanism and 2) how it exchanges information between tables through graph modeling.
+\end{frame}
+
+\begin{frame}{2.4 Hybrid graph-transformer learning methods}
+Within each table, DBFormer uses a transformer encoder to learn each row representation using the self-attention mechanisms.
+\end{frame}
+
+\begin{frame}{2.4 Hybrid graph-transformer learning methods}
+The self-attention mechanisms learn attention between columns to capture feature interactions in row representation.
+\end{frame}
+
+\begin{frame}{2.4 Hybrid graph-transformer learning methods}
+To learn between tables, DBFormer connects rows between tables via primary-foreign key (PK-FK) links.
+\end{frame}
+
+\begin{frame}{2.4 Hybrid graph-transformer learning methods}
+However, instead of using message passing via standard GNN aggregation, DBFormer uses cross-attention between the cells (features) of connected rows to learn PK-FK representation.
+\end{frame}
+
+\begin{frame}{2.4 Hybrid graph-transformer learning methods}
+This process is repeated across multiple transformer layers, allowing information to propagate across multi-hop relational neighborhoods.
+\end{frame}
+
+\begin{frame}{2.4 Hybrid graph-transformer learning methods}
+One point to note is that DBformer is not designed as a foundation model, unlike its counterparts RT and Griffin models.
+\end{frame}
+
+\begin{frame}{2.4 Hybrid graph-transformer learning methods}
+Therefore, DBformer must be trained on individual RDBs data from scratch.
+\end{frame}
+
+\subsection{2.5 Need for systematic benchmarking}
+
+\begin{frame}{2.5 Need for systematic benchmarking}
+Existing deep RDB methods are evaluated using varying experimental protocols, computational budgets, and against selective baselines, which makes a fair comparison of current models challenging.
+\cit{Pele\v{s}ka \& \v{S}\'{\i}r, 2025; Wang et al., 2025; Ranjan et al., 2025}
+\end{frame}
+
+\begin{frame}{2.5 Need for systematic benchmarking}
+Deep RDB models learn from multiple tables by expanding the relational neighborhood of a target row outward through primary-foreign key links, as illustrated in the figure.
+\end{frame}
+
+\begin{frame}{2.5 Need for systematic benchmarking}
+Practical factors beyond predictive performance, such as training time and memory usage, are critical to processing large RDBs with up to millions of samples.
+\end{frame}
+
+\begin{frame}{2.5 Need for systematic benchmarking}
+However, computational time and complexity are rarely reported in the deep RDB learning literature.
+\end{frame}
+
+\begin{frame}{2.5 Need for systematic benchmarking}
+For example, the training time reported in RT is for a specific large-scale hardware configuration (8 GPUs/320GB of memory), which is not directly comparable to the hardware used in other studies.
+\cit{Ranjan et al., 2025}
+\end{frame}
+
+\begin{frame}{2.5 Need for systematic benchmarking}
+Moreover, the performance of a learning algorithm can vary significantly for different databases and tasks, since there is no universal best performer for all data problems.
+\cit{Rabbani et al., 2025}
+\end{frame}
+
+\begin{frame}{2.5 Need for systematic benchmarking}
+Therefore, the selection of databases and learning tasks is a critical step in evaluating the learning algorithms.
+\end{frame}
+
+\begin{frame}{2.5 Need for systematic benchmarking}
+For example, the study-outcome classification task in the \texttt{rel-trial} RDB shows superior performance on the pretrained Griffin model compared to its non-pretrained counterpart.
+\cit{Wang et al., 2025}
+\end{frame}
+
+\begin{frame}{2.5 Need for systematic benchmarking}
+The opposite performance trend is observed for the user-clicks classification task in the \texttt{rel-avito} RDB.
+\end{frame}
+
+\begin{frame}{2.5 Need for systematic benchmarking}
+Consequently, a standardized benchmarking protocol is needed to allow a fair and independent assessment of the deep RDB models proposed in the literature.
+\end{frame}
+
+\begin{frame}{2.5 Need for systematic benchmarking}
+The tabular learning community has benefited substantially from this kind of controlled evaluation.
+\cit{Grinsztajn et al., 2022; Borisov et al., 2022}
+\end{frame}
+
+\begin{frame}{2.5 Need for systematic benchmarking}
+Relational deep learning, despite its rapidly expanding model landscape, lacks a comparable body of research.
+\end{frame}
+
+\begin{frame}{2.5 Need for systematic benchmarking}
+Our work aims to fill this gap by evaluating all models in a unified protocol with matched computational budgets, consistent data splits, and standardized evaluation metrics.
+\end{frame}
+
+\section{3 Methodology}
+\subsection{3.1 Customizing for benchmarking}
+
+\begin{frame}{3.1 Customizing for benchmarking}
+Individual deep RDB methods have been implemented using distinct protocols, each requiring adjustments to ensure fair benchmarking in a controlled setting.
+\end{frame}
+
+\begin{frame}{3.1 Customizing for benchmarking}
+We have developed a unified benchmarking protocol that standardizes data representation, relational context construction, and evaluation for all methods, as shown in the table.
+\end{frame}
+
+\begin{frame}{Table --- Benchmarking Protocols}
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Factors} & \textbf{DBFormer} & \textbf{Griffin} & \textbf{RT} & \textbf{Our Benchmarking} \\
+\midrule
+Model Selection & None & Early stopping & None & Best model on Val. \\
+Train Epoch & 1000 & 50 & None & 100 \\
+0-Hop (single table) & N/A & Yes & N/A & Yes \\
+1-Hop & N/A & N/A & N/A & Yes \\
+2-Hop & N/A & Yes & N/A & Yes \\
+Databases & CTU repository & RelBench, 4DBInfer & RelBench & RelBench \\
+Neighborhood control & N/A & N/A & N/A & 1-Hop, 2-Hop \\
+Embedding size & 64 & 256 & 512 & 256 \\
+Learning rate & 1e-5 & 3e-4 & 1e-4 & 1e-4 \\
+Batch size & 16 & 256 & 256 & 256 \\
+\bottomrule
+\end{tabular}
+}
+
+\footnotesize
+Comparison of training protocols, neighborhood construction, and hops across relational learning models under their original settings and our controlled benchmarking setup.
+\end{frame}
+
+\subsubsection{3.1.1 Relational mapping in hops}
+
+\begin{frame}{3.1.1 Relational mapping in hops}
+First, recent studies differ in how they manage and exploit relationships between tables in an RDB.
+\end{frame}
+
+\begin{frame}{3.1.1 Relational mapping in hops}
+Relational databases store data in multiple connected tables, where relationships between tables (via primary-foreign keys) allow information to be shared across them.
+\end{frame}
+
+\begin{frame}{3.1.1 Relational mapping in hops}
+Relational models, such as RT, Griffin, and DBFormer, are designed to use connections between tables.
+\cit{Ranjan et al., 2025; Wang et al., 2025; Pele\v{s}ka \& \v{S}\'{\i}r, 2025}
+\end{frame}
+
+\begin{frame}{3.1.1 Relational mapping in hops}
+However, these methods rely on predefined sampling strategies, e.g., randomly selecting a limited number of rows from neighboring tables.
+\end{frame}
+
+\begin{frame}{3.1.1 Relational mapping in hops}
+There is no clear control mechanism for how far the referential chain of tables in an RDB is considered when sampling rows.
+\end{frame}
+
+\begin{frame}{3.1.1 Relational mapping in hops}
+To address this inconsistency, we introduce a hop-based formulation, where a hop represents a one-step referential connection (PK-FK) between two neighboring tables.
+\end{frame}
+
+\begin{frame}{3.1.1 Relational mapping in hops}
+For a target row or table, the 1-hop neighborhood consists of rows of tables directly linked to the target through a PK-FK relationship.
+\end{frame}
+
+\begin{frame}{3.1.1 Relational mapping in hops}
+The 2-hop neighborhood consists of rows from tables in the second neighborhood that are connected to the first neighborhood but not directly to the target, as shown in the figure.
+\end{frame}
+
+\begin{frame}{3.1.1 Relational mapping in hops}
+The hop setting can be used to control how deeply the model retrieves information from an RDB for a predictive task.
+\end{frame}
+
+\begin{frame}{3.1.1 Relational mapping in hops}
+By the definition of hop, a hop = 0 configuration uses only the target table without including rows from the neighborhood tables.
+\end{frame}
+
+\begin{frame}{3.1.1 Relational mapping in hops}
+For a given target row $u$, we define its relational neighborhood using hop-based expansion, where $\mathcal{N}_h(u)$ denotes the set of rows that belong to the $h$-hop neighborhood of $u$, with $h \in \{0,1,2\}$ in this study.
+\end{frame}
+
+\begin{frame}{3.1.1 Relational mapping in hops --- Formal Definition}
+The 0-hop neighborhood contains only the target row:
+\begin{equation*}
+\mathcal{N}_0(u) = \{u\}
+\end{equation*}
+\end{frame}
+
+\begin{frame}{3.1.1 Relational mapping in hops --- Formal Definition}
+The 1-hop neighborhood consists of all rows directly connected to $u$:
+\begin{equation*}
+\mathcal{N}_1(u) = \{ v \mid v \text{ is directly linked to } u \}
+\end{equation*}
+\end{frame}
+
+\begin{frame}{3.1.1 Relational mapping in hops --- Formal Definition}
+The 2-hop neighborhood represents rows that are reached by following two consecutive primary--foreign key connections starting from the target row ($u$).
+\begin{equation*}
+\mathcal{N}_2(u) = \{ w \mid w \text{ is linked to some } v \in \mathcal{N}_1(u) \}
+\end{equation*}
+\end{frame}
+
+\begin{frame}{3.1.1 Relational mapping in hops --- Formal Definition}
+In general, the relational context of $u$ up to hop $H$ is:
+\begin{equation*}
+\mathcal{N}_{\le H}(u) = \bigcup_{h=0}^{H} \mathcal{N}_h(u)
+\end{equation*}
+which includes all rows reachable within $H$ relational steps.
+\end{frame}
+
+\begin{frame}{3.1.1 Relational mapping in hops}
+This neighborhood is constructed iteratively by expanding the target row through PK-FK connections for $H$ steps and restricting expansion beyond $H$ hops.
+\end{frame}
+
+\subsubsection{3.1.2 Data encoding mechanism}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+Second, deep RDB methods use different data encoding methods to convert and combine a heterogeneous feature space (numerical, categorical, or ordinal) of RDB tables into an effective representation vector.
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+For example, DBFormer uses GloVe embeddings, Griffin uses Nomic Embed, and RT uses MiniLM-v2.
+\cit{Pennington et al., 2014; Nussbaum et al., 2024; Wang et al., 2021}
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+These encoders differ substantially in their embedding dimensionality and semantic capabilities.
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+The choice of data encoder can influence the performance of deep RDB models.
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+For example, GloVe embeddings are outdated because they do not provide context-aware embeddings, unlike transformer-based encoders.
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+The Nomic Embed encoder contains roughly 137 million parameters and outputs 768-dimensional embeddings, whereas MiniLM-v2 has about 33 million parameters and generates 384-dimensional embeddings---approximately one-quarter of the parameters and half the embedding dimensionality.
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+Since our benchmarking protocol involves training each model multiple times on several large RDBs, tasks, and hop settings, using a lighter encoder significantly reduces computational cost.
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+Therefore, to enable a fair comparison, we employ MiniLM-v2 for all models, which generates 384-dimensional dense embeddings.
+\cit{Wang et al., 2021}
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+We use MiniLM-v2, particularly for encoding categorical and textual features, from SentenceTransformers.
+\cit{Wang et al., 2021; Reimers \& Gurevych, 2019}
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+MiniLM-v2 is a compact transformer model obtained via knowledge distillation from larger pretrained model, BERT.
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+Specifically, it learns to mimic the self-attention behavior of the large BERT model while using significantly fewer parameters, resulting in a lightweight yet high-quality contextual encoder.
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+Third, different encoding strategies for numerical features in RDBs have been adopted in the literature.
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+For example, DBFormer uses a simple linear layer to convert each numeric value into a vector, while RT uses a similar linear transformation to map each value to the hidden dimension of the model.
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+In short, both DBFormer and RT use a simple linear layer to project each numerical value directly into their respective model.
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+In comparison, Griffin employs a more advanced strategy.
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+It begins by normalizing numerical values with a quantile transformer.
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+This transformer, provided by scikit-learn, applies a statistical procedure that maps numerical inputs onto a normal distribution.
+\cit{Pedregosa et al., 2011}
+\end{frame}
+
+\begin{frame}{3.1.2 Data encoding mechanism}
+After this step, the normalized values are fed into a pretrained encoder--decoder pair, both realized as Multi-Layer Perceptrons (MLPs).
+\end{frame}
+
+\subsubsection{3.1.3 Customizing non-relational baselines}
+
+\begin{frame}{3.1.3 Customizing non-relational baselines}
+In this study, we consider state-of-the-art non-relational baseline methods for deep learning on tabular data.
+\end{frame}
+
+\begin{frame}{3.1.3 Customizing non-relational baselines}
+These methods need to be extended for multi-hop learning to ensure a fair comparison.
+\end{frame}
+
+\begin{frame}{3.1.3 Customizing non-relational baselines}
+For TabPFN 2.5 and LightGBM, we convert multi-hop relational information into tabular features by aggregating data from connected tables, similar to how RelBench compares traditional machine learning models against its proposed GNN-based Relational Deep Learning (RDL) model.
+\cit{Hollmann et al., 2025; Robinson et al., 2024}
+\end{frame}
+
+\begin{frame}{3.1.3 Customizing non-relational baselines}
+However, unlike RelBench, we control the relational context by limiting the hop distance ($H$) and enforcing temporal consistency to avoid information leakage.
+\cit{Robinson et al., 2024}
+\end{frame}
+
+\subsection{3.2 Effect of multi-hop deep RDB learning}
+
+\begin{frame}{3.2 Effect of multi-hop deep RDB learning}
+Deep RDB learning uses a task-specific target table.
+\end{frame}
+
+\begin{frame}{3.2 Effect of multi-hop deep RDB learning}
+A learning task that uses only the target table is defined as having hop = 0, meaning that no information from neighboring tables connected to the target is used.
+\end{frame}
+
+\begin{frame}{3.2 Effect of multi-hop deep RDB learning}
+As shown in the figure, the hop = 1 scenario incorporates the tables directly adjacent to the target table.
+\end{frame}
+
+\begin{frame}{3.2 Effect of multi-hop deep RDB learning}
+Similarly, in the hop = 2 scenario, the network is expanded to include the second-tier tables that are directly linked to the adjacent tables.
+\end{frame}
+
+\begin{frame}{3.2 Effect of multi-hop deep RDB learning}
+The computational complexity increases as we expand the network of tables from hop = 0 to hop = 2.
+\end{frame}
+
+\begin{frame}{3.2 Effect of multi-hop deep RDB learning}
+The effect of network expansion on overall learning performance has not been well studied in the deep RDB literature.
+\end{frame}
+
+\section{4 Results}
+\subsection{4.1 Relational databases and computing platform}
+
+\begin{frame}{4.1 Relational databases and computing platform}
+In recent work on deep learning for RDB, RelBench appears as the primary benchmarking repository.
+\cit{Wang et al., 2025; Ranjan et al., 2025; Robinson et al., 2024}
+\end{frame}
+
+\begin{frame}{4.1 Relational databases and computing platform}
+We use five databases from RelBench, assigning two tasks to each: one classification task and one regression task.
+\end{frame}
+
+\begin{frame}{4.1 Relational databases and computing platform}
+The selected databases and tasks are summarized in the table.
+\end{frame}
+
+\begin{frame}{Table --- RelBench Databases and Tasks}
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lcccccccc}
+\toprule
+\textbf{Database} & \textbf{Task} & \textbf{Type} & \textbf{DB Rows} & \textbf{Task Rows} & \textbf{Train} & \textbf{Val} & \textbf{Test} & \textbf{Size} \\
+\midrule
+\multirow{2}{*}{rel-amazon} & item-churn & Class. & 15,000,713 & 2,903,795 & 2,559,264 & 177,689 & 166,842 & Large \\
+ & item-ltv & Regr. & 15,000,713 & 3,052,991 & 2,707,679 & 166,978 & 178,334 & Large \\
+\midrule
+\multirow{2}{*}{rel-avito} & user-visits & Class. & 20,679,117 & 152,727 & 86,619 & 29,979 & 36,129 & Medium \\
+ & ad-ctr & Regr. & 20,679,117 & 8,682 & 5,100 & 1,766 & 1,816 & Small \\
+\midrule
+\multirow{2}{*}{rel-f1} & driver-dnf & Class. & 74,063 & 12,679 & 11,411 & 566 & 702 & Small \\
+ & driver-position & Regr. & 74,063 & 8,712 & 7,453 & 499 & 760 & Small \\
+\midrule
+\multirow{2}{*}{rel-stack} & user-engagement & Class. & 4,247,264 & 1,534,825 & 1,360,850 & 85,838 & 88,137 & Large \\
+ & post-votes & Regr. & 4,247,264 & 2,771,040 & 2,453,921 & 156,216 & 160,903 & Large \\
+\midrule
+\multirow{2}{*}{rel-trial} & study-outcome & Class. & 5,434,924 & 13,779 & 11,994 & 960 & 825 & Small \\
+ & study-adverse & Regr. & 5,434,924 & 50,029 & 43,335 & 3,596 & 3,098 & Small \\
+\bottomrule
+\end{tabular}
+}
+
+\footnotesize
+Summary of selected RelBench databases and tasks used for benchmarking. Task rows include actual samples relevant to the predictive tasks, which are then split into train, validation, and test rows. Database size is based on the size of the task rows.
+\end{frame}
+
+\begin{frame}{4.1 Relational databases and computing platform}
+For each database, the table reports the total number of rows in all tables (database rows), the number of samples available for the prediction task at hop = 0 (task rows), and the number of training, validation and test samples derived from the task rows following the RelBench split.
+\end{frame}
+
+\begin{frame}{4.1 Relational databases and computing platform}
+The tasks are further grouped into three categories based on the scale of the task rows.
+\end{frame}
+
+\begin{frame}{4.1 Relational databases and computing platform}
+Small tasks contain fewer than 100,000 rows, medium tasks contain fewer than 1 million task rows, and large tasks contain at least 1 million task rows.
+\end{frame}
+
+\begin{frame}{4.1 Relational databases and computing platform}
+Deep relational models (DBFormer, Griffin and RT) are trained and evaluated on an NVIDIA DGX Spark GB10, a personalized AI supercomputer with a 20-core ARM CPU, 128 GB of unified memory, and Ubuntu 24.04 LTS operating system.
+\end{frame}
+
+\begin{frame}{4.1 Relational databases and computing platform}
+The baseline methods for learning tabular data (LightGBM and TabPFN 2.5) are run on an Ubuntu 22.04 workstation with a 13th Gen Intel Core i9-13900F 24-core processor, 64 GB of RAM, and an NVIDIA GeForce RTX 4090 GPU with 24 GB of VRAM.
+\end{frame}
+
+\subsection{4.2 Classification performance}
+
+\begin{frame}{Table --- Classification Results (AUROC)}
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llccccccccccccccc}
+\toprule
+& & \multicolumn{3}{c}{LightGBM} & \multicolumn{3}{c}{TabPFN 2.5} & \multicolumn{3}{c}{DBFormer} & \multicolumn{3}{c}{Griffin} & \multicolumn{3}{c}{RT} \\
+\cmidrule(lr){3-5} \cmidrule(lr){6-8} \cmidrule(lr){9-11} \cmidrule(lr){12-14} \cmidrule(lr){15-17}
+Database & Task & 0 & 1 & 2 & 0 & 1 & 2 & 0 & 1 & 2 & 0 & 1 & 2 & 0 & 1 & 2 \\
+\midrule
+rel-amazon & item-churn & 67.7 & 68.1 & 68.6 & 59.0 & 67.0 & 67.7 & 54.0 & 52.4 & 71.8 & 73.1 & 73.2 & 73.2 & 81.6 & 73.6 & 82.2 \\
+rel-avito & user-visits & 53.8 & 58.5 & 60.8 & 53.0 & 64.5 & 59.6 & 52.6 & 59.9 & 60.7 & 50.3 & 62.2 & 63.3 & 64.3 & 63.9 & 65.4 \\
+rel-f1 & driver-dnf & 66.2 & 66.5 & 72.1 & 56.7 & 70.0 & 70.8 & 47.8 & 71.2 & 74.1 & 54.5 & 71.9 & 73.9 & 76.7 & 74.0 & 74.5 \\
+rel-stack & user-engagement & 79.1 & 81.5 & 82.2 & 62.8 & 82.5 & 82.9 & 62.3 & 69.4 & 77.2 & 49.0 & 83.0 & 83.3 & 89.1 & 88.9 & 89.4 \\
+rel-trial & study-outcome & 72.1 & 62.3 & 65.4 & 71.9 & 67.2 & 68.4 & 53.8 & 49.8 & 50.2 & 67.0 & 67.9 & 66.9 & 65.6 & 69.4 & 70.2 \\
+\midrule
+\multicolumn{2}{c}{Avg. rank} & 2.0 & 4.2 & 3.8 & 3.2 & 3.0 & 4.0 & 4.6 & 4.4 & 3.8 & 3.6 & 2.2 & 2.4 & 1.6 & 1.2 & 1.0 \\
+\bottomrule
+\end{tabular}
+}
+
+\scriptsize
+AUROC scores of RelBench classification tasks. Average rank is obtained for each hop setting (0, 1, 2) across five classification tasks and five classification methods.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+The single table classification task (hop = 0) reveals that RT is overall the best method (average rank 1.6) followed by LightGBM.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+Griffin places third, while TabPFN 2.5---arguably the best-reported method for learning tabular data, ranks fourth.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+The underperformance of TabPFN 2.5 may be surprising, but note that relational databases typically contain far more samples than traditional tabular datasets.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+It is worth mentioning that TabPFN 2.5 claims to outperform other state-of-the-art approaches on small datasets, specifically those with fewer than 10,000 samples.
+\cit{Ye et al., 2025}
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+DBformer appears as the worst of all methods.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+Furthermore, the DBformer authors have benchmarked it only on databases from the CTU repository, underscoring the need for this benchmarking study.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+An interesting exception is the \texttt{rel-trial} database, where RT ranks fourth.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+The \texttt{rel-trial} database contains clinical trial records, which are highly specialized and domain-specific.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+With only 13,779 task-specific samples and no relational context at hop = 0.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+Therefore, RT cannot fully demonstrate its capacity, as it is inherently designed to exploit cross-table dependencies.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+The classification task that incorporates rows from tables in the immediate neighborhood (hop = 1) exhibits distinct performance rankings.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+RT outperforms all methods with an average rank of 1.2 followed by Griffin (2.2) and TabPFN 2.5 (3.0).
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+An exception is TabPFN 2.5, which slightly edges out RT on the \texttt{rel-avito user-visits} classification task.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+The classification tasks in the hop = 2 experiment demonstrate the superiority of the RT method over other baselines, with an average rank of 1.0.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+Griffin is the second best (2.4), followed by DBformer and LightGBM.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+TabPFN 2.5 delivers the weakest results, underscoring that single-table learning methods fall short when tackling relational databases with rich, complex referential integrity.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+The superiority of RT is evident when we consider fifteen experimental cases that make up three hops and five datasets.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+The figure shows pairwise model comparisons where RT wins against LightGBM (14/15), TabPFN 2.5 (13/15), and Griffin (14/15).
+\end{frame}
+
+\begin{frame}{Figure --- Classification Win-Loss Matrix}
+\centering
+\includegraphics[width=0.5\textwidth,height=0.55\textheight,keepaspectratio]{../../papers/rdbbench/src/win-loss-rdb-classification.png}
+
+\footnotesize
+Pairwise model comparison using the win--loss matrix for classification tasks using AUROC scores. Each row model shows the number of experimental cases (out of 15) it is superior to the models in the columns. A total of 15 experimental cases consist of three different hops and five databases.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+Griffin is the second most competitive method overall, winning in 11/15 cases against LightGBM and 12/15 against DBFormer.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+TabPFN 2.5 outperforms RT in two cases.
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+The first is the \texttt{rel-trial study-outcome} task at hop = 0, where the small number of task-specific samples (13,779) favors TabPFN 2.5, which is specifically designed for small datasets with fewer than 10,000 samples.
+\cit{Ye et al., 2025}
+\end{frame}
+
+\begin{frame}{4.2 Classification performance}
+The second is the \texttt{rel-avito user-visits} task at hop = 1, where the performance gap is negligible (TabPFN 2.5: 64.5 vs RT: 63.9), suggesting that this may reflect random variance rather than a systematic advantage.
+\end{frame}
+
+\subsection{4.3 Regression performance}
+
+\begin{frame}{Table --- Regression Results (RMSE)}
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llccccccccccccccc}
+\toprule
+& & \multicolumn{3}{c}{LightGBM} & \multicolumn{3}{c}{TabPFN 2.5} & \multicolumn{3}{c}{DBFormer} & \multicolumn{3}{c}{Griffin} & \multicolumn{3}{c}{RT} \\
+\cmidrule(lr){3-5} \cmidrule(lr){6-8} \cmidrule(lr){9-11} \cmidrule(lr){12-14} \cmidrule(lr){15-17}
+Database & Task & 0 & 1 & 2 & 0 & 1 & 2 & 0 & 1 & 2 & 0 & 1 & 2 & 0 & 1 & 2 \\
+\midrule
+rel-amazon & item-ltv & 8.22 & 8.24 & 8.23 & 6.60 & 6.49 & 6.50 & 56.10 & 56.03 & 55.14 & 8.17 & 7.97 & 7.83 & 0.51 & 0.47 & 0.45 \\
+rel-avito & ad-ctr & 3.47 & 3.16 & 3.00 & 3.74 & 3.00 & 2.95 & 0.28 & 0.30 & 0.33 & 0.85 & 0.82 & 0.82 & 1.06 & 1.15 & 1.14 \\
+rel-f1 & driver-position & 6.02 & 5.59 & 5.55 & 5.39 & 4.55 & 4.60 & 6.91 & 11.69 & 11.69 & 0.73 & 0.68 & 0.68 & 0.58 & 0.61 & 0.58 \\
+rel-stack & post-votes & 0.33 & 0.39 & 0.36 & 0.37 & 0.35 & 0.35 & 0.37 & 0.36 & 0.36 & 1.28 & 0.94 & 0.91 & 0.60 & 0.61 & 0.60 \\
+rel-trial & study-adverse & 7.26 & 7.34 & 7.22 & 6.64 & 6.32 & 5.66 & 15.82 & 15.77 & 15.79 & 2.26 & 1.12 & 2.26 & 0.65 & 0.61 & 0.54 \\
+\midrule
+\multicolumn{2}{c}{Avg. rank} & 3.40 & 3.80 & 3.90 & 3.10 & 2.40 & 2.60 & 3.70 & 3.60 & 3.70 & 2.80 & 2.80 & 2.80 & 2.00 & 2.40 & 2.00 \\
+\bottomrule
+\end{tabular}
+}
+
+\scriptsize
+RMSE scores of RelBench regression tasks. Average rank is obtained for each hop setting (0, 1, 2) across five regression tasks and five regression methods.
+\end{frame}
+
+\begin{frame}{4.3 Regression performance}
+The single table regression task (hop = 0) reveals that RT is the best method (average rank 2.0), followed by Griffin (2.8) and TabPFN 2.5 (3.1).
+\end{frame}
+
+\begin{frame}{4.3 Regression performance}
+Specifically, RT ranks 3rd and 4th on \texttt{rel-avito ad-ctr} and \texttt{rel-stack post-vote} regression tasks, respectively.
+\end{frame}
+
+\begin{frame}{4.3 Regression performance}
+Despite the worst rank, DBformer results in the best RMSE scores on the \texttt{rel-avito ad-ctr} regression task when RT ranks 3rd.
+\end{frame}
+
+\begin{frame}{4.3 Regression performance}
+Regression tasks that incorporate rows from adjacent tables (hop = 1) show a shift in ranking.
+\end{frame}
+
+\begin{frame}{4.3 Regression performance}
+TabPFN 2.5 matches RT in performance, with both methods achieving an average rank of 2.4.
+\end{frame}
+
+\begin{frame}{4.3 Regression performance}
+DBFormer (3.6) performs better than LightGBM (3.8) in the hop = 1 setting.
+\end{frame}
+
+\begin{frame}{4.3 Regression performance}
+In the hop = 2 configuration, RT gains the best average rank of 2.0, while TabPFN 2.5 (2.6) and Griffin (2.8) follow.
+\end{frame}
+
+\begin{frame}{4.3 Regression performance}
+The figure summarizes pairwise model comparisons across 15 regression tasks, three hops, and five databases.
+\end{frame}
+
+\begin{frame}{Figure --- Regression Win-Loss Matrix}
+\centering
+\includegraphics[width=0.5\textwidth,height=0.55\textheight,keepaspectratio]{../../papers/rdbbench/src/win-loss-rdb-regression.png}
+
+\footnotesize
+Pairwise model comparison using the win--loss matrix for regression tasks using RMSE scores. Each row model shows the number of experimental cases (out of 15) it is superior to the models in the columns. A total of 15 experimental cases consist of three different hops and five databases.
+\end{frame}
+
+\begin{frame}{4.3 Regression performance}
+RT wins on 9/15 tasks against LightGBM and DBFormer and on 12/15 against TabPFN 2.5 and Griffin.
+\end{frame}
+
+\begin{frame}{4.3 Regression performance}
+TabPFN 2.5 shows a notably stronger performance in regression than in classification, outperforming LightGBM and DBFormer on 11/15 tasks.
+\end{frame}
+
+\begin{frame}{4.3 Regression performance}
+Interestingly, TabPFN 2.5 outperforms RT on the \texttt{rel-stack post-votes} regression task for all three hop settings.
+\end{frame}
+
+\begin{frame}{4.3 Regression performance}
+TabPFN 2.5, which was pretrained on 130 million synthetic datasets, may have seen comparable distributional structures during this pretraining, which could give TabPFN 2.5 an advantage over this specific regression task.
+\cit{Hollmann et al., 2025}
+\end{frame}
+
+\subsection{4.4 Effects of relational hops}
+
+\begin{frame}{4.4 Effects of relational hops}
+Intuitively, hop = 2 should outperform hop = 1, since it pulls in richer contextual row samples from related tables via referential links.
+\end{frame}
+
+\begin{frame}{4.4 Effects of relational hops}
+However, all methods, except RT, perform worse under hop = 2 than hop = 1 in the \texttt{rel-trial study-outcome} classification task.
+\end{frame}
+
+\begin{frame}{4.4 Effects of relational hops}
+The unexpected underperformance of hop = 2 may be due to the uniqueness in how health records data are spread across relational tables within limited samples.
+\end{frame}
+
+\begin{frame}{4.4 Effects of relational hops}
+RT is the only model that consistently improves across all hop settings on \texttt{rel-trial}, indicating its attention mechanism better exploits deeper relational context even with limited samples.
+\end{frame}
+
+\begin{frame}{4.4 Effects of relational hops}
+The regression results exhibit a pattern comparable to the classification results.
+\end{frame}
+
+\begin{frame}{4.4 Effects of relational hops}
+The results of the hop = 2 setting do not consistently outperform those of the hop = 1 setting.
+\end{frame}
+
+\begin{frame}{4.4 Effects of relational hops}
+The performance gap between these two hop configurations remains small for relational models (DBFormer, Griffin, and RT).
+\end{frame}
+
+\begin{frame}{4.4 Effects of relational hops}
+For example, Griffin's RMSE remains unchanged in \texttt{rel-avito} (0.82 $\rightarrow$ 0.82) and \texttt{rel-f1} (0.68 $\rightarrow$ 0.68) from hop = 1 to hop = 2.
+\end{frame}
+
+\begin{frame}{4.4 Effects of relational hops}
+Similarly, DBFormer shows no improvement in \texttt{rel-stack} (0.36 $\rightarrow$ 0.36), and RT's improvement in \texttt{rel-amazon} is minimal (0.47 $\rightarrow$ 0.45).
+\end{frame}
+
+\begin{frame}{4.4 Effects of relational hops}
+In many cases, the improvement from hop = 1 to hop = 2 is minimal, raising the question of whether the performance gain justifies the high computational cost, as evidenced by the training times reported in the table.
+\end{frame}
+
+\begin{frame}{Table --- Training Time (rel-f1 driver-dnf)}
+\centering
+\begin{tabular}{ccccccc}
+\toprule
+& \multicolumn{2}{c}{DBFormer} & \multicolumn{2}{c}{Griffin} & \multicolumn{2}{c}{RT} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+Hop & Train (min) & Test (s) & Train (min) & Test (s) & Train (min) & Test (s) \\
+\midrule
+0 & 11 & 1 & 14 & 1 & 101 & 2 \\
+1 & 17 & 1 & 202 & 3 & 137 & 2 \\
+2 & 23 & 1 & 403 & 7 & 158 & 2 \\
+\bottomrule
+\end{tabular}
+
+\footnotesize
+Computational time comparison of the deep RDB methods on the \emph{rel-f1} \emph{driver-dnf} task across different hop settings.
+\end{frame}
+
+\begin{frame}{4.4 Effects of relational hops}
+For example, Griffin's training time increases from 202 minutes at hop = 1 to 403 minutes at hop = 2 on the \texttt{rel-f1 driver-dnf} task, a 2$\times$ increase in training cost, while the AUC improvement is only 2\%.
+\end{frame}
+
+\section{5 Conclusions}
+
+\begin{frame}{5 Conclusions}
+This paper presents one of the first systematic benchmarking studies of state-of-the-art deep learning methods for relational databases.
+\end{frame}
+
+\begin{frame}{5 Conclusions}
+Using a unified evaluation protocol with consistent data splits, computational budgets, and standardized metrics, we demonstrate that the RT method is the strongest in both classification and regression tasks.
+\end{frame}
+
+\begin{frame}{5 Conclusions}
+In other words, transformer-based methods are superior to conventional graph-based modeling of relational databases.
+\end{frame}
+
+\begin{frame}{5 Conclusions}
+Although RT and Griffin are built for relational data tables connected by primary and foreign keys, they still outperform leading state-of-the-art tabular learning approaches, such as TabPFN 2.5, in single-table (hop = 0) classification and regression benchmarks.
+\end{frame}
+
+\begin{frame}{5 Conclusions}
+The gain from increasing hop from 1 to 2 is often minor relative to the substantial increase in computation, casting doubt on whether expanding relational neighborhoods is worth the cost.
+\end{frame}
+
+\begin{frame}{5 Conclusions}
+Developing relational deep learning methods that can reliably exploit multi-hop relational context with lower computational overhead remains an important open problem for future research.
+\end{frame}
+
+\begin{frame}[allowframebreaks]{References}
+\tiny
+\input{../../papers/rdbbench/src/Benchmarking_DRDB_Refined.bbl}
+\end{frame}
+
+\end{document}
