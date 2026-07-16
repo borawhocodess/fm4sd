@@ -105,6 +105,8 @@ some papers i find related:
   - foundcause — [arxiv](https://arxiv.org/abs/2606.17516)
   - tabpfn-cfm — [arxiv](https://arxiv.org/abs/2606.26467)
   - tabpfnunderstandcausal — [arxiv](https://arxiv.org/abs/2511.07236) · [video](https://www.youtube.com/watch?v=9_on4JV9zDg)
+  - activa — [arxiv](https://arxiv.org/abs/2503.01290)
+  - causalpfn — [arxiv](https://arxiv.org/abs/2506.07918)
 - other
   - lifelongicl — [arxiv](https://arxiv.org/abs/2606.25342)
   - rlfm — [arxiv](https://arxiv.org/abs/2606.18812)
@@ -132,3 +134,6 @@ not grouped yet:
 - pfnuq — [arxiv](https://arxiv.org/abs/2505.11325)
 - kernelicl — [arxiv](https://arxiv.org/abs/2602.02162)
 - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe)
+- simpletimebench — [openreview](https://openreview.net/forum?id=iIRdd86Xkr)
+- posttreatmentcfm — [openreview](https://openreview.net/forum?id=ULoLF1aOo1)
+- macetnp — [arxiv](https://arxiv.org/abs/2507.05526)
