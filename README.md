@@ -80,6 +80,7 @@ some papers i find related:
   - tabm — [arxiv](https://arxiv.org/abs/2410.24210)
   - tabstar — [arxiv](https://arxiv.org/abs/2505.18125)
   - tabfmmechanistic — [arxiv](https://arxiv.org/abs/2605.21288)
+  - onelayerenough — [arxiv](https://arxiv.org/abs/2605.06510)
 - relational
   - rdbbench — [arxiv](https://arxiv.org/abs/2607.03659)
   - rdl-survey — [arxiv](https://arxiv.org/abs/2506.16654)
