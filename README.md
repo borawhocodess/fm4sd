@@ -75,6 +75,11 @@ some papers i find related:
   - tabfm — [blog](https://research.google/blog/introducing-tabfm-a-zero-shot-foundation-model-for-tabular-data/)
   - tabpack — [arxiv](https://arxiv.org/abs/2607.05380)
   - drifttabpfn — [arxiv](https://arxiv.org/abs/2411.10634)
+  - mitra — [arxiv](https://arxiv.org/abs/2510.21204)
+  - tabflex — [arxiv](https://arxiv.org/abs/2506.05584)
+  - tabm — [arxiv](https://arxiv.org/abs/2410.24210)
+  - tabstar — [arxiv](https://arxiv.org/abs/2505.18125)
+  - tabfmmechanistic — [arxiv](https://arxiv.org/abs/2605.21288)
 - relational
   - rdbbench — [arxiv](https://arxiv.org/abs/2607.03659)
   - rdl-survey — [arxiv](https://arxiv.org/abs/2506.16654)
