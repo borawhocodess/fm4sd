@@ -106,6 +106,7 @@ some papers i find related:
   - tabpfnunderstandcausal — [arxiv](https://arxiv.org/abs/2511.07236) · [video](https://www.youtube.com/watch?v=9_on4JV9zDg)
   - activa — [arxiv](https://arxiv.org/abs/2503.01290)
   - causalpfn — [arxiv](https://arxiv.org/abs/2506.07918)
+  - dag-fm — [arxiv](https://arxiv.org/abs/2607.11510)
 - other
   - lifelongicl — [arxiv](https://arxiv.org/abs/2606.25342)
   - rlfm — [arxiv](https://arxiv.org/abs/2606.18812)
