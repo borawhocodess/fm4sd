@@ -113,35 +113,39 @@ some papers i find related:
 
 ## queue
 
-not grouped yet:
+not placed yet:
 
-- flextab — [arxiv](https://arxiv.org/abs/2606.30336)
-- enterprisetabgap — [arxiv](https://arxiv.org/abs/2606.30452)
-- gotabpfn — [arxiv](https://arxiv.org/abs/2606.05441)
-- shapinggeometry — [openreview](https://openreview.net/forum?id=IYnHchzvYB)
-- tabgenfm — [arxiv](https://arxiv.org/abs/2605.09424) · [openreview](https://openreview.net/forum?id=RcsaxrdpfE)
-- tabattnbench — [openreview](https://openreview.net/forum?id=rwtcugrpDq)
-- tscausalfm — [openreview](https://openreview.net/forum?id=CAaTQAfq7c)
-- causalfewshot — [openreview](https://openreview.net/forum?id=2yvEiFhNCT)
-- partialcausalid — [openreview](https://openreview.net/forum?id=jCbehzZBsk)
-- causalorder — [openreview](https://openreview.net/forum?id=U4KiOBxY1X)
-- causaltab — [openreview](https://openreview.net/forum?id=og3UVhP7M1)
-- tabshallow — [openreview](https://openreview.net/forum?id=kCnZUf1VYC)
-- tabbarrier — [openreview](https://openreview.net/forum?id=TUYc2XUdwz)
-- martingale — [arxiv](https://arxiv.org/abs/2103.15671)
-- tjepa — [arxiv](https://arxiv.org/abs/2410.05016)
-- pfnuq — [arxiv](https://arxiv.org/abs/2505.11325)
-- kernelicl — [arxiv](https://arxiv.org/abs/2602.02162)
-- baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe)
-- simpletimebench — [openreview](https://openreview.net/forum?id=iIRdd86Xkr)
-- posttreatmentcfm — [openreview](https://openreview.net/forum?id=ULoLF1aOo1)
-- macetnp — [arxiv](https://arxiv.org/abs/2507.05526)
+- general
+  - martingale — [arxiv](https://arxiv.org/abs/2103.15671)
+  - pfnuq — [arxiv](https://arxiv.org/abs/2505.11325)
+- tabular
+  - flextab — [arxiv](https://arxiv.org/abs/2606.30336)
+  - enterprisetabgap — [arxiv](https://arxiv.org/abs/2606.30452)
+  - gotabpfn — [arxiv](https://arxiv.org/abs/2606.05441)
+  - shapinggeometry — [openreview](https://openreview.net/forum?id=IYnHchzvYB)
+  - tabgenfm — [arxiv](https://arxiv.org/abs/2605.09424) · [openreview](https://openreview.net/forum?id=RcsaxrdpfE)
+  - tabattnbench — [openreview](https://openreview.net/forum?id=rwtcugrpDq)
+  - tabshallow — [openreview](https://openreview.net/forum?id=kCnZUf1VYC)
+  - tabbarrier — [openreview](https://openreview.net/forum?id=TUYc2XUdwz)
+  - tjepa — [arxiv](https://arxiv.org/abs/2410.05016)
+- time series
+  - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe)
+  - simpletimebench — [openreview](https://openreview.net/forum?id=iIRdd86Xkr)
+- causal
+  - tscausalfm — [openreview](https://openreview.net/forum?id=CAaTQAfq7c)
+  - causalfewshot — [openreview](https://openreview.net/forum?id=2yvEiFhNCT)
+  - partialcausalid — [openreview](https://openreview.net/forum?id=jCbehzZBsk)
+  - causalorder — [openreview](https://openreview.net/forum?id=U4KiOBxY1X)
+  - causaltab — [openreview](https://openreview.net/forum?id=og3UVhP7M1)
+  - posttreatmentcfm — [openreview](https://openreview.net/forum?id=ULoLF1aOo1)
+  - macetnp — [arxiv](https://arxiv.org/abs/2507.05526)
 - mechanistic interpretability
   - tabular
     - tabfmmechanistic — [arxiv](https://arxiv.org/abs/2605.21288)
     - onelayerenough — [arxiv](https://arxiv.org/abs/2605.06510)
     - looking-glass — [arxiv](https://arxiv.org/abs/2601.08181)
     - where-computation — [arxiv](https://arxiv.org/abs/2606.12917)
+    - kernelicl — [arxiv](https://arxiv.org/abs/2602.02162)
   - circuits
     - circuits-framework — [blog](https://transformer-circuits.pub/2021/framework/index.html)
     - induction-heads — [arxiv](https://arxiv.org/abs/2209.11895)
