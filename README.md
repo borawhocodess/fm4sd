@@ -79,8 +79,6 @@ some papers i find related:
   - tabflex — [arxiv](https://arxiv.org/abs/2506.05584)
   - tabm — [arxiv](https://arxiv.org/abs/2410.24210)
   - tabstar — [arxiv](https://arxiv.org/abs/2505.18125)
-  - tabfmmechanistic — [arxiv](https://arxiv.org/abs/2605.21288)
-  - onelayerenough — [arxiv](https://arxiv.org/abs/2605.06510)
 - relational
   - rdbbench — [arxiv](https://arxiv.org/abs/2607.03659)
   - rdl-survey — [arxiv](https://arxiv.org/abs/2506.16654)
@@ -138,3 +136,24 @@ not grouped yet:
 - simpletimebench — [openreview](https://openreview.net/forum?id=iIRdd86Xkr)
 - posttreatmentcfm — [openreview](https://openreview.net/forum?id=ULoLF1aOo1)
 - macetnp — [arxiv](https://arxiv.org/abs/2507.05526)
+- mechanistic interpretability
+  - tabular
+    - tabfmmechanistic — [arxiv](https://arxiv.org/abs/2605.21288)
+    - onelayerenough — [arxiv](https://arxiv.org/abs/2605.06510)
+    - looking-glass — [arxiv](https://arxiv.org/abs/2601.08181)
+    - where-computation — [arxiv](https://arxiv.org/abs/2606.12917)
+  - circuits
+    - circuits-framework — [blog](https://transformer-circuits.pub/2021/framework/index.html)
+    - induction-heads — [arxiv](https://arxiv.org/abs/2209.11895)
+    - ioi — [arxiv](https://arxiv.org/abs/2211.00593)
+    - grokking — [arxiv](https://arxiv.org/abs/2301.05217)
+  - representations
+    - superposition — [arxiv](https://arxiv.org/abs/2209.10652)
+    - monosemanticity — [blog](https://transformer-circuits.pub/2023/monosemantic-features/index.html)
+    - othello-gpt — [arxiv](https://arxiv.org/abs/2210.13382)
+  - icl
+    - icl-regression — [arxiv](https://arxiv.org/abs/2208.01066)
+    - icl-learning-alg — [arxiv](https://arxiv.org/abs/2211.15661)
+    - icl-gd — [arxiv](https://arxiv.org/abs/2212.07677)
+    - task-vectors — [arxiv](https://arxiv.org/abs/2310.15916)
+    - function-vectors — [arxiv](https://arxiv.org/abs/2310.15213)
