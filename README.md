@@ -89,16 +89,18 @@ some papers i find related:
   - plurel — [arxiv](https://arxiv.org/abs/2602.04029)
   - rdblearn — [arxiv](https://arxiv.org/abs/2602.18495) · [arxiv](https://arxiv.org/abs/2602.13697)
 - time series
-  - tabpfn-ts — [arxiv](https://arxiv.org/abs/2501.02945)
-  - toto-2 — [arxiv](https://arxiv.org/abs/2605.20119)
-  - ts-icl — [arxiv](https://arxiv.org/abs/2606.05878)
-  - tiny-tsm — [arxiv](https://arxiv.org/abs/2511.19272)
-  - tempopfn — [arxiv](https://arxiv.org/abs/2510.25502)
-  - tirex — [arxiv](https://arxiv.org/abs/2505.23719)
-  - tirex-2 — [arxiv](https://arxiv.org/abs/2607.01204)
-  - timee — [arxiv](https://arxiv.org/abs/2607.07500)
-  - mantis — [arxiv](https://arxiv.org/abs/2502.15637)
-  - rocketpfn — [arxiv](https://arxiv.org/abs/2606.21786)
+  - forecasting
+    - tabpfn-ts — [arxiv](https://arxiv.org/abs/2501.02945)
+    - toto-2 — [arxiv](https://arxiv.org/abs/2605.20119)
+    - ts-icl — [arxiv](https://arxiv.org/abs/2606.05878)
+    - tiny-tsm — [arxiv](https://arxiv.org/abs/2511.19272)
+    - tempopfn — [arxiv](https://arxiv.org/abs/2510.25502)
+    - tirex — [arxiv](https://arxiv.org/abs/2505.23719)
+    - tirex-2 — [arxiv](https://arxiv.org/abs/2607.01204)
+  - classification
+    - timee — [arxiv](https://arxiv.org/abs/2607.07500)
+    - mantis — [arxiv](https://arxiv.org/abs/2502.15637)
+    - rocketpfn — [arxiv](https://arxiv.org/abs/2606.21786)
 - causal
   - tabcausal — [arxiv](https://arxiv.org/abs/2605.31156)
   - causalfm — [arxiv](https://arxiv.org/abs/2506.10914)
