@@ -97,6 +97,8 @@ some papers i find related:
   - tirex — [arxiv](https://arxiv.org/abs/2505.23719)
   - tirex-2 — [arxiv](https://arxiv.org/abs/2607.01204)
   - timee — [arxiv](https://arxiv.org/abs/2607.07500)
+  - mantis — [arxiv](https://arxiv.org/abs/2502.15637)
+  - rocketpfn — [arxiv](https://arxiv.org/abs/2606.21786)
 - causal
   - tabcausal — [arxiv](https://arxiv.org/abs/2605.31156)
   - causalfm — [arxiv](https://arxiv.org/abs/2506.10914)
