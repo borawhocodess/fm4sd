@@ -134,6 +134,8 @@ not placed yet:
   - tabshallow — [openreview](https://openreview.net/forum?id=kCnZUf1VYC)
   - tabbarrier — [openreview](https://openreview.net/forum?id=TUYc2XUdwz)
   - tjepa — [arxiv](https://arxiv.org/abs/2410.05016)
+  - tablora — [arxiv](https://arxiv.org/abs/2607.10077)
+  - ptnas — [openreview](https://openreview.net/pdf?id=3ADqf6jn9r)
 - time series
   - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe)
   - simpletimebench — [openreview](https://openreview.net/forum?id=iIRdd86Xkr)
@@ -145,6 +147,7 @@ not placed yet:
   - causaltab — [openreview](https://openreview.net/forum?id=og3UVhP7M1)
   - posttreatmentcfm — [openreview](https://openreview.net/forum?id=ULoLF1aOo1)
   - macetnp — [arxiv](https://arxiv.org/abs/2507.05526)
+  - cdfm — [arxiv](https://arxiv.org/abs/2607.11508)
 - mechanistic interpretability
   - tabular
     - tabfmmechanistic — [arxiv](https://arxiv.org/abs/2605.21288)
