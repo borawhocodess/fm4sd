@@ -79,6 +79,7 @@ some papers i find related:
   - tabflex — [arxiv](https://arxiv.org/abs/2506.05584)
   - tabm — [arxiv](https://arxiv.org/abs/2410.24210)
   - tabstar — [arxiv](https://arxiv.org/abs/2505.18125)
+  - real-tabpfn — [arxiv](https://arxiv.org/abs/2507.03971)
 - relational
   - rdbbench — [arxiv](https://arxiv.org/abs/2607.03659)
   - rdl-survey — [arxiv](https://arxiv.org/abs/2506.16654)
