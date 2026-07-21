@@ -150,3 +150,8 @@ not placed yet:
     - icl-gd — [arxiv](https://arxiv.org/abs/2212.07677)
     - task-vectors — [arxiv](https://arxiv.org/abs/2310.15916)
     - function-vectors — [arxiv](https://arxiv.org/abs/2310.15213)
+
+## workshops
+
+- icml-structured-fm-workshop — [site](https://icml-structured-fm-workshop.github.io)
+- mechinterpworkshop — [site](https://mechinterpworkshop.com)
