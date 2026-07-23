@@ -21,6 +21,7 @@ recommend working with cli tools - [claude](https://code.claude.com/docs/en/over
   - pfns — [arxiv](https://arxiv.org/abs/2112.10510) · [video](https://youtu.be/XnngBWe2WYE) · [video](https://www.youtube.com/watch?v=0Pi9ARZjIGg)
   - priorfitted — [arxiv](https://arxiv.org/abs/2505.23947)
   - sfopfn — [arxiv](https://arxiv.org/abs/2305.11097) · [pmlr](https://proceedings.mlr.press/v202/nagler23a)
+  - gnr — [arxiv](https://arxiv.org/abs/cond-mat/0011094)
 - tabular
   - tabpfn — [arxiv](https://arxiv.org/abs/2207.01848) · [video](https://www.youtube.com/watch?v=9cE8lqQiLyM)
   - tabpfnv2 — [nature](https://www.nature.com/articles/s41586-024-08328-6) · [pmc](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11711098/) · [video](https://youtu.be/qFnYgM2Yvfs) · [video](https://www.youtube.com/watch?v=SOXK7AJLOY4) · [video](https://www.youtube.com/watch?v=9IkwXGe2Gaw)
