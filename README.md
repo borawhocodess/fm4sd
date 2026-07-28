@@ -117,6 +117,8 @@ not placed yet:
   - tjepa — [arxiv](https://arxiv.org/abs/2410.05016)
   - tablora — [arxiv](https://arxiv.org/abs/2607.10077)
   - ptnas — [openreview](https://openreview.net/pdf?id=3ADqf6jn9r)
+  - kamel — [doi](https://doi.org/10.1016/j.ins.2026.123925)
+  - topologicaltabpfn — [arxiv](https://arxiv.org/abs/2607.17962)
 - time series
   - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe)
   - simpletimebench — [openreview](https://openreview.net/forum?id=iIRdd86Xkr)
