@@ -12,11 +12,15 @@
 \usepackage{multirow}
 \usepackage{adjustbox}
 \usepackage[numbers]{natbib}
+\usepackage{soul}
+\sethlcolor{yellow}
 
 % frame title = current subsection if one has been declared, else current section
 \newcommand{\currentheading}{\ifx\insertsubsection\empty\insertsection\else\insertsubsection\fi}
 
 \newcommand{\cit}[1]{{\scriptsize\color{gray}[#1]}}
+\newcommand{\explainer}[1]{{\footnotesize\color{gray}\textit{#1}}}
+
 
 \title{A Fair Benchmarking of Deep Relational Database Learning Models}
 \subtitle{}
@@ -34,11 +38,11 @@ Relational databases (RDBs) are the primary data infrastructure in many enterpri
 \end{frame}
 
 \begin{frame}{Abstract}
-We present one of the first systematic benchmarking studies of recently released deep learning methods for RDBs, evaluating them across five relational databases, with one classification and one regression task for each.
+We present one of the first systematic benchmarking studies of recently released deep learning methods for RDBs, evaluating them \hl{across five relational databases, with one classification and one regression task for each}.
 \end{frame}
 
 \begin{frame}{Abstract}
-We refactor all deep RDB models to allow the full range of experimental procedures to be applied consistently across all methods.
+\hl{We refactor all deep RDB models} to allow the full range of experimental procedures to be applied consistently across all methods.
 \end{frame}
 
 \begin{frame}{Abstract}
@@ -46,7 +50,7 @@ Our findings indicate that the relational transformer (RT) approach delivers the
 \end{frame}
 
 \begin{frame}{Abstract}
-Even for single-table learning tasks, deep learning methods designed for RDBs outperform the leading tabular foundation model, TabPFN 2.5.
+\hl{Even for single-table learning tasks}, deep learning methods designed for \hl{RDBs outperform the leading tabular foundation model}, TabPFN 2.5.
 \end{frame}
 
 \begin{frame}{Abstract}
@@ -101,6 +105,9 @@ RDBs are different from typical tabular data sets in three different ways.
 \begin{frame}{1 Introduction --- Three Distinctions}
 First, an RDB includes multiple related tables linked by constraints of the primary-key and foreign-key (PK--FK), which also contribute the necessary predictive signals to learn an entity type.
 \cit{Ranjan et al., 2025}
+
+\vspace{1em}
+\explainer{entity type: category a table represents, e.g. \texttt{customers}.}
 \end{frame}
 
 \begin{frame}{1 Introduction --- Three Distinctions}
