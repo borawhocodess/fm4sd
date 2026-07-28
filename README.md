@@ -1,6 +1,6 @@
-# ufr ss26 fm4sd papers
+# fm4sd papers
 
-started out from papers for [foundation models for structured data (fm4sd) seminar](https://ml.informatik.uni-freiburg.de/teaching/summer-semester-2026/seminar-seminar-on-foundation-models-for-structured-data/) at ufr ss26, then i added some more papers i found related.
+started out from [foundation models for structured data (fm4sd) seminar](https://ml.informatik.uni-freiburg.de/teaching/summer-semester-2026/seminar-seminar-on-foundation-models-for-structured-data/) , i just keep on adding more...
 
 ## how 2 set up
 
