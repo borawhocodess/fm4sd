@@ -105,6 +105,8 @@ not placed yet:
 - general
   - martingale — [arxiv](https://arxiv.org/abs/2103.15671)
   - pfnuq — [arxiv](https://arxiv.org/abs/2505.11325)
+  - alberta-plan — [arxiv](https://arxiv.org/abs/2208.11173)
+  - era-of-experience — [pdf](https://storage.googleapis.com/deepmind-media/Era-of-Experience%20/The%20Era%20of%20Experience%20Paper.pdf)
 - tabular
   - flextab — [arxiv](https://arxiv.org/abs/2606.30336)
   - enterprisetabgap — [arxiv](https://arxiv.org/abs/2606.30452)
@@ -119,6 +121,9 @@ not placed yet:
   - ptnas — [openreview](https://openreview.net/pdf?id=3ADqf6jn9r)
   - kamel — [doi](https://doi.org/10.1016/j.ins.2026.123925)
   - topologicaltabpfn — [arxiv](https://arxiv.org/abs/2607.17962)
+  - oodtabfm — [arxiv](https://arxiv.org/abs/2607.26000)
+  - contextadaptiveinference — [arxiv](https://arxiv.org/abs/2607.23304)
+  - scoringbench — [arxiv](https://arxiv.org/abs/2603.29928)
 - time series
   - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe)
   - simpletimebench — [openreview](https://openreview.net/forum?id=iIRdd86Xkr)
@@ -131,6 +136,8 @@ not placed yet:
   - posttreatmentcfm — [openreview](https://openreview.net/forum?id=ULoLF1aOo1)
   - macetnp — [arxiv](https://arxiv.org/abs/2507.05526)
   - cdfm — [arxiv](https://arxiv.org/abs/2607.11508)
+- other
+  - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
 - mechanistic interpretability
   - tabular
     - tabfmmechanistic — [arxiv](https://arxiv.org/abs/2605.21288)
