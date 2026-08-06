@@ -30,6 +30,7 @@ rm <id>.tar.gz
   - nanotabpfn — [arxiv](https://arxiv.org/abs/2511.03634)
   - modded-nanotabpfn — [github](https://github.com/borawhocodess/modded-nanotabpfn)
   - tabpfnv2closerlook — [arxiv](https://arxiv.org/abs/2502.17361)
+  - finetuningtfm — [arxiv](https://arxiv.org/abs/2506.08982)
   - tabicl — [arxiv](https://arxiv.org/abs/2502.05564)
   - tabiclv2 — [arxiv](https://arxiv.org/abs/2602.11139) · [video](https://youtu.be/MvEkj7TOmj8)
   - tabfm — [blog](https://research.google/blog/introducing-tabfm-a-zero-shot-foundation-model-for-tabular-data/)
@@ -105,6 +106,7 @@ not placed yet:
   - pfnuq — [arxiv](https://arxiv.org/abs/2505.11325)
   - alberta-plan — [arxiv](https://arxiv.org/abs/2208.11173)
   - era-of-experience — [pdf](https://storage.googleapis.com/deepmind-media/Era-of-Experience%20/The%20Era%20of%20Experience%20Paper.pdf)
+  - gatedattention — [arxiv](https://arxiv.org/abs/2505.06708)
 - tabular
   - flextab — [arxiv](https://arxiv.org/abs/2606.30336)
   - enterprisetabgap — [arxiv](https://arxiv.org/abs/2606.30452)
