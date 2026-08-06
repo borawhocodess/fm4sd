@@ -136,6 +136,7 @@ not placed yet:
   - cdfm — [arxiv](https://arxiv.org/abs/2607.11508)
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
+  - grpo — [arxiv](https://arxiv.org/abs/2402.03300)
 - mechanistic interpretability
   - tabular
     - tabfmmechanistic — [arxiv](https://arxiv.org/abs/2605.21288)
