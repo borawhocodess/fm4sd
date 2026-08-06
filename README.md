@@ -4,7 +4,7 @@ started out from [foundation models for structured data (fm4sd) seminar](https:/
 
 ## how 2 set up
 
-cant host the papers and their sources in this repo because of licenses, but definitely grab the tex sources and download under `papers/papername` (gitignored):
+grab the tex sources and download under `papers/papername` (gitignored):
 
 ```sh
 wget https://arxiv.org/pdf/<id> -O <id>.pdf      # pdf
@@ -12,8 +12,6 @@ wget https://arxiv.org/src/<id> -O <id>.tar.gz   # tex
 mkdir -p src && tar -xzf <id>.tar.gz -C src
 rm <id>.tar.gz
 ```
-
-recommend working with cli tools - [claude](https://code.claude.com/docs/en/overview) · [codex](https://developers.openai.com/codex/cli) · [cursor](https://cursor.com/docs/cli/overview)
 
 ## papers
 
