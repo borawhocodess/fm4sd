@@ -175,3 +175,4 @@ not placed yet:
 
 - icml-structured-fm-workshop — [site](https://icml-structured-fm-workshop.github.io)
 - mechinterpworkshop — [site](https://mechinterpworkshop.com)
+- tada2026 — [site](https://tabular-data-analysis.github.io/tada2026/)
