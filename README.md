@@ -124,6 +124,14 @@ not placed yet:
   - oodtabfm — [arxiv](https://arxiv.org/abs/2607.26000)
   - contextadaptiveinference — [arxiv](https://arxiv.org/abs/2607.23304)
   - scoringbench — [arxiv](https://arxiv.org/abs/2603.29928)
+  - istructtab — [arxiv](https://arxiv.org/abs/2608.04348)
+  - whyllmsfail — [arxiv](https://arxiv.org/abs/2608.02412)
+  - ramanpfn — [arxiv](https://arxiv.org/abs/2608.02157)
+  - pfnsyn — [pdf](https://tabular-data-analysis.github.io/tada2026/papers/TaDA26_16.pdf)
+  - soilspectrapfn — [arxiv](https://arxiv.org/abs/2608.00608)
+  - tfmselfconsistency — [arxiv](https://arxiv.org/abs/2608.06004)
+- relational
+  - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
 - time series
   - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe)
   - simpletimebench — [openreview](https://openreview.net/forum?id=iIRdd86Xkr)
@@ -136,6 +144,7 @@ not placed yet:
   - posttreatmentcfm — [openreview](https://openreview.net/forum?id=ULoLF1aOo1)
   - macetnp — [arxiv](https://arxiv.org/abs/2507.05526)
   - cdfm — [arxiv](https://arxiv.org/abs/2607.11508)
+  - stablepfn — [acm](https://dl.acm.org/doi/10.1145/3770855.3818030)
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
   - grpo — [arxiv](https://arxiv.org/abs/2402.03300)
