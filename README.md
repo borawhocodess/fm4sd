@@ -131,8 +131,16 @@ not placed yet:
   - pfnsyn — [pdf](https://tabular-data-analysis.github.io/tada2026/papers/TaDA26_16.pdf)
   - soilspectrapfn — [arxiv](https://arxiv.org/abs/2608.00608)
   - tfmselfconsistency — [arxiv](https://arxiv.org/abs/2608.06004)
+  - tacticl — [arxiv](https://arxiv.org/abs/2608.10837)
+  - iced — [arxiv](https://arxiv.org/abs/2608.09348)
+  - numstretch — [arxiv](https://arxiv.org/abs/2608.09162)
+  - qdhgan — [doi](https://doi.org/10.1016/j.knosys.2026.116694)
+  - baps — [arxiv](https://arxiv.org/abs/2608.12989)
+  - autograble — [arxiv](https://arxiv.org/abs/2608.11431)
+  - seq2synth — [arxiv](https://arxiv.org/abs/2607.15606)
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
+  - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)
 - time series
   - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe)
   - simpletimebench — [openreview](https://openreview.net/forum?id=iIRdd86Xkr)
