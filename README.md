@@ -58,6 +58,7 @@ rm <id>.tar.gz
   - openrfm — [arxiv](https://arxiv.org/abs/2606.04320)
   - plurel — [arxiv](https://arxiv.org/abs/2602.04029)
   - rdblearn — [arxiv](https://arxiv.org/abs/2602.18495) · [arxiv](https://arxiv.org/abs/2602.13697)
+  - relarena-alpha — [arxiv](https://arxiv.org/abs/2608.16319) · [blog](https://priorlabs.ai/blog-posts/introducing-relarena)
 - time series
   - forecasting
     - fev-bench — [arxiv](https://arxiv.org/abs/2509.26468)
