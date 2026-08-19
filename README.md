@@ -138,6 +138,7 @@ not placed yet:
   - baps — [arxiv](https://arxiv.org/abs/2608.12989)
   - autograble — [arxiv](https://arxiv.org/abs/2608.11431)
   - seq2synth — [arxiv](https://arxiv.org/abs/2607.15606)
+  - tabnet — [arxiv](https://arxiv.org/abs/1908.07442)
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)
@@ -154,6 +155,7 @@ not placed yet:
   - macetnp — [arxiv](https://arxiv.org/abs/2507.05526)
   - cdfm — [arxiv](https://arxiv.org/abs/2607.11508)
   - stablepfn — [acm](https://dl.acm.org/doi/10.1145/3770855.3818030)
+  - tabscm — [arxiv](https://arxiv.org/abs/2604.22337)
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
   - grpo — [arxiv](https://arxiv.org/abs/2402.03300)
