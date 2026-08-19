@@ -139,12 +139,22 @@ not placed yet:
   - autograble — [arxiv](https://arxiv.org/abs/2608.11431)
   - seq2synth — [arxiv](https://arxiv.org/abs/2607.15606)
   - tabnet — [arxiv](https://arxiv.org/abs/1908.07442)
+  - ggpl — [lgresearch](https://www.lgresearch.ai/publication/view?seq=180)
+  - distpfn — [arxiv](https://arxiv.org/abs/2605.04363)
+  - agata — [lgresearch](https://www.lgresearch.ai/publication/view?seq=117)
+  - retabad — [lgresearch](https://www.lgresearch.ai/publication/view?seq=158) · [arxiv](https://arxiv.org/abs/2510.02060)
+  - ratab — [lgresearch](https://www.lgresearch.ai/publication/view?seq=125)
+  - bsplinenorm — [lgresearch](https://www.lgresearch.ai/publication/view?seq=118)
+  - binningpretext — [arxiv](https://arxiv.org/abs/2405.07414)
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)
+  - adatkg — [arxiv](https://arxiv.org/abs/2605.07121)
 - time series
   - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe)
   - simpletimebench — [openreview](https://openreview.net/forum?id=iIRdd86Xkr)
+  - finstar — [arxiv](https://arxiv.org/abs/2605.03460)
+  - fintexts — [arxiv](https://arxiv.org/abs/2603.02702)
 - causal
   - tscausalfm — [openreview](https://openreview.net/forum?id=CAaTQAfq7c)
   - causalfewshot — [openreview](https://openreview.net/forum?id=2yvEiFhNCT)
@@ -156,6 +166,8 @@ not placed yet:
   - cdfm — [arxiv](https://arxiv.org/abs/2607.11508)
   - stablepfn — [acm](https://dl.acm.org/doi/10.1145/3770855.3818030)
   - tabscm — [arxiv](https://arxiv.org/abs/2604.22337)
+  - orchecause — [lgresearch](https://www.lgresearch.ai/publication/view?seq=151)
+  - scino — [arxiv](https://arxiv.org/abs/2508.12650)
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
   - grpo — [arxiv](https://arxiv.org/abs/2402.03300)
