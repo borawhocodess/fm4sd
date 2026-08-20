@@ -108,6 +108,7 @@ not placed yet:
   - alberta-plan — [arxiv](https://arxiv.org/abs/2208.11173)
   - era-of-experience — [pdf](https://storage.googleapis.com/deepmind-media/Era-of-Experience%20/The%20Era%20of%20Experience%20Paper.pdf)
   - gatedattention — [arxiv](https://arxiv.org/abs/2505.06708)
+  - scnn — [arxiv](https://arxiv.org/abs/2301.13142)
 - tabular
   - flextab — [arxiv](https://arxiv.org/abs/2606.30336)
   - enterprisetabgap — [arxiv](https://arxiv.org/abs/2606.30452)
@@ -146,6 +147,7 @@ not placed yet:
   - ratab — [lgresearch](https://www.lgresearch.ai/publication/view?seq=125)
   - bsplinenorm — [lgresearch](https://www.lgresearch.ai/publication/view?seq=118)
   - binningpretext — [arxiv](https://arxiv.org/abs/2405.07414)
+  - tdcoler — [arxiv](https://arxiv.org/abs/2501.13905)
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)

@@ -1,1 +1,2 @@
-todo:
+todo: quantization in the TFM world, analyzing the impact, exploring https://arxiv.org/pdf/2301.13142 applied to TabPFN (alex)
+todo: dataset distillation for the pretraining data of TFMs? like one levle higher than https://arxiv.org/pdf/2501.13905 which I think applied this on a per dataset level (alex)
