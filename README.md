@@ -168,6 +168,7 @@ not placed yet:
   - tabscm — [arxiv](https://arxiv.org/abs/2604.22337)
   - orchecause — [lgresearch](https://www.lgresearch.ai/publication/view?seq=151)
   - scino — [arxiv](https://arxiv.org/abs/2508.12650)
+  - pf-ges — [pmlr](https://proceedings.mlr.press/v323/gajewski26a.html)
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
   - grpo — [arxiv](https://arxiv.org/abs/2402.03300)
