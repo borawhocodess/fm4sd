@@ -148,6 +148,7 @@ not placed yet:
   - bsplinenorm — [lgresearch](https://www.lgresearch.ai/publication/view?seq=118)
   - binningpretext — [arxiv](https://arxiv.org/abs/2405.07414)
   - tdcoler — [arxiv](https://arxiv.org/abs/2501.13905)
+  - memoryefficienttfms — [arxiv](https://arxiv.org/abs/2607.27546)
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)
