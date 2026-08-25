@@ -109,6 +109,7 @@ not placed yet:
   - era-of-experience — [pdf](https://storage.googleapis.com/deepmind-media/Era-of-Experience%20/The%20Era%20of%20Experience%20Paper.pdf)
   - gatedattention — [arxiv](https://arxiv.org/abs/2505.06708)
   - scnn — [arxiv](https://arxiv.org/abs/2301.13142)
+  - pfnppd — [arxiv](https://arxiv.org/abs/2605.26713)
 - tabular
   - flextab — [arxiv](https://arxiv.org/abs/2606.30336)
   - enterprisetabgap — [arxiv](https://arxiv.org/abs/2606.30452)
@@ -172,6 +173,7 @@ not placed yet:
   - orchecause — [lgresearch](https://www.lgresearch.ai/publication/view?seq=151)
   - scino — [arxiv](https://arxiv.org/abs/2508.12650)
   - pf-ges — [pmlr](https://proceedings.mlr.press/v323/gajewski26a.html)
+  - ospc — [arxiv](https://arxiv.org/abs/2603.12037)
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
   - grpo — [arxiv](https://arxiv.org/abs/2402.03300)
