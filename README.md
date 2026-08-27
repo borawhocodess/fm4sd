@@ -49,6 +49,7 @@ rm <id>.tar.gz
   - talent — [arxiv](https://arxiv.org/abs/2407.04057)
   - tabarena — [arxiv](https://arxiv.org/abs/2506.16791) · [video](https://youtu.be/mcPRMcJHW2Y)
   - beyondarena — [arxiv](https://arxiv.org/abs/2606.30410)
+  - exaonetabular — [arxiv](https://arxiv.org/abs/2608.25774)
 - relational
   - rdbbench — [arxiv](https://arxiv.org/abs/2607.03659)
   - rdl-survey — [arxiv](https://arxiv.org/abs/2506.16654)
