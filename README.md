@@ -150,6 +150,9 @@ not placed yet:
   - binningpretext — [arxiv](https://arxiv.org/abs/2405.07414)
   - tdcoler — [arxiv](https://arxiv.org/abs/2501.13905)
   - memoryefficienttfms — [arxiv](https://arxiv.org/abs/2607.27546)
+  - probcircuittabgen — [arxiv](https://arxiv.org/abs/2603.23016)
+  - arash — [arxiv](https://arxiv.org/abs/2608.17856)
+  - entangledbydesign — [arxiv](https://arxiv.org/abs/2607.25532)
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)
