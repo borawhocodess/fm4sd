@@ -115,7 +115,7 @@ not placed yet:
   - flextab — [arxiv](https://arxiv.org/abs/2606.30336)
   - enterprisetabgap — [arxiv](https://arxiv.org/abs/2606.30452)
   - gotabpfn — [arxiv](https://arxiv.org/abs/2606.05441)
-  - shapinggeometry — [openreview](https://openreview.net/forum?id=IYnHchzvYB)
+  - shapinggeometry — [openreview](https://openreview.net/forum?id=IYnHchzvYB) · [poster](https://www.humzahmerchant.com/posters/fmsd%202026%20poster.PNG)
   - tabgenfm — [arxiv](https://arxiv.org/abs/2605.09424) · [openreview](https://openreview.net/forum?id=RcsaxrdpfE)
   - tabattnbench — [openreview](https://openreview.net/forum?id=rwtcugrpDq)
   - tabshallow — [openreview](https://openreview.net/forum?id=kCnZUf1VYC)
