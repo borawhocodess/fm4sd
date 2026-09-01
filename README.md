@@ -163,6 +163,7 @@ not placed yet:
   - fairtfm — [arxiv](https://arxiv.org/abs/2608.14211)
   - singletablegen — [arxiv](https://arxiv.org/abs/2511.09665)
   - tfmgeneralization — [arxiv](https://arxiv.org/abs/2608.17957)
+  - shappfn — [openreview](https://openreview.net/pdf?id=StSMBSZqxx)
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)
