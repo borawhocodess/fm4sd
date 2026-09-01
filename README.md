@@ -35,6 +35,7 @@ rm <id>.tar.gz
   - tabiclv2 — [arxiv](https://arxiv.org/abs/2602.11139) · [video](https://youtu.be/MvEkj7TOmj8)
   - tabfm — [blog](https://research.google/blog/introducing-tabfm-a-zero-shot-foundation-model-for-tabular-data/)
   - tabdpt — [arxiv](https://arxiv.org/abs/2410.18164)
+  - tabdptturbo — [arxiv](https://arxiv.org/abs/2608.01400)
   - limix — [arxiv](https://arxiv.org/abs/2509.03505)
   - limix-2m — [arxiv](https://arxiv.org/abs/2606.04485)
   - tabh2o — [arxiv](https://arxiv.org/abs/2605.18383)
@@ -50,6 +51,8 @@ rm <id>.tar.gz
   - tabarena — [arxiv](https://arxiv.org/abs/2506.16791) · [video](https://youtu.be/mcPRMcJHW2Y)
   - beyondarena — [arxiv](https://arxiv.org/abs/2606.30410)
   - exaonetabular — [arxiv](https://arxiv.org/abs/2608.25774)
+  - earlystoppingicl — [arxiv](https://arxiv.org/abs/2506.21387)
+  - localpfn — [arxiv](https://arxiv.org/abs/2406.05207) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2024/file/c40daf14d7a6469e65116507c21faeb7-Paper-Conference.pdf)
 - relational
   - rdbbench — [arxiv](https://arxiv.org/abs/2607.03659)
   - rdl-survey — [arxiv](https://arxiv.org/abs/2506.16654)
@@ -155,6 +158,11 @@ not placed yet:
   - arash — [arxiv](https://arxiv.org/abs/2608.17856)
   - entangledbydesign — [arxiv](https://arxiv.org/abs/2607.25532)
   - survivalpfn — [arxiv](https://arxiv.org/abs/2605.15488)
+  - tabpfgen — [arxiv](https://arxiv.org/abs/2406.05216)
+  - interpretabletabpfn — [arxiv](https://arxiv.org/abs/2403.10923)
+  - fairtfm — [arxiv](https://arxiv.org/abs/2608.14211)
+  - singletablegen — [arxiv](https://arxiv.org/abs/2511.09665)
+  - tfmgeneralization — [arxiv](https://arxiv.org/abs/2608.17957)
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)
