@@ -198,6 +198,8 @@ not placed yet:
     - superposition — [arxiv](https://arxiv.org/abs/2209.10652)
     - monosemanticity — [blog](https://transformer-circuits.pub/2023/monosemantic-features/index.html)
     - othello-gpt — [arxiv](https://arxiv.org/abs/2210.13382)
+    - vit-registers — [arxiv](https://arxiv.org/abs/2309.16588) · [video](https://youtu.be/QgH9sr7G13Q?t=1672)
+    - test-time-registers — [arxiv](https://arxiv.org/abs/2506.08010)
   - icl
     - icl-regression — [arxiv](https://arxiv.org/abs/2208.01066)
     - icl-learning-alg — [arxiv](https://arxiv.org/abs/2211.15661)
