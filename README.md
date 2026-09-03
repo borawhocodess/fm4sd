@@ -114,6 +114,7 @@ not placed yet:
   - gatedattention — [arxiv](https://arxiv.org/abs/2505.06708)
   - scnn — [arxiv](https://arxiv.org/abs/2301.13142)
   - pfnppd — [arxiv](https://arxiv.org/abs/2605.26713)
+  - mixture-of-recursions — [arxiv](https://arxiv.org/abs/2507.10524)
 - tabular
   - flextab — [arxiv](https://arxiv.org/abs/2606.30336)
   - enterprisetabgap — [arxiv](https://arxiv.org/abs/2606.30452)
