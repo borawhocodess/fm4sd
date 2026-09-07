@@ -116,6 +116,7 @@ not placed yet:
   - pfnppd — [arxiv](https://arxiv.org/abs/2605.26713)
   - mixture-of-recursions — [arxiv](https://arxiv.org/abs/2507.10524)
   - deeploop — [arxiv](https://arxiv.org/abs/2607.13491)
+  - vgi — [arxiv](https://arxiv.org/abs/2608.25924)
 - tabular
   - flextab — [arxiv](https://arxiv.org/abs/2606.30336)
   - enterprisetabgap — [arxiv](https://arxiv.org/abs/2606.30452)
@@ -170,6 +171,7 @@ not placed yet:
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)
   - adatkg — [arxiv](https://arxiv.org/abs/2605.07121)
+  - subgraphvgae — [arxiv](https://arxiv.org/abs/2408.04053)
 - time series
   - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe)
   - simpletimebench — [openreview](https://openreview.net/forum?id=iIRdd86Xkr)
@@ -193,6 +195,10 @@ not placed yet:
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
   - grpo — [arxiv](https://arxiv.org/abs/2402.03300)
+  - mlebench-search — [arxiv](https://arxiv.org/abs/2507.02554)
+  - aira2 — [arxiv](https://arxiv.org/abs/2603.26499)
+  - vibecoding — [arxiv](https://arxiv.org/abs/2603.14133)
+  - mit-ai-report — [pdf](https://bpb-us-e1.wpmucdn.com/sites.mit.edu/dist/d/2418/files/2026/09/AI-Committee-Final-Report-Aug-13.pdf)
 - mechanistic interpretability
   - tabular
     - tabfmmechanistic — [arxiv](https://arxiv.org/abs/2605.21288)
