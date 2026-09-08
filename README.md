@@ -51,6 +51,7 @@ rm <id>.tar.gz
   - tabarena — [arxiv](https://arxiv.org/abs/2506.16791) · [video](https://youtu.be/mcPRMcJHW2Y)
   - beyondarena — [arxiv](https://arxiv.org/abs/2606.30410)
   - exaonetabular — [arxiv](https://arxiv.org/abs/2608.25774)
+  - xiaomi-tabldm — [arxiv](https://arxiv.org/abs/2609.03880)
   - earlystoppingicl — [arxiv](https://arxiv.org/abs/2506.21387)
   - localpfn — [arxiv](https://arxiv.org/abs/2406.05207) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2024/file/c40daf14d7a6469e65116507c21faeb7-Paper-Conference.pdf)
 - relational
