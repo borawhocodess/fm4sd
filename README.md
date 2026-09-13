@@ -224,6 +224,7 @@ not placed yet:
     - icl-gd — [arxiv](https://arxiv.org/abs/2212.07677)
     - task-vectors — [arxiv](https://arxiv.org/abs/2310.15916)
     - function-vectors — [arxiv](https://arxiv.org/abs/2310.15213)
+    - nonergodic-geometry — [site](https://simplex.pub/nonergodic-geometry/)
 
 ## extras
 
