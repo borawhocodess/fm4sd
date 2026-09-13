@@ -225,8 +225,10 @@ not placed yet:
     - task-vectors — [arxiv](https://arxiv.org/abs/2310.15916)
     - function-vectors — [arxiv](https://arxiv.org/abs/2310.15213)
 
-## workshops
+## extras
 
 - icml-structured-fm-workshop — [site](https://icml-structured-fm-workshop.github.io)
 - mechinterpworkshop — [site](https://mechinterpworkshop.com)
 - tada2026 — [site](https://tabular-data-analysis.github.io/tada2026/)
+- tfm-survey — [site](https://tfm-survey.com)
+- tabularfoundationmodels-guide — [site](https://tabularfoundationmodels.com)
