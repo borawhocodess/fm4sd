@@ -181,11 +181,14 @@ not placed yet:
   - tabllama — [doi](https://doi.org/10.1016/j.neucom.2026.135059)
   - tabfmnontabular — [arxiv](https://arxiv.org/abs/2608.22594)
   - localdistillation — [arxiv](https://arxiv.org/abs/2608.23538)
+  - tabbench-bio — [arxiv](https://arxiv.org/abs/2609.07441)
+  - structuralcoverage — [arxiv](https://arxiv.org/abs/2609.06912)
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)
   - adatkg — [arxiv](https://arxiv.org/abs/2605.07121)
   - subgraphvgae — [arxiv](https://arxiv.org/abs/2408.04053)
+  - logic — [arxiv](https://arxiv.org/abs/2609.05955)
 - time series
   - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe)
   - simpletimebench — [openreview](https://openreview.net/forum?id=iIRdd86Xkr)
@@ -193,6 +196,7 @@ not placed yet:
   - fintexts — [arxiv](https://arxiv.org/abs/2603.02702)
   - chorustic — [arxiv](https://arxiv.org/abs/2608.24033)
   - mmda — [ieee](https://ieeexplore.ieee.org/abstract/document/11664451)
+  - sdd — [arxiv](https://arxiv.org/abs/2609.09586)
 - causal
   - tscausalfm — [openreview](https://openreview.net/forum?id=CAaTQAfq7c)
   - causalfewshot — [openreview](https://openreview.net/forum?id=2yvEiFhNCT)
@@ -208,6 +212,7 @@ not placed yet:
   - scino — [arxiv](https://arxiv.org/abs/2508.12650)
   - pf-ges — [pmlr](https://proceedings.mlr.press/v323/gajewski26a.html)
   - ospc — [arxiv](https://arxiv.org/abs/2603.12037)
+  - closedloop-priorselect — [arxiv](https://arxiv.org/abs/2609.06941)
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
   - grpo — [arxiv](https://arxiv.org/abs/2402.03300)
