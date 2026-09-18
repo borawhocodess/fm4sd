@@ -128,6 +128,7 @@ not placed yet:
   - continual-learning-compose — [arxiv](https://arxiv.org/abs/2609.06986)
   - nora — [arxiv](https://arxiv.org/abs/2608.31036)
   - recirculation — [arxiv](https://arxiv.org/abs/2608.17981)
+  - dream-rsi — [arxiv](https://arxiv.org/abs/2609.14858)
 - tabular
   - flextab — [arxiv](https://arxiv.org/abs/2606.30336)
   - enterprisetabgap — [arxiv](https://arxiv.org/abs/2606.30452)
