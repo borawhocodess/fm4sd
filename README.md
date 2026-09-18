@@ -188,6 +188,7 @@ not placed yet:
   - localdistillation — [arxiv](https://arxiv.org/abs/2608.23538)
   - tabbench-bio — [arxiv](https://arxiv.org/abs/2609.07441)
   - structuralcoverage — [arxiv](https://arxiv.org/abs/2609.06912)
+  - tabprobe — [arxiv](https://arxiv.org/abs/2602.14622)
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)
@@ -232,6 +233,7 @@ not placed yet:
     - looking-glass — [arxiv](https://arxiv.org/abs/2601.08181)
     - where-computation — [arxiv](https://arxiv.org/abs/2606.12917)
     - kernelicl — [arxiv](https://arxiv.org/abs/2602.02162)
+    - rules-or-exemplars — [openreview](https://openreview.net/forum?id=9nCMtYGxQt)
   - circuits
     - circuits-framework — [blog](https://transformer-circuits.pub/2021/framework/index.html)
     - induction-heads — [arxiv](https://arxiv.org/abs/2209.11895)
