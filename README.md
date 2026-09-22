@@ -203,6 +203,11 @@ not placed yet:
   - chorustic — [arxiv](https://arxiv.org/abs/2608.24033)
   - mmda — [ieee](https://ieeexplore.ieee.org/abstract/document/11664451)
   - sdd — [arxiv](https://arxiv.org/abs/2609.09586)
+  - twostagefinance — [ssrn](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6552063)
+  - fincast — [arxiv](https://arxiv.org/abs/2508.19609)
+  - kronos — [arxiv](https://arxiv.org/abs/2508.02739)
+  - bitcoinllmforecast — [doi](https://doi.org/10.1016/j.knosys.2025.114449)
+  - in-flow — [arxiv](https://arxiv.org/abs/2401.16777)
 - causal
   - tscausalfm — [openreview](https://openreview.net/forum?id=CAaTQAfq7c)
   - causalfewshot — [openreview](https://openreview.net/forum?id=2yvEiFhNCT)
