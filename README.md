@@ -57,6 +57,7 @@ rm <id>.tar.gz
   - xiaomi-tabldm — [arxiv](https://arxiv.org/abs/2609.03880)
   - causilo — [github](https://github.com/nums-ai/causilo)
   - aplr — [github](https://github.com/ottenbreit-data-science/aplr)
+  - tfm-agents-humans — [pdf](https://ir.cwi.nl/pub/36086/36086.pdf)
   - earlystoppingicl — [arxiv](https://arxiv.org/abs/2506.21387)
   - localpfn — [arxiv](https://arxiv.org/abs/2406.05207) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2024/file/c40daf14d7a6469e65116507c21faeb7-Paper-Conference.pdf)
 - relational
@@ -129,6 +130,7 @@ not placed yet:
   - nora — [arxiv](https://arxiv.org/abs/2608.31036)
   - recirculation — [arxiv](https://arxiv.org/abs/2608.17981)
   - dream-rsi — [arxiv](https://arxiv.org/abs/2609.14858)
+  - ckda — [arxiv](https://arxiv.org/abs/2609.24797)
 - tabular
   - flextab — [arxiv](https://arxiv.org/abs/2606.30336)
   - enterprisetabgap — [arxiv](https://arxiv.org/abs/2606.30452)
