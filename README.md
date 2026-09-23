@@ -270,3 +270,4 @@ not placed yet:
 - tada2026 — [site](https://tabular-data-analysis.github.io/tada2026/)
 - tfm-survey — [site](https://tfm-survey.com)
 - tabularfoundationmodels-guide — [site](https://tabularfoundationmodels.com)
+- awesome-tfms — [github](https://github.com/jxucoder/Awesome-Tabular-Foundation-Models)
