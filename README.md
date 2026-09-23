@@ -131,6 +131,7 @@ not placed yet:
   - recirculation — [arxiv](https://arxiv.org/abs/2608.17981)
   - dream-rsi — [arxiv](https://arxiv.org/abs/2609.14858)
   - ckda — [arxiv](https://arxiv.org/abs/2609.24797)
+  - jepa-anything — [arxiv](https://arxiv.org/abs/2609.20800)
 - tabular
   - npt — [arxiv](https://arxiv.org/abs/2106.02584)
   - saint — [arxiv](https://arxiv.org/abs/2106.01342)
