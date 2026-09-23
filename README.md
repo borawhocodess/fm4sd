@@ -132,6 +132,8 @@ not placed yet:
   - dream-rsi — [arxiv](https://arxiv.org/abs/2609.14858)
   - ckda — [arxiv](https://arxiv.org/abs/2609.24797)
 - tabular
+  - npt — [arxiv](https://arxiv.org/abs/2106.02584)
+  - saint — [arxiv](https://arxiv.org/abs/2106.01342)
   - flextab — [arxiv](https://arxiv.org/abs/2606.30336)
   - enterprisetabgap — [arxiv](https://arxiv.org/abs/2606.30452)
   - gotabpfn — [arxiv](https://arxiv.org/abs/2606.05441)
