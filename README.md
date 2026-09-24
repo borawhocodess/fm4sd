@@ -197,6 +197,7 @@ not placed yet:
   - tabbench-bio — [arxiv](https://arxiv.org/abs/2609.07441)
   - structuralcoverage — [arxiv](https://arxiv.org/abs/2609.06912)
   - tabprobe — [arxiv](https://arxiv.org/abs/2602.14622)
+  - tabpfn-text-adapter — [arxiv](https://arxiv.org/abs/2606.04876)
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)
