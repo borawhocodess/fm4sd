@@ -132,6 +132,8 @@ not placed yet:
   - dream-rsi — [arxiv](https://arxiv.org/abs/2609.14858)
   - ckda — [arxiv](https://arxiv.org/abs/2609.24797)
   - jepa-anything — [arxiv](https://arxiv.org/abs/2609.20800)
+  - hp-scaling-laws-lmo — [arxiv](https://arxiv.org/abs/2603.15958)
+  - warmstarting-scaling — [arxiv](https://arxiv.org/abs/2605.13405)
 - tabular
   - npt — [arxiv](https://arxiv.org/abs/2106.02584)
   - saint — [arxiv](https://arxiv.org/abs/2106.01342)
@@ -198,6 +200,8 @@ not placed yet:
   - structuralcoverage — [arxiv](https://arxiv.org/abs/2609.06912)
   - tabprobe — [arxiv](https://arxiv.org/abs/2602.14622)
   - tabpfn-text-adapter — [arxiv](https://arxiv.org/abs/2606.04876)
+  - multabench — [arxiv](https://arxiv.org/abs/2605.10616)
+  - strable — [arxiv](https://arxiv.org/abs/2605.12292)
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)
