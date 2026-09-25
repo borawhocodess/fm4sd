@@ -273,6 +273,7 @@ not placed yet:
 - icml-structured-fm-workshop — [site](https://icml-structured-fm-workshop.github.io)
 - mechinterpworkshop — [site](https://mechinterpworkshop.com)
 - tada2026 — [site](https://tabular-data-analysis.github.io/tada2026/)
+- fsml2026 — [site](https://fsml-ims-workshop.org)
 - tfm-survey — [site](https://tfm-survey.com)
 - tabularfoundationmodels-guide — [site](https://tabularfoundationmodels.com)
 - awesome-tfms — [github](https://github.com/jxucoder/Awesome-Tabular-Foundation-Models)
