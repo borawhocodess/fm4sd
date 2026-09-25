@@ -232,6 +232,7 @@ not placed yet:
   - scino — [arxiv](https://arxiv.org/abs/2508.12650)
   - pf-ges — [pmlr](https://proceedings.mlr.press/v323/gajewski26a.html)
   - ospc — [arxiv](https://arxiv.org/abs/2603.12037)
+  - good-bad-controls — [pdf](https://ftp.cs.ucla.edu/pub/stat_ser/r493.pdf)
   - closedloop-priorselect — [arxiv](https://arxiv.org/abs/2609.06941)
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
