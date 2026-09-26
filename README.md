@@ -134,6 +134,7 @@ not placed yet:
   - jepa-anything — [arxiv](https://arxiv.org/abs/2609.20800)
   - hp-scaling-laws-lmo — [arxiv](https://arxiv.org/abs/2603.15958)
   - warmstarting-scaling — [arxiv](https://arxiv.org/abs/2605.13405)
+  - memory-attention — [arxiv](https://arxiv.org/abs/2609.28399)
 - tabular
   - npt — [arxiv](https://arxiv.org/abs/2106.02584)
   - saint — [arxiv](https://arxiv.org/abs/2106.01342)
