@@ -60,6 +60,7 @@ rm <id>.tar.gz
   - tfm-agents-humans — [pdf](https://ir.cwi.nl/pub/36086/36086.pdf)
   - earlystoppingicl — [arxiv](https://arxiv.org/abs/2506.21387)
   - localpfn — [arxiv](https://arxiv.org/abs/2406.05207) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2024/file/c40daf14d7a6469e65116507c21faeb7-Paper-Conference.pdf)
+  - tfm-priority — [arxiv](https://arxiv.org/abs/2405.01147)
 - relational
   - rdbbench — [arxiv](https://arxiv.org/abs/2607.03659)
   - rdl-survey — [arxiv](https://arxiv.org/abs/2506.16654)
@@ -204,6 +205,8 @@ not placed yet:
   - tabpfn-text-adapter — [arxiv](https://arxiv.org/abs/2606.04876)
   - multabench — [arxiv](https://arxiv.org/abs/2605.10616)
   - strable — [arxiv](https://arxiv.org/abs/2605.12292)
+  - latable — [arxiv](https://arxiv.org/abs/2406.17673)
+  - goggle — [openreview](https://openreview.net/forum?id=fPVRcJqspu)
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)
@@ -242,6 +245,7 @@ not placed yet:
   - good-bad-controls — [pdf](https://ftp.cs.ucla.edu/pub/stat_ser/r493.pdf)
   - closedloop-priorselect — [arxiv](https://arxiv.org/abs/2609.06941)
   - causalml-treatment — [doi](https://doi.org/10.1038/s41591-024-02902-1)
+  - decaf — [arxiv](https://arxiv.org/abs/2110.12884)
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
   - grpo — [arxiv](https://arxiv.org/abs/2402.03300)
