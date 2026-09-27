@@ -55,7 +55,7 @@ rm <id>.tar.gz
   - beyondarena — [arxiv](https://arxiv.org/abs/2606.30410)
   - exaonetabular — [arxiv](https://arxiv.org/abs/2608.25774)
   - xiaomi-tabldm — [arxiv](https://arxiv.org/abs/2609.03880)
-  - causilo — [github](https://github.com/nums-ai/causilo)
+  - causilo — [arxiv](https://arxiv.org/abs/2609.22866) · [github](https://github.com/nums-ai/causilo)
   - aplr — [github](https://github.com/ottenbreit-data-science/aplr)
   - tfm-agents-humans — [pdf](https://ir.cwi.nl/pub/36086/36086.pdf)
   - earlystoppingicl — [arxiv](https://arxiv.org/abs/2506.21387)
@@ -135,6 +135,7 @@ not placed yet:
   - hp-scaling-laws-lmo — [arxiv](https://arxiv.org/abs/2603.15958)
   - warmstarting-scaling — [arxiv](https://arxiv.org/abs/2605.13405)
   - memory-attention — [arxiv](https://arxiv.org/abs/2609.28399)
+  - ensemble-inference — [openreview](https://openreview.net/forum?id=rMYJG9mzn5)
 - tabular
   - npt — [arxiv](https://arxiv.org/abs/2106.02584)
   - saint — [arxiv](https://arxiv.org/abs/2106.01342)
@@ -222,6 +223,7 @@ not placed yet:
   - kronos — [arxiv](https://arxiv.org/abs/2508.02739)
   - bitcoinllmforecast — [doi](https://doi.org/10.1016/j.knosys.2025.114449)
   - in-flow — [arxiv](https://arxiv.org/abs/2401.16777)
+  - t0 — [arxiv](https://arxiv.org/abs/2609.24559)
 - causal
   - tscausalfm — [openreview](https://openreview.net/forum?id=CAaTQAfq7c)
   - causalfewshot — [openreview](https://openreview.net/forum?id=2yvEiFhNCT)
@@ -239,6 +241,7 @@ not placed yet:
   - ospc — [arxiv](https://arxiv.org/abs/2603.12037)
   - good-bad-controls — [pdf](https://ftp.cs.ucla.edu/pub/stat_ser/r493.pdf)
   - closedloop-priorselect — [arxiv](https://arxiv.org/abs/2609.06941)
+  - causalml-treatment — [doi](https://doi.org/10.1038/s41591-024-02902-1)
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
   - grpo — [arxiv](https://arxiv.org/abs/2402.03300)
