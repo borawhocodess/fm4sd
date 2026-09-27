@@ -137,6 +137,8 @@ not placed yet:
   - warmstarting-scaling — [arxiv](https://arxiv.org/abs/2605.13405)
   - memory-attention — [arxiv](https://arxiv.org/abs/2609.28399)
   - ensemble-inference — [openreview](https://openreview.net/forum?id=rMYJG9mzn5)
+  - self-play-zero-data — [arxiv](https://arxiv.org/abs/2609.30063)
+  - adaptive-fgd — [arxiv](https://arxiv.org/abs/2606.16926)
 - tabular
   - npt — [arxiv](https://arxiv.org/abs/2106.02584)
   - saint — [arxiv](https://arxiv.org/abs/2106.01342)
