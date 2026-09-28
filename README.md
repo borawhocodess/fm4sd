@@ -131,6 +131,7 @@ not placed yet:
   - nora — [arxiv](https://arxiv.org/abs/2608.31036)
   - recirculation — [arxiv](https://arxiv.org/abs/2608.17981)
   - dream-rsi — [arxiv](https://arxiv.org/abs/2609.14858)
+  - sol-pi — [arxiv](https://arxiv.org/abs/2609.20519)
   - ckda — [arxiv](https://arxiv.org/abs/2609.24797)
   - jepa-anything — [arxiv](https://arxiv.org/abs/2609.20800)
   - hp-scaling-laws-lmo — [arxiv](https://arxiv.org/abs/2603.15958)
