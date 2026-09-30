@@ -59,6 +59,7 @@ rm <id>.tar.gz
   - causilo — [arxiv](https://arxiv.org/abs/2609.22866) · [github](https://github.com/nums-ai/causilo)
   - aplr — [github](https://github.com/ottenbreit-data-science/aplr)
   - tfm-agents-humans — [pdf](https://ir.cwi.nl/pub/36086/36086.pdf)
+  - kumo-tabular — [blog](https://huggingface.co/blog/nvidia/kumo-tabular) · [github](https://github.com/NVIDIA/structured-data-models)
   - earlystoppingicl — [arxiv](https://arxiv.org/abs/2506.21387)
   - localpfn — [arxiv](https://arxiv.org/abs/2406.05207) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2024/file/c40daf14d7a6469e65116507c21faeb7-Paper-Conference.pdf)
   - tfm-priority — [arxiv](https://arxiv.org/abs/2405.01147)
