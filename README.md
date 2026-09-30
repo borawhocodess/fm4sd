@@ -214,6 +214,7 @@ not placed yet:
   - multabench — [arxiv](https://arxiv.org/abs/2605.10616)
   - strable — [arxiv](https://arxiv.org/abs/2605.12292)
   - tabprep — [arxiv](https://arxiv.org/abs/2606.02384)
+  - attention-quantization-tfm — [arxiv](https://arxiv.org/abs/2609.13031)
   - latable — [arxiv](https://arxiv.org/abs/2406.17673)
   - goggle — [openreview](https://openreview.net/forum?id=fPVRcJqspu)
 - relational
