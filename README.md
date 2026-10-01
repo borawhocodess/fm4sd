@@ -219,6 +219,9 @@ not placed yet:
   - attention-quantization-tfm — [arxiv](https://arxiv.org/abs/2609.13031)
   - latable — [arxiv](https://arxiv.org/abs/2406.17673)
   - goggle — [openreview](https://openreview.net/forum?id=fPVRcJqspu)
+  - tfm-in-context-compute — [arxiv](https://arxiv.org/abs/2609.27679)
+  - tabjepa-recipe — [arxiv](https://arxiv.org/abs/2609.25541)
+  - npboost — [arxiv](https://arxiv.org/abs/2609.28122)
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)
@@ -261,6 +264,7 @@ not placed yet:
   - closedloop-priorselect — [arxiv](https://arxiv.org/abs/2609.06941)
   - causalml-treatment — [doi](https://doi.org/10.1038/s41591-024-02902-1)
   - decaf — [arxiv](https://arxiv.org/abs/2110.12884)
+  - causal-fluctuate — [arxiv](https://arxiv.org/abs/2609.26290)
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
   - grpo — [arxiv](https://arxiv.org/abs/2402.03300)
