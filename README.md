@@ -222,12 +222,18 @@ not placed yet:
   - tfm-in-context-compute — [arxiv](https://arxiv.org/abs/2609.27679)
   - tabjepa-recipe — [arxiv](https://arxiv.org/abs/2609.25541)
   - npboost — [arxiv](https://arxiv.org/abs/2609.28122)
+  - taskbridge — [arxiv](https://arxiv.org/abs/2609.36968)
+  - loopicl — [arxiv](https://arxiv.org/abs/2609.36108)
+  - architecturealignment — [arxiv](https://arxiv.org/abs/2609.36883)
+  - tabcon — [arxiv](https://arxiv.org/abs/2609.33114)
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)
   - adatkg — [arxiv](https://arxiv.org/abs/2605.07121)
   - subgraphvgae — [arxiv](https://arxiv.org/abs/2408.04053)
   - logic — [arxiv](https://arxiv.org/abs/2609.05955)
+  - ephris — [arxiv](https://arxiv.org/abs/2609.37057)
+  - supportsetleakage — [arxiv](https://arxiv.org/abs/2609.36417)
 - time series
   - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe)
   - simpletimebench — [openreview](https://openreview.net/forum?id=iIRdd86Xkr)
