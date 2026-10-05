@@ -70,7 +70,33 @@ class DFSTabularModel(RelArenaModel):
         df, cat_cols = self._features(task, db, train_table)
         if df.shape[1] == 0:
             raise ValueError(f"DFS produced no features at depth {self._depth}.")
-        self.fit_flat(df, cat_cols, train_table.df[task.target_col], task.task_type, seed=seed)
+        y = train_table.df[task.target_col]
+        self.fit_flat(df, cat_cols, y, task.task_type, seed=seed)
+        if os.environ.get("FM4SD_DUMP"):
+            self._dump(df, cat_cols, y, task)
+
+    def _dump(self, df: pd.DataFrame, cat_cols: list[str], y: pd.Series, task: EntityTask) -> None:
+        """diagnostics: which DFS columns carry the signal. set FM4SD_DUMP to a directory."""
+        import json
+
+        num = df.select_dtypes(include=[np.number, bool]).astype("float64")
+        corr = num.corrwith(pd.Series(y.to_numpy(dtype="float64"), index=num.index)).abs().fillna(0.0)
+        out = {
+            "model": self.name,
+            "task": f"{task.entity_table}/{task.target_col}",
+            "depth": self._depth,
+            "rows": int(len(df)),
+            "columns": int(df.shape[1]),
+            "categorical_columns": list(cat_cols),
+            "top_abs_corr": [(c, round(float(v), 4)) for c, v in corr.sort_values(ascending=False).head(40).items()],
+            "extra": self._dump_extra(),
+        }
+        path = Path(os.environ["FM4SD_DUMP"])
+        path.mkdir(parents=True, exist_ok=True)
+        (path / f"{self.name}-{task.entity_table}-{task.target_col}-d{self._depth}-n{len(df)}.json").write_text(json.dumps(out, indent=1))
+
+    def _dump_extra(self) -> dict:
+        return {}
 
     def predict(self, task: EntityTask, db: Database, table: Table) -> np.ndarray:
         df, _ = self._features(task, db, table)
@@ -131,6 +157,12 @@ class DFSLightGBM(DFSTabularModel):
         label = y.to_numpy(dtype=float) if task_type == TaskType.REGRESSION else y.to_numpy()
         cat = [f"f{self._cols.index(c)}" for c in cat_cols]
         self._booster = lgb.train(params, lgb.Dataset(x, label=label, categorical_feature=cat or "auto"), num_boost_round=rounds)
+
+    def _dump_extra(self) -> dict:
+        gain = self._booster.feature_importance(importance_type="gain")
+        order = np.argsort(gain)[::-1][:40]
+        total = float(gain.sum()) or 1.0
+        return {"top_gain_share": [(self._cols[i], round(float(gain[i]) / total, 4)) for i in order]}
 
     def _encode(self, df: pd.DataFrame) -> pd.DataFrame:
         # DFS column names hold quotes and brackets, which lightgbm rejects: use positions.
@@ -194,6 +226,9 @@ class RDBPFN(DFSTabularModel):
         num = num.loc[:, num.nunique(dropna=True) > 1]
         corr = num.corrwith(pd.Series(y.to_numpy(dtype="float64"), index=num.index)).abs().fillna(0.0)
         return list(corr.sort_values(ascending=False).index[:k])
+
+    def _dump_extra(self) -> dict:
+        return {"selected_columns": list(self._cols)}
 
     def predict_flat(self, df: pd.DataFrame) -> np.ndarray:
         prob = self._clf.predict_proba(df.reindex(columns=self._cols).reset_index(drop=True), chunk_size=2000)
