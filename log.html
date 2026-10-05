@@ -116,6 +116,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <a class="n-h2" href="#status">Status</a>
 <a class="n-h2" href="#directions">Candidate directions</a>
 <a class="n-h2" href="#d-2026-10-05">2026-10-05</a>
+<a class="n-h3" href="#stage2">stage 2: setup</a>
 <a class="n-h3" href="#setup">setup</a>
 <a class="n-h3" href="#leads">check of the leads from the other session</a>
 <a class="n-h3" href="#gaps">what is still open</a>
@@ -151,7 +152,8 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
     <h2 id="status">Status</h2>
 
     <ul>
-        <li>stage 1 (reading + log + talk draft + candidate directions) - done, with the gaps listed below. waiting for bora.</li>
+        <li>stage 1 (reading + log + talk draft + candidate directions) - done, with the gaps listed below</li>
+        <li>stage 2 (setup) - in progress: install works, lightgbm reproduced exactly on rel-f1, tabpfn-rel run pending</li>
         <li>read fully: rdb-pfn, relbench, rdl-survey, relarena-alpha, rdblearn, relicl, plurel (main text + appendix A, B; not the extra experiments in appendix C), rdl §2</li>
         <li>abstract + intro + results: plurel-to-rdb-pfn, rt (abstract, contribution, method), openrfm (abstract, intro, start of method), rdbbench (abstract, protocol, results text, conclusion)</li>
         <li>abstract + parts: kumorfm-2 (intro claims, experiment setup), graphpfn (pretraining, result summary)</li>
@@ -222,6 +224,54 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 
     <h2 id="d-2026-10-05" class="date">2026-10-05</h2>
 
+    <h3 id="stage2">stage 2: relarena setup and first reproduction</h3>
+
+    <ul>
+        <li><b>[s2-1] where.</b> on this mac, in <code>workdir/repos/relarena</code> (gitignored; clone of PriorLabs/relarena at 039f834, 2026-10-05). <code>relarena-pr</code> is not touched. capella was not reachable (ssh timed out, no VPN).</li>
+        <li><b>[s2-2] upstream changed since your fork.</b> the repo is now a uv workspace with two packages (<code>packages/relarena</code> 0.1.3, <code>packages/relarena-core</code>). tabpfn-rel moved to its own repo and pip package (<code>tabpfn-rel</code> 0.0.5). fastdfs is now 1.2, relbench is pinned at 2.1.2. new methods: <code>nori-rel</code>, <code>kurversc</code>. your fork <code>relarena-pr</code> is at the old single-package layout (0.0.1a2). (<code>relarena:pyproject.toml</code>; <code>relarena:README.md:10-11</code>; <code>uv pip list</code>)</li>
+        <li><b>[s2-3] install that works.</b>
+            <ul>
+                <li><code>uv sync --all-packages --group cpu</code> → 1.0 GB venv, python 3.11.15, torch 2.13.0 CPU build</li>
+                <li><code>uv sync --all-packages --group cpu --extra tabpfn-rel-local</code> → adds tabpfn 9.0.0</li>
+                <li>the README's old form <code>uv sync --extra lightgbm</code> fails: "Extra lightgbm is not defined … for relarena-workspace".</li>
+            </ul>
+        </li>
+        <li><b>[s2-4] macOS problem and fix.</b> lightgbm fails with "Library not loaded: @rpath/libomp.dylib" (homebrew libomp is not installed). fix with no system change: point the loader to the libomp that scikit-learn ships in the venv.
+            <ul>
+                <li><code>DYLD_FALLBACK_LIBRARY_PATH="$PWD/.venv/lib/python3.11/site-packages/sklearn/.dylibs" OMP_NUM_THREADS=1 uv run --all-packages --group cpu relarena …</code></li>
+                <li>alternative: <code>brew install libomp</code>. not done; it is a system change.</li>
+            </ul>
+        </li>
+        <li><b>[s2-5] lightgbm on rel-f1: exact reproduction.</b> command: <code>relarena --model lightgbm --datasets rel-f1 --n-trials 30 --output …</code>. about 20 seconds. download: rel-f1 only, 2.1 MB in <code>~/Library/Caches/relbench</code>.
+            <div class="tw"><table>
+                <tr><th>task</th><th>metric</th><th>mine val</th><th>mine test</th><th>published val</th><th>published test</th></tr>
+                <tr><td>driver-dnf</td><td>AUC</td><td>0.6267</td><td>0.7303</td><td>0.62667</td><td>0.73029</td></tr>
+                <tr><td>driver-top3</td><td>AUC</td><td>0.6798</td><td>0.7389</td><td>0.67984</td><td>0.73888</td></tr>
+                <tr><td>driver-position</td><td>MAE</td><td>3.6320</td><td>4.1058</td><td>3.63204</td><td>4.10582</td></tr>
+            </table></div>
+            <ul>
+                <li>published = <code>relarena:baseline_results/results.csv</code>, rows with selected = True, n_trials 30. same as the paper table <a href="#relarena">[relarena-4]</a>.</li>
+                <li>the CLI default is 10 trials, not 30. with 10 trials: top3 0.7241, position 4.023, dnf 0.7303. so the trial budget must be set by hand to match the paper.</li>
+                <li>my result files: <code>workdir/runs/lightgbm-rel-f1-30.csv</code> (93 rows, every config), <code>workdir/runs/lightgbm-rel-f1.csv</code> (10 trials).</li>
+            </ul>
+        </li>
+        <li><b>[s2-6] the leaderboard in the repo is newer than the paper.</b> (<code>relarena:README.md:60-100</code>, generated block)
+            <ul>
+                <li>models + systems: tabpfn-rel-client-latest 1991.9, tabpfn-rel-local-latest 1940.6, rt-plurel 1879.2, tabpfn-rel-client-2026-08-15 1833.1, kurversc 1812.5, nori-rel 1765.5, tabpfn-rel-local-2026-08-15 1735.8, graphsage 1686.3, relgt 1592.8.</li>
+                <li>so today a newer tabpfn-rel is first overall, above rt-plurel. the paper's statement (rt-plurel first overall) holds for the august versions only. this changes my correction in <a href="#leads">the leads check</a>: both statements are right, for different dates.</li>
+                <li>the local (no text) tabpfn-rel gained about 200 Elo between 2026-08-15 and "latest". <mark class="unverified">unverified</mark>: what changed. read the tabpfn-rel repo.</li>
+                <li>registered names: tabpfn-rel-local-2026-08-15, tabpfn-rel-local-2026-09-28, tabpfn-rel-client-2026-08-15 / -09-18 / -09-28. there is no plain <code>tabpfn-rel-local</code>.</li>
+            </ul>
+        </li>
+        <li><b>[s2-7] how a method plugs in</b> (from the CLI and README, not yet from the code): a method registers a name and a search space; <code>relarena --model NAME</code> runs tune → select on validation → refit → test. <code>--n-trials 0</code> runs nothing for a grid method. <code>--cache-dir</code> holds preprocessing caches. the README names <code>models/lightgbm/</code> as the smallest example to copy.</li>
+        <li><b>[s2-7b] DFS cache warmer.</b> tabpfn-rel does not compute DFS inside a run. without a warm cache it fails: "CacheMiss … Run the shared DFS warmer before a configured benchmark". command: <code>RELARENA_CACHE_DIR=… uv run --all-packages --extra tabpfn-rel-local python workflows/warm_feature_cache.py --datasets rel-f1</code>, then pass the same directory as <code>--cache-dir</code>.
+            <ul>
+                <li>rel-f1, all 3 tasks, inner + outer split, depth 4: 8 min 31 s on this mac (1 CPU thread), 60 MB of parquet. rel-f1 is the smallest database (74k rows). so "hours per database" <a href="#relarena">[relarena-6]</a> is plausible for the large ones.</li>
+            </ul>
+        </li>
+        <li><b>[s2-8] tabpfn-rel-local-2026-08-15 on rel-f1/driver-top3.</b> RESULT_PENDING</li>
+    </ul>
+
     <h3 id="setup">setup</h3>
 
     <ul>
@@ -237,7 +287,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
     <ul>
         <li>"rdb-pfn is the first relational FM trained purely on synthetic data" - <mark>verified</mark> as their claim (rdb-pfn abstract, example_paper.tex L132). limit: the schema generator is trained on real schemas <a href="#rdbpfn">[rdbpfn-2]</a>.</li>
         <li>"plurel is a synthetic database generator, used to pretrain RT" - <mark>verified</mark> <a href="#plurel">[plurel-1]</a></li>
-        <li>"the top method on relarena is tabpfn-rel" - <mark class="wrong">corrected</mark>. tabpfn-rel is first among <b>model</b> submissions (same tuning regime). RT-PluRel, a <b>system</b> submission that is fine-tuned per task, is first overall. <a href="#relarena">[relarena-4]</a></li>
+        <li>"the top method on relarena is tabpfn-rel" - <mark class="wrong">corrected</mark>. tabpfn-rel is first among <b>model</b> submissions (same tuning regime). RT-PluRel, a <b>system</b> submission that is fine-tuned per task, is first overall. <a href="#relarena">[relarena-4]</a> update: this is the paper (august). in the repo today a newer tabpfn-rel is first overall <a href="#stage2">[s2-6]</a>.</li>
         <li>"tabpfn-rel = DFS + stock tabpfn-3, builds on rdblearn, which builds on featuretools" - <mark>verified</mark> <a href="#tabpfnrel">[tabpfnrel-1]</a>. plus 4 additions that are not stock <a href="#tabpfnrel">[tabpfnrel-3]</a>.</li>
         <li>"flattening needs hours of CPU preprocessing" - <mark>verified</mark> <a href="#relarena">[relarena-6]</a></li>
         <li>"feature explosion, cannot see feature interactions (relicl)" - <mark>verified</mark> <a href="#relicl">[relicl-1]</a></li>
