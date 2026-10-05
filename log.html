@@ -175,6 +175,29 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
     <p>claude's proposals, not facts. ranked: my recommendation first. bora picks or rejects. rt-j is read from its project page only <a href="#rtj">[rtj-6]</a>.</p>
 
     <ul>
+        <li><b>[dir-update] ranking after the night of 5 to 6 oct</b> (claude's proposal; what changed and why) <mark class="unverified">proposal</mark>
+            <ul>
+                <li><b>one thesis, three steps, in place of five separate directions:</b> "does a prior that matches flattened relational forecasting tasks help a tabular in-context model, and what in the prior matters ?"
+                    <ul>
+                        <li>step 1 = dir-1, the controlled study at nano scale. status: the first experiment is done. the released rdb-pfn runs inside relarena as <code>fm4sd-rdbpfn</code> and the harness, cache and cluster scripts work <a href="#stage4">[s4-7]</a>. so the remaining work is training runs, not plumbing.</li>
+                        <li>step 2 = dir-2, the forecasting-task prior. status: now concrete. event side: per-entity rate + dropout models and hawkes priors <a href="#research">[c3-2] [c3-3]</a>. label side: the window-functional vocabulary of THE JOIN <a href="#thejoin">[join-6]</a>. target statistics to hit: <a href="#stage3">[s3-2]</a>. a score for the prior that needs no training: cardinality shape and C2ST-Agg <a href="#research">[c1-6]</a>.</li>
+                        <li>step 3 = dir-5, the real-data arm. status: realistic. THE JOIN is public, 30 GB, 204 databases with forecasting tasks <a href="#thejoin">[join-8]</a>. it is the control for step 2: synthetic forecasting prior vs real flattened tasks, same model.</li>
+                        <li>scale-up if time allows: repeat the best setting on tabicl v2, which is open with pretraining code <a href="#research">[c4b-1]</a>.</li>
+                    </ul>
+                </li>
+                <li><b>dir-0 (boosted trees on DFS) is done as a method:</b> <code>fm4sd-dfs-lightgbm</code> runs on the benchmark <a href="#cmp">[s4-6]</a>. it beats tabpfn-rel on 4 of 12 tasks so far <a href="#stage4">[s4-8]</a>. open: offer it to prior labs as the missing baseline (your decision; it is a pull request to their repo).</li>
+                <li><b>dir-3 (cheaper flattening) goes down.</b> the september tabpfn-rel no longer tunes depth; it uses a fixed depth 4 <a href="#repos">[repo-tabpfnrel-1]</a>. prior labs is already working on that side.</li>
+                <li><b>dir-4 (learned flattening) goes further down.</b> xu and wipf claim proven limits for trainable relational encoders when labels are inputs <a href="#research">[c4-1]</a>; openrfm and rt-j already occupy that space with much more compute <a href="#rtj">[rtj-3]</a>.</li>
+                <li><b>new risks</b>
+                    <ul>
+                        <li>tabpfn-3.5 already targets temporal and grouped rows, strings and wide tables <a href="#research">[c4b-2]</a>. a relational prior for flat tables must show a gain that a general prior of that kind does not give. the control "same model, with and without the relational prior" answers this.</li>
+                        <li>the released rdb-pfn generator does not match the paper (no bidirectional GNN) <a href="#priorvsreal">[pvr-2]</a>, and rdb-pfn is far below tabpfn-rel on some tasks (study-outcome −0.12) <a href="#stage4">[s4-8]</a>. so "the rdb-pfn prior" is a weak baseline to improve on, which is good for a thesis and bad as a starting model.</li>
+                        <li>results so far are one seed. any claim needs at least 3 seeds; relarena itself reports one <a href="#relarena">[relarena-7]</a>.</li>
+                    </ul>
+                </li>
+                <li><b>what to tell alex on monday</b> (suggestion): the question in the first line; the evidence from tonight (the gap table <a href="#priorvsreal">[pvr-1]</a>, the comparison <a href="#cmp">[s4-6]</a>); the three steps; and ask him which step he sees as the thesis and which as groundwork.</li>
+            </ul>
+        </li>
         <li><b>[dir-1] controlled study of relational priors at nano scale.</b> <mark class="unverified">proposal</mark>
             <ul>
                 <li>what: rebuild the rdb-pfn recipe in modded-nanotabpfn. vary one thing at a time: generator (single-table / plurel / rdb-pfn), DFS setting, amount of data.</li>
