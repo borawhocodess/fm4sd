@@ -130,6 +130,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <a class="n-h3" href="#plurel">plurel</a>
 <a class="n-h3" href="#p2r">plurel-to-rdb-pfn</a>
 <a class="n-h3" href="#rt">rt</a>
+<a class="n-h3" href="#rtj">rt-j</a>
 <a class="n-h3" href="#openrfm">openrfm</a>
 <a class="n-h3" href="#rdbbench">rdbbench</a>
 <a class="n-h3" href="#kumo">kumorfm-2</a>
@@ -143,7 +144,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
     <ul>
         <li><mark class="open">open</mark> part 5 of the talk: no idea yet (bora, 5 oct). finding one is the goal of this work. next: candidate directions are listed: <a href="#directions">candidate directions</a>. pick, reject or change.</li>
         <li>done: <code>rdl</code> (fey et al. 2023, arxiv 2312.04615) is in the README relational list. pdf + tex in <code>papers/rdl/</code>.</li>
-        <li><mark class="open">open</mark> rt-j is missing from the README and from the reading list <a href="#repos">[repo-rt-1]</a>. add it and read it before you pick a direction ?</li>
+        <li>done: <code>rt-j</code> is in the README. read from the project page; the pdf must be downloaded by hand from openreview (id oQINTd9din).</li>
         <li><mark class="open">open</mark> formal definition: i took the notation of fey et al. 2023 (the rdl-survey copies it word for word). ok ? see <a href="#formal">formal definition</a>.</li>
     </ul>
 
@@ -157,12 +158,12 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li>repos read in part: relarena (your fork: tabpfn_rel model, features, context, dfs module headers), rdblearn (defaults), RDBPFN (training config, model config, READMEs)</li>
         <li>repos at README / config level only: fastdfs (defaults read), relicl, relbench, relational-transformer</li>
         <li>not checked: rdbbench and kumorfm-2 result tables; plurel appendix C</li>
-        <li>not read: rt-j (found today, not in the README) <a href="#repos">[repo-rt-1]</a></li>
+        <li>rt-j: project page only, paper pdf not read <a href="#rtj">[rtj-1]</a></li>
     </ul>
 
         <h2 id="directions">Candidate directions</h2>
 
-    <p>claude's proposals, not facts. ranked: my recommendation first. bora picks or rejects. rt-j is not read yet and can change this list.</p>
+    <p>claude's proposals, not facts. ranked: my recommendation first. bora picks or rejects. rt-j is read from its project page only <a href="#rtj">[rtj-6]</a>.</p>
 
     <ul>
         <li><b>[dir-1] controlled study of relational priors at nano scale.</b> <mark class="unverified">proposal</mark>
@@ -201,6 +202,14 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>new: removes interaction blindness with training; relicl does it without training <a href="#relicl">[relicl-2]</a>.</li>
                 <li>risk: openrfm already joins RT blocks with a tabicl layer <a href="#openrfm">[openrfm-2]</a>. highest engineering cost.</li>
                 <li>fit for march 2027: poor.</li>
+            </ul>
+        </li>
+        <li><b>[dir-5] a tabular model trained on real flattened relational tables.</b> <mark class="unverified">proposal</mark>
+            <ul>
+                <li>what: run DFS on the 639 databases of THE JOIN <a href="#rtj">[rtj-2]</a> and continue the pretraining of a small PFN on these flat tables. compare with the synthetic priors of dir-1.</li>
+                <li>new: rdb-pfn says real relational data is too scarce for this <a href="#rdbpfn">[rdbpfn-1]</a>. THE JOIN removes that reason. the question "synthetic relational prior vs real flattened data" is then testable.</li>
+                <li>risk: the corpus is new; download size, licences and DFS cost on 639 databases are unknown. <mark class="unverified">unverified</mark>: nobody did this is my guess from 14 papers.</li>
+                <li>fit for march 2027: ok as one arm of dir-1, not alone.</li>
             </ul>
         </li>
         <li><b>[dir-0] warm-up, not a thesis: boosted trees on DFS features in relarena.</b> <mark class="unverified">proposal</mark>
@@ -544,6 +553,26 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li>i did not read results, analysis, appendix.</li>
     </ul>
 
+    <h3 id="rtj">rt-j (ranjan et al. 2026, openreview oQINTd9din) - project page only</h3>
+
+    <p>source: <code>https://star-project.stanford.edu/rt-j</code>, read 5 oct 2026. the pdf on openreview did not download by script (it returned a web page). every line here is from the project page, not from the paper.</p>
+
+    <ul>
+        <li><b>[rtj-1] what it is.</b> the RT architecture with a new training recipe for few-shot prediction. 85M parameters, 12 layers, hidden 512, 8 heads. one model for classification and regression. <mark class="unverified">unverified</mark> (page only)</li>
+        <li><b>[rtj-2] THE JOIN.</b> an open corpus of 639 real databases with about 6,000 forecasting tasks and 10,600 autocompletion tasks. databases that overlap with relbench are left out. tasks are proposed by a language model, checked against the schema, then filtered by a gradient-boosted model. on hugging face: <code>stanford-star/the-join</code>. <mark class="unverified">unverified</mark> (page only)</li>
+        <li><b>[rtj-3] training.</b> two phases: first the synthetic plurel corpus, then THE JOIN. each under a day on up to 8 B200 GPUs. released checkpoint = weight average after 9k steps of the second phase. <mark class="unverified">unverified</mark> (page only)</li>
+        <li><b>[rtj-4] recipe.</b> context length is sampled during training (up to 8,192 cells); only the target cell is masked (denser masking hurt); context rows come from short random walks from the target row. <mark class="unverified">unverified</mark> (page only)</li>
+        <li><b>[rtj-5] results on relbench, 21 tasks.</b> regression: 6 to 13 % lower relative nMAE than every label-matched in-context baseline. tuned and ensembled: 32.4 mean nMAE with a few hundred examples, vs rdblearn 31.4 with 10,000 labels, vs kumorfm-2 29.1. classification: ahead by up to 3 AUROC points when labels are scarce; the best baseline catches up at the largest budget. <mark class="unverified">unverified</mark> (page only)</li>
+        <li><b>[rtj-6] what it means for the directions</b> (my reading)
+            <ul>
+                <li>the strongest open relational FM now uses synthetic data only as a first phase and real data as the second. this agrees with openrfm <a href="#openrfm">[openrfm-2]</a>.</li>
+                <li>real forecasting tasks at scale now exist (THE JOIN). so "no forecasting tasks in pretraining" is true for the synthetic priors only <a href="#directions">[dir-2]</a>.</li>
+                <li>THE JOIN is a resource for you: 639 real schemas for the data statistics of stage 3, and real DFS-flattened tables to train or test a tabular model on.</li>
+                <li>rt-j targets few labels. with many labels the flattening methods are still level or ahead on classification, by their own account.</li>
+            </ul>
+        </li>
+    </ul>
+
     <h3 id="openrfm">openrfm (chen et al. 2026, arxiv 2606.04320) - abstract, intro, start of method</h3>
 
     <ul>
@@ -627,7 +656,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li><b>[repo-rdbpfn-4]</b> the single-table prior is "adapted from the tabicl project with slight modifications". (<code>RDBPFN:data_generation/README.md</code>)</li>
         <li><b>[repo-rdbpfn-5]</b> inference: <code>fit()</code> keeps at most 1024 training rows as context; more rows only by an ensemble of 1024-row contexts; an optional cutoff-time column exists (<code>time_column</code>). (<code>RDBPFN:inference/README.md:121, 193-200</code>). text columns: <mark class="unverified">unverified</mark>, not found yet.</li>
         <li><b>[repo-fastdfs-1]</b> fastdfs 0.2.1 defaults: agg_primitives max, min, mean, std, count, mode; max_depth 2; use_cutoff_time true; max_features -1 (no limit). (<code>fastdfs-0.2.1/src/fastdfs/dfs/base_engine.py:94-106</code>). so tabpfn-rel uses the same 6 aggregations as rdblearn. this closes the open point in <a href="#tabpfnrel">[tabpfnrel-3]</a>.</li>
-        <li><b>[repo-rt-1] a paper that is not in the README: RT-J.</b> "Large-Scale Pretraining of Relational Transformers for Context-Efficient Predictions", NeurIPS 2026, per the RT repo README. the README calls it the #1 in-context model on the relbench leaderboard. relarena cites it as rt-j. (<code>relational-transformer:README.md</code>, clone 93a8ccf, 2026-10-04). <mark class="unverified">unverified</mark>: not read. it must be read before a direction is chosen.</li>
+        <li><b>[repo-rt-1]</b> the RT repo README names a newer paper, RT-J (NeurIPS 2026 per the README), as the #1 in-context model on the relbench leaderboard. now in the README of this repo; see <a href="#rtj">rt-j</a>. (<code>relational-transformer:README.md</code>, clone 93a8ccf, 2026-10-04)</li>
         <li><b>[repo-rt-2]</b> the RT repo ships pip package <code>relational-transformer</code>, checkpoints and preprocessed databases on hugging face (stanford-star), and recipes for in-context prediction and per-task fine-tuning. (same README)</li>
         <li><b>[repo-relbench-1]</b> relbench package version 3.0.2 (<code>relbench:pyproject.toml:7</code>, clone bbe3b52, 2026-10-05). relarena says results depend on the package version <a href="#relarena">[relarena-2]</a>. pin it in stage 2.</li>
         <li><b>[repo-relicl-1]</b> relicl needs ubuntu 22.04+, python 3.12, a CUDA GPU, poetry. run: <code>poetry run relicl run relbench.db=… relbench.task=…</code>. results are in a second repo, uma-pi1/relicl-results. (<code>relicl:README.md</code>, clone 2e04c1d, 2026-10-02)</li>

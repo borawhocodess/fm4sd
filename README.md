@@ -69,6 +69,7 @@ rm <id>.tar.gz
   - rdbbench — [arxiv](https://arxiv.org/abs/2607.03659) · [github](https://github.com/mdsamad001/Benchmarking-Deep-Relational-Database-Models) — [akhter et al. 2026]
   - rdl-survey — [arxiv](https://arxiv.org/abs/2506.16654) · [kdd](https://doi.org/10.1145/3711896.3736558) — [dwivedi et al. 2025]
   - rt — [arxiv](https://arxiv.org/abs/2510.06377) · [iclr](https://iclr.cc/virtual/2026/poster/10007116) · [github](https://github.com/snap-stanford/relational-transformer) — [ranjan et al. 2026]
+  - rt-j — [openreview](https://openreview.net/forum?id=oQINTd9din) · [site](https://star-project.stanford.edu/rt-j) · [github](https://github.com/stanford-star/relational-transformer) — [ranjan et al. 2026]
   - kumorfm — [pdf](https://kumo.ai/research/kumo_relational_foundation_model.pdf) — [fey et al. 2025]
   - kumorfm-2 — [arxiv](https://arxiv.org/abs/2604.12596) · [github](https://github.com/kumo-ai/kumo-rfm) — [hudovernik et al. 2026]
   - openrfm — [arxiv](https://arxiv.org/abs/2606.04320) — [chen et al. 2026]
