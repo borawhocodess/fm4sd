@@ -1,0 +1,359 @@
+{
+ "dataset": "rel-amazon",
+ "val_timestamp": "2015-10-01 00:00:00",
+ "test_timestamp": "2016-01-01 00:00:00",
+ "db_time_min": "2008-01-01 00:00:00",
+ "db_time_max": "2016-01-01 00:00:00",
+ "num_tables": 3,
+ "total_rows": 15000713,
+ "total_columns": 15,
+ "tables": {
+  "review": {
+   "rows": 12644508,
+   "columns": 7,
+   "pkey": null,
+   "time_col": "review_time",
+   "fkeys": {
+    "customer_id": "customer",
+    "product_id": "product"
+   },
+   "feature_kinds": {
+    "numeric": 1,
+    "bool": 1,
+    "text": 2
+   },
+   "null_fraction": 0.0,
+   "time_min": "2008-01-01 00:00:00",
+   "time_max": "2016-01-01 00:00:00",
+   "links": {
+    "customer_id": {
+     "parent": "customer",
+     "null_fraction": 0.0,
+     "parents_with_children": 1584084,
+     "parent_rows": 1850193,
+     "parents_without_children_fraction": 0.1438,
+     "children_per_parent": {
+      "mean": 7.9822,
+      "median": 5.0,
+      "p90": 14.0,
+      "p99": 64.0,
+      "max": 4655.0
+     }
+    },
+    "product_id": {
+     "parent": "product",
+     "null_fraction": 0.0,
+     "parents_with_children": 416125,
+     "parent_rows": 506012,
+     "parents_without_children_fraction": 0.1776,
+     "children_per_parent": {
+      "mean": 30.3863,
+      "median": 9.0,
+      "p90": 57.0,
+      "p99": 346.0,
+      "max": 20977.0
+     }
+    }
+   }
+  },
+  "product": {
+   "rows": 506012,
+   "columns": 6,
+   "pkey": "product_id",
+   "time_col": null,
+   "fkeys": {},
+   "feature_kinds": {
+    "text": 4,
+    "numeric": 1
+   },
+   "null_fraction": 0.0182,
+   "links": {}
+  },
+  "customer": {
+   "rows": 1850193,
+   "columns": 2,
+   "pkey": "customer_id",
+   "time_col": null,
+   "fkeys": {},
+   "feature_kinds": {
+    "text": 1
+   },
+   "null_fraction": 0.0,
+   "links": {}
+  }
+ },
+ "tasks": {
+  "user-churn": {
+   "type": "BINARY_CLASSIFICATION",
+   "entity_table": "customer",
+   "entity_col": "customer_id",
+   "time_col": "timestamp",
+   "target_col": "churn",
+   "timedelta": "91 days 00:00:00",
+   "num_eval_timestamps": 1,
+   "splits": {
+    "train": {
+     "rows": 4708383,
+     "unique_entities": 1486748,
+     "seed_times": 31,
+     "seed_time_min": "2008-01-10 00:00:00",
+     "seed_time_max": "2015-07-02 00:00:00",
+     "rows_per_entity": {
+      "mean": 3.1669,
+      "median": 3.0,
+      "p90": 6.0,
+      "p99": 13.0,
+      "max": 31.0
+     },
+     "positive_rate": 0.624
+    },
+    "val": {
+     "rows": 409792,
+     "unique_entities": 409792,
+     "seed_times": 1,
+     "seed_time_min": "2015-10-01 00:00:00",
+     "seed_time_max": "2015-10-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.642
+    },
+    "test": {
+     "rows": 351885,
+     "unique_entities": 351885,
+     "seed_times": 1,
+     "seed_time_min": "2016-01-01 00:00:00",
+     "seed_time_max": "2016-01-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.6064
+    }
+   }
+  },
+  "item-churn": {
+   "type": "BINARY_CLASSIFICATION",
+   "entity_table": "product",
+   "entity_col": "product_id",
+   "time_col": "timestamp",
+   "target_col": "churn",
+   "timedelta": "91 days 00:00:00",
+   "num_eval_timestamps": 1,
+   "splits": {
+    "train": {
+     "rows": 2536014,
+     "unique_entities": 393155,
+     "seed_times": 31,
+     "seed_time_min": "2008-01-10 00:00:00",
+     "seed_time_max": "2015-07-02 00:00:00",
+     "rows_per_entity": {
+      "mean": 6.4504,
+      "median": 5.0,
+      "p90": 13.0,
+      "p99": 25.0,
+      "max": 31.0
+     },
+     "positive_rate": 0.4335
+    },
+    "val": {
+     "rows": 177689,
+     "unique_entities": 177689,
+     "seed_times": 1,
+     "seed_time_min": "2015-10-01 00:00:00",
+     "seed_time_max": "2015-10-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.4122
+    },
+    "test": {
+     "rows": 166842,
+     "unique_entities": 166842,
+     "seed_times": 1,
+     "seed_time_min": "2016-01-01 00:00:00",
+     "seed_time_max": "2016-01-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.3695
+    }
+   }
+  },
+  "user-ltv": {
+   "type": "REGRESSION",
+   "entity_table": "customer",
+   "entity_col": "customer_id",
+   "time_col": "timestamp",
+   "target_col": "ltv",
+   "timedelta": "91 days 00:00:00",
+   "num_eval_timestamps": 1,
+   "splits": {
+    "train": {
+     "rows": 4708383,
+     "unique_entities": 1486748,
+     "seed_times": 31,
+     "seed_time_min": "2008-01-10 00:00:00",
+     "seed_time_max": "2015-07-02 00:00:00",
+     "rows_per_entity": {
+      "mean": 3.1669,
+      "median": 3.0,
+      "p90": 6.0,
+      "p99": 13.0,
+      "max": 31.0
+     },
+     "target": {
+      "mean": 16.9659,
+      "median": 0.0,
+      "p90": 43.93,
+      "p99": 212.03179999999702,
+      "max": 9511.460000000001
+     },
+     "target_std": 57.5052,
+     "target_zero_fraction": 0.624
+    },
+    "val": {
+     "rows": 409792,
+     "unique_entities": 409792,
+     "seed_times": 1,
+     "seed_time_min": "2015-10-01 00:00:00",
+     "seed_time_max": "2015-10-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target": {
+      "mean": 14.1407,
+      "median": 0.0,
+      "p90": 36.9,
+      "p99": 180.13179999999934,
+      "max": 7259.909999999982
+     },
+     "target_std": 48.9237,
+     "target_zero_fraction": 0.642
+    },
+    "test": {
+     "rows": 351885,
+     "unique_entities": 351885,
+     "seed_times": 1,
+     "seed_time_min": "2016-01-01 00:00:00",
+     "seed_time_max": "2016-01-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target": {
+      "mean": 16.783,
+      "median": 0.0,
+      "p90": 42.33,
+      "p99": 214.30799999999874,
+      "max": 10329.859999999986
+     },
+     "target_std": 55.4422,
+     "target_zero_fraction": 0.6064
+    }
+   }
+  },
+  "item-ltv": {
+   "type": "REGRESSION",
+   "entity_table": "product",
+   "entity_col": "product_id",
+   "time_col": "timestamp",
+   "target_col": "ltv",
+   "timedelta": "91 days 00:00:00",
+   "num_eval_timestamps": 1,
+   "splits": {
+    "train": {
+     "rows": 2707679,
+     "unique_entities": 404525,
+     "seed_times": 31,
+     "seed_time_min": "2008-01-10 00:00:00",
+     "seed_time_max": "2015-07-02 00:00:00",
+     "rows_per_entity": {
+      "mean": 6.6935,
+      "median": 5.0,
+      "p90": 14.0,
+      "p99": 26.0,
+      "max": 31.0
+     },
+     "target": {
+      "mean": 67.5719,
+      "median": 20.78,
+      "p90": 107.03,
+      "p99": 719.2800000000001,
+      "max": 198419.80000000008
+     },
+     "target_std": 590.9188,
+     "target_zero_fraction": 0.0001
+    },
+    "val": {
+     "rows": 166978,
+     "unique_entities": 166978,
+     "seed_times": 1,
+     "seed_time_min": "2015-10-01 00:00:00",
+     "seed_time_max": "2015-10-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target": {
+      "mean": 72.0964,
+      "median": 22.44,
+      "p90": 119.25,
+      "p99": 784.8276000000001,
+      "max": 75901.55
+     },
+     "target_std": 452.0176,
+     "target_zero_fraction": 0.0
+    },
+    "test": {
+     "rows": 178334,
+     "unique_entities": 178334,
+     "seed_times": 1,
+     "seed_time_min": "2016-01-01 00:00:00",
+     "seed_time_max": "2016-01-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target": {
+      "mean": 77.1256,
+      "median": 23.72,
+      "p90": 125.0,
+      "p99": 869.4200000000004,
+      "max": 206663.5800000016
+     },
+     "target_std": 664.6141,
+     "target_zero_fraction": 0.0
+    }
+   }
+  }
+ }
+}

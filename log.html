@@ -156,7 +156,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
     <ul>
         <li>stage 1 (reading + log + talk draft + candidate directions) - done, with the gaps listed below</li>
         <li>stage 2 (setup) - done: install works; lightgbm reproduced exactly on rel-f1; tabpfn-rel reproduced within 0.011 AUC on rel-f1/driver-top3</li>
-        <li>stage 3 (data) - 5 of 7 databases in the log <a href="#stage3">[s3-1]</a>; rel-amazon and rel-event still downloading</li>
+        <li>stage 3 (data) - done: all 7 databases and 21 tasks <a href="#stage3">[s3-1]</a></li>
         <li>stage 4 (dev setup) - package, scripts and a first own method done on the mac; capella script not run; no kislurm script</li>
         <li>read fully: rdb-pfn, relbench, rdl-survey, relarena-alpha, rdblearn, relicl, plurel (main text + appendix A, B; not the extra experiments in appendix C), rdl §2</li>
         <li>abstract + intro + results: plurel-to-rdb-pfn, rt (abstract, contribution, method), openrfm (abstract, intro, start of method), rdbbench (abstract, protocol, results text, conclusion)</li>
@@ -230,36 +230,38 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 
     <h3 id="stage3">stage 3: what the benchmark data looks like</h3>
 
-    <p><mark class="open">partial</mark> 5 of 7 databases: rel-avito, rel-f1, rel-hm, rel-stack, rel-trial. rel-amazon (6.4 GB download) and rel-event are still running. computed by <code>scripts/relbench_stats.py</code> → <code>stats/*.json</code>; tables by <code>scripts/stats_summary.py</code>. relbench 2.1.2 (the version relarena pins). column kinds are my heuristic on pandas dtypes: text = strings with mean length over 30 or mostly unique values.</p>
+    <p>all 7 relbench v1 databases and the 21 entity tasks. computed by <code>scripts/relbench_stats.py</code> → <code>stats/*.json</code>; tables by <code>scripts/stats_summary.py</code>. relbench 2.1.2 (the version relarena pins). column kinds are my heuristic on pandas dtypes: text = strings with mean length over 30 or mostly unique values. the local relbench cache is 18 GB.</p>
 
     <ul>
-        <li><b>[s3-1] what a prior must match</b> (my summary of the tables below; 5 databases, 42 tables, 52 key links, 14 tasks)
+        <li><b>[s3-1] what a prior must match</b> (my summary of the tables below; 7 databases, 50 tables, 61 key links, 21 tasks)
             <ul>
-                <li>table size is very uneven: 68 to 15,187,287 rows, median about 250,000. plurel draws 500 to 5,000 rows per table <a href="#plurel">[plurel-6]</a>.</li>
-                <li>tables are narrow: median 6.5 columns, max 29.</li>
-                <li>key links per table: 0 (14 tables), 1 (7), 2 (18), 3 (3). so most fact tables join exactly two entity tables.</li>
-                <li>fan-out is heavy-tailed: over the 52 links, the median of "mean children per parent" is 11.7, the median of "max children per parent" is 417, the largest is 929,887. mean / median of children is about 2.1 on a typical link.</li>
-                <li>many parents have no child: median 36 % of parent rows; on 19 of 52 links more than half.</li>
-                <li>feature columns: 82 numeric, 83 categorical, 51 text, 1 datetime, 1 bool. so about one quarter is text. rdb-pfn and plurel have no text <a href="#plurel">[plurel-5]</a>.</li>
-                <li>13 of 42 tables have no time column (the entity / dimension tables).</li>
-                <li>missing values: median null fraction per table 0.0005, max 0.51.</li>
+                <li>table size is very uneven: 68 to 30,386,403 rows, median about 250,000. plurel draws 500 to 5,000 rows per table <a href="#plurel">[plurel-6]</a>.</li>
+                <li>tables are narrow: median 6 columns. one outlier with 110 columns (rel-event).</li>
+                <li>key links per table: 0 (17 tables), 1 (8), 2 (22), 3 (3). so most fact tables join exactly two other tables.</li>
+                <li>fan-out is heavy-tailed: over the 61 links, the median of "mean children per parent" is 8.1, the median of "max children per parent" is 442, the largest is 929,887. mean / median of children is about 2.1 on a typical link.</li>
+                <li>many parents have no child: median 40 % of parent rows; on 24 of 61 links more than half.</li>
+                <li>feature columns: 194 numeric, 90 categorical, 59 text, 2 bool, 1 datetime. so about 17 % is text. rdb-pfn and plurel have no text <a href="#plurel">[plurel-5]</a>.</li>
+                <li>16 of 50 tables have no time column (the entity / dimension tables).</li>
+                <li>missing values: median null fraction per table 0.002, max 0.51.</li>
                 <li>one self-link: rel-stack posts.ParentId → posts. the published priors cannot make this <a href="#plurel">[plurel-5]</a>.</li>
             </ul>
         </li>
         <li><b>[s3-2] what the tasks look like</b>
             <ul>
-                <li>label balance is extreme in both directions: positive rate 0.039 (avito user-clicks), 0.048 (stack user-badge), 0.05 (stack user-engagement), 0.17 (f1 driver-top3), 0.64 (trial study-outcome), 0.82 (hm user-churn), 0.88 (f1 driver-dnf), 0.91 (avito user-visits).</li>
-                <li>regression targets are zero-inflated: 94 % zeros in stack post-votes, 81 % in hm item-sales, 51 % in trial site-success, 41 % in trial study-adverse.</li>
-                <li>the same entity repeats over seed times in most tasks: median rows per entity in train is 52 (hm item-sales), 15 (stack tasks), 9 (f1 driver-top3); it is 1 in rel-trial and avito.</li>
-                <li>number of seed times in train: 3 (avito), 19 (trial), 40 to 52 (stack, hm), 59 to 420 (f1). val and test have 1 seed time each, except rel-f1 with 23 to 33.</li>
-                <li>window length: 4 days (avito), 7 days (hm), 30 or 60 days (f1), 91 days (stack), 365 days (trial).</li>
-                <li>avito user-visits: positive rate 0.906 train, 0.851 test; user-clicks 0.039 train, 0.015 test. so the label rate shifts between train and test.</li>
+                <li>label balance is extreme in both directions. train positive rate: 0.039 (avito user-clicks), 0.048 (stack user-badge), 0.05 (stack user-engagement), 0.17 (event user-ignore, f1 driver-top3), 0.43 (amazon item-churn), 0.49 (event user-repeat), 0.62 (amazon user-churn), 0.64 (trial study-outcome), 0.82 (hm user-churn), 0.88 (f1 driver-dnf), 0.91 (avito user-visits).</li>
+                <li>regression targets are zero-inflated: 94 % zeros in stack post-votes, 81 % in hm item-sales, 72 % in event user-attendance, 62 % in amazon user-ltv, 51 % in trial site-success, 41 % in trial study-adverse.</li>
+                <li>the same entity repeats over seed times in most tasks: median rows per entity in train is 52 (hm item-sales), 15 (stack tasks), 9 (f1 driver-top3), 3 to 5 (amazon); it is 1 in rel-trial, avito and most of rel-event.</li>
+                <li>number of seed times in train: 3 (avito), 19 to 22 (trial, event), 31 (amazon), 40 to 52 (stack, hm), 59 to 420 (f1). val and test have 1 seed time each, except rel-f1 with 23 to 33.</li>
+                <li>window length: 4 days (avito), 7 days (hm, event), 30 or 60 days (f1), 91 days (stack, amazon), 365 days (trial).</li>
+                <li>the label rate shifts between train and test: avito user-clicks 0.039 → 0.015; avito user-visits 0.906 → 0.851; amazon item-churn 0.434 → 0.370; event user-ignore 0.169 → 0.130.</li>
             </ul>
         </li>
         <li><b>[s3-3] databases</b>
 <div class="tw"><table>
 <tr><th>database</th><th>tables</th><th>with time col</th><th>key links</th><th>rows</th><th>numeric</th><th>categorical</th><th>text</th><th>datetime</th><th>bool</th><th>first row</th><th>val cutoff</th><th>test cutoff</th></tr>
+<tr><td>rel-amazon</td><td>3</td><td>1</td><td>2</td><td>15,000,713</td><td>2</td><td>0</td><td>7</td><td>0</td><td>1</td><td>2008-01-01</td><td>2015-10-01</td><td>2016-01-01</td></tr>
 <tr><td>rel-avito</td><td>8</td><td>4</td><td>11</td><td>20,679,117</td><td>20</td><td>1</td><td>1</td><td>0</td><td>0</td><td>2015-04-25</td><td>2015-05-08</td><td>2015-05-14</td></tr>
+<tr><td>rel-event</td><td>5</td><td>4</td><td>7</td><td>41,328,337</td><td>110</td><td>7</td><td>1</td><td>0</td><td>0</td><td>1912-01-01</td><td>2012-11-21</td><td>2012-11-29</td></tr>
 <tr><td>rel-f1</td><td>9</td><td>6</td><td>13</td><td>74,063</td><td>24</td><td>6</td><td>8</td><td>1</td><td>0</td><td>1950-05-13</td><td>2005-01-01</td><td>2010-01-01</td></tr>
 <tr><td>rel-hm</td><td>3</td><td>1</td><td>2</td><td>16,664,809</td><td>15</td><td>14</td><td>3</td><td>0</td><td>0</td><td>2019-09-07</td><td>2020-09-07</td><td>2020-09-14</td></tr>
 <tr><td>rel-stack</td><td>7</td><td>7</td><td>11</td><td>4,247,264</td><td>7</td><td>7</td><td>11</td><td>0</td><td>1</td><td>2009-02-02</td><td>2020-10-01</td><td>2021-01-01</td></tr>
@@ -269,9 +271,16 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li><b>[s3-4] tasks</b>
 <div class="tw"><table>
 <tr><th>database</th><th>task</th><th>type</th><th>entity table</th><th>window</th><th>rows train / val / test</th><th>train entities</th><th>seed times train / val / test</th><th>median rows per entity (train)</th><th>label (train / val / test, or train)</th></tr>
+<tr><td>rel-amazon</td><td>user-churn</td><td>cls</td><td>customer</td><td>91 days</td><td>4,708,383 / 409,792 / 351,885</td><td>1,486,748</td><td>31 / 1 / 1</td><td>3</td><td>positive rate 0.624 / 0.642 / 0.6064</td></tr>
+<tr><td>rel-amazon</td><td>item-churn</td><td>cls</td><td>product</td><td>91 days</td><td>2,536,014 / 177,689 / 166,842</td><td>393,155</td><td>31 / 1 / 1</td><td>5</td><td>positive rate 0.4335 / 0.4122 / 0.3695</td></tr>
+<tr><td>rel-amazon</td><td>user-ltv</td><td>reg</td><td>customer</td><td>91 days</td><td>4,708,383 / 409,792 / 351,885</td><td>1,486,748</td><td>31 / 1 / 1</td><td>3</td><td>mean 17, median 0, p99 212, zero 0.624</td></tr>
+<tr><td>rel-amazon</td><td>item-ltv</td><td>reg</td><td>product</td><td>91 days</td><td>2,707,679 / 166,978 / 178,334</td><td>404,525</td><td>31 / 1 / 1</td><td>5</td><td>mean 67.6, median 20.8, p99 719, zero 0.0001</td></tr>
 <tr><td>rel-avito</td><td>user-visits</td><td>cls</td><td>UserInfo</td><td>4 days</td><td>86,619 / 29,979 / 36,129</td><td>44,968</td><td>3 / 1 / 1</td><td>2</td><td>positive rate 0.9059 / 0.9035 / 0.8506</td></tr>
 <tr><td>rel-avito</td><td>user-clicks</td><td>cls</td><td>UserInfo</td><td>4 days</td><td>59,454 / 21,183 / 47,996</td><td>34,575</td><td>3 / 1 / 1</td><td>1</td><td>positive rate 0.0387 / 0.0352 / 0.0154</td></tr>
 <tr><td>rel-avito</td><td>ad-ctr</td><td>reg</td><td>AdsInfo</td><td>4 days</td><td>5,100 / 1,766 / 1,816</td><td>3,528</td><td>3 / 1 / 1</td><td>1</td><td>mean 0.0446, median 0.0179, p99 0.5, zero 0.0</td></tr>
+<tr><td>rel-event</td><td>user-attendance</td><td>reg</td><td>users</td><td>7 days</td><td>19,239 / 2,013 / 1,958</td><td>8,517</td><td>22 / 1 / 1</td><td>1</td><td>mean 0.363, median 0, p99 3, zero 0.7237</td></tr>
+<tr><td>rel-event</td><td>user-repeat</td><td>cls</td><td>users</td><td>7 days</td><td>3,842 / 268 / 246</td><td>1,388</td><td>19 / 1 / 1</td><td>2</td><td>positive rate 0.4898 / 0.4851 / 0.4472</td></tr>
+<tr><td>rel-event</td><td>user-ignore</td><td>cls</td><td>users</td><td>7 days</td><td>19,239 / 2,013 / 1,958</td><td>8,517</td><td>22 / 1 / 1</td><td>1</td><td>positive rate 0.1688 / 0.1108 / 0.1302</td></tr>
 <tr><td>rel-f1</td><td>driver-dnf</td><td>cls</td><td>drivers</td><td>30 days</td><td>11,411 / 566 / 702</td><td>780</td><td>420 / 26 / 29</td><td>5</td><td>positive rate 0.8804 / 0.7792 / 0.7051</td></tr>
 <tr><td>rel-f1</td><td>driver-top3</td><td>cls</td><td>drivers</td><td>30 days</td><td>1,353 / 588 / 726</td><td>92</td><td>59 / 27 / 30</td><td>9</td><td>positive rate 0.1707 / 0.2024 / 0.1763</td></tr>
 <tr><td>rel-f1</td><td>driver-position</td><td>reg</td><td>drivers</td><td>60 days</td><td>7,453 / 499 / 760</td><td>771</td><td>254 / 23 / 33</td><td>4</td><td>mean 13.9, median 13.3, p99 33, zero 0.0</td></tr>
@@ -288,6 +297,9 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li><b>[s3-5] tables</b>
 <div class="tw"><table>
 <tr><th>database</th><th>table</th><th>rows</th><th>cols</th><th>feature columns</th><th>time col</th><th>foreign keys</th><th>null fraction</th></tr>
+<tr><td>rel-amazon</td><td>review</td><td>12,644,508</td><td>7</td><td>1 bool, 1 numeric, 2 text</td><td>review_time</td><td>customer_id → customer, product_id → product</td><td>0.0</td></tr>
+<tr><td>rel-amazon</td><td>product</td><td>506,012</td><td>6</td><td>1 numeric, 4 text</td><td>-</td><td>-</td><td>0.0182</td></tr>
+<tr><td>rel-amazon</td><td>customer</td><td>1,850,193</td><td>2</td><td>1 text</td><td>-</td><td>-</td><td>0.0</td></tr>
 <tr><td>rel-avito</td><td>Location</td><td>3,512</td><td>4</td><td>3 numeric</td><td>-</td><td>-</td><td>0.0001</td></tr>
 <tr><td>rel-avito</td><td>PhoneRequestsStream</td><td>244,435</td><td>4</td><td>1 numeric</td><td>PhoneRequestDate</td><td>UserID → UserInfo, AdID → AdsInfo</td><td>0.0017</td></tr>
 <tr><td>rel-avito</td><td>SearchInfo</td><td>1,987,156</td><td>8</td><td>1 categorical, 2 numeric</td><td>SearchDate</td><td>UserID → UserInfo, LocationID → Location, CategoryID → Category</td><td>0.1074</td></tr>
@@ -296,6 +308,11 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <tr><td>rel-avito</td><td>SearchStream</td><td>7,107,277</td><td>7</td><td>4 numeric</td><td>SearchDate</td><td>SearchID → SearchInfo, AdID → AdsInfo</td><td>0.1485</td></tr>
 <tr><td>rel-avito</td><td>UserInfo</td><td>98,250</td><td>5</td><td>4 numeric</td><td>-</td><td>-</td><td>0.0</td></tr>
 <tr><td>rel-avito</td><td>AdsInfo</td><td>5,960,558</td><td>6</td><td>2 numeric, 1 text</td><td>-</td><td>LocationID → Location, CategoryID → Category</td><td>0.0007</td></tr>
+<tr><td>rel-event</td><td>event_interest</td><td>14,978</td><td>6</td><td>3 numeric</td><td>timestamp</td><td>event → events, user → users</td><td>0.0094</td></tr>
+<tr><td>rel-event</td><td>users</td><td>37,143</td><td>7</td><td>3 categorical, 2 numeric</td><td>joinedAt</td><td>-</td><td>0.0283</td></tr>
+<tr><td>rel-event</td><td>event_attendees</td><td>8,430,002</td><td>5</td><td>1 categorical, 1 numeric</td><td>start_time</td><td>event → events, user_id → users</td><td>0.1988</td></tr>
+<tr><td>rel-event</td><td>user_friends</td><td>30,386,403</td><td>3</td><td>1 numeric</td><td>-</td><td>user → users, friend → users</td><td>0.3353</td></tr>
+<tr><td>rel-event</td><td>events</td><td>2,459,811</td><td>110</td><td>3 categorical, 103 numeric, 1 text</td><td>start_time</td><td>user_id → users</td><td>0.0387</td></tr>
 <tr><td>rel-f1</td><td>qualifying</td><td>4,082</td><td>7</td><td>2 numeric</td><td>date</td><td>raceId → races, driverId → drivers, constructorId → constructors</td><td>0.0</td></tr>
 <tr><td>rel-f1</td><td>drivers</td><td>857</td><td>7</td><td>2 categorical, 1 datetime, 3 text</td><td>-</td><td>-</td><td>0.0</td></tr>
 <tr><td>rel-f1</td><td>results</td><td>20,323</td><td>15</td><td>10 numeric</td><td>date</td><td>raceId → races, driverId → drivers, constructorId → constructors</td><td>0.2044</td></tr>
@@ -335,6 +352,8 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li><b>[s3-6] key links and fan-out</b>
 <div class="tw"><table>
 <tr><th>database</th><th>link (child.fk → parent)</th><th>parent rows</th><th>parents with no child</th><th>children per parent: mean</th><th>median</th><th>p99</th><th>max</th><th>fk null fraction</th></tr>
+<tr><td>rel-amazon</td><td>review.customer_id → customer</td><td>1,850,193</td><td>0.1438</td><td>7.98</td><td>5</td><td>64</td><td>4,655</td><td>0.0</td></tr>
+<tr><td>rel-amazon</td><td>review.product_id → product</td><td>506,012</td><td>0.1776</td><td>30.4</td><td>9</td><td>346</td><td>20,977</td><td>0.0</td></tr>
 <tr><td>rel-avito</td><td>PhoneRequestsStream.UserID → UserInfo</td><td>98,250</td><td>0.6926</td><td>8.06</td><td>3</td><td>71</td><td>1,123</td><td>0.0042</td></tr>
 <tr><td>rel-avito</td><td>PhoneRequestsStream.AdID → AdsInfo</td><td>5,960,558</td><td>0.9653</td><td>1.18</td><td>1</td><td>3</td><td>83</td><td>0.0025</td></tr>
 <tr><td>rel-avito</td><td>SearchInfo.UserID → UserInfo</td><td>98,250</td><td>0.4352</td><td>35.4</td><td>8</td><td>437</td><td>3,325</td><td>0.0127</td></tr>
@@ -346,6 +365,13 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <tr><td>rel-avito</td><td>SearchStream.AdID → AdsInfo</td><td>5,960,558</td><td>0.6583</td><td>3.49</td><td>1</td><td>22</td><td>23,775</td><td>0.0</td></tr>
 <tr><td>rel-avito</td><td>AdsInfo.LocationID → Location</td><td>3,512</td><td>0.0424</td><td>1,765</td><td>31</td><td>34,817</td><td>929,887</td><td>0.0042</td></tr>
 <tr><td>rel-avito</td><td>AdsInfo.CategoryID → Category</td><td>68</td><td>0.2353</td><td>114,626</td><td>47,661</td><td>703,377</td><td>741,045</td><td>0.0</td></tr>
+<tr><td>rel-event</td><td>event_interest.event → events</td><td>2,459,811</td><td>0.9967</td><td>1.74</td><td>1</td><td>13</td><td>242</td><td>0.0563</td></tr>
+<tr><td>rel-event</td><td>event_interest.user → users</td><td>37,143</td><td>0.9467</td><td>7.57</td><td>6</td><td>25</td><td>85</td><td>0.0</td></tr>
+<tr><td>rel-event</td><td>event_attendees.event → events</td><td>2,459,811</td><td>0.9931</td><td>494</td><td>161</td><td>4,747</td><td>10,000</td><td>0.0</td></tr>
+<tr><td>rel-event</td><td>event_attendees.user_id → users</td><td>37,143</td><td>0.7508</td><td>5.38</td><td>1</td><td>85.9</td><td>669</td><td>0.9941</td></tr>
+<tr><td>rel-event</td><td>user_friends.user → users</td><td>37,143</td><td>0.0036</td><td>810</td><td>496</td><td>4,559</td><td>4,964</td><td>0.013</td></tr>
+<tr><td>rel-event</td><td>user_friends.friend → users</td><td>37,143</td><td>0.2401</td><td>7.63</td><td>4</td><td>53</td><td>144</td><td>0.9929</td></tr>
+<tr><td>rel-event</td><td>events.user_id → users</td><td>37,143</td><td>0.9878</td><td>2.09</td><td>1</td><td>17.5</td><td>34</td><td>0.9996</td></tr>
 <tr><td>rel-f1</td><td>qualifying.raceId → races</td><td>820</td><td>0.7695</td><td>21.6</td><td>22</td><td>26</td><td>28</td><td>0.0</td></tr>
 <tr><td>rel-f1</td><td>qualifying.driverId → drivers</td><td>857</td><td>0.8635</td><td>34.9</td><td>17</td><td>163</td><td>189</td><td>0.0</td></tr>
 <tr><td>rel-f1</td><td>qualifying.constructorId → constructors</td><td>211</td><td>0.8483</td><td>128</td><td>80</td><td>378</td><td>378</td><td>0.0</td></tr>
