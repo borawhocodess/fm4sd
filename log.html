@@ -140,6 +140,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <a class="n-h3" href="#rdbbench">rdbbench</a>
 <a class="n-h3" href="#kumo">kumorfm-2</a>
 <a class="n-h3" href="#graphpfn">graphpfn</a>
+<a class="n-h3" href="#research">research notes</a>
 <a class="n-h3" href="#tables">result tables checked</a>
 <a class="n-h3" href="#repos">method repos</a>
 </nav>
@@ -1012,6 +1013,33 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li><b>[graphpfn-2]</b> model: limix + attention-based neighbourhood aggregation layers ("graph adapters"). training continues from the limix checkpoint; <b>all layers frozen except the adapters</b>. 1,600,000 synthetic datasets, 10,000 optimizer steps, about 36 h on 8× A100 80GB, AdamW, lr 1e-3, EMA 0.98. loss = PFN loss + 0.1 × masked-edge loss. (<code>paper.tex</code> §3.2, L246-262)</li>
         <li><b>[graphpfn-3]</b> result claims: best average rank in ICL on both dataset collections; with fine-tuning best on 11 of 13 datasets. random adapters + fine-tuning is much worse, so the pretraining matters. (<code>paper.tex</code> L396-414)</li>
         <li>relevance: this is the "add structure layers to a frozen TFM and train only them on a synthetic prior" recipe. it is for one homogeneous graph, not for a database with many tables and time. <mark class="unverified">unverified</mark>: my reading; i did not read their limitations list.</li>
+    </ul>
+
+    <h3 id="research">research notes (overnight, from the web)</h3>
+
+    <p>every line here is from a web page, an abstract or a machine summary of a paper page, unless it says "read". treat all of it as <mark class="unverified">unverified</mark> leads. the papers are not in <code>papers/</code>.</p>
+
+    <ul>
+        <li><b>[c1] synthetic relational data outside the PFN world</b>
+            <ul>
+                <li><b>[c1-1] reldiff</b> (hudovernik, xu, shi, šubelj, ermon, štrumbelj, leskovec; arxiv 2506.00710, 31 may 2025). structure and attributes are generated separately. structure: a "2K+SBM" graph generator. 2K-random graphs "preserve the node degree sequence and the degree correlations of neighbouring nodes"; a nested, degree-corrected stochastic block model adds "hierarchical structure" and "modular organization". attributes: joint graph-conditioned diffusion. 11 datasets (rossmann, airbnb, walmart, cora, biodegradability, imdb movielens, berka, f1, california, ccs, instacart). metrics: shape, trend, C2ST, C2ST-Agg, k-hop correlation, cardinality similarity, RDL utility, distance to closest record. source: arxiv abstract + summary of the html version, §4.2 and app. B.
+                    <ul>
+                        <li>this is the paper plurel cites for its block-model key links <a href="#plurel">[plurel-3]</a>. difference: reldiff fits the degree sequence of a real database; plurel samples uniformly inside blocks and has no degree model.</li>
+                    </ul>
+                </li>
+                <li><b>[c1-2] grdm</b> (ketata, lüdke, schwinn, günnemann; arxiv 2505.16527, v3 may 2026): all tables denoised jointly by a GNN on the row graph, no table order; 6 real databases; claims better multi-hop inter-table correlations than autoregressive baselines. source: arxiv abstract.</li>
+                <li><b>[c1-3] clavaddpm</b> (neurips 2024, arxiv 2405.17724): cluster labels as latent variables between parent and child tables; evaluates "cardinality", the distribution of the group size per foreign key. source: search result summary.</li>
+                <li><b>[c1-4] syntherela</b> (hudovernik, jurkovič, štrumbelj; arxiv 2410.03411; iclr 2025 per iclr.cc; github martinjurkovic/syntherela): benchmark for synthetic relational databases. 6 methods, 8 real databases, 39 tables. finding in the abstract: "no method is able to synthesize a dataset that is indistinguishable from original data". metrics: cardinality shape similarity (children per parent row), C2ST-Agg (aggregate child features into the parent, then a classifier two-sample test), RDL utility. source: arxiv abstract + search summary.</li>
+                <li><b>[c1-5] database benchmark generators.</b> TPC-H data is uniform; variants add zipf skew (github SrikanthKandula/tpch_dbgen_zipf_skew, YSU-Data-Lab/TPC-H-Skew, microsoft "TPC-H with skew"); JCC-H is a skewed TPC-H; TPC-DS mixes synthetic and real-world value domains and is "highly skewed"; the join order benchmark uses the real IMDB data because generated data is "uniform, independent" while real data has "skew and correlations". source: search result summaries (tpc.org slides, github pages, cedardb and clickhouse docs).</li>
+                <li><b>[c1-6] what this means for the prior</b> (my reading)
+                    <ul>
+                        <li>there is a ready, model-free test for "does my prior look like real data": the syntherela metrics. cardinality shape (children per parent) and C2ST-Agg (can a classifier tell real from synthetic after aggregating children into parents). C2ST-Agg works on exactly the flattened view that a DFS-based PFN sees. nobody in the PFN papers reports them for their prior.</li>
+                        <li>for key links, the database literature and reldiff agree on two properties: skewed (zipf-like) degrees and block / hierarchy structure. stage 3 confirms both on relbench (mean / median ≈ 2, max 442 on the typical link, 40 % childless parents) <a href="#stage3">[s3-1]</a>. plurel has blocks but no skew inside a block; rdb-pfn has optional preferential attachment <a href="#priorvsreal">[pvr-1]</a>.</li>
+                        <li>a concrete, cheap experiment for <a href="#directions">[dir-1]</a>: score the plurel and rdb-pfn generators with cardinality shape and C2ST-Agg against relbench and THE JOIN, then check if a better score goes with better downstream AUC. that would turn "prior quality" from an opinion into a number.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="tables">result tables checked</h3>
