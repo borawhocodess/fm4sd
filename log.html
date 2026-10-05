@@ -116,6 +116,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <a class="n-h2" href="#status">Status</a>
 <a class="n-h2" href="#directions">Candidate directions</a>
 <a class="n-h2" href="#d-2026-10-05">2026-10-05</a>
+<a class="n-h3" href="#stage4">stage 4: dev setup</a>
 <a class="n-h3" href="#stage2">stage 2: setup</a>
 <a class="n-h3" href="#setup">setup</a>
 <a class="n-h3" href="#leads">check of the leads from the other session</a>
@@ -224,6 +225,41 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
     </ul>
 
     <h2 id="d-2026-10-05" class="date">2026-10-05</h2>
+
+    <h3 id="stage4">stage 4: development setup and a first own method</h3>
+
+    <ul>
+        <li><b>[s4-1] this repo is now a small python package, <code>fm4sd</code>.</b> files: <code>pyproject.toml</code>, <code>src/fm4sd/models.py</code>. relarena finds its methods through the entry-point group <code>relarena.models</code> (<code>relarena:docs/adding-a-model.md</code>, "External model packages"). no change in the relarena repo is needed.</li>
+        <li><b>[s4-2] the plug-in contract</b> (<code>relarena:docs/adding-a-model.md</code> §1-2): a class with <code>fit(task, db, train_table, val_table, *, seed, time_limit)</code> and <code>predict(task, db, table)</code> that returns one number per row; a <code>SearchSpace</code>; the decorator <code>@register_model</code>. the harness runs tune → select on validation → refit → test.
+            <ul>
+                <li>two phases: tuning with the database cut at the val timestamp; final fit with the database cut at the test timestamp, test labels hidden.</li>
+                <li><code>refit_on_full_data</code> (default true): the final fit gets train + val.</li>
+            </ul>
+        </li>
+        <li><b>[s4-3] base class for flat-table models:</b> <code>fm4sd.models.DFSTabularModel</code>. it builds the same DFS features as relarena's rdblearn method (depth from the config, past labels as history table, anchor columns). a new model only gives <code>fit_flat(df, cat_cols, y, task_type, seed)</code> and <code>predict_flat(df)</code>. a pfn of our own plugs in here.</li>
+        <li><b>[s4-4] scripts</b>
+            <ul>
+                <li><code>scripts/setup.sh [cpu|cuda]</code> - clone relarena into <code>workdir/</code>, install it and this package</li>
+                <li><code>scripts/warm.sh rel-f1 …</code> - build the DFS cache (CPU)</li>
+                <li><code>scripts/run.sh --model … --datasets … --tasks … --n-trials …</code> - one run; adds the cache dir, the output file and the macOS libomp fix</li>
+                <li><code>scripts/slurm/capella.sbatch MODEL TRIALS [DATASET]</code> - one task per array element. <mark class="unverified">unverified</mark>: written from the capella settings of your other session, not run (no VPN).</li>
+                <li>kislurm: no script yet. i have no account, partition or path details. <mark class="open">open</mark></li>
+            </ul>
+        </li>
+        <li><b>[s4-5] first own method: <code>fm4sd-dfs-lightgbm</code></b> = lightgbm on the DFS features. search space: relarena's lightgbm space + DFS depth {2, 3, 4}; L1 objective for regression. this is the baseline that relarena lists as missing <a href="#relarena">[relarena-7]</a>.
+            <div class="tw"><table>
+                <tr><th>rel-f1 task</th><th>metric</th><th>lightgbm, entity table only (mine = published)</th><th>fm4sd-dfs-lightgbm (mine, 30 trials, seed 0)</th><th>tabpfn-rel local 2026-08-15 (published)</th></tr>
+                <tr><td>driver-dnf</td><td>AUC ↑</td><td>0.7303</td><td>0.6212</td><td>0.7145</td></tr>
+                <tr><td>driver-top3</td><td>AUC ↑</td><td>0.7389</td><td>0.7891</td><td>0.7929</td></tr>
+                <tr><td>driver-position</td><td>MAE ↓</td><td>4.1058</td><td>3.7699</td><td>3.762</td></tr>
+            </table></div>
+            <ul>
+                <li>on 2 of 3 tasks, trees on the DFS features are within 0.004 AUC / 0.008 MAE of tabpfn-rel. on driver-dnf they are much worse, and worse than the entity-only lightgbm (val 0.6496, test 0.6212).</li>
+                <li>one database, one seed, three tasks. this is a smoke test, not a result. <mark class="unverified">unverified</mark> beyond that.</li>
+                <li>result file: <code>workdir/runs/fm4sd-dfs-lightgbm-f1.csv</code> (93 rows, every config)</li>
+            </ul>
+        </li>
+    </ul>
 
     <h3 id="stage2">stage 2: relarena setup and first reproduction</h3>
 
