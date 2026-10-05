@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PUBLISHED = ROOT / "workdir/repos/relarena/baseline_results/results.csv"
 ORDER = [l.split() for l in (ROOT / "scripts/slurm/tasks.txt").read_text().splitlines() if l and not l.startswith("#")]
-MINE = ["fm4sd-dfs-lightgbm", "fm4sd-rdbpfn", "tabpfn-rel-local-2026-08-15"]
+MINE = ["fm4sd-dfs-lightgbm", "fm4sd-rdbpfn", "fm4sd-tabpfn-topk", "tabpfn-rel-local-2026-08-15"]
 PUB = ["lightgbm", "rdblearn", "tabpfn-rel-local-2026-08-15", "tabpfn-rel-local-2026-09-28", "rt-plurel"]
 
 

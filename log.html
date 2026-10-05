@@ -508,33 +508,33 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li id="cmp"><b>[s4-6] the 21-task comparison on capella</b> (H100 GPU nodes; relarena 039f834; seed 0). mine = this repo's runs through <code>scripts/slurm/capella.sbatch</code>; published = <code>relarena:baseline_results/results.csv</code>, selected config. empty = not run yet or not published.
 <!--CMP-START-->
 <div class="tw"><table>
-<tr><th>task</th><th>metric</th><th>mine: fm4sd-dfs-lightgbm</th><th>mine: fm4sd-rdbpfn</th><th>mine: tabpfn-rel-local-2026-08-15</th><th>published: lightgbm</th><th>published: rdblearn</th><th>published: tabpfn-rel-local-2026-08-15</th><th>published: tabpfn-rel-local-2026-09-28</th><th>published: rt-plurel</th></tr>
-<tr><td>rel-f1/driver-position</td><td>MAE ↓</td><td>3.8744</td><td></td><td>3.7591</td><td>4.1058</td><td>3.8886</td><td>3.7617</td><td>3.7785</td><td>3.8177</td></tr>
-<tr><td>rel-f1/driver-dnf</td><td>AUC ↑</td><td>0.6293</td><td>0.7326</td><td>0.7004</td><td>0.7303</td><td>0.7146</td><td>0.7145</td><td>0.7248</td><td>0.7315</td></tr>
-<tr><td>rel-f1/driver-top3</td><td>AUC ↑</td><td>0.7901</td><td>0.7895</td><td>0.7993</td><td>0.7389</td><td>0.7801</td><td>0.7929</td><td>0.8106</td><td>0.7589</td></tr>
-<tr><td>rel-avito/ad-ctr</td><td>MAE ↓</td><td>0.0335</td><td></td><td>0.0313</td><td>0.0412</td><td>0.0341</td><td>0.0314</td><td>0.0314</td><td>0.0348</td></tr>
-<tr><td>rel-avito/user-visits</td><td>AUC ↑</td><td>0.6734</td><td>0.6553</td><td>0.6735</td><td>0.5293</td><td>0.6596</td><td>0.6688</td><td>0.6716</td><td>0.6709</td></tr>
-<tr><td>rel-avito/user-clicks</td><td>AUC ↑</td><td>0.6670</td><td>0.6492</td><td>0.6703</td><td>0.5642</td><td>0.6788</td><td>0.6145</td><td>0.6986</td><td>0.5834</td></tr>
-<tr><td>rel-event/user-attendance</td><td>MAE ↓</td><td>0.2529</td><td></td><td>0.2408</td><td>0.2628</td><td>0.2422</td><td>0.2394</td><td>0.2380</td><td>0.2409</td></tr>
-<tr><td>rel-event/user-repeat</td><td>AUC ↑</td><td>0.7761</td><td>0.7759</td><td>0.7582</td><td>0.7483</td><td>0.7441</td><td>0.7693</td><td>0.7606</td><td>0.7914</td></tr>
-<tr><td>rel-event/user-ignore</td><td>AUC ↑</td><td>0.8725</td><td>0.8793</td><td>0.6860</td><td>0.7772</td><td>0.6644</td><td>0.7014</td><td>0.8176</td><td>0.8476</td></tr>
-<tr><td>rel-trial/study-outcome</td><td>AUC ↑</td><td>0.7129</td><td>0.6213</td><td>0.7368</td><td>0.7150</td><td>0.7212</td><td>0.7306</td><td>0.7582</td><td>0.7235</td></tr>
-<tr><td>rel-trial/study-adverse</td><td>MAE ↓</td><td>38.68</td><td></td><td>42.41</td><td>44.57</td><td>44.03</td><td>42.59</td><td>35.51</td><td>32.65</td></tr>
-<tr><td>rel-trial/site-success</td><td>MAE ↓</td><td>0.3913</td><td></td><td>0.3948</td><td>0.4375</td><td>0.4858</td><td>0.3858</td><td>0.4042</td><td>0.4104</td></tr>
-<tr><td>rel-stack/user-engagement</td><td>AUC ↑</td><td></td><td></td><td></td><td>0.8118</td><td>0.8587</td><td>0.9058</td><td>0.9077</td><td>0.8968</td></tr>
-<tr><td>rel-stack/post-votes</td><td>MAE ↓</td><td></td><td></td><td></td><td>0.0661</td><td>0.0677</td><td>0.0680</td><td>0.0628</td><td>0.0635</td></tr>
-<tr><td>rel-stack/user-badge</td><td>AUC ↑</td><td></td><td></td><td></td><td>0.5380</td><td>0.7711</td><td>0.8635</td><td>0.8846</td><td>0.8916</td></tr>
-<tr><td>rel-hm/user-churn</td><td>AUC ↑</td><td></td><td>0.6771</td><td>0.7057</td><td>0.5901</td><td>0.6984</td><td>0.7057</td><td>0.7054</td><td>0.7044</td></tr>
-<tr><td>rel-hm/item-sales</td><td>MAE ↓</td><td></td><td></td><td>0.0614</td><td>0.0753</td><td>0.0671</td><td>0.0614</td><td>0.0365</td><td>0.0403</td></tr>
-<tr><td>rel-amazon/user-churn</td><td>AUC ↑</td><td></td><td></td><td></td><td>0.5171</td><td>0.6844</td><td>0.7024</td><td>0.7067</td><td>0.7135</td></tr>
-<tr><td>rel-amazon/user-ltv</td><td>MAE ↓</td><td></td><td></td><td></td><td>16.78</td><td>14.58</td><td>14.40</td><td>13.89</td><td>13.94</td></tr>
-<tr><td>rel-amazon/item-churn</td><td>AUC ↑</td><td></td><td></td><td></td><td>0.6622</td><td>0.8195</td><td>0.8279</td><td>0.8277</td><td>0.8327</td></tr>
-<tr><td>rel-amazon/item-ltv</td><td>MAE ↓</td><td></td><td></td><td></td><td>55.75</td><td>49.00</td><td>47.77</td><td>45.35</td><td>43.03</td></tr>
+<tr><th>task</th><th>metric</th><th>mine: fm4sd-dfs-lightgbm</th><th>mine: fm4sd-rdbpfn</th><th>mine: fm4sd-tabpfn-topk</th><th>mine: tabpfn-rel-local-2026-08-15</th><th>published: lightgbm</th><th>published: rdblearn</th><th>published: tabpfn-rel-local-2026-08-15</th><th>published: tabpfn-rel-local-2026-09-28</th><th>published: rt-plurel</th></tr>
+<tr><td>rel-f1/driver-position</td><td>MAE ↓</td><td>3.8744</td><td></td><td></td><td>3.7591</td><td>4.1058</td><td>3.8886</td><td>3.7617</td><td>3.7785</td><td>3.8177</td></tr>
+<tr><td>rel-f1/driver-dnf</td><td>AUC ↑</td><td>0.6293</td><td>0.7326</td><td></td><td>0.7004</td><td>0.7303</td><td>0.7146</td><td>0.7145</td><td>0.7248</td><td>0.7315</td></tr>
+<tr><td>rel-f1/driver-top3</td><td>AUC ↑</td><td>0.7901</td><td>0.7895</td><td></td><td>0.7993</td><td>0.7389</td><td>0.7801</td><td>0.7929</td><td>0.8106</td><td>0.7589</td></tr>
+<tr><td>rel-avito/ad-ctr</td><td>MAE ↓</td><td>0.0335</td><td></td><td></td><td>0.0313</td><td>0.0412</td><td>0.0341</td><td>0.0314</td><td>0.0314</td><td>0.0348</td></tr>
+<tr><td>rel-avito/user-visits</td><td>AUC ↑</td><td>0.6734</td><td>0.6553</td><td></td><td>0.6735</td><td>0.5293</td><td>0.6596</td><td>0.6688</td><td>0.6716</td><td>0.6709</td></tr>
+<tr><td>rel-avito/user-clicks</td><td>AUC ↑</td><td>0.6670</td><td>0.6492</td><td></td><td>0.6703</td><td>0.5642</td><td>0.6788</td><td>0.6145</td><td>0.6986</td><td>0.5834</td></tr>
+<tr><td>rel-event/user-attendance</td><td>MAE ↓</td><td>0.2529</td><td></td><td></td><td>0.2408</td><td>0.2628</td><td>0.2422</td><td>0.2394</td><td>0.2380</td><td>0.2409</td></tr>
+<tr><td>rel-event/user-repeat</td><td>AUC ↑</td><td>0.7761</td><td>0.7759</td><td></td><td>0.7582</td><td>0.7483</td><td>0.7441</td><td>0.7693</td><td>0.7606</td><td>0.7914</td></tr>
+<tr><td>rel-event/user-ignore</td><td>AUC ↑</td><td>0.8725</td><td>0.8793</td><td></td><td>0.6860</td><td>0.7772</td><td>0.6644</td><td>0.7014</td><td>0.8176</td><td>0.8476</td></tr>
+<tr><td>rel-trial/study-outcome</td><td>AUC ↑</td><td>0.7129</td><td>0.6213</td><td></td><td>0.7368</td><td>0.7150</td><td>0.7212</td><td>0.7306</td><td>0.7582</td><td>0.7235</td></tr>
+<tr><td>rel-trial/study-adverse</td><td>MAE ↓</td><td>38.68</td><td></td><td></td><td>42.41</td><td>44.57</td><td>44.03</td><td>42.59</td><td>35.51</td><td>32.65</td></tr>
+<tr><td>rel-trial/site-success</td><td>MAE ↓</td><td>0.3913</td><td></td><td></td><td>0.3948</td><td>0.4375</td><td>0.4858</td><td>0.3858</td><td>0.4042</td><td>0.4104</td></tr>
+<tr><td>rel-stack/user-engagement</td><td>AUC ↑</td><td></td><td></td><td></td><td></td><td>0.8118</td><td>0.8587</td><td>0.9058</td><td>0.9077</td><td>0.8968</td></tr>
+<tr><td>rel-stack/post-votes</td><td>MAE ↓</td><td></td><td></td><td></td><td></td><td>0.0661</td><td>0.0677</td><td>0.0680</td><td>0.0628</td><td>0.0635</td></tr>
+<tr><td>rel-stack/user-badge</td><td>AUC ↑</td><td></td><td></td><td></td><td></td><td>0.5380</td><td>0.7711</td><td>0.8635</td><td>0.8846</td><td>0.8916</td></tr>
+<tr><td>rel-hm/user-churn</td><td>AUC ↑</td><td></td><td>0.6771</td><td></td><td>0.7057</td><td>0.5901</td><td>0.6984</td><td>0.7057</td><td>0.7054</td><td>0.7044</td></tr>
+<tr><td>rel-hm/item-sales</td><td>MAE ↓</td><td></td><td></td><td></td><td>0.0614</td><td>0.0753</td><td>0.0671</td><td>0.0614</td><td>0.0365</td><td>0.0403</td></tr>
+<tr><td>rel-amazon/user-churn</td><td>AUC ↑</td><td></td><td></td><td></td><td></td><td>0.5171</td><td>0.6844</td><td>0.7024</td><td>0.7067</td><td>0.7135</td></tr>
+<tr><td>rel-amazon/user-ltv</td><td>MAE ↓</td><td></td><td></td><td></td><td></td><td>16.78</td><td>14.58</td><td>14.40</td><td>13.89</td><td>13.94</td></tr>
+<tr><td>rel-amazon/item-churn</td><td>AUC ↑</td><td></td><td></td><td></td><td></td><td>0.6622</td><td>0.8195</td><td>0.8279</td><td>0.8277</td><td>0.8327</td></tr>
+<tr><td>rel-amazon/item-ltv</td><td>MAE ↓</td><td></td><td></td><td></td><td></td><td>55.75</td><td>49.00</td><td>47.77</td><td>45.35</td><td>43.03</td></tr>
 </table></div>
 <!-- runs found: 34 -->
 <!--CMP-END-->
             <ul>
-                <li>status: 34 of 54 runs finished (21 dfs-lightgbm, 21 tabpfn-rel, 12 rdb-pfn). f1, trial, avito, event done; hm partly (dfs-lightgbm still running); stack and amazon still build their cache (45 min).</li>
+                <li>status: 34 of 61 runs finished (21 dfs-lightgbm, 21 tabpfn-rel, 12 rdb-pfn, 7 tabpfn-topk). f1, trial, avito, event done; hm partly; stack and amazon still build their cache (55 min).</li>
                 <li>rel-f1 on capella vs the mac: dfs-lightgbm gives 0.6293 / 0.7901 / 3.874 there and 0.6212 / 0.7891 / 3.770 here (dnf / top3 / position). same seed, same 30 configs. so lightgbm is not bit-reproducible across the two machines (8 threads there, 1 here; different platform). differences up to 0.10 MAE.</li>
                 <li>capella job limits, from the submit filter: at most 14 CPU cores and 188,130 MB memory per requested GPU. my first submission asked for 16 cores and 256 GB; the filter warned but accepted the jobs. i cancelled them and resubmitted with 14 cores and 180 GB.</li>
                 <li>rel-f1 cache job on capella: 7 min 27 s, 86 MB. each rel-f1 run job finished in under 2 minutes.</li>
@@ -546,6 +546,16 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li><b>lightgbm on DFS vs tabpfn-rel (both mine, same features):</b> lightgbm better on 4 of 12 (event user-repeat 0.776 vs 0.758, event user-ignore 0.873 vs 0.686, trial study-adverse 38.7 vs 42.4, trial site-success 0.391 vs 0.395), level on avito user-visits, worse on 7. so the tabular foundation model is ahead on most tasks, but not on all, and one gap is very large.</li>
                 <li><b>rel-event/user-ignore is the outlier.</b> lightgbm on DFS 0.8725 and rdb-pfn 0.8793, without any text column; tabpfn-rel without text 0.6860 (published 0.7014); tabpfn-rel with text, published, 0.8787. relarena explains the text-free gap on this task by missing text <a href="#relarena">[relarena-9]</a>. my runs say the same signal is reachable from the non-text DFS features. candidates for the reason: the per-entity history features (the constant-per-entity baseline has 0.8399 here, relarena table) that the trees and the correlation-selected rdb-pfn columns pick up; or a difference in which anchor columns each method keeps. <mark class="unverified">unverified</mark>, and it needs a leakage check before it is used anywhere: this is the task where relbench fixed a temporal leak in 2026 <a href="#relarena">[relarena-2]</a>.</li>
                 <li><b>rdb-pfn (0.7M parameters, my column selection) vs tabpfn-rel (mine), 8 classification tasks so far:</b> better on 3 (f1 driver-dnf, event user-repeat, event user-ignore), worse on 5 (f1 driver-top3 −0.010, avito user-visits −0.018, avito user-clicks −0.021, hm user-churn −0.029, trial study-outcome −0.116).</li>
+            </ul>
+        </li>
+        <li><b>[s4-9] the rel-event/user-ignore outlier: which columns carry the signal.</b> diagnostic job 4377803 on capella, one configuration each, dumps in <code>workdir/runs/dump/</code>. train table 18,984 rows × 461 DFS columns at depth 2.
+            <ul>
+                <li>top absolute correlation with the label: <code>MEAN(_RDBL_target_history.target)</code> 0.605, <code>MAX(…target)</code> 0.517, <code>MEAN(event_interest.invited)</code> 0.452, <code>COUNT(event_attendees)</code> 0.399, <code>COUNT(_RDBL_target_history)</code> 0.386.</li>
+                <li>lightgbm gain share: the entity key <code>user</code> 34 %, <code>MEAN(_RDBL_target_history.target)</code> 29 %, <code>timestamp</code> 6 %, <code>COUNT(event_attendees)</code> 4 %.</li>
+                <li>rdb-pfn's 30 selected columns start with the same target-history and invitation features.</li>
+                <li>so the signal is "what this user did before": the mean of the user's past labels and the user id. these are relarena's own features: the label-history table is joined "strictly-less-than cutoff" (<code>relarena-pr:src/relarena/featurization/dfs.py:24-28</code>), and tabpfn-rel gets the same DFS matrix.</li>
+                <li>leakage: i see no feature that names data at or after the seed time. this is a check of names, not a proof. <mark class="unverified">unverified</mark></li>
+                <li>open question: why does tabpfn-rel (0.686) not use a column with correlation 0.6 that trees (0.863 to 0.873) and a 0.7M model on 30 columns (0.879) use ? hypothesis: dilution over 461 columns, or its recency context drops the informative rows. test submitted: <code>fm4sd-tabpfn-topk</code> = tabpfn v3 on all columns vs the top 30 vs the top 120, on 7 classification tasks (jobs 4377806 to 4377809).</li>
             </ul>
         </li>
         <li><b>[s4-7] rdb-pfn inside relarena: method <code>fm4sd-rdbpfn</code>.</b> the released checkpoint (<code>RDBPFN:inference/checkpoints/RDBPFN/model.pt</code>) on relarena's DFS features, through <code>DFSTabularModel</code>. binary tasks only.
