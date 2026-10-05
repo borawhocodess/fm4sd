@@ -153,6 +153,7 @@ not placed yet:
   - ensemble-inference — [openreview](https://openreview.net/forum?id=rMYJG9mzn5)
   - self-play-zero-data — [arxiv](https://arxiv.org/abs/2609.30063) — [cowsik et al. 2026]
   - adaptive-fgd — [arxiv](https://arxiv.org/abs/2606.16926) · [github](https://github.com/dccsillag/experiments-adaptive-fgd) — [csillag et al. 2026]
+  - fim-pp — [arxiv](https://arxiv.org/abs/2509.24762) — [berghaus et al. 2026]
 - tabular
   - npt — [arxiv](https://arxiv.org/abs/2106.02584) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2021/hash/f1507aba9fc82ffa7cc7373c58f8a613-Abstract.html) · [github](https://github.com/OATML/Non-Parametric-Transformers) — [kossen et al. 2021]
   - saint — [arxiv](https://arxiv.org/abs/2106.01342) — [somepalli et al. 2021]
@@ -247,6 +248,16 @@ not placed yet:
   - supportsetleakage — [arxiv](https://arxiv.org/abs/2609.36417) — [upendra et al. 2026]
   - steer — [arxiv](https://arxiv.org/abs/2610.00907) · [github](https://github.com/lids-lab/steer) — [mohamed and aboulnaga 2026]
   - g2t-fm — [arxiv](https://arxiv.org/abs/2508.20906) — [eremeev et al. 2025]
+  - parameterfreeencoders — [arxiv](https://arxiv.org/abs/2607.05476) — [xu and wipf 2026]
+  - relagent — [arxiv](https://arxiv.org/abs/2605.07840) — [huang et al. 2026]
+  - rtgl — [arxiv](https://arxiv.org/abs/2609.01292) — [kolesnichenko et al. 2026]
+  - relbench-v2 — [arxiv](https://arxiv.org/abs/2602.12606) — [gu et al. 2026]
+  - reldiff — [arxiv](https://arxiv.org/abs/2506.00710) — [hudovernik et al. 2025]
+  - grdm — [arxiv](https://arxiv.org/abs/2505.16527) — [ketata et al. 2025]
+  - clavaddpm — [arxiv](https://arxiv.org/abs/2405.17724) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2024/file/983876577ec81db17ecfae1521df9208-Paper-Conference.pdf) — [pang et al. 2024]
+  - syntherela — [arxiv](https://arxiv.org/abs/2410.03411) · [iclr](https://iclr.cc/virtual/2025/32181) · [github](https://github.com/martinjurkovic/syntherela) — [hudovernik et al. 2025]
+  - schemapile — [doi](https://doi.org/10.1145/3654975) · [pdf](https://ir.cwi.nl/pub/34763/34763.pdf) — [döhmen et al. 2024]
+  - wikidbs — [neurips](https://proceedings.neurips.cc/paper_files/paper/2024/file/4847447cae911dde321ca19afe7d8707-Paper-Datasets_and_Benchmarks_Track.pdf) — [vogel et al. 2024]
 - time series
   - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe) · [icml](https://proceedings.mlr.press/v306/yang26ac.html) — [yang et al. 2026]
   - simpletimebench — [arxiv](https://arxiv.org/abs/2610.02058) · [openreview](https://openreview.net/forum?id=iIRdd86Xkr) — [ghoroghchian et al. 2026]

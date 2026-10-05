@@ -1115,6 +1115,21 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 </li>
             </ul>
         </li>
+        <li><b>[c4b] the tabular side</b> (round 2)
+            <ul>
+                <li><b>[c4b-1] tabicl v2 is fully open.</b> read: the README of github soda-inria/tabicl (6 oct 2026). "a competitive model for tabular classification and regression with a permissive license"; 300 to 100,000 training samples, up to 2,000 features; 50,000 samples × 100 features fit + predict in under 10 s on an H100. install extras <code>tabicl[finetune]</code> and <code>tabicl[pretrain]</code>; classes <code>FinetunedTabICLClassifier</code> / <code>Regressor</code>; checkpoints <code>tabicl-classifier-v2-20260212.ckpt</code>, <code>tabicl-regressor-v2-20260212.ckpt</code>. the paper abstract (arxiv 2602.11139, icml 2026) says they release "code for inference, pretraining, and synthetic data generation" and use the muon optimizer.
+                    <ul>
+                        <li>meaning: this is the open large model for <a href="#directions">[dir-2]</a> / <a href="#directions">[dir-5]</a>. pretraining code + prior code + permissive license + regression + 100k context. relicl and openrfm already build on it <a href="#relicl">[relicl-3]</a> <a href="#openrfm">[openrfm-2]</a>. <mark class="unverified">unverified</mark>: the exact license text, and the compute for a continued-pretraining run.</li>
+                    </ul>
+                </li>
+                <li><b>[c4b-2] tabpfn-3.5</b> (jäger et al.; arxiv 2609.17895, sep 2026; in the README). source: arxiv abstract. it "extends capabilities to handle non-i.i.d. data with temporal or grouped splits, tables with strings, text and images, high-cardinality categorical features, and wide tables". <mark class="unverified">unverified</mark>
+                    <ul>
+                        <li>meaning: the newest closed-weights model is already moving its prior toward what flattened relational tables look like: temporal and grouped rows, strings, many columns. this is competition for a "relational prior for flat tables", and a sign that the direction is right. its weights are under a non-commercial license <a href="#stage2">[s2-8]</a>; its prior is not public.</li>
+                    </ul>
+                </li>
+                <li><b>[c4b-3] papers found tonight that were not in the README.</b> added to the README queue in the existing format: parameterfreeencoders 2607.05476, relagent 2605.07840, rtgl 2609.01292, relbench-v2 2602.12606, reldiff 2506.00710, grdm 2505.16527, clavaddpm 2405.17724, syntherela 2410.03411, schemapile (doi 10.1145/3654975), wikidbs (neurips 2024), fim-pp 2509.24762. not added: relgt-ac 2606.03040 (i did not read its authors); 2609.36384 (may be the same paper as <code>supportsetleakage</code> 2609.36417). author-year tags are from arxiv listings; clavaddpm's first author is taken from the rdb-pfn bibliography key. <mark class="unverified">unverified</mark> tags: check before you rely on them.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="tables">result tables checked</h3>
