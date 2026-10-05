@@ -147,7 +147,6 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li><mark class="open">open</mark> part 5 of the talk: no idea yet (bora, 5 oct). finding one is the goal of this work. next: candidate directions are listed: <a href="#directions">candidate directions</a>. pick, reject or change.</li>
         <li>done: <code>rdl</code> (fey et al. 2023, arxiv 2312.04615) is in the README relational list. pdf + tex in <code>papers/rdl/</code>.</li>
         <li>done: <code>rt-j</code> is in the README. read from the project page; the pdf must be downloaded by hand from openreview (id oQINTd9din).</li>
-        <li><mark class="open">open</mark> tabpfn license: accept it at ux.priorlabs.ai and set <code>TABPFN_TOKEN</code>, or the local tabpfn-rel cannot run <a href="#stage2">[s2-8]</a>.</li>
         <li><mark class="open">open</mark> formal definition: i took the notation of fey et al. 2023 (the rdl-survey copies it word for word). ok ? see <a href="#formal">formal definition</a>.</li>
     </ul>
 
@@ -155,7 +154,9 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 
     <ul>
         <li>stage 1 (reading + log + talk draft + candidate directions) - done, with the gaps listed below</li>
-        <li>stage 2 (setup) - install works; lightgbm reproduced exactly on rel-f1; DFS cache for rel-f1 built; tabpfn-rel blocked on the license token</li>
+        <li>stage 2 (setup) - done: install works; lightgbm reproduced exactly on rel-f1; tabpfn-rel reproduced within 0.011 AUC on rel-f1/driver-top3</li>
+        <li>stage 3 (data) - statistics script done; 3 of 7 databases computed, 4 running</li>
+        <li>stage 4 (dev setup) - package, scripts and a first own method done on the mac; capella script not run; no kislurm script</li>
         <li>read fully: rdb-pfn, relbench, rdl-survey, relarena-alpha, rdblearn, relicl, plurel (main text + appendix A, B; not the extra experiments in appendix C), rdl §2</li>
         <li>abstract + intro + results: plurel-to-rdb-pfn, rt (abstract, contribution, method), openrfm (abstract, intro, start of method), rdbbench (abstract, protocol, results text, conclusion)</li>
         <li>abstract + parts: kumorfm-2 (intro claims, experiment setup), graphpfn (pretraining, result summary)</li>
@@ -306,12 +307,21 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>rel-f1, all 3 tasks, inner + outer split, depth 4: 8 min 31 s on this mac (1 CPU thread), 60 MB of parquet. rel-f1 is the smallest database (74k rows). so "hours per database" <a href="#relarena">[relarena-6]</a> is plausible for the large ones.</li>
             </ul>
         </li>
-        <li><b>[s2-8] tabpfn-rel-local-2026-08-15 on rel-f1/driver-top3: blocked, needs bora.</b> <mark class="open">open</mark>
+        <li><b>[s2-8] tabpfn-rel-local-2026-08-15 on rel-f1/driver-top3: close, not exact.</b>
+            <div class="tw"><table>
+                <tr><th>DFS depth</th><th>mine val</th><th>mine test</th><th>published val</th><th>published test</th></tr>
+                <tr><td>2 (default)</td><td>0.67380</td><td>0.79743</td><td>0.67655</td><td>0.80534</td></tr>
+                <tr><td>3</td><td>0.68249</td><td>0.80342</td><td>0.69007</td><td>0.79291</td></tr>
+                <tr><td>4</td><td>0.65718</td><td>-</td><td>0.68042</td><td>-</td></tr>
+            </table></div>
             <ul>
-                <li>the DFS cache is warm and the run starts. it stops at the weight download: "TabPFNLicenseError: TabPFN requires a one-time license acceptance to download model weights for local inference".</li>
-                <li>what you must do: log in at <code>https://ux.priorlabs.ai</code>, accept the license on the Licenses tab, copy the API key from the account page, then <code>export TABPFN_TOKEN=…</code> in the shell that runs the job. i did not do this: it is your account and your key.</li>
-                <li>command to run after that, from <code>workdir/repos/relarena</code>: <code>DYLD_FALLBACK_LIBRARY_PATH="$PWD/.venv/lib/python3.11/site-packages/sklearn/.dylibs" OMP_NUM_THREADS=1 uv run --all-packages --group cpu --extra tabpfn-rel-local relarena --model tabpfn-rel-local-2026-08-15 --datasets rel-f1 --n-trials 3 --cache-dir ../../runs/cache --output ../../runs/tabpfn-rel-local-0815-f1.csv</code></li>
-                <li>target numbers, driver-top3 (<code>relarena:baseline_results/results.csv</code>): selected config val 0.69007, test 0.79291. the paper table has 0.7929 <a href="#relarena">[relarena-4]</a>.</li>
+                <li>selected by validation: mine depth 3 → test 0.80342. published depth 3 → test 0.79291. the paper table has 0.7929 <a href="#relarena">[relarena-4]</a>.</li>
+                <li>so my run is 0.011 AUC above the published one, and picks another depth. per depth, val differs by up to 0.03. the test set has 726 rows, so small changes move the AUC.</li>
+                <li>possible reasons, <mark class="unverified">unverified</mark>: CPU here vs rtx-pro-6000 there; tabpfn 9.0.0 and fastdfs 1.2 here, older versions at the time of the published run; the DFS cache is rebuilt, not theirs.</li>
+                <li>needed first: accept the TabPFN-3 license at ux.priorlabs.ai and set <code>TABPFN_TOKEN</code> (done by bora on 5 oct 2026; the key is not stored in this repo).</li>
+                <li>run time on this mac, 8 CPU threads: 220 s for 3 configs + refits. with 1 thread and all 3 rel-f1 tasks it did not finish one task in 36 min; i stopped it.</li>
+                <li>mine does not run a test fit for the non-selected depth 4, so that cell is empty.</li>
+                <li>result file: <code>workdir/runs/tabpfn-rel-local-0815-f1-top3.csv</code></li>
             </ul>
         </li>
         <li><b>[s2-9] what changed in the newer local tabpfn-rel.</b> the selected config of <code>tabpfn-rel-local-2026-09-28</code> on driver-top3 has <code>"tfm": "tabpfn-v3.5-tfidf", "with_text": true</code>; the august version has <code>"tabpfn-v3", "with_text": false</code>. test 0.81063 vs 0.79291. so the newer local version uses tabpfn 3.5 and text through tf-idf. this explains at least part of the Elo gain in <a href="#stage2">[s2-6]</a>. (same csv)</li>
