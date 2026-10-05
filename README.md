@@ -226,6 +226,10 @@ not placed yet:
   - loopicl — [arxiv](https://arxiv.org/abs/2609.36108)
   - architecturealignment — [arxiv](https://arxiv.org/abs/2609.36883)
   - tabcon — [arxiv](https://arxiv.org/abs/2609.33114)
+  - cdmd — [arxiv](https://arxiv.org/abs/2609.39124)
+  - molecular-shift-tfm — [arxiv](https://arxiv.org/abs/2609.38744)
+  - tfm-distillation — [arxiv](https://arxiv.org/abs/2610.01435)
+  - dr-tfm — [arxiv](https://arxiv.org/abs/2610.01143)
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120)
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115)
@@ -234,6 +238,8 @@ not placed yet:
   - logic — [arxiv](https://arxiv.org/abs/2609.05955)
   - ephris — [arxiv](https://arxiv.org/abs/2609.37057)
   - supportsetleakage — [arxiv](https://arxiv.org/abs/2609.36417)
+  - steer — [arxiv](https://arxiv.org/abs/2610.00907)
+  - relicl — [arxiv](https://arxiv.org/abs/2610.01725)
 - time series
   - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe)
   - simpletimebench — [openreview](https://openreview.net/forum?id=iIRdd86Xkr)
@@ -248,6 +254,8 @@ not placed yet:
   - bitcoinllmforecast — [doi](https://doi.org/10.1016/j.knosys.2025.114449)
   - in-flow — [arxiv](https://arxiv.org/abs/2401.16777)
   - t0 — [arxiv](https://arxiv.org/abs/2609.24559)
+  - exo-zeroshot-tsfm — [ieee](https://ieeexplore.ieee.org/abstract/document/11711112/)
+  - race — [arxiv](https://arxiv.org/abs/2610.00405)
 - causal
   - tscausalfm — [openreview](https://openreview.net/forum?id=CAaTQAfq7c)
   - causalfewshot — [openreview](https://openreview.net/forum?id=2yvEiFhNCT)
@@ -271,6 +279,7 @@ not placed yet:
   - causalml-treatment — [doi](https://doi.org/10.1038/s41591-024-02902-1)
   - decaf — [arxiv](https://arxiv.org/abs/2110.12884)
   - causal-fluctuate — [arxiv](https://arxiv.org/abs/2609.26290)
+  - cider-fm — [arxiv](https://arxiv.org/abs/2609.39523)
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
   - grpo — [arxiv](https://arxiv.org/abs/2402.03300)
