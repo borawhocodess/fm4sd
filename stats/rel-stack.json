@@ -1,0 +1,490 @@
+{
+ "dataset": "rel-stack",
+ "val_timestamp": "2020-10-01 00:00:00",
+ "test_timestamp": "2021-01-01 00:00:00",
+ "db_time_min": "2009-02-02 00:00:00",
+ "db_time_max": "2021-01-01 00:00:00",
+ "num_tables": 7,
+ "total_rows": 4247264,
+ "total_columns": 51,
+ "tables": {
+  "badges": {
+   "rows": 463463,
+   "columns": 6,
+   "pkey": "Id",
+   "time_col": "Date",
+   "fkeys": {
+    "UserId": "users"
+   },
+   "feature_kinds": {
+    "numeric": 1,
+    "categorical": 1,
+    "bool": 1
+   },
+   "null_fraction": 0.0,
+   "time_min": "2010-07-19 19:39:07.047000",
+   "time_max": "2020-12-31 23:55:03.053000",
+   "links": {
+    "UserId": {
+     "parent": "users",
+     "null_fraction": 0.0,
+     "parents_with_children": 141717,
+     "parent_rows": 255360,
+     "parents_without_children_fraction": 0.445,
+     "children_per_parent": {
+      "mean": 3.2703,
+      "median": 2.0,
+      "p90": 6.0,
+      "p99": 25.0,
+      "max": 1578.0
+     }
+    }
+   }
+  },
+  "postHistory": {
+   "rows": 1175368,
+   "columns": 10,
+   "pkey": "Id",
+   "time_col": "CreationDate",
+   "fkeys": {
+    "PostId": "posts",
+    "UserId": "users"
+   },
+   "feature_kinds": {
+    "numeric": 1,
+    "categorical": 2,
+    "text": 3
+   },
+   "null_fraction": 0.1843,
+   "time_min": "2009-02-02 14:21:12.103000",
+   "time_max": "2020-12-31 23:51:21.753000",
+   "links": {
+    "PostId": {
+     "parent": "posts",
+     "null_fraction": 0.0,
+     "parents_with_children": 333893,
+     "parent_rows": 333893,
+     "parents_without_children_fraction": 0.0,
+     "children_per_parent": {
+      "mean": 3.5202,
+      "median": 3.0,
+      "p90": 7.0,
+      "p99": 13.0,
+      "max": 76.0
+     }
+    },
+    "UserId": {
+     "parent": "users",
+     "null_fraction": 0.0641,
+     "parents_with_children": 84964,
+     "parent_rows": 255360,
+     "parents_without_children_fraction": 0.6673,
+     "children_per_parent": {
+      "mean": 12.947,
+      "median": 3.0,
+      "p90": 16.0,
+      "p99": 107.0,
+      "max": 69917.0
+     }
+    }
+   }
+  },
+  "users": {
+   "rows": 255360,
+   "columns": 8,
+   "pkey": "Id",
+   "time_col": "CreationDate",
+   "fkeys": {},
+   "feature_kinds": {
+    "numeric": 2,
+    "text": 3,
+    "categorical": 1
+   },
+   "null_fraction": 0.427,
+   "time_min": "2010-07-19 06:55:26.860000",
+   "time_max": "2020-12-31 23:29:43.943000",
+   "links": {}
+  },
+  "votes": {
+   "rows": 1317876,
+   "columns": 5,
+   "pkey": "Id",
+   "time_col": "CreationDate",
+   "fkeys": {
+    "PostId": "posts",
+    "UserId": "users"
+   },
+   "feature_kinds": {
+    "numeric": 1
+   },
+   "null_fraction": 0.2171,
+   "time_min": "2009-02-02 00:00:00",
+   "time_max": "2021-01-01 00:00:00",
+   "links": {
+    "PostId": {
+     "parent": "posts",
+     "null_fraction": 0.0896,
+     "parents_with_children": 276663,
+     "parent_rows": 333893,
+     "parents_without_children_fraction": 0.1714,
+     "children_per_parent": {
+      "mean": 4.3368,
+      "median": 2.0,
+      "p90": 8.0,
+      "p99": 35.0,
+      "max": 1561.0
+     }
+    },
+    "UserId": {
+     "parent": "users",
+     "null_fraction": 0.9961,
+     "parents_with_children": 2608,
+     "parent_rows": 255360,
+     "parents_without_children_fraction": 0.9898,
+     "children_per_parent": {
+      "mean": 1.987,
+      "median": 1.0,
+      "p90": 3.0,
+      "p99": 14.0,
+      "max": 168.0
+     }
+    }
+   }
+  },
+  "comments": {
+   "rows": 623967,
+   "columns": 7,
+   "pkey": "Id",
+   "time_col": "CreationDate",
+   "fkeys": {
+    "UserId": "users",
+    "PostId": "posts"
+   },
+   "feature_kinds": {
+    "categorical": 2,
+    "text": 1
+   },
+   "null_fraction": 0.1429,
+   "time_min": "2009-02-02 14:45:19.280000",
+   "time_max": "2020-12-31 23:21:59.870000",
+   "links": {
+    "UserId": {
+     "parent": "users",
+     "null_fraction": 0.0187,
+     "parents_with_children": 53226,
+     "parent_rows": 255360,
+     "parents_without_children_fraction": 0.7916,
+     "children_per_parent": {
+      "mean": 11.5036,
+      "median": 2.0,
+      "p90": 11.0,
+      "p99": 102.0,
+      "max": 40851.0
+     }
+    },
+    "PostId": {
+     "parent": "posts",
+     "null_fraction": 0.0,
+     "parents_with_children": 187483,
+     "parent_rows": 333893,
+     "parents_without_children_fraction": 0.4385,
+     "children_per_parent": {
+      "mean": 3.3281,
+      "median": 2.0,
+      "p90": 7.0,
+      "p99": 14.0,
+      "max": 66.0
+     }
+    }
+   }
+  },
+  "posts": {
+   "rows": 333893,
+   "columns": 10,
+   "pkey": "Id",
+   "time_col": "CreationDate",
+   "fkeys": {
+    "OwnerUserId": "users",
+    "ParentId": "posts"
+   },
+   "feature_kinds": {
+    "numeric": 1,
+    "text": 4,
+    "categorical": 1
+   },
+   "null_fraction": 0.251,
+   "time_min": "2009-02-02 14:21:12.103000",
+   "time_max": "2020-12-31 23:51:21.753000",
+   "links": {
+    "OwnerUserId": {
+     "parent": "users",
+     "null_fraction": 0.0157,
+     "parents_with_children": 84180,
+     "parent_rows": 255360,
+     "parents_without_children_fraction": 0.6703,
+     "children_per_parent": {
+      "mean": 3.9041,
+      "median": 1.0,
+      "p90": 5.0,
+      "p99": 38.0,
+      "max": 4672.0
+     }
+    },
+    "ParentId": {
+     "parent": "posts",
+     "null_fraction": 0.4988,
+     "parents_with_children": 115363,
+     "parent_rows": 333893,
+     "parents_without_children_fraction": 0.6545,
+     "children_per_parent": {
+      "mean": 1.4507,
+      "median": 1.0,
+      "p90": 2.0,
+      "p99": 5.0,
+      "max": 151.0
+     }
+    }
+   }
+  },
+  "postLinks": {
+   "rows": 77337,
+   "columns": 5,
+   "pkey": "Id",
+   "time_col": "CreationDate",
+   "fkeys": {
+    "PostId": "posts",
+    "RelatedPostId": "posts"
+   },
+   "feature_kinds": {
+    "numeric": 1
+   },
+   "null_fraction": 0.0463,
+   "time_min": "2010-07-21 14:47:33.983000",
+   "time_max": "2020-12-31 21:25:24.547000",
+   "links": {
+    "PostId": {
+     "parent": "posts",
+     "null_fraction": 0.209,
+     "parents_with_children": 37820,
+     "parent_rows": 333893,
+     "parents_without_children_fraction": 0.8867,
+     "children_per_parent": {
+      "mean": 1.6174,
+      "median": 1.0,
+      "p90": 3.0,
+      "p99": 6.0,
+      "max": 25.0
+     }
+    },
+    "RelatedPostId": {
+     "parent": "posts",
+     "null_fraction": 0.0226,
+     "parents_with_children": 24856,
+     "parent_rows": 333893,
+     "parents_without_children_fraction": 0.9256,
+     "children_per_parent": {
+      "mean": 3.041,
+      "median": 1.0,
+      "p90": 5.0,
+      "p99": 30.0,
+      "max": 392.0
+     }
+    }
+   }
+  }
+ },
+ "tasks": {
+  "user-engagement": {
+   "type": "BINARY_CLASSIFICATION",
+   "entity_table": "users",
+   "entity_col": "OwnerUserId",
+   "time_col": "timestamp",
+   "target_col": "contribution",
+   "timedelta": "91 days 00:00:00",
+   "num_eval_timestamps": 1,
+   "splits": {
+    "train": {
+     "rows": 1360850,
+     "unique_entities": 83531,
+     "seed_times": 46,
+     "seed_time_min": "2009-04-16 00:00:00",
+     "seed_time_max": "2020-07-02 00:00:00",
+     "rows_per_entity": {
+      "mean": 16.2916,
+      "median": 15.0,
+      "p90": 30.0,
+      "p99": 39.0,
+      "max": 46.0
+     },
+     "positive_rate": 0.05
+    },
+    "val": {
+     "rows": 85838,
+     "unique_entities": 85838,
+     "seed_times": 1,
+     "seed_time_min": "2020-10-01 00:00:00",
+     "seed_time_max": "2020-10-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.0281
+    },
+    "test": {
+     "rows": 88137,
+     "unique_entities": 88137,
+     "seed_times": 1,
+     "seed_time_min": "2021-01-01 00:00:00",
+     "seed_time_max": "2021-01-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.0274
+    }
+   }
+  },
+  "user-badge": {
+   "type": "BINARY_CLASSIFICATION",
+   "entity_table": "users",
+   "entity_col": "UserId",
+   "time_col": "timestamp",
+   "target_col": "WillGetBadge",
+   "timedelta": "91 days 00:00:00",
+   "num_eval_timestamps": 1,
+   "splits": {
+    "train": {
+     "rows": 3386276,
+     "unique_entities": 239945,
+     "seed_times": 40,
+     "seed_time_min": "2010-10-14 00:00:00",
+     "seed_time_max": "2020-07-02 00:00:00",
+     "rows_per_entity": {
+      "mean": 14.1127,
+      "median": 13.0,
+      "p90": 27.0,
+      "p99": 38.0,
+      "max": 40.0
+     },
+     "positive_rate": 0.0481
+    },
+    "val": {
+     "rows": 247398,
+     "unique_entities": 247398,
+     "seed_times": 1,
+     "seed_time_min": "2020-10-01 00:00:00",
+     "seed_time_max": "2020-10-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.0295
+    },
+    "test": {
+     "rows": 255360,
+     "unique_entities": 255360,
+     "seed_times": 1,
+     "seed_time_min": "2021-01-01 00:00:00",
+     "seed_time_max": "2021-01-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.0264
+    }
+   }
+  },
+  "post-votes": {
+   "type": "REGRESSION",
+   "entity_table": "posts",
+   "entity_col": "PostId",
+   "time_col": "timestamp",
+   "target_col": "popularity",
+   "timedelta": "91 days 00:00:00",
+   "num_eval_timestamps": 1,
+   "splits": {
+    "train": {
+     "rows": 2453921,
+     "unique_entities": 151161,
+     "seed_times": 46,
+     "seed_time_min": "2009-04-16 00:00:00",
+     "seed_time_max": "2020-07-02 00:00:00",
+     "rows_per_entity": {
+      "mean": 16.2338,
+      "median": 15.0,
+      "p90": 30.0,
+      "p99": 38.0,
+      "max": 46.0
+     },
+     "target": {
+      "mean": 0.0931,
+      "median": 0.0,
+      "p90": 0.0,
+      "p99": 2.0,
+      "max": 78.0
+     },
+     "target_std": 0.5104,
+     "target_zero_fraction": 0.9359
+    },
+    "val": {
+     "rows": 156216,
+     "unique_entities": 156216,
+     "seed_times": 1,
+     "seed_time_min": "2020-10-01 00:00:00",
+     "seed_time_max": "2020-10-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target": {
+      "mean": 0.0617,
+      "median": 0.0,
+      "p90": 0.0,
+      "p99": 1.0,
+      "max": 36.0
+     },
+     "target_std": 0.366,
+     "target_zero_fraction": 0.9525
+    },
+    "test": {
+     "rows": 160903,
+     "unique_entities": 160903,
+     "seed_times": 1,
+     "seed_time_min": "2021-01-01 00:00:00",
+     "seed_time_max": "2021-01-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target": {
+      "mean": 0.0679,
+      "median": 0.0,
+      "p90": 0.0,
+      "p99": 1.0,
+      "max": 26.0
+     },
+     "target_std": 0.3691,
+     "target_zero_fraction": 0.9472
+    }
+   }
+  }
+ }
+}
