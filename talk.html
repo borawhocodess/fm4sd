@@ -25,7 +25,7 @@
 <section id="cover" data-transition="fade" style="background:#16202B;color:#F6F7F4;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between;gap:48px">
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#5FC9C4">Thesis scoping · draft</p>
 <div style="display:flex;flex-direction:column;gap:32px">
-<h1 style="font-family:'Source Serif 4', Georgia, serif;font-size:112px;font-weight:600;line-height:1.05">Prediction on relational databases</h1>
+<h1 style="font-family:'Source Serif 4', Georgia, serif;font-size:92px;font-weight:600;line-height:1.05;white-space:nowrap">Prediction on relational databases</h1>
 <p style="font-size:40px;line-height:1.3;color:#BFD0D6">The problem, RelBench, TabPFN-Rel, and related work</p>
 </div>
 <div style="display:flex;justify-content:space-between;align-items:end">
@@ -79,102 +79,121 @@
 
 <section id="why" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0E7C7B">1 · The relational problem</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1">Why one table is not enough</h2>
-<p style="font-size:30px;line-height:1.4;color:#2E3A46">A tabular model needs one row with a fixed number of columns. A customer has 0, 3 or 3000 transactions: a set, not a vector.</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;white-space:nowrap">Why one table is not enough</h2>
+<ul style="font-size:30px;line-height:1.45;color:#2E3A46;white-space:nowrap">
+<li>A tabular model needs one row with a fixed number of columns.</li>
+<li>A customer has 0, 3 or 3000 transactions: a set, not a vector.</li>
+</ul>
 <div style="display:flex;gap:32px">
 <div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFE;padding:36px;border:1px solid #D5DAD6;border-radius:12px">
 <h3 style="font-size:36px;font-weight:600;color:#0E7C7B">Flatten</h3>
-<p style="font-size:28px;line-height:1.4;color:#2E3A46">Aggregate the linked rows into columns (count, mean, max, …). Then use a tabular model.</p>
-<p style="font-size:28px;line-height:1.4;color:#2E3A46"><b>Can lose:</b> signal further away than the depth limit, and interactions between columns of the linked rows.</p>
+<ul style="font-size:28px;line-height:1.45;color:#2E3A46;white-space:nowrap">
+<li>Aggregate linked rows into columns.</li>
+<li>Then use a tabular model.</li>
+<li>Can lose: signal beyond the depth limit.</li>
+<li>Can lose: interactions between columns.</li>
+</ul>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFE;padding:36px;border:1px solid #D5DAD6;border-radius:12px">
 <h3 style="font-size:36px;font-weight:600;color:#C8791B">Keep the structure</h3>
-<p style="font-size:28px;line-height:1.4;color:#2E3A46">Rows are nodes, key links are edges. Learn on the graph.</p>
-<p style="font-size:28px;line-height:1.4;color:#2E3A46"><b>Costs:</b> a model per task, or a relational foundation model that must be pretrained on databases.</p>
+<ul style="font-size:28px;line-height:1.45;color:#2E3A46;white-space:nowrap">
+<li>Rows are nodes, key links are edges.</li>
+<li>Learn on the graph.</li>
+<li>Cost: one trained model per task,</li>
+<li>or a pretrained relational model.</li>
+</ul>
 </div>
 </div>
-<p style="font-size:30px;line-height:1.4;font-weight:500;color:#16202B">On the real benchmark, flattening is still competitive.</p>
+<p style="font-size:30px;line-height:1.4;font-weight:500;color:#16202B;white-space:nowrap">On the real benchmark, flattening is still competitive.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6A7480">log: relicl-1, relarena-4</p>
 <aside>The two losses of flattening are shown by RelICL on synthetic tasks. RelArena shows that flattening plus TabPFN-3 is first among models with standard tuning.</aside>
 </section>
 
 <section id="db" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0E7C7B">2 · Formal definition</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1">The database</h2>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;white-space:nowrap">The database</h2>
 <div style="display:flex;gap:48px">
 <div style="flex:1;display:flex;flex-direction:column;gap:20px">
 <p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:40px;font-weight:600;color:#0E7C7B">(𝒯, ℒ)</p>
-<p style="font-size:30px;line-height:1.4;color:#2E3A46"><b>Tables</b> 𝒯 = {T₁, …, Tₙ}</p>
-<p style="font-size:30px;line-height:1.4;color:#2E3A46"><b>Links</b> ℒ ⊆ 𝒯 × 𝒯. A link (T_fkey, T_pkey) exists if a foreign key column of T_fkey points to the primary key of T_pkey.</p>
-<p style="font-size:30px;line-height:1.4;color:#2E3A46">A table is a set of rows. A row is called an <b>entity</b>.</p>
+<ul style="font-size:30px;line-height:1.5;color:#2E3A46;white-space:nowrap">
+<li><b>Tables</b> 𝒯 = {T₁, …, Tₙ}</li>
+<li><b>Links</b> ℒ ⊆ 𝒯 × 𝒯</li>
+<li>(T_fkey, T_pkey) ∈ ℒ: a foreign key of T_fkey</li>
+<li>points to the primary key of T_pkey.</li>
+<li>A table is a set of rows. A row is an <b>entity</b>.</li>
+</ul>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFFFE;padding:36px;border:1px solid #D5DAD6;border-radius:12px">
-<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:40px;font-weight:600;color:#0E7C7B">v = (pᵥ, 𝒦ᵥ, xᵥ, tᵥ)</p>
-<table style="font-size:28px;color:#2E3A46">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:40px;font-weight:600;color:#0E7C7B;white-space:nowrap">v = (pᵥ, 𝒦ᵥ, xᵥ, tᵥ)</p>
+<table style="font-size:28px;color:#2E3A46;white-space:nowrap">
 <tr><td style="width:18%">pᵥ</td><td style="width:82%">primary key</td></tr>
 <tr><td>𝒦ᵥ</td><td>foreign keys</td></tr>
-<tr><td>xᵥ</td><td>attributes; all rows of one table have the same columns</td></tr>
+<tr><td>xᵥ</td><td>attributes, same columns per table</td></tr>
 <tr><td>tᵥ</td><td>timestamp, optional</td></tr>
 </table>
 </div>
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6A7480">Notation of Fey et al. 2023, §2.1; the RDL survey uses the same symbols · log: formal-1, formal-2</p>
-<aside>This is the notation of the relational deep learning position paper. RelBench describes the same objects in words.</aside>
+<aside>This is the notation of the relational deep learning position paper. A link exists if a foreign key column of one table points to the primary key of another. RelBench describes the same objects in words.</aside>
 </section>
 
 <section id="task" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0E7C7B">2 · Formal definition</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1">The task is one more table</h2>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;white-space:nowrap">The task is one more table</h2>
 <div style="display:flex;gap:48px">
 <div style="flex:1;display:flex;flex-direction:column;gap:20px">
-<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:36px;font-weight:600;color:#0E7C7B">T_train: v = (𝒦ᵥ, tᵥ, yᵥ)</p>
-<ul style="font-size:30px;line-height:1.45;color:#2E3A46">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:36px;font-weight:600;color:#0E7C7B;white-space:nowrap">T_train: v = (𝒦ᵥ, tᵥ, yᵥ)</p>
+<ul style="font-size:30px;line-height:1.45;color:#2E3A46;white-space:nowrap">
 <li>𝒦ᵥ: which entity the example is about</li>
 <li>tᵥ: when the prediction is made (seed time)</li>
 <li>yᵥ: the label</li>
+<li>No inputs xᵥ here. The input is the database.</li>
 </ul>
-<p style="font-size:30px;line-height:1.4;color:#2E3A46">The training table has no inputs xᵥ. The input is the database.</p>
-<p style="font-size:30px;line-height:1.4;font-weight:500;background:#FBEBD3;padding:20px 28px;border-radius:12px">To predict yᵥ, use only entities u with tᵤ ≤ tᵥ.</p>
+<p style="font-size:30px;line-height:1.4;font-weight:500;background:#FBEBD3;padding:20px 28px;border-radius:12px;white-space:nowrap">To predict yᵥ, use only entities u with tᵤ ≤ tᵥ.</p>
 </div>
 <div style="width:620px;display:flex;flex-direction:column;gap:20px">
 <div style="display:flex;flex-direction:column;gap:12px;background:#FFFFFE;padding:28px;border:1px solid #D5DAD6;border-radius:12px">
 <h3 style="font-size:28px;font-weight:600;color:#0E7C7B">training table (example)</h3>
-<table style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#2E3A46">
+<table style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#2E3A46;white-space:nowrap">
 <tr><th>EntityID</th><th>Time</th><th>Label</th></tr>
 <tr><td>c1</td><td>2015-07-01</td><td>0</td></tr>
 <tr><td>c1</td><td>2015-10-01</td><td>1</td></tr>
 <tr><td>c2</td><td>2015-10-01</td><td>0</td></tr>
 </table>
 </div>
-<p style="font-size:28px;line-height:1.4;color:#2E3A46">Labels come from the database itself: an SQL query over the window [t, t + δ], repeated for earlier t.</p>
+<ul style="font-size:26px;line-height:1.45;color:#2E3A46;white-space:nowrap">
+<li>Labels come from the database itself:</li>
+<li>an SQL query over the window [t, t + δ],</li>
+<li>repeated for earlier t.</li>
+</ul>
 </div>
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6A7480">Fey et al. 2023, §2.2 · the table rows are an invented example · log: formal-3 to formal-6</p>
-<aside>The same customer appears at several seed times. RDBLearn uses strictly earlier, t_u less than t_v; RelArena notes that this boundary is not standardized.</aside>
+<aside>The training table has no input attributes; the input is the database. The same customer appears at several seed times. RDBLearn uses strictly earlier, t_u less than t_v; RelArena notes that this boundary is not standardized.</aside>
 </section>
 
 <section id="learn" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0E7C7B">2 · Formal definition</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1">Two ways to learn, and what flattening is</h2>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;white-space:nowrap">Two ways to learn, and what flattening is</h2>
 <div style="display:flex;gap:32px">
 <div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFE;padding:32px;border:1px solid #D5DAD6;border-radius:12px">
 <h3 style="font-size:32px;font-weight:600;color:#16202B">Trained per task</h3>
-<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;line-height:1.4;color:#0E7C7B">f_θ(x_test, RDB) ≈ y_test</p>
-<p style="font-size:26px;line-height:1.4;color:#2E3A46">Fit θ on the training table of this task.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;line-height:1.4;color:#0E7C7B;white-space:nowrap">f_θ(x_test, RDB) ≈ y_test</p>
+<p style="font-size:26px;line-height:1.4;color:#2E3A46;white-space:nowrap">Fit θ on the training table of this task.</p>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFE;padding:32px;border:1px solid #D5DAD6;border-radius:12px">
 <h3 style="font-size:32px;font-weight:600;color:#16202B">In-context</h3>
-<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;line-height:1.4;color:#0E7C7B">y_test = f_θ(x_test, D_ICL, RDB)</p>
-<p style="font-size:26px;line-height:1.4;color:#2E3A46">D_ICL = {(xᵢ, yᵢ)} are labelled examples. No training on the task.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;line-height:1.4;color:#0E7C7B;white-space:nowrap">y_test = f_θ(x_test, D_ICL, RDB)</p>
+<p style="font-size:26px;line-height:1.4;color:#2E3A46;white-space:nowrap">D_ICL = {(xᵢ, yᵢ)}: labelled examples. No training.</p>
 </div>
 </div>
 <div style="display:flex;flex-direction:column;gap:16px;background:#E3F1EF;padding:32px;border-radius:12px">
-<h3 style="font-size:32px;font-weight:600;color:#16202B">Flattening is a fixed function g of the neighbourhood</h3>
-<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;line-height:1.5;color:#0B5F5E">u = g(N_RDB(x))     z = [x; u]     y_test = f_θ(z_test, D_ICL of z)</p>
-<p style="font-size:28px;line-height:1.4;color:#2E3A46">The database reaches the model only through g.</p>
+<h3 style="font-size:32px;font-weight:600;color:#16202B;white-space:nowrap">Flattening is a fixed function g of the neighbourhood</h3>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;line-height:1.5;color:#0B5F5E;white-space:nowrap">u = g(N_RDB(x)) · z = [x; u] · y_test = f_θ(z_test, D_ICL of z)</p>
+<p style="font-size:28px;line-height:1.4;color:#2E3A46;white-space:nowrap">The database reaches the model only through g.</p>
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6A7480">Notation of RDBLearn §2–3 · log: formal-7</p>
-<aside>g is not learned. This is the point where a learned or prior-matched flattening would enter.</aside>
+<aside>In-context: no training on the task; the labelled examples are part of the input. g is not learned. This is the point where a learned or prior-matched flattening would enter.</aside>
 </section>
 
 <section id="rb-data" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
@@ -197,34 +216,37 @@
 
 <section id="rb-tasks" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0E7C7B">3 · RelBench</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1">Tasks, split, metrics</h2>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;white-space:nowrap">Tasks, split, metrics</h2>
 <div style="display:flex;gap:24px">
 <div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#FFFFFE;padding:28px;border:1px solid #D5DAD6;border-radius:12px">
 <p style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#0E7C7B">12</p>
-<p style="font-size:26px;line-height:1.3;color:#2E3A46">entity classification, all binary · ROC-AUC</p>
+<p style="font-size:26px;line-height:1.3;color:#2E3A46;white-space:nowrap">entity classification, binary</p>
+<p style="font-size:26px;line-height:1.3;color:#6A7480;white-space:nowrap">metric: ROC-AUC</p>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#FFFFFE;padding:28px;border:1px solid #D5DAD6;border-radius:12px">
 <p style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#0E7C7B">9</p>
-<p style="font-size:26px;line-height:1.3;color:#2E3A46">entity regression · MAE</p>
+<p style="font-size:26px;line-height:1.3;color:#2E3A46;white-space:nowrap">entity regression</p>
+<p style="font-size:26px;line-height:1.3;color:#6A7480;white-space:nowrap">metric: MAE</p>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:4px;background:#FFFFFE;padding:28px;border:1px solid #D5DAD6;border-radius:12px">
 <p style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#8A939B">9</p>
-<p style="font-size:26px;line-height:1.3;color:#2E3A46">recommendation · MAP@K · not used by most later papers</p>
+<p style="font-size:26px;line-height:1.3;color:#2E3A46;white-space:nowrap">recommendation</p>
+<p style="font-size:26px;line-height:1.3;color:#6A7480;white-space:nowrap">metric: MAP@K · rarely used later</p>
 </div>
 </div>
 <div style="display:flex;gap:48px">
 <div style="flex:1;display:flex;flex-direction:column;gap:12px">
-<h3 style="font-size:30px;font-weight:600">Every task is a next-window question</h3>
-<ul style="font-size:26px;line-height:1.45;color:#2E3A46">
+<h3 style="font-size:30px;font-weight:600;white-space:nowrap">Every task is a next-window question</h3>
+<ul style="font-size:26px;line-height:1.45;color:#2E3A46;white-space:nowrap">
 <li>amazon/user-churn: no review in the next 3 months</li>
 <li>f1/driver-top3: qualifies top 3 in the next month</li>
 <li>hm/item-sales: total sales in the next week</li>
-<li>trial/study-adverse: severe adverse events, next year</li>
+<li>trial/study-adverse: adverse events, next year</li>
 </ul>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:12px">
-<h3 style="font-size:30px;font-weight:600">Split by time</h3>
-<ul style="font-size:26px;line-height:1.45;color:#2E3A46">
+<h3 style="font-size:30px;font-weight:600;white-space:nowrap">Split by time</h3>
+<ul style="font-size:26px;line-height:1.45;color:#2E3A46;white-space:nowrap">
 <li>train: rows up to the val cutoff</li>
 <li>validate: between the two cutoffs</li>
 <li>test: after the test cutoff</li>
@@ -233,190 +255,189 @@
 </div>
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6A7480">Robinson et al. 2024 · log: relbench-2 to relbench-5</p>
-<aside>The 21 entity tasks are what RelArena and RelICL evaluate. The same entity appears many times at different seed times.</aside>
+<aside>The 21 entity tasks are what RelArena and RelICL evaluate; most later papers do not use the recommendation tasks. The same entity appears many times at different seed times.</aside>
 </section>
 
 <section id="rb-caveats" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0E7C7B">3 · RelBench</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1">Published numbers are hard to compare</h2>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;white-space:nowrap">Published numbers are hard to compare</h2>
 <div style="display:flex;gap:48px">
-<div style="width:520px;display:flex;flex-direction:column;gap:16px;background:#FFFFFE;padding:32px;border:1px solid #D5DAD6;border-radius:12px">
-<h3 style="font-size:30px;font-weight:600">The paper's own result</h3>
-<p style="font-size:26px;line-height:1.4;color:#2E3A46">Test AUC, average of 12 tasks</p>
-<div style="display:flex;gap:32px;align-items:end">
+<div style="width:600px;display:flex;flex-direction:column;gap:16px;background:#FFFFFE;padding:32px;border:1px solid #D5DAD6;border-radius:12px">
+<h3 style="font-size:30px;font-weight:600;white-space:nowrap">The paper's own result</h3>
+<p style="font-size:26px;line-height:1.4;color:#2E3A46;white-space:nowrap">Test AUC, average of 12 tasks</p>
+<div style="display:flex;gap:40px;align-items:end">
 <div style="display:flex;flex-direction:column;gap:4px">
 <p style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#0E7C7B">75.8</p>
-<p style="font-size:24px;color:#2E3A46">GNN on the row graph</p>
+<p style="font-size:24px;color:#2E3A46;white-space:nowrap">GNN on row graph</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:4px">
 <p style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;color:#8A939B">63.7</p>
-<p style="font-size:24px;color:#2E3A46">LightGBM, entity table only</p>
+<p style="font-size:24px;color:#2E3A46;white-space:nowrap">LightGBM, one table</p>
 </div>
 </div>
-<p style="font-size:26px;line-height:1.4;color:#2E3A46">This LightGBM sees no other table. It is a weak stand-in for "tabular".</p>
+<p style="font-size:26px;line-height:1.4;color:#2E3A46;white-space:nowrap">This LightGBM sees no other table.</p>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:16px">
-<h3 style="font-size:30px;font-weight:600">What RelArena found when it re-ran the methods</h3>
-<ul style="font-size:28px;line-height:1.5;color:#2E3A46">
-<li>Two evaluation regimes are in use. On rel-f1 the difference is more than 10 AUC points.</li>
-<li>A label leak in rel-event/user-ignore was fixed in 2026. Old numbers are 2 to 6 AUC points too high.</li>
+<h3 style="font-size:30px;font-weight:600;white-space:nowrap">What RelArena found when it re-ran the methods</h3>
+<ul style="font-size:26px;line-height:1.6;color:#2E3A46;white-space:nowrap">
+<li>Two evaluation regimes; on rel-f1 they differ by 10+ AUC points.</li>
+<li>Label leak in rel-event, fixed 2026: old scores 2–6 points too high.</li>
 <li>Tuning effort differs and is often not documented.</li>
-<li>Each paper aggregates regression results in a different way.</li>
+<li>Each paper aggregates regression results differently.</li>
 </ul>
 </div>
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6A7480">Robinson et al. 2024; Hayler et al. 2026, §1 · log: relbench-6, relarena-2</p>
-<aside>Regime one freezes the database at the test cutoff for all test rows. Regime two lets each test row see data up to its own timestamp. Only rel-f1 has test timestamps that span years.</aside>
+<aside>The LightGBM baseline uses the entity table only, so it is a weak stand-in for tabular methods. Regime one freezes the database at the test cutoff for all test rows. Regime two lets each test row see data up to its own timestamp. Only rel-f1 has test timestamps that span years. The leak was in rel-event/user-ignore.</aside>
 </section>
 
-<section id="pipeline" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<section id="pipeline" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0E7C7B">4 · TabPFN-Rel</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1">Flatten the database, then predict in-context</h2>
-<div style="display:flex;gap:16px;align-items:stretch">
-<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFFFE;padding:28px;border:1px solid #D5DAD6;border-radius:12px">
-<h3 style="font-size:30px;font-weight:600;color:#0E7C7B">Database + training table</h3>
-<p style="font-size:24px;line-height:1.4;color:#2E3A46">Tables, key links, one row per (entity, seed time, label).</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;white-space:nowrap">Flatten the database, then predict in-context</h2>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;gap:24px;align-items:center;background:#FFFFFE;padding:20px 32px;border:1px solid #D5DAD6;border-radius:12px">
+<h3 style="width:440px;font-size:30px;font-weight:600;color:#0E7C7B;white-space:nowrap">1 · Database + training table</h3>
+<p style="font-size:27px;line-height:1.4;color:#2E3A46;white-space:nowrap">Tables, key links, and one row per (entity, seed time, label).</p>
 </div>
-<x-connector head="end" style="width:56px;color:#16202B;border-width:3px;align-self:center;height:2px"></x-connector>
-<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFFFE;padding:28px;border:1px solid #D5DAD6;border-radius:12px">
-<h3 style="font-size:30px;font-weight:600;color:#0E7C7B">Deep feature synthesis</h3>
-<p style="font-size:24px;line-height:1.4;color:#2E3A46">Aggregate along all key paths up to depth d. Each row sees only data before its cutoff.</p>
+<div style="display:flex;gap:24px;align-items:center;background:#FFFFFE;padding:20px 32px;border:1px solid #D5DAD6;border-radius:12px">
+<h3 style="width:440px;font-size:30px;font-weight:600;color:#0E7C7B;white-space:nowrap">2 · Deep feature synthesis</h3>
+<p style="font-size:27px;line-height:1.4;color:#2E3A46;white-space:nowrap">Aggregate along all key paths up to depth d, before each row's cutoff.</p>
 </div>
-<x-connector head="end" style="width:56px;color:#16202B;border-width:3px;align-self:center;height:2px"></x-connector>
-<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFFFE;padding:28px;border:1px solid #D5DAD6;border-radius:12px">
-<h3 style="font-size:30px;font-weight:600;color:#0E7C7B">One flat table</h3>
-<p style="font-size:24px;line-height:1.4;color:#2E3A46">Plus calendar features and past labels of the same entity.</p>
+<div style="display:flex;gap:24px;align-items:center;background:#FFFFFE;padding:20px 32px;border:1px solid #D5DAD6;border-radius:12px">
+<h3 style="width:440px;font-size:30px;font-weight:600;color:#0E7C7B;white-space:nowrap">3 · One flat table</h3>
+<p style="font-size:27px;line-height:1.4;color:#2E3A46;white-space:nowrap">Plus calendar features and past labels of the same entity.</p>
 </div>
-<x-connector head="end" style="width:56px;color:#16202B;border-width:3px;align-self:center;height:2px"></x-connector>
-<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#16202B;padding:28px;border-radius:12px">
-<h3 style="font-size:30px;font-weight:600;color:#5FC9C4">TabPFN-3</h3>
-<p style="font-size:24px;line-height:1.4;color:#DCE5E8">Train rows are the context. Test rows are the queries.</p>
+<div style="display:flex;gap:24px;align-items:center;background:#16202B;padding:20px 32px;border-radius:12px">
+<h3 style="width:440px;font-size:30px;font-weight:600;color:#5FC9C4;white-space:nowrap">4 · TabPFN-3, in-context</h3>
+<p style="font-size:27px;line-height:1.4;color:#DCE5E8;white-space:nowrap">Train rows are the context. Test rows are the queries.</p>
 </div>
 </div>
-<ul style="font-size:30px;line-height:1.5;color:#2E3A46">
+<ul style="font-size:30px;line-height:1.5;color:#2E3A46;white-space:nowrap">
 <li>Prior Labs' harness around TabPFN-3. No relational model is trained.</li>
 <li>Lineage: featuretools (DFS) → RDBLearn → TabPFN-Rel.</li>
 </ul>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6A7480">Hayler et al. 2026, §2.2 and code · log: tabpfnrel-1, tabpfnrel-3</p>
-<aside>In the formal view of slide 6, deep feature synthesis is the fixed function g and TabPFN-3 is f.</aside>
+<aside>In the formal view of slide 6, deep feature synthesis is the fixed function g and TabPFN-3 is f. Each row only sees data before its own cutoff time.</aside>
 </section>
 
 <section id="details" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0E7C7B">4 · TabPFN-Rel</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1">The settings</h2>
-<table style="font-size:26px;color:#2E3A46">
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;white-space:nowrap">The settings</h2>
+<table style="font-size:26px;color:#2E3A46;white-space:nowrap">
 <tr style="background:#E3F1EF"><th style="width:22%">Part</th><th style="width:78%">Setting</th></tr>
 <tr><td>DFS depth d</td><td>2, 3 or 4, chosen on validation. The only tuned value.</td></tr>
 <tr><td>DFS engine</td><td>fastdfs, SQL on DuckDB. Computed once at depth 4, cut down for 2 and 3.</td></tr>
 <tr><td>Time columns</td><td>Turned into "time before the cutoff".</td></tr>
 <tr><td>Text columns</td><td>Dropped. The API version re-attaches the entity table's text.</td></tr>
-<tr><td>Added features</td><td>sin/cos of month, weekday, day of year; lags of the entity's own past labels.</td></tr>
-<tr><td>Context</td><td>100,000 rows per estimator, drawn from the 400,000 most recent training rows; 8 estimators.</td></tr>
+<tr><td>Added features</td><td>sin/cos of month, weekday, day of year; lags of the entity's past labels.</td></tr>
+<tr><td>Context</td><td>8 estimators; each draws 100,000 rows from the 400,000 most recent.</td></tr>
 <tr><td>Test time</td><td>Validation rows are added to the context.</td></tr>
 </table>
-<p style="font-size:26px;line-height:1.4;color:#2E3A46"><b>Against RDBLearn:</b> TabPFN-3 only, 10× more context rows, recency-aware context, text, and a tuning split frozen at the val cutoff.</p>
+<p style="font-size:26px;line-height:1.4;color:#2E3A46;white-space:nowrap"><b>Against RDBLearn:</b> TabPFN-3 only, 10× more context rows, recency-aware context, text columns.</p>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6A7480">Paper + relarena code · aggregation list not confirmed yet · log: tabpfnrel-2, tabpfnrel-3</p>
-<aside>RDBLearn's default aggregations are max, min, mean, count, mode, std. It is not yet confirmed that TabPFN-Rel uses the same list.</aside>
+<aside>One more change against RDBLearn: the tuning split is frozen at the val cutoff. RDBLearn's default aggregations are max, min, mean, count, mode, std. It is not yet confirmed that TabPFN-Rel uses the same list.</aside>
 </section>
 
 <section id="results" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0E7C7B">4 · TabPFN-Rel</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1">Results on RelArena, and the limits</h2>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;white-space:nowrap">Results on RelArena, and the limits</h2>
 <div style="display:flex;gap:48px">
-<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;padding:32px 0px">
 <h3 style="font-size:30px;font-weight:600;color:#0E7C7B">Results</h3>
-<ul style="font-size:27px;line-height:1.5;color:#2E3A46">
-<li>RelArena: 21 RelBench entity tasks, one harness, one evaluation regime, Elo over tasks.</li>
-<li>TabPFN-Rel is first among methods with the standard tuning regime.</li>
-<li>First overall is RT-PluRel: a relational transformer pretrained on synthetic databases, then fine-tuned per task.</li>
-<li>A predictor that returns each entity's own past average beats two GNN methods on 4 tasks each.</li>
+<ul style="font-size:26px;line-height:1.7;color:#2E3A46;white-space:nowrap">
+<li>RelArena: 21 RelBench entity tasks, one harness, Elo.</li>
+<li>TabPFN-Rel: first with the standard tuning regime.</li>
+<li>RT-PluRel: first overall, fine-tuned per task.</li>
+<li>Each entity's past average beats 2 GNNs on 4 tasks.</li>
 </ul>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FBEBD3;padding:32px;border-radius:12px">
-<h3 style="font-size:30px;font-weight:600;color:#8A4F0A">Limits the authors state</h3>
-<ul style="font-size:27px;line-height:1.5;color:#2E3A46">
+<h3 style="font-size:30px;font-weight:600;color:#8A4F0A;white-space:nowrap">Limits the authors state</h3>
+<ul style="font-size:26px;line-height:1.7;color:#2E3A46;white-space:nowrap">
 <li>One seed.</li>
-<li>DFS is CPU work and can take hours per database. It is not in the runtime table.</li>
-<li>Tuning the depth helps on 9 of 21 tasks only.</li>
-<li>Without text the Elo drops from 1821 to 1706. Two tasks cause this.</li>
-<li>Methods do not all use the same timestamp boundary.</li>
-<li>No gradient-boosted trees on the DFS features yet.</li>
+<li>DFS takes CPU hours; not in the runtime table.</li>
+<li>Tuning the depth helps on 9 of 21 tasks.</li>
+<li>Without text: Elo 1821 → 1706, from two tasks.</li>
+<li>Timestamp boundary differs between methods.</li>
+<li>No boosted trees on DFS features yet.</li>
 </ul>
 </div>
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6A7480">Hayler et al. 2026 · log: relarena-4 to relarena-9</p>
-<aside>RT-PluRel is a system submission: it runs its own tuning, up to 50,000 fine-tuning steps per task. The two text tasks are rel-event/user-ignore and rel-avito/user-clicks.</aside>
+<aside>RelArena uses one evaluation regime for all methods. RT-PluRel is a relational transformer pretrained on synthetic databases; it is a system submission with its own tuning, up to 50,000 fine-tuning steps per task. The constant predictor returns each entity's own past average and beats RelGNN and RelGT on 4 tasks each. The two text tasks are rel-event/user-ignore and rel-avito/user-clicks.</aside>
 </section>
 
 <section id="families" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0E7C7B">5 · Related work</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1">Five method families</h2>
-<table style="font-size:26px;color:#2E3A46">
-<tr style="background:#E3F1EF"><th style="width:24%">Family</th><th style="width:34%">Idea</th><th style="width:24%">Examples</th><th style="width:18%">Trained on</th></tr>
-<tr><td>GNN per task</td><td>Rows are nodes, keys are edges; train on the task</td><td>RDL / GraphSAGE, RelGNN, RelGT</td><td>the task</td></tr>
-<tr><td>Flatten + tabular FM</td><td>DFS, then an in-context tabular model</td><td>RDBLearn, TabPFN-Rel</td><td>nothing relational</td></tr>
-<tr><td>Tabular FM in place of DFS</td><td>Pool the model's row embeddings along key links</td><td>RelICL</td><td>nothing relational</td></tr>
-<tr><td>Relational FM, real data</td><td>One model for any schema</td><td>RT, KumoRFM (closed)</td><td>real databases</td></tr>
-<tr><td>Relational FM, synthetic data</td><td>A prior over databases</td><td>PluRel → RT, RDB-PFN, OpenRFM (mixed)</td><td>synthetic databases</td></tr>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;white-space:nowrap">Five method families</h2>
+<table style="font-size:25px;color:#2E3A46;white-space:nowrap">
+<tr style="background:#E3F1EF"><th style="width:23%">Family</th><th style="width:27%">Idea</th><th style="width:29%">Examples</th><th style="width:21%">Trained on</th></tr>
+<tr><td>GNN per task</td><td>Row graph, trained per task</td><td>GraphSAGE, RelGNN, RelGT</td><td>the task</td></tr>
+<tr><td>Flatten + tabular FM</td><td>DFS, then in-context TFM</td><td>RDBLearn, TabPFN-Rel</td><td>nothing relational</td></tr>
+<tr><td>TFM in place of DFS</td><td>Pool TFM row embeddings</td><td>RelICL</td><td>nothing relational</td></tr>
+<tr><td>Rel. FM, real data</td><td>One model for any schema</td><td>RT, KumoRFM (closed)</td><td>real databases</td></tr>
+<tr><td>Rel. FM, synthetic data</td><td>A prior over databases</td><td>PluRel → RT, RDB-PFN, OpenRFM</td><td>synthetic databases</td></tr>
 </table>
-<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6A7480">log: timeline</p>
-<aside>The grouping is mine. The last family is where a PFN-style thesis would sit.</aside>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6A7480">TFM = tabular foundation model · log: timeline</p>
+<aside>The grouping is mine. GNN per task: rows are nodes, keys are edges. RelICL pools the tabular model's row embeddings along key links. OpenRFM mixes synthetic and real data. The last family is where a PFN-style thesis would sit.</aside>
 </section>
 
 <section id="timeline" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:28px">
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0E7C7B">5 · Related work</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1">Timeline</h2>
-<table style="font-size:24px;color:#2E3A46;font-variant-numeric:tabular-nums">
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;white-space:nowrap">Timeline</h2>
+<table style="font-size:24px;color:#2E3A46;font-variant-numeric:tabular-nums;white-space:nowrap">
 <tr style="background:#E3F1EF"><th style="width:11%">When</th><th style="width:21%">Paper</th><th style="width:44%">Contribution</th><th style="width:24%">Builds on</th></tr>
 <tr><td>2023-12</td><td>RDL</td><td>Database as temporal graph; training table</td><td>–</td></tr>
 <tr><td>2024-07</td><td>RelBench</td><td>7 databases, 30 tasks, time split</td><td>RDL</td></tr>
-<tr><td>2025-10</td><td>RT</td><td>Cell tokens, relational attention, zero-shot across databases</td><td>RDL, RelBench</td></tr>
+<tr><td>2025-10</td><td>RT</td><td>Cell tokens, relational attention, zero-shot</td><td>RDL, RelBench</td></tr>
 <tr><td>2026-02</td><td>PluRel</td><td>Synthetic database generator; pretrains RT</td><td>RT, TabPFN prior</td></tr>
 <tr><td>2026-02</td><td>RDBLearn</td><td>DFS + tabular foundation model, open toolkit</td><td>featuretools</td></tr>
 <tr><td>2026-03</td><td>RDB-PFN</td><td>Synthetic relational prior → DFS → small PFN</td><td>TabPFN, nanoTabPFN, DFS</td></tr>
-<tr><td>2026-06</td><td>OpenRFM</td><td>Why RT fails; RT + TabICL layer; synthetic + real data</td><td>RT, PluRel, TabICL</td></tr>
+<tr><td>2026-06</td><td>OpenRFM</td><td>Why RT fails; RT + TabICL layer; mixed data</td><td>RT, PluRel, TabICL</td></tr>
 <tr><td>2026-08</td><td>RelArena, TabPFN-Rel</td><td>Comparable re-runs; DFS + TabPFN-3</td><td>RelBench, RDBLearn</td></tr>
 <tr><td>2026-10</td><td>RelICL</td><td>Row embeddings in place of DFS, no training</td><td>RDBLearn, TabICL</td></tr>
 </table>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6A7480">Month = arXiv id of the first version · log: timeline</p>
-<aside>Three chains: featuretools to RDBLearn to TabPFN-Rel. RDL to RelBench to RT to PluRel to RT-PluRel. TabPFN plus DFS to RDB-PFN.</aside>
+<aside>Three chains: featuretools to RDBLearn to TabPFN-Rel. RDL to RelBench to RT to PluRel to RT-PluRel. TabPFN plus DFS to RDB-PFN. RT is zero-shot across databases. OpenRFM uses synthetic plus real data.</aside>
 </section>
 
 <section id="position" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0E7C7B">5 · Related work</p>
-<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1">Each method changes a different part</h2>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;white-space:nowrap">Each method changes a different part</h2>
 <div style="display:flex;gap:24px">
 <div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFFFE;padding:32px;border:1px solid #D5DAD6;border-radius:12px">
 <h3 style="font-size:34px;font-weight:600;color:#0E7C7B">RDB-PFN</h3>
-<p style="font-size:26px;font-weight:600;line-height:1.3;color:#16202B">Changes the prior, keeps DFS</p>
-<ul style="font-size:24px;line-height:1.45;color:#2E3A46">
-<li>Synthetic databases → DFS → a 6-layer PFN</li>
+<p style="font-size:26px;font-weight:600;line-height:1.3;color:#16202B;white-space:nowrap">New prior, same DFS</p>
+<ul style="font-size:24px;line-height:1.6;color:#2E3A46;white-space:nowrap">
+<li>Synthetic DBs → DFS → 6-layer PFN</li>
 <li>Binary classification only</li>
-<li>Context up to 1024 rows, 30 columns</li>
-<li>Tested few-shot, not in the full RelBench protocol</li>
-<li>Its own ablation: DFS settings move average AUC from 0.57 to 0.73</li>
+<li>Context ≤ 1024 rows, 30 columns</li>
+<li>Few-shot tests only</li>
+<li>DFS choice: AUC 0.57 → 0.73</li>
 </ul>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFFFE;padding:32px;border:1px solid #D5DAD6;border-radius:12px">
 <h3 style="font-size:34px;font-weight:600;color:#0E7C7B">RelICL</h3>
-<p style="font-size:26px;font-weight:600;line-height:1.3;color:#16202B">Changes the flattening, keeps the tabular model</p>
-<ul style="font-size:24px;line-height:1.45;color:#2E3A46">
+<p style="font-size:26px;font-weight:600;line-height:1.3;color:#16202B;white-space:nowrap">New flattening, same TFM</p>
+<ul style="font-size:24px;line-height:1.6;color:#2E3A46;white-space:nowrap">
 <li>No training, no depth limit</li>
 <li>Sees column interactions</li>
-<li>"On par" with TabPFN-Rel on RelBench, with numbers copied from the papers</li>
+<li>Claims par with TabPFN-Rel</li>
+<li>Baselines not re-run</li>
 </ul>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFFFE;padding:32px;border:1px solid #D5DAD6;border-radius:12px">
 <h3 style="font-size:34px;font-weight:600;color:#0E7C7B">PluRel → RT</h3>
-<p style="font-size:26px;font-weight:600;line-height:1.3;color:#16202B">Changes both: relational model, relational prior</p>
-<ul style="font-size:24px;line-height:1.45;color:#2E3A46">
-<li>Needs fine-tuning per task to be first on RelArena</li>
-<li>OpenRFM: synthetic-only pretraining leaves RT in a "lazy" regime</li>
+<p style="font-size:26px;font-weight:600;line-height:1.3;color:#16202B;white-space:nowrap">New model, new prior</p>
+<ul style="font-size:24px;line-height:1.6;color:#2E3A46;white-space:nowrap">
+<li>First overall on RelArena</li>
+<li>Needs fine-tuning per task</li>
+<li>Synthetic-only: "lazy" regime</li>
 </ul>
 </div>
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6A7480">log: rdbpfn-1, -4, -6, -7 · relicl-2, -4 · relarena-4 · openrfm-1</p>
-<aside>RDB-PFN's schema generator is trained on real schemas, so only the table contents are synthetic. Its released config has width 96; the paper says 128.</aside>
+<aside>RDB-PFN: not tested in the full RelBench protocol; its own ablation shows DFS settings move the average AUC from 0.57 to 0.73; its schema generator is trained on real schemas; its released config has width 96 while the paper says 128. RelICL: its comparison uses numbers copied from the papers. The lazy regime is OpenRFM's finding about synthetic-only pretraining of RT.</aside>
 </section>
 
 <section id="idea" data-transition="fade" style="background:#16202B;color:#F6F7F4;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between;gap:48px">

@@ -40,7 +40,8 @@ body { background: var(--bg); color: var(--text); font-family: var(--body); font
 header.top { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 14px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
 .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
 h1 { font-family: var(--display); font-size: 40px; font-weight: 600; line-height: 1.1; color: var(--ink); margin: 0; text-wrap: balance; }
-.lede { max-width: 68ch; margin: 0; }
+.lede { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 3px; white-space: nowrap; }
+header.top { overflow-x: auto; }
 .lede a, main a { color: var(--accent); }
 .filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .filters button { font: inherit; font-size: 13px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; }
@@ -88,8 +89,20 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <header class="top">
     <span class="eyebrow">fm4sd · thesis groundwork</span>
     <h1>Relational Log</h1>
-    <p class="lede">Working log for the relational thesis groundwork. Rough on purpose: written by Claude, checked by Bora. Each finding names its source. <code>paper §section, file Lline</code> is a file in <code>papers/&lt;paper&gt;/src/</code>; <code>relarena-pr:file:line</code> is the local fork. The talk for Alex is a separate deck: <a href="https://claude.ai/artifact/Tsd2E7i2jZHJZ8nYZqcsbk">Relational Prediction</a>.</p>
-    <p class="lede">A line with a source and no chip is verified. <mark>verified</mark> read in the source. <mark class="unverified">unverified</mark> abstract only, another session, or inference. <mark class="wrong">corrected</mark> a lead the source does not support as stated. <mark class="open">open</mark> a decision for Bora.</p>
+    <ul class="lede">
+        <li>Working log for the relational thesis groundwork. Rough on purpose.</li>
+        <li>Written by Claude, checked by Bora. Each finding names its source.</li>
+        <li><code>paper §section, file Lline</code> = a file in <code>papers/&lt;paper&gt;/src/</code></li>
+        <li><code>relarena-pr:file:line</code> = the local fork</li>
+        <li>The talk for Alex is a separate deck: <a href="https://claude.ai/artifact/Tsd2E7i2jZHJZ8nYZqcsbk">Relational Prediction</a></li>
+    </ul>
+    <ul class="lede">
+        <li>A line with a source and no chip is verified.</li>
+        <li><mark>verified</mark> read in the source</li>
+        <li><mark class="unverified">unverified</mark> abstract only, another session, or inference</li>
+        <li><mark class="wrong">corrected</mark> a lead the source does not support as stated</li>
+        <li><mark class="open">open</mark> a decision for Bora</li>
+    </ul>
     <div class="filters" role="group" aria-label="Filter findings">
         <button type="button" id="f-all" data-f="" aria-pressed="true">All</button>
         <button type="button" id="f-unverified" data-f="unverified" aria-pressed="false">Unverified</button>
