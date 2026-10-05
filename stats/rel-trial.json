@@ -1,0 +1,682 @@
+{
+ "dataset": "rel-trial",
+ "val_timestamp": "2020-01-01 00:00:00",
+ "test_timestamp": "2021-01-01 00:00:00",
+ "db_time_min": "2000-01-01 00:00:00",
+ "db_time_max": "2021-01-01 00:00:00",
+ "num_tables": 15,
+ "total_rows": 5434924,
+ "total_columns": 140,
+ "tables": {
+  "outcomes": {
+   "rows": 411933,
+   "columns": 12,
+   "pkey": "id",
+   "time_col": "date",
+   "fkeys": {
+    "nct_id": "studies"
+   },
+   "feature_kinds": {
+    "categorical": 5,
+    "text": 4
+   },
+   "null_fraction": 0.1511,
+   "time_min": "2000-05-31 00:00:00",
+   "time_max": "2021-01-01 00:00:00",
+   "links": {
+    "nct_id": {
+     "parent": "studies",
+     "null_fraction": 0.0,
+     "parents_with_children": 52941,
+     "parent_rows": 249730,
+     "parents_without_children_fraction": 0.788,
+     "children_per_parent": {
+      "mean": 7.781,
+      "median": 5.0,
+      "p90": 17.0,
+      "p99": 49.0,
+      "max": 261.0
+     }
+    }
+   }
+  },
+  "interventions_studies": {
+   "rows": 171771,
+   "columns": 4,
+   "pkey": "id",
+   "time_col": "date",
+   "fkeys": {
+    "nct_id": "studies",
+    "intervention_id": "interventions"
+   },
+   "feature_kinds": {},
+   "null_fraction": 0.0,
+   "time_min": "2000-01-01 00:00:00",
+   "time_max": "2021-01-01 00:00:00",
+   "links": {
+    "nct_id": {
+     "parent": "studies",
+     "null_fraction": 0.0,
+     "parents_with_children": 90364,
+     "parent_rows": 249730,
+     "parents_without_children_fraction": 0.6382,
+     "children_per_parent": {
+      "mean": 1.9009,
+      "median": 1.0,
+      "p90": 4.0,
+      "p99": 8.0,
+      "max": 139.0
+     }
+    },
+    "intervention_id": {
+     "parent": "interventions",
+     "null_fraction": 0.0,
+     "parents_with_children": 3432,
+     "parent_rows": 3462,
+     "parents_without_children_fraction": 0.0087,
+     "children_per_parent": {
+      "mean": 50.0498,
+      "median": 10.0,
+      "p90": 118.0,
+      "p99": 628.9000000000005,
+      "max": 1679.0
+     }
+    }
+   }
+  },
+  "drop_withdrawals": {
+   "rows": 381199,
+   "columns": 6,
+   "pkey": "id",
+   "time_col": "date",
+   "fkeys": {
+    "nct_id": "studies"
+   },
+   "feature_kinds": {
+    "categorical": 2,
+    "numeric": 1
+   },
+   "null_fraction": 0.0,
+   "time_min": "2000-05-31 00:00:00",
+   "time_max": "2021-01-01 00:00:00",
+   "links": {
+    "nct_id": {
+     "parent": "studies",
+     "null_fraction": 0.0,
+     "parents_with_children": 32129,
+     "parent_rows": 249730,
+     "parents_without_children_fraction": 0.8713,
+     "children_per_parent": {
+      "mean": 11.8646,
+      "median": 6.0,
+      "p90": 26.0,
+      "p99": 90.72000000000116,
+      "max": 858.0
+     }
+    }
+   }
+  },
+  "sponsors": {
+   "rows": 53241,
+   "columns": 3,
+   "pkey": "sponsor_id",
+   "time_col": null,
+   "fkeys": {},
+   "feature_kinds": {
+    "text": 1,
+    "categorical": 1
+   },
+   "null_fraction": 0.0,
+   "links": {}
+  },
+  "outcome_analyses": {
+   "rows": 225846,
+   "columns": 26,
+   "pkey": "id",
+   "time_col": "date",
+   "fkeys": {
+    "nct_id": "studies",
+    "outcome_id": "outcomes"
+   },
+   "feature_kinds": {
+    "categorical": 6,
+    "text": 7,
+    "numeric": 9
+   },
+   "null_fraction": 0.513,
+   "time_min": "2000-07-31 00:00:00",
+   "time_max": "2021-01-01 00:00:00",
+   "links": {
+    "nct_id": {
+     "parent": "studies",
+     "null_fraction": 0.0,
+     "parents_with_children": 18222,
+     "parent_rows": 249730,
+     "parents_without_children_fraction": 0.927,
+     "children_per_parent": {
+      "mean": 12.3941,
+      "median": 4.0,
+      "p90": 24.0,
+      "p99": 143.0,
+      "max": 2863.0
+     }
+    },
+    "outcome_id": {
+     "parent": "outcomes",
+     "null_fraction": 0.0,
+     "parents_with_children": 92853,
+     "parent_rows": 411933,
+     "parents_without_children_fraction": 0.7746,
+     "children_per_parent": {
+      "mean": 2.4323,
+      "median": 1.0,
+      "p90": 4.0,
+      "p99": 20.0,
+      "max": 442.0
+     }
+    }
+   }
+  },
+  "designs": {
+   "rows": 249093,
+   "columns": 15,
+   "pkey": "id",
+   "time_col": "date",
+   "fkeys": {
+    "nct_id": "studies"
+   },
+   "feature_kinds": {
+    "categorical": 10,
+    "text": 2
+   },
+   "null_fraction": 0.5108,
+   "time_min": "2000-01-01 00:00:00",
+   "time_max": "2021-01-01 00:00:00",
+   "links": {
+    "nct_id": {
+     "parent": "studies",
+     "null_fraction": 0.0,
+     "parents_with_children": 249093,
+     "parent_rows": 249730,
+     "parents_without_children_fraction": 0.0026,
+     "children_per_parent": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     }
+    }
+   }
+  },
+  "facilities_studies": {
+   "rows": 1798765,
+   "columns": 4,
+   "pkey": "id",
+   "time_col": "date",
+   "fkeys": {
+    "nct_id": "studies",
+    "facility_id": "facilities"
+   },
+   "feature_kinds": {},
+   "null_fraction": 0.0,
+   "time_min": "2000-01-01 00:00:00",
+   "time_max": "2021-01-01 00:00:00",
+   "links": {
+    "nct_id": {
+     "parent": "studies",
+     "null_fraction": 0.0,
+     "parents_with_children": 227838,
+     "parent_rows": 249730,
+     "parents_without_children_fraction": 0.0877,
+     "children_per_parent": {
+      "mean": 7.8949,
+      "median": 1.0,
+      "p90": 14.0,
+      "p99": 126.0,
+      "max": 3511.0
+     }
+    },
+    "facility_id": {
+     "parent": "facilities",
+     "null_fraction": 0.0,
+     "parents_with_children": 431513,
+     "parent_rows": 453233,
+     "parents_without_children_fraction": 0.0479,
+     "children_per_parent": {
+      "mean": 4.1685,
+      "median": 1.0,
+      "p90": 3.0,
+      "p99": 32.0,
+      "max": 203694.0
+     }
+    }
+   }
+  },
+  "eligibilities": {
+   "rows": 249730,
+   "columns": 15,
+   "pkey": "id",
+   "time_col": "date",
+   "fkeys": {
+    "nct_id": "studies"
+   },
+   "feature_kinds": {
+    "categorical": 9,
+    "text": 3
+   },
+   "null_fraction": 0.2748,
+   "time_min": "2000-01-01 00:00:00",
+   "time_max": "2021-01-01 00:00:00",
+   "links": {
+    "nct_id": {
+     "parent": "studies",
+     "null_fraction": 0.0,
+     "parents_with_children": 249730,
+     "parent_rows": 249730,
+     "parents_without_children_fraction": 0.0,
+     "children_per_parent": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     }
+    }
+   }
+  },
+  "conditions": {
+   "rows": 3973,
+   "columns": 2,
+   "pkey": "condition_id",
+   "time_col": null,
+   "fkeys": {},
+   "feature_kinds": {
+    "text": 1
+   },
+   "null_fraction": 0.0,
+   "links": {}
+  },
+  "sponsors_studies": {
+   "rows": 391462,
+   "columns": 5,
+   "pkey": "id",
+   "time_col": "date",
+   "fkeys": {
+    "nct_id": "studies",
+    "sponsor_id": "sponsors"
+   },
+   "feature_kinds": {
+    "categorical": 1
+   },
+   "null_fraction": 0.0,
+   "time_min": "2000-01-01 00:00:00",
+   "time_max": "2021-01-01 00:00:00",
+   "links": {
+    "nct_id": {
+     "parent": "studies",
+     "null_fraction": 0.0,
+     "parents_with_children": 249730,
+     "parent_rows": 249730,
+     "parents_without_children_fraction": 0.0,
+     "children_per_parent": {
+      "mean": 1.5675,
+      "median": 1.0,
+      "p90": 3.0,
+      "p99": 6.0,
+      "max": 171.0
+     }
+    },
+    "sponsor_id": {
+     "parent": "sponsors",
+     "null_fraction": 0.0,
+     "parents_with_children": 48796,
+     "parent_rows": 53241,
+     "parents_without_children_fraction": 0.0835,
+     "children_per_parent": {
+      "mean": 8.0224,
+      "median": 1.0,
+      "p90": 9.0,
+      "p99": 118.0,
+      "max": 6731.0
+     }
+    }
+   }
+  },
+  "reported_event_totals": {
+   "rows": 383064,
+   "columns": 7,
+   "pkey": "id",
+   "time_col": "date",
+   "fkeys": {
+    "nct_id": "studies"
+   },
+   "feature_kinds": {
+    "categorical": 2,
+    "numeric": 2
+   },
+   "null_fraction": 0.0512,
+   "time_min": "2000-05-31 00:00:00",
+   "time_max": "2021-01-01 00:00:00",
+   "links": {
+    "nct_id": {
+     "parent": "studies",
+     "null_fraction": 0.0,
+     "parents_with_children": 52751,
+     "parent_rows": 249730,
+     "parents_without_children_fraction": 0.7888,
+     "children_per_parent": {
+      "mean": 7.2617,
+      "median": 6.0,
+      "p90": 12.0,
+      "p99": 30.0,
+      "max": 225.0
+     }
+    }
+   }
+  },
+  "facilities": {
+   "rows": 453233,
+   "columns": 6,
+   "pkey": "facility_id",
+   "time_col": null,
+   "fkeys": {},
+   "feature_kinds": {
+    "text": 1,
+    "categorical": 4
+   },
+   "null_fraction": 0.1204,
+   "links": {}
+  },
+  "studies": {
+   "rows": 249730,
+   "columns": 29,
+   "pkey": "nct_id",
+   "time_col": "start_date",
+   "fkeys": {},
+   "feature_kinds": {
+    "categorical": 15,
+    "text": 8,
+    "numeric": 4
+   },
+   "null_fraction": 0.4916,
+   "time_min": "2000-01-01 00:00:00",
+   "time_max": "2021-01-01 00:00:00",
+   "links": {}
+  },
+  "conditions_studies": {
+   "rows": 408422,
+   "columns": 4,
+   "pkey": "id",
+   "time_col": "date",
+   "fkeys": {
+    "nct_id": "studies",
+    "condition_id": "conditions"
+   },
+   "feature_kinds": {},
+   "null_fraction": 0.0,
+   "time_min": "2000-01-01 00:00:00",
+   "time_max": "2021-01-01 00:00:00",
+   "links": {
+    "nct_id": {
+     "parent": "studies",
+     "null_fraction": 0.0,
+     "parents_with_children": 203786,
+     "parent_rows": 249730,
+     "parents_without_children_fraction": 0.184,
+     "children_per_parent": {
+      "mean": 2.0042,
+      "median": 2.0,
+      "p90": 4.0,
+      "p99": 7.0,
+      "max": 65.0
+     }
+    },
+    "condition_id": {
+     "parent": "conditions",
+     "null_fraction": 0.0,
+     "parents_with_children": 3924,
+     "parent_rows": 3973,
+     "parents_without_children_fraction": 0.0123,
+     "children_per_parent": {
+      "mean": 104.0831,
+      "median": 15.0,
+      "p90": 202.0,
+      "p99": 1697.1099999999992,
+      "max": 6335.0
+     }
+    }
+   }
+  },
+  "interventions": {
+   "rows": 3462,
+   "columns": 2,
+   "pkey": "intervention_id",
+   "time_col": null,
+   "fkeys": {},
+   "feature_kinds": {
+    "text": 1
+   },
+   "null_fraction": 0.0,
+   "links": {}
+  }
+ },
+ "tasks": {
+  "study-outcome": {
+   "type": "BINARY_CLASSIFICATION",
+   "entity_table": "studies",
+   "entity_col": "nct_id",
+   "time_col": "timestamp",
+   "target_col": "outcome",
+   "timedelta": "365 days 00:00:00",
+   "num_eval_timestamps": 1,
+   "splits": {
+    "train": {
+     "rows": 11994,
+     "unique_entities": 11994,
+     "seed_times": 19,
+     "seed_time_min": "2001-01-05 00:00:00",
+     "seed_time_max": "2019-01-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.6376
+    },
+    "val": {
+     "rows": 960,
+     "unique_entities": 960,
+     "seed_times": 1,
+     "seed_time_min": "2020-01-01 00:00:00",
+     "seed_time_max": "2020-01-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.5844
+    },
+    "test": {
+     "rows": 825,
+     "unique_entities": 825,
+     "seed_times": 1,
+     "seed_time_min": "2021-01-01 00:00:00",
+     "seed_time_max": "2021-01-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.5855
+    }
+   }
+  },
+  "study-adverse": {
+   "type": "REGRESSION",
+   "entity_table": "studies",
+   "entity_col": "nct_id",
+   "time_col": "timestamp",
+   "target_col": "num_of_adverse_events",
+   "timedelta": "365 days 00:00:00",
+   "num_eval_timestamps": 1,
+   "splits": {
+    "train": {
+     "rows": 43335,
+     "unique_entities": 43335,
+     "seed_times": 19,
+     "seed_time_min": "2001-01-05 00:00:00",
+     "seed_time_max": "2019-01-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target": {
+      "mean": 39.8433,
+      "median": 2.0,
+      "p90": 55.0,
+      "p99": 566.0,
+      "max": 28085.0
+     },
+     "target_std": 339.1105,
+     "target_zero_fraction": 0.4079
+    },
+    "val": {
+     "rows": 3596,
+     "unique_entities": 3596,
+     "seed_times": 1,
+     "seed_time_min": "2020-01-01 00:00:00",
+     "seed_time_max": "2020-01-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target": {
+      "mean": 57.0829,
+      "median": 2.0,
+      "p90": 82.0,
+      "p99": 1059.2000000000116,
+      "max": 17245.0
+     },
+     "target_std": 391.1701,
+     "target_zero_fraction": 0.3918
+    },
+    "test": {
+     "rows": 3098,
+     "unique_entities": 3098,
+     "seed_times": 1,
+     "seed_time_min": "2021-01-01 00:00:00",
+     "seed_time_max": "2021-01-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target": {
+      "mean": 57.9303,
+      "median": 3.0,
+      "p90": 112.0,
+      "p99": 966.3899999999967,
+      "max": 5978.0
+     },
+     "target_std": 249.7265,
+     "target_zero_fraction": 0.3706
+    }
+   }
+  },
+  "site-success": {
+   "type": "REGRESSION",
+   "entity_table": "facilities",
+   "entity_col": "facility_id",
+   "time_col": "timestamp",
+   "target_col": "success_rate",
+   "timedelta": "365 days 00:00:00",
+   "num_eval_timestamps": 1,
+   "splits": {
+    "train": {
+     "rows": 151407,
+     "unique_entities": 104344,
+     "seed_times": 19,
+     "seed_time_min": "2001-01-05 00:00:00",
+     "seed_time_max": "2019-01-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.451,
+      "median": 1.0,
+      "p90": 2.0,
+      "p99": 8.0,
+      "max": 16.0
+     },
+     "target": {
+      "mean": 0.4424,
+      "median": 0.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target_std": 0.4759,
+     "target_zero_fraction": 0.5096
+    },
+    "val": {
+     "rows": 19740,
+     "unique_entities": 19740,
+     "seed_times": 1,
+     "seed_time_min": "2020-01-01 00:00:00",
+     "seed_time_max": "2020-01-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target": {
+      "mean": 0.4749,
+      "median": 0.4,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target_std": 0.4777,
+     "target_zero_fraction": 0.4785
+    },
+    "test": {
+     "rows": 22617,
+     "unique_entities": 22617,
+     "seed_times": 1,
+     "seed_time_min": "2021-01-01 00:00:00",
+     "seed_time_max": "2021-01-01 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target": {
+      "mean": 0.4622,
+      "median": 0.16666666666666666,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target_std": 0.4812,
+     "target_zero_fraction": 0.4983
+    }
+   }
+  }
+ }
+}

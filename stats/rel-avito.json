@@ -1,0 +1,487 @@
+{
+ "dataset": "rel-avito",
+ "val_timestamp": "2015-05-08 00:00:00",
+ "test_timestamp": "2015-05-14 00:00:00",
+ "db_time_min": "2015-04-25 00:00:00",
+ "db_time_max": "2015-05-14 00:00:00",
+ "num_tables": 8,
+ "total_rows": 20679117,
+ "total_columns": 42,
+ "tables": {
+  "Location": {
+   "rows": 3512,
+   "columns": 4,
+   "pkey": "LocationID",
+   "time_col": null,
+   "fkeys": {},
+   "feature_kinds": {
+    "numeric": 3
+   },
+   "null_fraction": 0.0001,
+   "links": {}
+  },
+  "PhoneRequestsStream": {
+   "rows": 244435,
+   "columns": 4,
+   "pkey": null,
+   "time_col": "PhoneRequestDate",
+   "fkeys": {
+    "UserID": "UserInfo",
+    "AdID": "AdsInfo"
+   },
+   "feature_kinds": {
+    "numeric": 1
+   },
+   "null_fraction": 0.0017,
+   "time_min": "2015-04-25 00:00:08",
+   "time_max": "2015-05-13 23:59:46",
+   "links": {
+    "UserID": {
+     "parent": "UserInfo",
+     "null_fraction": 0.0042,
+     "parents_with_children": 30205,
+     "parent_rows": 98250,
+     "parents_without_children_fraction": 0.6926,
+     "children_per_parent": {
+      "mean": 8.0588,
+      "median": 3.0,
+      "p90": 18.0,
+      "p99": 71.0,
+      "max": 1123.0
+     }
+    },
+    "AdID": {
+     "parent": "AdsInfo",
+     "null_fraction": 0.0025,
+     "parents_with_children": 206748,
+     "parent_rows": 5960558,
+     "parents_without_children_fraction": 0.9653,
+     "children_per_parent": {
+      "mean": 1.1794,
+      "median": 1.0,
+      "p90": 2.0,
+      "p99": 3.0,
+      "max": 83.0
+     }
+    }
+   }
+  },
+  "SearchInfo": {
+   "rows": 1987156,
+   "columns": 8,
+   "pkey": "SearchID",
+   "time_col": "SearchDate",
+   "fkeys": {
+    "UserID": "UserInfo",
+    "LocationID": "Location",
+    "CategoryID": "Category"
+   },
+   "feature_kinds": {
+    "numeric": 2,
+    "categorical": 1
+   },
+   "null_fraction": 0.1074,
+   "time_min": "2015-04-25 00:00:01",
+   "time_max": "2015-05-13 23:59:59",
+   "links": {
+    "UserID": {
+     "parent": "UserInfo",
+     "null_fraction": 0.0127,
+     "parents_with_children": 55492,
+     "parent_rows": 98250,
+     "parents_without_children_fraction": 0.4352,
+     "children_per_parent": {
+      "mean": 35.3547,
+      "median": 8.0,
+      "p90": 79.0,
+      "p99": 437.0,
+      "max": 3325.0
+     }
+    },
+    "LocationID": {
+     "parent": "Location",
+     "null_fraction": 0.0,
+     "parents_with_children": 1818,
+     "parent_rows": 3512,
+     "parents_without_children_fraction": 0.4823,
+     "children_per_parent": {
+      "mean": 1093.044,
+      "median": 17.0,
+      "p90": 1261.0999999999965,
+      "p99": 19318.259999999867,
+      "max": 261154.0
+     }
+    },
+    "CategoryID": {
+     "parent": "Category",
+     "null_fraction": 0.0,
+     "parents_with_children": 39,
+     "parent_rows": 68,
+     "parents_without_children_fraction": 0.4265,
+     "children_per_parent": {
+      "mean": 50952.7179,
+      "median": 19622.0,
+      "p90": 148009.4,
+      "p99": 221797.22,
+      "max": 222683.0
+     }
+    }
+   }
+  },
+  "VisitStream": {
+   "rows": 5277861,
+   "columns": 4,
+   "pkey": null,
+   "time_col": "ViewDate",
+   "fkeys": {
+    "UserID": "UserInfo",
+    "AdID": "AdsInfo"
+   },
+   "feature_kinds": {
+    "numeric": 1
+   },
+   "null_fraction": 0.0017,
+   "time_min": "2015-04-25 00:00:00",
+   "time_max": "2015-05-14 00:00:00",
+   "links": {
+    "UserID": {
+     "parent": "UserInfo",
+     "null_fraction": 0.0044,
+     "parents_with_children": 58570,
+     "parent_rows": 98250,
+     "parents_without_children_fraction": 0.4039,
+     "children_per_parent": {
+      "mean": 89.7167,
+      "median": 31.0,
+      "p90": 226.0,
+      "p99": 850.3099999999977,
+      "max": 6493.0
+     }
+    },
+    "AdID": {
+     "parent": "AdsInfo",
+     "null_fraction": 0.0024,
+     "parents_with_children": 3159710,
+     "parent_rows": 5960558,
+     "parents_without_children_fraction": 0.4699,
+     "children_per_parent": {
+      "mean": 1.6664,
+      "median": 1.0,
+      "p90": 3.0,
+      "p99": 8.0,
+      "max": 367.0
+     }
+    }
+   }
+  },
+  "Category": {
+   "rows": 68,
+   "columns": 4,
+   "pkey": "CategoryID",
+   "time_col": null,
+   "fkeys": {},
+   "feature_kinds": {
+    "numeric": 3
+   },
+   "null_fraction": 0.0,
+   "links": {}
+  },
+  "SearchStream": {
+   "rows": 7107277,
+   "columns": 7,
+   "pkey": null,
+   "time_col": "SearchDate",
+   "fkeys": {
+    "SearchID": "SearchInfo",
+    "AdID": "AdsInfo"
+   },
+   "feature_kinds": {
+    "numeric": 4
+   },
+   "null_fraction": 0.1485,
+   "time_min": "2015-04-25 00:00:01",
+   "time_max": "2015-05-13 23:59:59",
+   "links": {
+    "SearchID": {
+     "parent": "SearchInfo",
+     "null_fraction": 0.0,
+     "parents_with_children": 1961887,
+     "parent_rows": 1987156,
+     "parents_without_children_fraction": 0.0127,
+     "children_per_parent": {
+      "mean": 3.6227,
+      "median": 4.0,
+      "p90": 5.0,
+      "p99": 5.0,
+      "max": 6.0
+     }
+    },
+    "AdID": {
+     "parent": "AdsInfo",
+     "null_fraction": 0.0,
+     "parents_with_children": 2036524,
+     "parent_rows": 5960558,
+     "parents_without_children_fraction": 0.6583,
+     "children_per_parent": {
+      "mean": 3.4899,
+      "median": 1.0,
+      "p90": 3.0,
+      "p99": 22.0,
+      "max": 23775.0
+     }
+    }
+   }
+  },
+  "UserInfo": {
+   "rows": 98250,
+   "columns": 5,
+   "pkey": "UserID",
+   "time_col": null,
+   "fkeys": {},
+   "feature_kinds": {
+    "numeric": 4
+   },
+   "null_fraction": 0.0,
+   "links": {}
+  },
+  "AdsInfo": {
+   "rows": 5960558,
+   "columns": 6,
+   "pkey": "AdID",
+   "time_col": null,
+   "fkeys": {
+    "LocationID": "Location",
+    "CategoryID": "Category"
+   },
+   "feature_kinds": {
+    "numeric": 2,
+    "text": 1
+   },
+   "null_fraction": 0.0007,
+   "links": {
+    "LocationID": {
+     "parent": "Location",
+     "null_fraction": 0.0042,
+     "parents_with_children": 3363,
+     "parent_rows": 3512,
+     "parents_without_children_fraction": 0.0424,
+     "children_per_parent": {
+      "mean": 1765.0336,
+      "median": 31.0,
+      "p90": 1061.0,
+      "p99": 34816.62000000008,
+      "max": 929887.0
+     }
+    },
+    "CategoryID": {
+     "parent": "Category",
+     "null_fraction": 0.0,
+     "parents_with_children": 52,
+     "parent_rows": 68,
+     "parents_without_children_fraction": 0.2353,
+     "children_per_parent": {
+      "mean": 114625.5,
+      "median": 47661.0,
+      "p90": 295354.3999999999,
+      "p99": 703376.9100000001,
+      "max": 741045.0
+     }
+    }
+   }
+  }
+ },
+ "tasks": {
+  "user-visits": {
+   "type": "BINARY_CLASSIFICATION",
+   "entity_table": "UserInfo",
+   "entity_col": "UserID",
+   "time_col": "timestamp",
+   "target_col": "num_click",
+   "timedelta": "4 days 00:00:00",
+   "num_eval_timestamps": 1,
+   "splits": {
+    "train": {
+     "rows": 86619,
+     "unique_entities": 44968,
+     "seed_times": 3,
+     "seed_time_min": "2015-04-26 00:00:00",
+     "seed_time_max": "2015-05-04 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.9262,
+      "median": 2.0,
+      "p90": 3.0,
+      "p99": 3.0,
+      "max": 3.0
+     },
+     "positive_rate": 0.9059
+    },
+    "val": {
+     "rows": 29979,
+     "unique_entities": 29979,
+     "seed_times": 1,
+     "seed_time_min": "2015-05-08 00:00:00",
+     "seed_time_max": "2015-05-08 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.9035
+    },
+    "test": {
+     "rows": 36129,
+     "unique_entities": 36129,
+     "seed_times": 1,
+     "seed_time_min": "2015-05-14 00:00:00",
+     "seed_time_max": "2015-05-14 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.8506
+    }
+   }
+  },
+  "user-clicks": {
+   "type": "BINARY_CLASSIFICATION",
+   "entity_table": "UserInfo",
+   "entity_col": "UserID",
+   "time_col": "timestamp",
+   "target_col": "num_click",
+   "timedelta": "4 days 00:00:00",
+   "num_eval_timestamps": 1,
+   "splits": {
+    "train": {
+     "rows": 59454,
+     "unique_entities": 34575,
+     "seed_times": 3,
+     "seed_time_min": "2015-04-26 00:00:00",
+     "seed_time_max": "2015-05-04 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.7196,
+      "median": 1.0,
+      "p90": 3.0,
+      "p99": 3.0,
+      "max": 3.0
+     },
+     "positive_rate": 0.0387
+    },
+    "val": {
+     "rows": 21183,
+     "unique_entities": 21183,
+     "seed_times": 1,
+     "seed_time_min": "2015-05-08 00:00:00",
+     "seed_time_max": "2015-05-08 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.0352
+    },
+    "test": {
+     "rows": 47996,
+     "unique_entities": 47996,
+     "seed_times": 1,
+     "seed_time_min": "2015-05-14 00:00:00",
+     "seed_time_max": "2015-05-14 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.0154
+    }
+   }
+  },
+  "ad-ctr": {
+   "type": "REGRESSION",
+   "entity_table": "AdsInfo",
+   "entity_col": "AdID",
+   "time_col": "timestamp",
+   "target_col": "num_click",
+   "timedelta": "4 days 00:00:00",
+   "num_eval_timestamps": 1,
+   "splits": {
+    "train": {
+     "rows": 5100,
+     "unique_entities": 3528,
+     "seed_times": 3,
+     "seed_time_min": "2015-04-26 00:00:00",
+     "seed_time_max": "2015-05-04 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.4456,
+      "median": 1.0,
+      "p90": 3.0,
+      "p99": 3.0,
+      "max": 3.0
+     },
+     "target": {
+      "mean": 0.0446,
+      "median": 0.017857142857142856,
+      "p90": 0.09090909090909091,
+      "p99": 0.5,
+      "max": 1.0
+     },
+     "target_std": 0.0957,
+     "target_zero_fraction": 0.0
+    },
+    "val": {
+     "rows": 1766,
+     "unique_entities": 1766,
+     "seed_times": 1,
+     "seed_time_min": "2015-05-08 00:00:00",
+     "seed_time_max": "2015-05-08 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target": {
+      "mean": 0.0484,
+      "median": 0.01791060735671514,
+      "p90": 0.1111111111111111,
+      "p99": 0.5,
+      "max": 1.0
+     },
+     "target_std": 0.0992,
+     "target_zero_fraction": 0.0
+    },
+    "test": {
+     "rows": 1816,
+     "unique_entities": 1816,
+     "seed_times": 1,
+     "seed_time_min": "2015-05-14 00:00:00",
+     "seed_time_max": "2015-05-14 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target": {
+      "mean": 0.0522,
+      "median": 0.018912635249932933,
+      "p90": 0.1111111111111111,
+      "p99": 0.5,
+      "max": 1.0
+     },
+     "target_std": 0.1098,
+     "target_zero_fraction": 0.0
+    }
+   }
+  }
+ }
+}

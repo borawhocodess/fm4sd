@@ -3,3 +3,5 @@ build/
 workdir/
 
 .DS_Store
+__pycache__/
+*.egg-info/
