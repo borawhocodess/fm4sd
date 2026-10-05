@@ -14,7 +14,7 @@
 #SBATCH --mem=64G
 #SBATCH --time=24:00:00
 #SBATCH --job-name=fm4sd
-#SBATCH --output=jobs/%x-%A_%a.out
+#SBATCH --output=/data/horse/ws/saoe216i-tfmp/jobs/%x-%A_%a.out
 set -euo pipefail
 
 WS=/data/horse/ws/saoe216i-tfmp
@@ -33,4 +33,5 @@ LINE=$(grep -v '^#' "$ROOT/scripts/slurm/tasks.txt" | { [ -n "$DATASET" ] && gre
 set -- $LINE
 
 mkdir -p "$FM4SD_RUNS"
+hostname
 "$ROOT/scripts/run.sh" --model "$MODEL" --datasets "$1" --tasks "$2" --n-trials "$TRIALS"
