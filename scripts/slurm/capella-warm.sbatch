@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # build the DFS cache for one dataset on capella. cpu work; the partition only has gpu nodes.
+# site limit per requested gpu: 14 cpu cores and 188130 MB memory.
 #
 #   sbatch scripts/slurm/capella-warm.sbatch rel-f1
 #
@@ -7,8 +8,8 @@
 #SBATCH --partition=capella
 #SBATCH --nodes=1
 #SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=8
-#SBATCH --mem=128G
+#SBATCH --cpus-per-task=14
+#SBATCH --mem=180G
 #SBATCH --time=24:00:00
 #SBATCH --job-name=fm4sd-warm
 #SBATCH --output=/data/horse/ws/saoe216i-tfmp/jobs/%x-%j.out

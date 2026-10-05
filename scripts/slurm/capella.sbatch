@@ -11,7 +11,7 @@
 #SBATCH --nodes=1
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=64G
+#SBATCH --mem=180G
 #SBATCH --time=24:00:00
 #SBATCH --job-name=fm4sd
 #SBATCH --output=/data/horse/ws/saoe216i-tfmp/jobs/%x-%A_%a.out
