@@ -114,6 +114,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <nav aria-label="Sections">
 <a class="n-h2" href="#questions">Questions for Bora</a>
 <a class="n-h2" href="#status">Status</a>
+<a class="n-h2" href="#directions">Candidate directions</a>
 <a class="n-h2" href="#d-2026-10-05">2026-10-05</a>
 <a class="n-h3" href="#setup">setup</a>
 <a class="n-h3" href="#leads">check of the leads from the other session</a>
@@ -133,27 +134,81 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <a class="n-h3" href="#rdbbench">rdbbench</a>
 <a class="n-h3" href="#kumo">kumorfm-2</a>
 <a class="n-h3" href="#graphpfn">graphpfn</a>
+<a class="n-h3" href="#tables">result tables checked</a>
 <a class="n-h3" href="#repos">method repos</a>
 </nav>
 <main>
 <h2 id="questions">Questions for Bora</h2>
 
     <ul>
-        <li><mark class="open">open</mark> part 5 of the talk: what is your idea now ? see <a href="#gaps">what is still open</a> for the facts. the slide is empty until you say.</li>
-        <li><mark class="open">open</mark> i downloaded one more paper, the RDL position paper (fey et al. 2023, arxiv 2312.04615), to <code>papers/rdl/</code>. it is the source of the formal notation. it is not in the README. add it to the relational list as <code>rdl</code> ?</li>
+        <li><mark class="open">open</mark> part 5 of the talk: no idea yet (bora, 5 oct). finding one is the goal of this work. next: candidate directions are listed: <a href="#directions">candidate directions</a>. pick, reject or change.</li>
+        <li>done: <code>rdl</code> (fey et al. 2023, arxiv 2312.04615) is in the README relational list. pdf + tex in <code>papers/rdl/</code>.</li>
+        <li><mark class="open">open</mark> rt-j is missing from the README and from the reading list <a href="#repos">[repo-rt-1]</a>. add it and read it before you pick a direction ?</li>
         <li><mark class="open">open</mark> formal definition: i took the notation of fey et al. 2023 (the rdl-survey copies it word for word). ok ? see <a href="#formal">formal definition</a>.</li>
     </ul>
 
     <h2 id="status">Status</h2>
 
     <ul>
-        <li>stage 1 (reading + log + talk draft) - papers done, repos partly done</li>
+        <li>stage 1 (reading + log + talk draft + candidate directions) - done, with the gaps listed below. waiting for bora.</li>
         <li>read fully: rdb-pfn, relbench, rdl-survey, relarena-alpha, rdblearn, relicl, plurel (main text + appendix A, B; not the extra experiments in appendix C), rdl §2</li>
         <li>abstract + intro + results: plurel-to-rdb-pfn, rt (abstract, contribution, method), openrfm (abstract, intro, start of method), rdbbench (abstract, protocol, results text, conclusion)</li>
         <li>abstract + parts: kumorfm-2 (intro claims, experiment setup), graphpfn (pretraining, result summary)</li>
         <li>repos read in part: relarena (your fork: tabpfn_rel model, features, context, dfs module headers), rdblearn (defaults), RDBPFN (training config, model config, READMEs)</li>
-        <li>repos not read yet: fastdfs, relicl, relbench, relational-transformer</li>
-        <li>not checked: result tables of rt, openrfm, rdbbench, kumorfm-2, relicl; plurel appendix C</li>
+        <li>repos at README / config level only: fastdfs (defaults read), relicl, relbench, relational-transformer</li>
+        <li>not checked: rdbbench and kumorfm-2 result tables; plurel appendix C</li>
+        <li>not read: rt-j (found today, not in the README) <a href="#repos">[repo-rt-1]</a></li>
+    </ul>
+
+        <h2 id="directions">Candidate directions</h2>
+
+    <p>claude's proposals, not facts. ranked: my recommendation first. bora picks or rejects. rt-j is not read yet and can change this list.</p>
+
+    <ul>
+        <li><b>[dir-1] controlled study of relational priors at nano scale.</b> <mark class="unverified">proposal</mark>
+            <ul>
+                <li>what: rebuild the rdb-pfn recipe in modded-nanotabpfn. vary one thing at a time: generator (single-table / plurel / rdb-pfn), DFS setting, amount of data.</li>
+                <li>new: nobody has separated prior quality from data scale. plurel-to-rdb-pfn names this as its open question <a href="#p2r">[p2r-4]</a>. rdb-pfn's ablations use 20k databases only <a href="#rdbpfn">[rdbpfn-6]</a>.</li>
+                <li>new: evaluation in the relarena protocol (full train split by chunked context, same data state), not few-shot only.</li>
+                <li>first experiment: train the small model on rdb-pfn's released generator, reproduce one few-shot number of the paper.</li>
+                <li>risk: reads as a replication if no clear finding comes out. the model is small, so absolute scores stay below tabpfn-rel.</li>
+                <li>fit for march 2027: good. small models, your own training code, 1 GPU.</li>
+            </ul>
+        </li>
+        <li><b>[dir-2] a prior with forecasting tasks.</b> <mark class="unverified">proposal</mark>
+            <ul>
+                <li>what: synthetic databases where the label is an aggregate over a future time window, per entity, at several seed times. like relbench <a href="#relbench">[relbench-3]</a>.</li>
+                <li>new: rdb-pfn and plurel-to-rdb-pfn use a random column as target <a href="#rdbpfn">[rdbpfn-5]</a> <a href="#p2r">[p2r-3]</a>. no time-window labels, no repeated entities.</li>
+                <li>new: regression targets. 9 of 21 relarena tasks are regression; rdb-pfn has none <a href="#rdbpfn">[rdbpfn-4]</a>.</li>
+                <li>why it can matter: tabpfn-rel adds target lags by hand, and a per-entity constant is a strong baseline <a href="#relarena">[relarena-8]</a>. the prior could teach this.</li>
+                <li>first experiment: dir-1 setup + one change (window labels). compare on the rel-f1 tasks.</li>
+                <li>risk: needs dir-1 first. the gain may be small.</li>
+                <li>fit for march 2027: ok as the second half of dir-1. too much as a start.</li>
+            </ul>
+        </li>
+        <li><b>[dir-3] cheaper flattening.</b> <mark class="unverified">proposal</mark>
+            <ul>
+                <li>what: find which DFS features and depths carry the signal; prune or sample before the feature pass.</li>
+                <li>new: relarena names this as future work: depth 2 is already competitive, DFS costs CPU hours <a href="#relarena">[relarena-5]</a> <a href="#relarena">[relarena-6]</a>.</li>
+                <li>first experiment: per-feature-group ablation on cached depth-4 matrices of 3 small tasks.</li>
+                <li>risk: an engineering result, less of a foundation-model thesis.</li>
+                <li>fit for march 2027: good. also a direct contribution to the prior labs repo.</li>
+            </ul>
+        </li>
+        <li><b>[dir-4] learned flattening: set encoders in place of DFS, trained on a synthetic prior.</b> <mark class="unverified">proposal</mark>
+            <ul>
+                <li>what: adapters on a frozen TFM that pool child rows, like graphpfn does for graphs <a href="#graphpfn">[graphpfn-2]</a>.</li>
+                <li>new: removes interaction blindness with training; relicl does it without training <a href="#relicl">[relicl-2]</a>.</li>
+                <li>risk: openrfm already joins RT blocks with a tabicl layer <a href="#openrfm">[openrfm-2]</a>. highest engineering cost.</li>
+                <li>fit for march 2027: poor.</li>
+            </ul>
+        </li>
+        <li><b>[dir-0] warm-up, not a thesis: boosted trees on DFS features in relarena.</b> <mark class="unverified">proposal</mark>
+            <ul>
+                <li>relarena lists it as a missing baseline <a href="#relarena">[relarena-7]</a>. small, a pull request to prior labs, and it teaches the harness. fits stage 2 and 4.</li>
+            </ul>
+        </li>
+        <li>my recommendation: dir-0 as the first week, dir-1 as the core, dir-2 as the contribution on top. not now: dir-3, dir-4.</li>
     </ul>
 
     <h2 id="d-2026-10-05" class="date">2026-10-05</h2>
@@ -358,7 +413,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>before DFS: datetime columns → epoch floats; text columns dropped. after DFS: absolute time features → difference to the row's cutoff. (<code>dfs.py:13-22</code>)</li>
                 <li>target history: a table of past labels is injected into the database before DFS, joined strictly before the cutoff. (<code>dfs.py:24-28</code>)</li>
                 <li>extra features after DFS: sin/cos of month, day of week, day of year of the cutoff; per-entity lags of the target; raw text for the API. (<code>…/tabpfn_rel/features.py:1-17, 31-35</code>)</li>
-                <li>the list of aggregation functions is not in relarena. it comes from fastdfs defaults. rdblearn's default list is max, min, mean, count, mode, std <a href="#repos">[repo-rdblearn-1]</a>. <mark class="unverified">unverified</mark> that tabpfn-rel gets the same list.</li>
+                <li>the list of aggregation functions is not in relarena. it comes from fastdfs defaults. fastdfs default: max, min, mean, std, count, mode <a href="#repos">[repo-fastdfs-1]</a>. the same 6 as rdblearn.</li>
             </ul>
         </li>
         <li><b>[tabpfnrel-4] feature count.</b> rdblearn on rel-f1/driver-top3, unbounded depth: 7,715 columns before pruning, 5,460 after. the schema has 67 columns. (relicl <code>02-dfs.tex</code> L82-86)</li>
@@ -529,6 +584,23 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li>relevance: this is the "add structure layers to a frozen TFM and train only them on a synthetic prior" recipe. it is for one homogeneous graph, not for a database with many tables and time. <mark class="unverified">unverified</mark>: my reading; i did not read their limitations list.</li>
     </ul>
 
+    <h3 id="tables">result tables checked</h3>
+
+    <ul>
+        <li><b>[tab-relicl-1] relicl vs tabpfn-rel, classification</b> (relicl <code>generated/table-final-binary_classification.tex</code>). relicl is higher on 6 of 12 tasks, tabpfn-rel on 6. my count.
+            <ul>
+                <li>largest relicl wins: user-ignore 88.5 vs 70.1; user-clicks 64.3 vs 61.5. these are the two text tasks of <a href="#relarena">[relarena-9]</a>, and the tabpfn-rel column matches the OSS (no text) numbers. <mark class="unverified">unverified</mark>: whether relicl uses the text columns. if yes, this is not a like-for-like comparison.</li>
+                <li>RT and plurel show 81.2 / 81.0 on driver-dnf and 89.3 / 88.4 on driver-top3, about 10 points above all others. this fits the per-row evaluation regime on rel-f1 that relarena describes <a href="#relarena">[relarena-2]</a>.</li>
+            </ul>
+        </li>
+        <li><b>[tab-relicl-2] regression</b> (<code>generated/table-final-regression.tex</code>): relicl has lower MAE than tabpfn-rel on 5 of 9 tasks, e.g. study-adverse 32.42 vs 42.60, item-ltv 43.97 vs 47.80. my count.</li>
+        <li><b>[tab-relicl-3] relicl defaults</b> (<code>tables/hpo-space.tex</code>): train sample 32,768; context table sample 65,536; anchor budget 0.75; embedding reduced to 32 dims by gaussian random projection; mean pooling; relative time encoding on; log1p target for regression.</li>
+        <li><b>[tab-openrfm-1] synthetic-only RT vs RT trained per task</b> (openrfm <code>tables/exp1_full.tex</code>, classification). RT-plurel is lower on almost every task: user-churn 0.593 vs 0.681, user-badge 0.716 vs 0.885, study-outcome 0.493 vs 0.686. close on rel-f1 only (0.764 vs 0.769, 0.824 vs 0.827). mean rank 11.16 vs 7.72.</li>
+        <li><b>[tab-openrfm-2] openrfm</b> (same table): mean rank 5.38 with a tabpfn head, 6.69 with a tabicl head, kumorfm v1 7.22, over 16 classification tasks. regression (R², 8 tasks): 4.00 vs kumorfm v1 8.75. evaluation suite: 24 tasks from relbench v1, kaggle, relbench v2, chosen by the authors after filtering.</li>
+        <li><b>[tab-rt-1] rt setup</b> (rt <code>sections/results.tex</code>): leave-one-database-out pretraining, 50k steps; fine-tuning 33k steps; they report "significant overfitting during pretraining due to limited pretraining tasks".</li>
+        <li>not checked: rdbbench tables, kumorfm-2 tables, plurel appendix C.</li>
+    </ul>
+
     <h3 id="repos">method repos</h3>
 
     <p>shallow clones in <code>workdir/repos/</code> (gitignored): RDBPFN a953782 (2026-07-07), rdblearn 3c5c30f (2026-08-13). relarena was read from your fork.</p>
@@ -554,7 +626,12 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         </li>
         <li><b>[repo-rdbpfn-4]</b> the single-table prior is "adapted from the tabicl project with slight modifications". (<code>RDBPFN:data_generation/README.md</code>)</li>
         <li><b>[repo-rdbpfn-5]</b> inference: <code>fit()</code> keeps at most 1024 training rows as context; more rows only by an ensemble of 1024-row contexts; an optional cutoff-time column exists (<code>time_column</code>). (<code>RDBPFN:inference/README.md:121, 193-200</code>). text columns: <mark class="unverified">unverified</mark>, not found yet.</li>
-        <li>not read yet: fastdfs, relicl, relbench, relational-transformer code.</li>
+        <li><b>[repo-fastdfs-1]</b> fastdfs 0.2.1 defaults: agg_primitives max, min, mean, std, count, mode; max_depth 2; use_cutoff_time true; max_features -1 (no limit). (<code>fastdfs-0.2.1/src/fastdfs/dfs/base_engine.py:94-106</code>). so tabpfn-rel uses the same 6 aggregations as rdblearn. this closes the open point in <a href="#tabpfnrel">[tabpfnrel-3]</a>.</li>
+        <li><b>[repo-rt-1] a paper that is not in the README: RT-J.</b> "Large-Scale Pretraining of Relational Transformers for Context-Efficient Predictions", NeurIPS 2026, per the RT repo README. the README calls it the #1 in-context model on the relbench leaderboard. relarena cites it as rt-j. (<code>relational-transformer:README.md</code>, clone 93a8ccf, 2026-10-04). <mark class="unverified">unverified</mark>: not read. it must be read before a direction is chosen.</li>
+        <li><b>[repo-rt-2]</b> the RT repo ships pip package <code>relational-transformer</code>, checkpoints and preprocessed databases on hugging face (stanford-star), and recipes for in-context prediction and per-task fine-tuning. (same README)</li>
+        <li><b>[repo-relbench-1]</b> relbench package version 3.0.2 (<code>relbench:pyproject.toml:7</code>, clone bbe3b52, 2026-10-05). relarena says results depend on the package version <a href="#relarena">[relarena-2]</a>. pin it in stage 2.</li>
+        <li><b>[repo-relicl-1]</b> relicl needs ubuntu 22.04+, python 3.12, a CUDA GPU, poetry. run: <code>poetry run relicl run relbench.db=… relbench.task=…</code>. results are in a second repo, uma-pi1/relicl-results. (<code>relicl:README.md</code>, clone 2e04c1d, 2026-10-02)</li>
+        <li>read only at README / config level: relicl, relbench, relational-transformer. their source code is not read.</li>
     </ul>
 
 </main>

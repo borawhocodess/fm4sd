@@ -64,6 +64,7 @@ rm <id>.tar.gz
   - localpfn — [arxiv](https://arxiv.org/abs/2406.05207) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2024/file/c40daf14d7a6469e65116507c21faeb7-Paper-Conference.pdf) — [thomas et al. 2024]
   - tfm-priority — [arxiv](https://arxiv.org/abs/2405.01147) · [icml](https://proceedings.mlr.press/v235/van-breugel24a.html) — [van breugel and van der schaar 2024]
 - relational
+  - rdl — [arxiv](https://arxiv.org/abs/2312.04615) — [fey et al. 2023]
   - relbench — [arxiv](https://arxiv.org/abs/2407.20060) · [github](https://github.com/snap-stanford/relbench) — [robinson et al. 2024]
   - rdbbench — [arxiv](https://arxiv.org/abs/2607.03659) · [github](https://github.com/mdsamad001/Benchmarking-Deep-Relational-Database-Models) — [akhter et al. 2026]
   - rdl-survey — [arxiv](https://arxiv.org/abs/2506.16654) · [kdd](https://doi.org/10.1145/3711896.3736558) — [dwivedi et al. 2025]
