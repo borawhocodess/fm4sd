@@ -1,0 +1,594 @@
+<title>Relational Log</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400..700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* layout: fixed section rail on the left, one reading column of findings on the right; state chips carry the checking status */
+:root {
+    --bg: #F6F7F4;
+    --surface: #FFFFFE;
+    --ink: #16202B;
+    --text: #2E3A46;
+    --muted: #6A7480;
+    --line: #D5DAD6;
+    --accent: #0E7C7B;
+    --accent-soft: #E3F1EF;
+    --ok-bg: #DDF0E6; --ok-fg: #1B6A45;
+    --unv-bg: #FBEBD3; --unv-fg: #8A4F0A;
+    --wrong-bg: #F8DEDA; --wrong-fg: #9A2A1C;
+    --open-bg: #E4E1F5; --open-fg: #4A3C99;
+    --display: 'Source Serif 4', Georgia, serif;
+    --body: 'IBM Plex Sans', Arial, sans-serif;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg: #121A22; --surface: #1A242E; --ink: #F1F4F2; --text: #CBD5D9; --muted: #8FA0AA; --line: #2D3A45;
+        --accent: #5FC9C4; --accent-soft: #17343A;
+        --ok-bg: #173A2B; --ok-fg: #8FDCB3; --unv-bg: #40300F; --unv-fg: #F0C987;
+        --wrong-bg: #45201B; --wrong-fg: #F2A99E; --open-bg: #2B2752; --open-fg: #C3BBF5;
+        color-scheme: dark;
+    }
+}
+:root[data-theme="dark"] {
+    --bg: #121A22; --surface: #1A242E; --ink: #F1F4F2; --text: #CBD5D9; --muted: #8FA0AA; --line: #2D3A45;
+    --accent: #5FC9C4; --accent-soft: #17343A;
+    --ok-bg: #173A2B; --ok-fg: #8FDCB3; --unv-bg: #40300F; --unv-fg: #F0C987;
+    --wrong-bg: #45201B; --wrong-fg: #F2A99E; --open-bg: #2B2752; --open-fg: #C3BBF5;
+    color-scheme: dark;
+}
+body { background: var(--bg); color: var(--text); font-family: var(--body); font-size: 15px; line-height: 1.55; }
+.page { max-width: none; margin-inline: auto; padding-inline: 20px; padding-block: 32px 80px; display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 40px; }
+header.top { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 14px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--display); font-size: 40px; font-weight: 600; line-height: 1.1; color: var(--ink); margin: 0; text-wrap: balance; }
+.lede { max-width: 68ch; margin: 0; }
+.lede a, main a { color: var(--accent); }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.filters button { font: inherit; font-size: 13px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; }
+.filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.filters button:focus-visible, nav a:focus-visible, .chk:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.filters .count { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+nav { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); align-self: start; display: flex; flex-direction: column; gap: 2px; max-height: calc(100vh - 40px); overflow-y: auto; font-size: 13px; }
+nav a { color: var(--text); text-decoration: none; padding: 3px 8px; border-radius: 6px; }
+nav a:hover { background: var(--accent-soft); }
+nav a.n-h2 { font-weight: 600; color: var(--ink); margin-top: 10px; }
+nav a.n-h3 { padding-left: 18px; color: var(--muted); }
+main { min-width: 0; display: flex; flex-direction: column; gap: 10px; overflow-x: auto; padding-bottom: 12px; }
+main li, main h3, main p { white-space: nowrap; }
+main h2 { font-family: var(--display); font-size: 26px; font-weight: 600; color: var(--ink); margin: 28px 0 0; scroll-margin-top: 16px; }
+main h2.date { font-family: var(--mono); font-size: 14px; letter-spacing: 0.08em; color: var(--muted); border-top: 1px solid var(--line); padding-top: 20px; margin-top: 36px; }
+main h3 { font-family: var(--display); font-size: 21px; font-weight: 600; color: var(--ink); margin: 26px 0 0; padding-top: 14px; border-top: 1px solid var(--line); scroll-margin-top: 16px; text-wrap: balance; }
+main p { margin: 0; color: var(--muted); font-size: 13px; }
+main ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+main ul ul { margin-top: 6px; gap: 4px; font-size: 14px; }
+main li::marker { color: var(--line); }
+main li b { color: var(--ink); font-weight: 600; }
+code { font-family: var(--mono); font-size: 12px; background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; }
+mark { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 7px; border-radius: 999px; background: var(--ok-bg); color: var(--ok-fg); white-space: nowrap; }
+mark.unverified { background: var(--unv-bg); color: var(--unv-fg); }
+mark.wrong { background: var(--wrong-bg); color: var(--wrong-fg); }
+mark.open { background: var(--open-bg); color: var(--open-fg); }
+.tw { overflow-x: auto; margin-block: 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; font-size: 13px; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { padding: 6px 10px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; color: var(--ink); background: var(--accent-soft); white-space: nowrap; }
+tr:last-child td { border-bottom: none; }
+.chk { appearance: none; width: 15px; height: 15px; border: 1.5px solid var(--muted); border-radius: 4px; margin: 0 8px 0 0; vertical-align: -2px; cursor: pointer; background: var(--surface); }
+.chk:checked { background: var(--accent); border-color: var(--accent); }
+li.done > b:first-of-type { text-decoration: line-through; text-decoration-color: var(--muted); }
+body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):not(:has(.hit)) { display: none; }
+@media (max-width: 760px) {
+    .page { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    nav { position: static; flex-direction: row; flex-wrap: wrap; max-height: none; }
+    nav a.n-h3 { display: none; }
+    nav a.n-h2 { margin-top: 0; }
+    h1 { font-size: 30px; }
+}
+</style>
+<div class="page">
+<header class="top">
+    <span class="eyebrow">fm4sd · thesis groundwork</span>
+    <h1>Relational Log</h1>
+    <p class="lede">Working log for the relational thesis groundwork. Rough on purpose: written by Claude, checked by Bora. Each finding names its source. <code>paper §section, file Lline</code> is a file in <code>papers/&lt;paper&gt;/src/</code>; <code>relarena-pr:file:line</code> is the local fork. The talk for Alex is a separate deck: <a href="https://claude.ai/artifact/Tsd2E7i2jZHJZ8nYZqcsbk">Relational Prediction</a>.</p>
+    <p class="lede">A line with a source and no chip is verified. <mark>verified</mark> read in the source. <mark class="unverified">unverified</mark> abstract only, another session, or inference. <mark class="wrong">corrected</mark> a lead the source does not support as stated. <mark class="open">open</mark> a decision for Bora.</p>
+    <div class="filters" role="group" aria-label="Filter findings">
+        <button type="button" id="f-all" data-f="" aria-pressed="true">All</button>
+        <button type="button" id="f-unverified" data-f="unverified" aria-pressed="false">Unverified</button>
+        <button type="button" id="f-wrong" data-f="wrong" aria-pressed="false">Corrected</button>
+        <button type="button" id="f-open" data-f="open" aria-pressed="false">Open</button>
+        <span class="count" id="progress"></span>
+    </div>
+</header>
+<nav aria-label="Sections">
+<a class="n-h2" href="#questions">Questions for Bora</a>
+<a class="n-h2" href="#status">Status</a>
+<a class="n-h2" href="#d-2026-10-05">2026-10-05</a>
+<a class="n-h3" href="#setup">setup</a>
+<a class="n-h3" href="#leads">check of the leads from the other session</a>
+<a class="n-h3" href="#gaps">what is still open</a>
+<a class="n-h3" href="#formal">formal definition</a>
+<a class="n-h3" href="#timeline">timeline</a>
+<a class="n-h3" href="#relbench">relbench</a>
+<a class="n-h3" href="#relarena">relarena-alpha</a>
+<a class="n-h3" href="#tabpfnrel">tabpfn-rel</a>
+<a class="n-h3" href="#rdblearn">rdblearn</a>
+<a class="n-h3" href="#relicl">relicl</a>
+<a class="n-h3" href="#rdbpfn">rdb-pfn</a>
+<a class="n-h3" href="#plurel">plurel</a>
+<a class="n-h3" href="#p2r">plurel-to-rdb-pfn</a>
+<a class="n-h3" href="#rt">rt</a>
+<a class="n-h3" href="#openrfm">openrfm</a>
+<a class="n-h3" href="#rdbbench">rdbbench</a>
+<a class="n-h3" href="#kumo">kumorfm-2</a>
+<a class="n-h3" href="#graphpfn">graphpfn</a>
+<a class="n-h3" href="#repos">method repos</a>
+</nav>
+<main>
+<h2 id="questions">Questions for Bora</h2>
+
+    <ul>
+        <li><mark class="open">open</mark> part 5 of the talk: what is your idea now ? see <a href="#gaps">what is still open</a> for the facts. the slide is empty until you say.</li>
+        <li><mark class="open">open</mark> i downloaded one more paper, the RDL position paper (fey et al. 2023, arxiv 2312.04615), to <code>papers/rdl/</code>. it is the source of the formal notation. it is not in the README. add it to the relational list as <code>rdl</code> ?</li>
+        <li><mark class="open">open</mark> formal definition: i took the notation of fey et al. 2023 (the rdl-survey copies it word for word). ok ? see <a href="#formal">formal definition</a>.</li>
+    </ul>
+
+    <h2 id="status">Status</h2>
+
+    <ul>
+        <li>stage 1 (reading + log + talk draft) - papers done, repos partly done</li>
+        <li>read fully: rdb-pfn, relbench, rdl-survey, relarena-alpha, rdblearn, relicl, plurel (main text + appendix A, B; not the extra experiments in appendix C), rdl §2</li>
+        <li>abstract + intro + results: plurel-to-rdb-pfn, rt (abstract, contribution, method), openrfm (abstract, intro, start of method), rdbbench (abstract, protocol, results text, conclusion)</li>
+        <li>abstract + parts: kumorfm-2 (intro claims, experiment setup), graphpfn (pretraining, result summary)</li>
+        <li>repos read in part: relarena (your fork: tabpfn_rel model, features, context, dfs module headers), rdblearn (defaults), RDBPFN (training config, model config, READMEs)</li>
+        <li>repos not read yet: fastdfs, relicl, relbench, relational-transformer</li>
+        <li>not checked: result tables of rt, openrfm, rdbbench, kumorfm-2, relicl; plurel appendix C</li>
+    </ul>
+
+    <h2 id="d-2026-10-05" class="date">2026-10-05</h2>
+
+    <h3 id="setup">setup</h3>
+
+    <ul>
+        <li>branch <code>relational</code> made from main (db662b2). nothing committed.</li>
+        <li>files, untracked: <code>log.html</code> (source of this page), <code>talk.html</code> (old plain draft; the deck replaces it)</li>
+        <li>downloaded pdf + tex to <code>papers/</code> (gitignored): relbench 2407.20060, rdb-pfn 2603.03805, plurel-to-rdb-pfn 2607.29129, graphpfn 2509.21489, rdl 2312.04615</li>
+        <li>still not downloaded: kumorfm (pdf only, kumo.ai), zerorel (acm only), g2t-fm 2508.20906</li>
+        <li>my mistake, fixed: a shell loop first made 4 wrongly named folders in <code>papers/</code> ("relbench 2407.20060" etc). i removed those 4. <code>papers/tabpfn 2.5</code> is yours and was not touched.</li>
+    </ul>
+
+    <h3 id="leads">check of the leads from the other session</h3>
+
+    <ul>
+        <li>"rdb-pfn is the first relational FM trained purely on synthetic data" - <mark>verified</mark> as their claim (rdb-pfn abstract, example_paper.tex L132). limit: the schema generator is trained on real schemas <a href="#rdbpfn">[rdbpfn-2]</a>.</li>
+        <li>"plurel is a synthetic database generator, used to pretrain RT" - <mark>verified</mark> <a href="#plurel">[plurel-1]</a></li>
+        <li>"the top method on relarena is tabpfn-rel" - <mark class="wrong">corrected</mark>. tabpfn-rel is first among <b>model</b> submissions (same tuning regime). RT-PluRel, a <b>system</b> submission that is fine-tuned per task, is first overall. <a href="#relarena">[relarena-4]</a></li>
+        <li>"tabpfn-rel = DFS + stock tabpfn-3, builds on rdblearn, which builds on featuretools" - <mark>verified</mark> <a href="#tabpfnrel">[tabpfnrel-1]</a>. plus 4 additions that are not stock <a href="#tabpfnrel">[tabpfnrel-3]</a>.</li>
+        <li>"flattening needs hours of CPU preprocessing" - <mark>verified</mark> <a href="#relarena">[relarena-6]</a></li>
+        <li>"feature explosion, cannot see feature interactions (relicl)" - <mark>verified</mark> <a href="#relicl">[relicl-1]</a></li>
+        <li>"synthetic-only pretraining leaves RT in a lazy regime (openrfm)" - <mark>verified</mark> in abstract and intro <a href="#openrfm">[openrfm-1]</a>. i did not read their evidence section.</li>
+        <li>"plurel-to-rdb-pfn reaches only about 88 % of rdb-pfn" - <mark>verified</mark>, but with 55× fewer tasks and no single-table warm-up. not a like-for-like result. <a href="#p2r">[p2r-1]</a></li>
+        <li>"relarena reports one seed, timestamp boundaries differ, boosted trees on flattened tables are missing" - <mark>verified</mark>, all three <a href="#relarena">[relarena-7]</a></li>
+        <li>"rdbbench disagrees with relarena" - <mark class="wrong">corrected</mark> to: not comparable. different tasks (5 dbs, 10 tasks), own hop-limited flattening, tabpfn 2.5 not tabpfn-3, RT trained in their protocol. <a href="#rdbbench">[rdbbench-1]</a></li>
+        <li>"train the tabular model on flattened synthetic databases" - <mark>verified</mark> as taken: this is what rdb-pfn does. <a href="#rdbpfn">[rdbpfn-1]</a></li>
+    </ul>
+
+    <h3 id="gaps">what is still open (facts only, the idea is yours)</h3>
+
+    <ul>
+        <li>rdb-pfn is small and narrow: 0.7M parameters, binary classification only, context ≤ 1024 rows, 30 feature columns, few-shot protocol only. <a href="#rdbpfn">[rdbpfn-4,5,6]</a></li>
+        <li>no paper in this list evaluates a synthetic relational prior at tabpfn-3 scale (100k context rows) in the full relbench protocol. <mark class="unverified">unverified</mark>: i read 13 papers, not the field.</li>
+        <li>rdb-pfn is not in relarena. relarena's methods: tabpfn-rel (api, oss), rdblearn, graphsage, relgt, relgnn, lightgbm, 2 constants, rt-plurel. <a href="#relarena">[relarena-3]</a></li>
+        <li>regression: 9 of the 21 relarena tasks. rdb-pfn cannot do them. <a href="#relbench">[relbench-2]</a></li>
+        <li>the flattening is fixed and outside the model in rdblearn, tabpfn-rel and rdb-pfn. rdb-pfn reports large DFS sensitivity. relicl replaces DFS with row embeddings from the TFM, with no training. <a href="#rdbpfn">[rdbpfn-7]</a> <a href="#relicl">[relicl-2]</a></li>
+        <li>tabpfn-rel's depth tuning rarely helps: depth 2 is "competitive with the deeper configurations". <a href="#relarena">[relarena-5]</a></li>
+        <li>prior tasks are not forecasting tasks: rdb-pfn and plurel-to-rdb-pfn take a random column as target. relbench labels are aggregates over a future time window. <a href="#rdbpfn">[rdbpfn-5]</a> <a href="#relbench">[relbench-3]</a></li>
+        <li>tabpfn-rel adds target-history lags and calendar features by hand. a constant-per-entity predictor beats relgnn and relgt on 4 tasks each. so "past labels of the same entity" is a strong signal. <a href="#tabpfnrel">[tabpfnrel-3]</a> <a href="#relarena">[relarena-8]</a></li>
+        <li>text columns decide 2 tasks (rel-event/user-ignore, rel-avito/user-clicks). plurel and rdb-pfn priors have no text. <a href="#relarena">[relarena-9]</a></li>
+        <li>all published relational priors assume an acyclic schema with no self-links. rel-stack has a self-link (posts.ParentId). <a href="#plurel">[plurel-5]</a></li>
+    </ul>
+
+    <h3 id="formal">formal definition (for talk part 2)</h3>
+
+    <ul>
+        <li>source: fey et al. 2023 "relational deep learning", §2.1-2.2 (<code>papers/rdl/src/problem-formulation.tex</code> L22-33, L57-61). the rdl-survey §2.1 repeats it (<code>tex/020dataset.tex</code> L20-27). relbench has no formulas, it describes the same thing in words (<code>sections/design.tex</code> L13-14).</li>
+        <li><b>[formal-1] database.</b> (𝒯, ℒ). tables 𝒯 = {T₁, …, Tₙ}. links ℒ ⊆ 𝒯 × 𝒯. a link L = (T_fkey, T_pkey) exists if a foreign key column in T_fkey points to the primary key of T_pkey. (rdl L22)</li>
+        <li><b>[formal-2] row = entity.</b> each table is a set T = {v₁, …, v_{n_T}}. each entity v = (p_v, 𝒦_v, x_v, t_v): primary key, foreign keys, attributes x_v = (x_v¹, …, x_v^{d_T}), optional timestamp. (rdl L23-33)</li>
+        <li><b>[formal-3] task = training table.</b> T_train with entities v = (𝒦_v, t_v, y_v): keys of the entities the example is about, timestamp (relbench calls it seed time), label. the training table has no inputs x_v. it is attached to the database: 𝒯 ∪ {T_train}, ℒ ∪ ℒ_{T_train}. (rdl L57-58)</li>
+        <li><b>[formal-4] temporal constraint.</b> to predict y_v the model may only use entities u with t_u ≤ t_v. (rdl L61)
+            <ul>
+                <li>detail: rdblearn uses strictly earlier, t_u &lt; t_v (<code>rdblearn sections/04_rdblearn.tex</code> L83). relarena says the boundary is not standardized between methods <a href="#relarena">[relarena-7]</a>.</li>
+            </ul>
+        </li>
+        <li><b>[formal-5] label generation.</b> labels come from the database itself: a time-conditioned SQL query over the window [t, t+δ], then t is moved back in fixed steps to get more examples. (rdl L55, L85)</li>
+        <li><b>[formal-6] task types.</b> node-level: columns (EntityID, Label, Time). link-level: (SourceEntityID, TargetEntityID, Label, Time). (rdl L78-80)</li>
+        <li><b>[formal-7] the in-context view</b>, for tabpfn-rel. notation of rdblearn §2 (<code>sections/02_background.tex</code> L95-102; <code>03_recipe.tex</code> L14-25):
+            <ul>
+                <li>per-task supervised: f_θ(x_test, RDB) ≈ y_test</li>
+                <li>in-context: y_test = f_θ(x_test, 𝒟_ICL, RDB), with 𝒟_ICL = {(x_i, y_i)}</li>
+                <li>flattening: u = g(𝒩_RDB(x)), z = [x; u], y_test = f_θ(z_test, 𝒟^z_ICL). g is fixed and not learned. the database reaches the model only through g.</li>
+                <li>note: rdblearn writes RDB = (𝒯, ℛ), fey writes (𝒯, ℒ). same thing. i use ℒ in the talk.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3 id="timeline">timeline</h3>
+
+    <p>month = month of the arxiv id (first version). <mark class="unverified">unverified</mark> where there is no arxiv id.</p>
+
+    <div class="tw"><table>
+        <tr><th>when</th><th>paper</th><th>question</th><th>contribution</th><th>builds on</th></tr>
+        <tr><td>2015</td><td>DFS / featuretools (kanter &amp; veeramachaneni) <mark class="unverified">unverified</mark> year, not read</td><td>can feature engineering on a database be automated ?</td><td>aggregate every column along every key path up to a depth</td><td>-</td></tr>
+        <tr><td>2023-12</td><td>rdl (fey et al.)</td><td>how to do deep learning on a database end to end ?</td><td>database = temporal heterogeneous graph; training table; GNN with temporal sampling</td><td>-</td></tr>
+        <tr><td>2024-07</td><td>relbench</td><td>how to compare methods ?</td><td>7 databases, 30 tasks, time split, RDL (graphsage) baseline, data-scientist study</td><td>rdl</td></tr>
+        <tr><td>2025 <mark class="unverified">unverified</mark></td><td>kumorfm (not read, pdf only)</td><td>one pretrained model for any database ?</td><td>closed in-context relational model, synthetic + real pretraining</td><td>rdl</td></tr>
+        <tr><td>2025-06</td><td>rdl-survey</td><td>-</td><td>survey of RDL: datasets, GNNs, transformers, foundation models as future work</td><td>rdl, relbench</td></tr>
+        <tr><td>2025-08</td><td>g2t-fm (not read)</td><td>-</td><td>graph node tasks → tabular task for a TFM, hand-made features <mark class="unverified">unverified</mark> (from graphpfn abstract)</td><td>tabpfn</td></tr>
+        <tr><td>2025-09</td><td>graphpfn (abstract only)</td><td>a PFN for graphs ?</td><td>synthetic graph prior (multi-level SBM + preferential attachment + graph-aware SCM), limix + neighbourhood attention</td><td>g2t-fm, limix</td></tr>
+        <tr><td>2025-10</td><td>rt (relational transformer)</td><td>zero-shot transfer across databases ?</td><td>cell tokens, task-table prompting, relational attention; pretrained on relbench databases, leave-one-db-out</td><td>rdl, relbench</td></tr>
+        <tr><td>2026-02</td><td>plurel</td><td>synthetic databases to pretrain RT ?</td><td>generator: DAG schema, HSBM key links, per-table SCM; scaling laws for RT</td><td>rt, tabpfn prior</td></tr>
+        <tr><td>2026-02</td><td>rdblearn (2 arxiv ids)</td><td>is flattening + a TFM enough ?</td><td>DFS (featuretools features, SQL on duckdb) + tabpfn v2 / v2.5 / limix, depth 2-4 tuned</td><td>featuretools, TFMs</td></tr>
+        <tr><td>2026-03</td><td>rdb-pfn</td><td>a relational prior for a PFN ?</td><td>3-stage prior → DFS → small PFN, in-context, binary, few-shot</td><td>tabpfn, nanotabpfn, DFS</td></tr>
+        <tr><td>2026-04</td><td>kumorfm-2 (abstract only)</td><td>-</td><td>closed model, in-context + fine-tuning, "41 benchmarks" <mark class="unverified">unverified</mark></td><td>kumorfm</td></tr>
+        <tr><td>2026-05</td><td>tabpfn-3 report (not read)</td><td>-</td><td>first tabpfn-rel numbers <mark class="unverified">unverified</mark> (cited by relarena as "v3 model report")</td><td>rdblearn</td></tr>
+        <tr><td>2026-06</td><td>openrfm</td><td>why are open RFMs behind closed ones ?</td><td>RT fails with few label cells in context; synthetic-only = lazy regime; fix: RT + TabICL batch-level ICL layer, homophily-aware synthetic + real data</td><td>rt, plurel, tabicl</td></tr>
+        <tr><td>2026-07</td><td>rdbbench</td><td>fair comparison of deep RDB models ?</td><td>5 databases, hop 0/1/2, RT best in their protocol</td><td>relbench, rt, griffin</td></tr>
+        <tr><td>2026-07</td><td>plurel-to-rdb-pfn</td><td>can plurel data train rdb-pfn ?</td><td>conversion pipeline, curriculum study, 33k tasks</td><td>plurel, rdb-pfn</td></tr>
+        <tr><td>2026-08</td><td>relarena-alpha</td><td>are the published numbers comparable ?</td><td>benchmark harness on relbench v1 entity tasks, tabpfn-rel, RPI</td><td>relbench, tabarena, rdblearn</td></tr>
+        <tr><td>2026-10</td><td>relicl</td><td>can a TFM replace DFS ?</td><td>row embeddings pooled along single key links, no training, tabicl v2 backbone</td><td>rdblearn, tabicl</td></tr>
+    </table></div>
+
+    <ul>
+        <li>chains:
+            <ul>
+                <li>featuretools → rdblearn → tabpfn-rel (relarena §2.2, main.tex L351)</li>
+                <li>rdl → relbench → rt → plurel → rt-plurel in relarena (relarena app. E, main.tex L628-637)</li>
+                <li>tabpfn / nanotabpfn + DFS → rdb-pfn → plurel-to-rdb-pfn</li>
+                <li>rt + tabicl → openrfm</li>
+                <li>rdblearn → relicl (same task, DFS replaced)</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3 id="relbench">relbench (robinson et al. 2024, arxiv 2407.20060) - read fully</h3>
+
+    <ul>
+        <li><b>[relbench-1] databases.</b> 7 databases, 51 tables, 103,466,370 rows, 489 columns. rows counted up to the test cutoff. (<code>sections/design.tex</code> L35-61)
+            <div class="tw"><table>
+                <tr><th>name</th><th>domain</th><th>tasks</th><th>tables</th><th>rows</th><th>cols</th><th>start</th><th>val</th><th>test</th></tr>
+                <tr><td>rel-amazon</td><td>e-commerce</td><td>7</td><td>3</td><td>15,000,713</td><td>15</td><td>2008-01-01</td><td>2015-10-01</td><td>2016-01-01</td></tr>
+                <tr><td>rel-avito</td><td>e-commerce</td><td>4</td><td>8</td><td>20,679,117</td><td>42</td><td>2015-04-25</td><td>2015-05-08</td><td>2015-05-14</td></tr>
+                <tr><td>rel-event</td><td>social</td><td>3</td><td>5</td><td>41,328,337</td><td>128</td><td>1912-01-01</td><td>2012-11-21</td><td>2012-11-29</td></tr>
+                <tr><td>rel-f1</td><td>sports</td><td>3</td><td>9</td><td>74,063</td><td>67</td><td>1950-05-13</td><td>2005-01-01</td><td>2010-01-01</td></tr>
+                <tr><td>rel-hm</td><td>e-commerce</td><td>3</td><td>3</td><td>16,664,809</td><td>37</td><td>2019-09-07</td><td>2020-09-07</td><td>2020-09-14</td></tr>
+                <tr><td>rel-stack</td><td>social</td><td>5</td><td>7</td><td>4,247,264</td><td>52</td><td>2009-02-02</td><td>2020-10-01</td><td>2021-01-01</td></tr>
+                <tr><td>rel-trial</td><td>medical</td><td>5</td><td>15</td><td>5,434,924</td><td>140</td><td>2000-01-01</td><td>2020-01-01</td><td>2021-01-01</td></tr>
+            </table></div>
+        </li>
+        <li><b>[relbench-2] tasks.</b> 30 tasks: 12 entity classification (all binary), 9 entity regression, 9 recommendation. the 21 entity tasks are what relarena and relicl use. task table with train/val/test sizes: <code>sections/datasets.tex</code> L30-88.
+            <ul>
+                <li>smallest: rel-f1/driver-top3, 1,353 train rows. largest: rel-amazon/user-churn, 4,732,555 train rows.</li>
+                <li>the same entity appears many times, at different timestamps. e.g. driver-top3: 134 unique entities.</li>
+                <li>rel-trial/study-outcome: 0 % train/test entity overlap (purely inductive). rel-hm/item-sales: 100 %.</li>
+            </ul>
+        </li>
+        <li><b>[relbench-3] task definitions</b> (<code>appendix/dummy.tex</code> L10-107). all are "in the next window" questions:
+            <ul>
+                <li>amazon user-churn: 1 if no review in the next 3 months. item-churn: same for a product. user-ltv / item-ltv: $ value in the next 3 months.</li>
+                <li>avito user-visits / user-clicks: more than one ad visited / clicked in the next 4 days. ad-ctr: click-through rate in the next 4 days.</li>
+                <li>f1 driver-dnf: did not finish a race in the next 1 month. driver-top3: qualifies top 3 in the next 1 month. driver-position: average finish position in the next 2 months.</li>
+                <li>hm user-churn: no transaction in the next week. item-sales: total sales in the next week.</li>
+                <li>stack user-engagement: any vote, post or comment in the next 3 months. user-badge: new badge in the next 3 months. post-votes: votes in the next 3 months.</li>
+                <li>trial study-outcome: trial reaches its primary outcome, next 1 year. study-adverse: number of patients with severe adverse events, next 1 year. site-success: success rate of a site, next 1 year.</li>
+                <li>event user-attendance: number of yes/maybe responses, next 7 days. user-repeat: attends in the next 7 days given attended in the last 14. user-ignore: ignores more than 2 invitations in the next 7 days.</li>
+            </ul>
+        </li>
+        <li><b>[relbench-4] split.</b> by time. train: rows up to val_timestamp. validate: between val_timestamp and test_timestamp. test: after test_timestamp. data after test_timestamp is hidden at inference. the split timestamps are shared by all tasks of one database. (<code>sections/design.tex</code> L99-103)</li>
+        <li><b>[relbench-5] metrics.</b> classification: ROC-AUC. regression: MAE. recommendation: MAP@K. (<code>sections/tasks.tex</code> L47, L56, L98)</li>
+        <li><b>[relbench-6] baselines in the paper.</b> RDL = pytorch-frame ResNet row encoder + heterogeneous graphsage with sum aggregation + temporal neighbour sampling; BCE loss for classification, L1 for regression (<code>appendix/implementation.tex</code> L11-21). lightgbm on the entity table only, no other tables (<code>sections/tasks.tex</code> L47). averages on test: lightgbm 63.66 AUC, RDL 75.83 AUC (<code>tables/node_classification.tex</code>).
+            <ul>
+                <li>relarena calls this lightgbm baseline "weak and unrepresentative" <a href="#relarena">[relarena-2]</a>.</li>
+            </ul>
+        </li>
+        <li><b>[relbench-7]</b> the "data scientist" study: one person makes features by hand for each task, then lightgbm. RDL matches or beats it with 96 % fewer hours and 94 % fewer lines of code. (<code>sections/intro.tex</code> L36). i did not read the user-study section in detail.</li>
+        <li>avito is downsampled: about 100,000 users sampled, then all linked rows (<code>appendix/data_details.tex</code> L8).</li>
+        <li>other benchmark pools named by the rdl-survey: CTU relational repository, 83 databases, one task each; the survey lists 19 that are real, temporal, ≥ 3 tables, ≥ 10,000 rows (<code>rdl-survey tex/020dataset.tex</code> L52-108). rdb-pfn and rdblearn also use 4dbinfer.</li>
+    </ul>
+
+    <h3 id="relarena">relarena-alpha (hayler et al. 2026, arxiv 2608.16319) - read fully</h3>
+
+    <p>file: <code>papers/relarena-alpha/src/main.tex</code></p>
+
+    <ul>
+        <li><b>[relarena-1] what it is.</b> a harness on the 21 relbench v1 entity tasks: same data loading, same evaluation regime, tuning run by the harness, aggregation with tabarena's bencheval (Elo). 3 releases: relarena, tabpfn-rel, RPI (yaml task specification). (L85-89, L296, L331)</li>
+        <li><b>[relarena-2] why published numbers are not comparable</b> (§1, L104-283)
+            <ul>
+                <li>evaluation regime: relbench freezes the database at the test cutoff for all test rows. kumorfm-2 and the RT family let each test row see data up to its own timestamp. only rel-f1 is affected: there test timestamps span 3 to 6 years. effect: more than 10 AUC points on the two f1 classification tasks, more than 40 % MAE on the regression task. (L232-234)</li>
+                <li>data state: relbench fixed a temporal leak in rel-event/user-ignore in early 2026. re-run scores are 2 to 6 AUC points lower than the old published ones. (L241)</li>
+                <li>tuning: relgnn checkpoints imply a grid of over 25,000 configurations, kumorfm-2 384, undocumented. relgnn and relgt compare tuned models against the untuned relbench RDL numbers. (L218, L251)</li>
+                <li>aggregation: every paper normalises regression MAE differently, or reports R². several drop 3 to 6 of the 21 tasks. (L258)</li>
+                <li>baselines: tabular baselines got only the entity table's own columns. in relbench v2 the lightgbm baseline received only NaN at test time (50 % AUC). (L271-274)</li>
+            </ul>
+        </li>
+        <li><b>[relarena-3] methods run.</b> model submissions: tabpfn-rel (API, with text), tabpfn-rel (OSS, no text), rdblearn v1 (without limix), graphsage, relgt, relgnn. plus trivial lightgbm (entity columns + timestamp only) and two constant predictors. system submission: rt-plurel. (L379-384)</li>
+        <li><b>[relarena-4] result.</b> tabpfn-rel is first among models. rt-plurel is first when systems are included. single seed. (L402-411, L379)
+            <ul>
+                <li>rt-plurel = the 85M-parameter RT (12 blocks, dim 512), plurel-pretrained checkpoint, then <b>fine-tuned per task</b>: up to 50,000 steps, muon, lr 5e-4, batch 256, weight averaging, early stopping; then 60 context configurations scored on validation; test = 8 context seeds averaged. (app. E, L628-669)</li>
+                <li>per-task test scores: <code>results_analysis/tables.tex</code>. rt-plurel is best on 5 of 12 classification tasks and 5 of 9 regression tasks. tabpfn-rel (API) is best on 3 + 1, tabpfn-rel (OSS) on 1 + 2. (my count of the bold cells)</li>
+                <li>Elo, joint board with self-reported numbers: tabpfn-rel (API) 1851, graphsage (relarena) 1714, relgt (relarena) 1605, relgnn (relarena) 1503, lightgbm 1365, constant per-entity 1262, constant global 1000. relgnn self-reported is 1949: about 450 points higher than its re-run. (<code>results_analysis/selfreported_elo.tex</code>)</li>
+            </ul>
+        </li>
+        <li><b>[relarena-5] tuning.</b> each configuration is fit on the inner split (database frozen at the val cutoff), scored on validation; the best is refit on the outer split. (L524) tabpfn-rel tunes only DFS depth, 3 configurations. tuned beats default on 9 of 21 tasks (API), same on 7, worse on 5. depth 2 "remains competitive with the deeper configurations". (L447, L612-618)</li>
+        <li><b>[relarena-6] cost.</b> runtime table excludes preprocessing (L548-566). per task, median: tabpfn-rel OSS 4 min, API 88 min, rdblearn 7 min, graphsage 35 min, relgt 273 min, rt-plurel 231 min. DFS preprocessing is CPU-bound and "can often take hours per dataset" (L533). limit 24 h per task (L539). caches are allowed; cache scripts must be public (L535).</li>
+        <li><b>[relarena-7] limits they name themselves.</b>
+            <ul>
+                <li>one seed (L379)</li>
+                <li>timestamp boundary: GNN baselines and rt-plurel use rows at the entity's test timestamp as context when cutoff and timestamp align; tabpfn-rel and rdblearn do not. "this might disadvantage the latter". (L464)</li>
+                <li>no boosted trees on DFS features yet: "we do not yet report baselines that lift traditional tabular learners … through automated feature engineering". (L459)</li>
+                <li>tuning budgets are not matched in compute (L387, L521)</li>
+                <li>conflict of interest: benchmark and top model from the same group; they state it (L390)</li>
+            </ul>
+        </li>
+        <li><b>[relarena-8]</b> constant-per-entity (each entity's own best constant from its training labels) beats relgnn and relgt on 4 tasks each. only tabpfn-rel and rt-plurel beat it on all 21. on rel-stack/post-votes almost no method is clearly better than the constant. (L431)</li>
+        <li><b>[relarena-9]</b> text: OSS (no text) vs API (text): Elo 1706 vs 1821. the gap comes from rel-event/user-ignore (0.7014 vs 0.8787 AUC) and rel-avito/user-clicks (0.6145 vs 0.6752). (L426-427, tables.tex)</li>
+        <li>numbers to reproduce in stage 2 (test, tabpfn-rel OSS / lightgbm): rel-f1/driver-top3 0.7929 / 0.7389 AUC; rel-f1/driver-dnf 0.7145 / 0.7303; rel-f1/driver-position 3.762 / 4.106 MAE. (tables.tex). f1 is the smallest database.</li>
+    </ul>
+
+    <h3 id="tabpfnrel">tabpfn-rel - paper + code</h3>
+
+    <ul>
+        <li><b>[tabpfnrel-1] recipe</b> (relarena §2.2, main.tex L351-361): DFS along all key paths up to depth d → one flat table, one row per (entity, cutoff) → tabpfn-3 predicts the test rows in-context from the train rows. d ∈ {2, 3, 4}, chosen on validation.</li>
+        <li><b>[tabpfnrel-2] changes vs rdblearn</b> (L355-361): database frozen at the val cutoff while tuning; tabpfn-3 as the only backbone, with 10× more context rows; text columns of the entity table re-attached (API only); recency-aware context; validation rows added to the context for the test prediction.</li>
+        <li><b>[tabpfnrel-3] code</b>, from your fork, read only:
+            <ul>
+                <li>default config: tfm "tabpfn-v3", context_strategy "hard_pool", subsample_samples K = 100,000 per estimator, pool_inflation 4.0 (pool M = 4·K most recent rows), with_text False. grid = depth 2, 3, 4, depth 2 first. (<code>relarena-pr:src/relarena/models/tabpfn_rel/model.py:47-66</code>)</li>
+                <li>8 estimators by default for the pool strategies; each draws K rows from the pool without replacement. (<code>…/tabpfn_rel/context.py:34, 85-102</code>)</li>
+                <li>DFS max depth 4, computed once and sliced for depth 2 and 3 (feature sets are nested). engine: fastdfs, dfs2sql, duckdb. (<code>relarena-pr:src/relarena/featurization/dfs.py:5, 30-34, 64, 579</code>)</li>
+                <li>before DFS: datetime columns → epoch floats; text columns dropped. after DFS: absolute time features → difference to the row's cutoff. (<code>dfs.py:13-22</code>)</li>
+                <li>target history: a table of past labels is injected into the database before DFS, joined strictly before the cutoff. (<code>dfs.py:24-28</code>)</li>
+                <li>extra features after DFS: sin/cos of month, day of week, day of year of the cutoff; per-entity lags of the target; raw text for the API. (<code>…/tabpfn_rel/features.py:1-17, 31-35</code>)</li>
+                <li>the list of aggregation functions is not in relarena. it comes from fastdfs defaults. rdblearn's default list is max, min, mean, count, mode, std <a href="#repos">[repo-rdblearn-1]</a>. <mark class="unverified">unverified</mark> that tabpfn-rel gets the same list.</li>
+            </ul>
+        </li>
+        <li><b>[tabpfnrel-4] feature count.</b> rdblearn on rel-f1/driver-top3, unbounded depth: 7,715 columns before pruning, 5,460 after. the schema has 67 columns. (relicl <code>02-dfs.tex</code> L82-86)</li>
+    </ul>
+
+    <h3 id="rdblearn">rdblearn (zhang et al. 2026) - read fully</h3>
+
+    <ul>
+        <li><b>[rdblearn-1]</b> recipe: fixed featurization g + a single-table ICL model. scikit-learn interface: <code>fit(X, y, rdb, key_mappings, cutoff_time_column)</code>. (<code>sections/03_recipe.tex</code> L14-25; <code>04_rdblearn.tex</code> L18-34)</li>
+        <li><b>[rdblearn-2]</b> featurization: featuretools makes the feature descriptions; they are run as SQL on duckdb with the cutoff time compiled into the query. context = records strictly earlier than the cutoff. (<code>04_rdblearn.tex</code> L83, L112-121)</li>
+        <li><b>[rdblearn-3]</b> search: DFS depth {2, 3, 4} × backend {tabpfn v2, tabpfn v2.5, limix-16M}; fit limit 10k rows, uniform random downsample above it. (<code>05_experiments.tex</code> L13-17). best config per task: <code>09_appendix.tex</code> L43-81.</li>
+        <li><b>[rdblearn-4]</b> evaluation: 8 classification + 8 regression relbench tasks, 5 4dbinfer tasks. classification: 74.53 AUC vs relgt 75.34. regression: normalised MAE 0.873 vs relgt 0.883. 1× RTX 4090. (<code>05_experiments.tex</code> L3, L20; <code>06_main_results.tex</code> L12-16)</li>
+        <li>two arxiv ids are in the README for this entry (2602.18495, 2602.13697). relarena cites two works: "rdblearn" and a companion. <mark class="unverified">unverified</mark> which id is which; the folder has 2 pdfs.</li>
+    </ul>
+
+    <h3 id="relicl">relicl (forbat and gemulla 2026, arxiv 2610.01725) - read fully</h3>
+
+    <ul>
+        <li><b>[relicl-1] two limits of DFS</b> (<code>main-sections/02-dfs.tex</code>)
+            <ul>
+                <li>feature explosion: width = O(#meta-paths · #attributes · #aggregates). practical fix = depth bound; featuretools 1.31.0, rdblearn 1.1 and tabpfn-rel all use depth 2 by default. (L78-96)</li>
+                <li>proposition: for every depth bound there are tasks DFS cannot solve. synthetic test, label stored 3 hops away: rdblearn 50.8 % AUC, relicl 100 %. (L98-114)</li>
+                <li>interaction blindness: each DFS feature aggregates one column. synthetic test where only the correlation between two columns of the child rows carries the label: rdblearn = random. (L156-178)</li>
+                <li>their own limit statement: these are synthetic tasks; on relbench "DFS models may nevertheless perform well". (<code>04-experiments.tex</code> L177-180)</li>
+            </ul>
+        </li>
+        <li><b>[relicl-2] method</b> (<code>main-sections/03-methodology.tex</code>)
+            <ul>
+                <li>assumption: a TFM run on its own row embeddings is as good as on the raw table. tested with tabicl on 10 openml tables: 8 of 10 lose at most 1.5 AUC points; philippine loses 8.9, jasmine 3.0. (L54-76; <code>appendix/method.tex</code> L97-104)</li>
+                <li>3 phases: outward pass marks the relevant rows; inward pass runs the TFM encoder on each table, pools the row embeddings into the parent rows (sum / mean / max + a count column; temporal pooling excludes future rows); final TFM prediction on the extended task table. (L100-180)</li>
+                <li>no depth bound. width of the extended task table depends on the number of direct neighbour tables only. (L174-177)</li>
+                <li>tricks: gaussian random projection of embeddings 512 → 32; sub-sampling of large tables; leaf tables joined in; junction tables split in two. (<code>04-experiments.tex</code> L45-52; <code>appendix/method.tex</code> L13-30, L58-62)</li>
+            </ul>
+        </li>
+        <li><b>[relicl-3] evaluation.</b> 21 entity tasks, "relbench v2". backbone tabicl v2 (default), also tabpfn v3. one global configuration + small ensemble (2 members regression, 4 classification). 11 hyperparameters found by random search, 100 trials per task on 6 + 6 of the 21 tasks, 121 GPU-hours. (<code>04-experiments.tex</code> L16, L77-94; <code>appendix/setup.tex</code> L59-62, L122-124)</li>
+        <li><b>[relicl-4] result claim.</b> "on par with" tabpfn-rel, ahead of rdblearn, RT and plurel in pairwise wins. baseline numbers are copied from the papers, not re-run. (<code>04-experiments.tex</code> L155-162, L171-174). this is the practice relarena criticises <a href="#relarena">[relarena-2]</a>. i did not open the generated result tables.</li>
+        <li>note: 12 of the 21 tasks were used to choose the default configuration, on validation data (<code>appendix/setup.tex</code> L60-62).</li>
+    </ul>
+
+    <h3 id="rdbpfn">rdb-pfn (wang et al. 2026, arxiv 2603.03805) - read fully</h3>
+
+    <p>file: <code>papers/rdb-pfn/src/example_paper.tex</code></p>
+
+    <ul>
+        <li><b>[rdbpfn-1] what it does.</b> synthetic database → DFS → one table → nanotabpfn-style transformer → in-context prediction. "Linearize-and-Attend". (L159, L506-528)
+            <ul>
+                <li>baselines (tabpfn v2.5, tabicl v1.1, mitra, limix16m) get "the exact same linearized DFS features". so the comparison is: same input, different prior. (L566)</li>
+                <li>claim "Prior &gt; Scale". (L168)</li>
+            </ul>
+        </li>
+        <li><b>[rdbpfn-2] the prior, 3 stages.</b> P(D) = P(schema graph) · P(keys, links, latent row states | schema) · P(feature columns | structure). (L343-355)
+            <ul>
+                <li>assumptions: schema graph is a DAG (they say over 95 % of spider + 4dbinfer schemas are acyclic, L309); a value depends only on a k-hop neighbourhood (L321-331); rows of a table are exchangeable given the links (L335-339)</li>
+                <li>stage 1, schema: LayerDAG, a discrete diffusion model for DAGs, <b>trained on real public schemas</b> (spider, bird). (L392, L992-997). so "purely synthetic" holds for the table contents, not for the schema topology. ablation: a simple DAG generator is "slightly" worse (L997).</li>
+                <li>stage 2, links: "selective SCM". each new child row gets a latent z, scores M candidate parent tuples with query-key attention, samples one from the softmax. (L397-422; alg. 1, L1005-1021). optional feedback update of the chosen parent → between uniform and preferential attachment. (L424, L1027-1035)</li>
+                <li>time: the latent init can depend on timestamp features: trend, seasonality, spike. (L1037-1048)</li>
+                <li>stage 3, content: random bidirectional GNN on the row graph, K rounds, sum per key type, shared MLP decoder → column values. continuous = clip / normalise, categorical = binning. (L430-450)</li>
+            </ul>
+        </li>
+        <li><b>[rdbpfn-3] DFS setting.</b> aggregations Mean, Max, Min, Count, Mode. parent attributes copied. default 2-hop. (L1073-1075, L1225)</li>
+        <li><b>[rdbpfn-4] model.</b> 6 layers, d_model 128, 4 heads. 0.7M parameters (L460, L584, L1057-1061). alternating feature attention and row attention (L524-528). binary head only; multi-class "can" go one-vs-rest; no regression (L530, L672, L877-881).
+            <ul>
+                <li>conflict: the released config has width 96, not 128 <a href="#repos">[repo-rdbpfn-1]</a>.</li>
+                <li>conflict: plurel-to-rdb-pfn describes the same backbone (6 layers, 128 dims, 4 heads) as 2.6M parameters (plurel-to-rdb-pfn §4.1 setup, <code>main.tex</code> L242-250). <mark class="unverified">unverified</mark> which is right; count it in the repo.</li>
+            </ul>
+        </li>
+        <li><b>[rdbpfn-5] pretraining.</b> (L1079-1133)
+            <ul>
+                <li>stage 1: 600k synthetic single tables, 600 rows × 18 columns, 1× RTX 4090, schedule-free AdamW, lr 5e-4</li>
+                <li>stage 2: about 1.8M datasets on 8× RTX 4090 = about 600k single-table + about 1.2M relational (800k small prior 1-hop, 200k small prior 2-hop, 200k large prior 1-hop)</li>
+                <li>DFS output over-generated (60 columns for 1-hop, 90 for 2-hop), then subsampled to 30. every stage 2 task is 600 rows × 30 columns.</li>
+                <li>6 random target columns per schema. the target is a column, not a time-window label.</li>
+                <li>rows sampled uniformly from the DFS table.</li>
+            </ul>
+        </li>
+        <li><b>[rdbpfn-6] evaluation.</b> 19 binary tasks from 13 databases: 4dbinfer (amazon, avs, diginetica, outbrain, retailrocket, stackexchange) + relbench (amazon, avito, event, f1, hm, stack, trial). task table L787-817. few-shot only: context N ∈ {64, 128, 256, 512, 1024}, sampled uniformly from the train split, 10 seeds, ROC-AUC. (L562, L856-858, L883)
+            <ul>
+                <li>tree baselines: random forest 500 trees; xgboost 5000 trees, lr 0.01, depth 12; autogluon medium_quality. (L893-899)</li>
+                <li>RT and griffin are not same-protocol baselines. reason given: RT puts train labels into the database as a table, so its label context is local to each entity; rdb-pfn uses one global support set. (L966-970)</li>
+                <li>larger support only by chunking and averaging, up to 8192, "with diminishing gains". context size named "an important limitation". (L1164)</li>
+                <li>fine-tuning on the target task improves over strict ICL (1000 steps × 1024 samples). (L1162)</li>
+                <li>single-table check (grinsztajn 2022 subset, N = 1000): trails specialised TFMs. (L613)</li>
+                <li>ablations use 20k RDBs, not the full pipeline. (L1193)</li>
+            </ul>
+        </li>
+        <li><b>[rdbpfn-7] DFS sensitivity</b> (their table, context 1024, 7 small tasks; L1240-1243): 1-hop avg 0.5711, 2-hop 0.7330, 2-hop max/min/mode only 0.7107, 2-hop mean/count only 0.7141. they call DFS "useful but non-optimal" (L1227).</li>
+        <li>not in the paper, <mark class="unverified">unverified</mark>, check the repo: how the DFS respects the cutoff time at evaluation; text columns.</li>
+    </ul>
+
+    <h3 id="plurel">plurel (kothapalli et al. 2026, arxiv 2602.04029) - main text + appendix A, B</h3>
+
+    <p>file: <code>papers/plurel/src/main.tex</code></p>
+
+    <ul>
+        <li><b>[plurel-1] what it is.</b> a generator of synthetic databases, 3 stages, used to pretrain RT with masked token prediction. (L249-298, L339-340 of the experiments part)</li>
+        <li><b>[plurel-2] stage 1, schema.</b> random DAG from {barabasi-albert, reverse random tree, watts-strogatz}. tables with out-degree ≥ 1 = entity tables, others = activity tables. (§2.1; app. A.1)</li>
+        <li><b>[plurel-3] stage 2, keys.</b> rows of child and parent table are put in a hierarchy of blocks; a hierarchical stochastic block model gives the link probabilities. 1 to 5 levels, 1 to 3 blocks per level. block matrix: 0.9 on the matching block, U(0.001, 0.002) elsewhere. (§2.2; app. A.2)</li>
+        <li><b>[plurel-4] stage 3, features.</b> one SCM per table. a node's mechanism also takes the feature nodes of the parent tables' SCMs (through the key links). numeric or categorical with equal probability. temporal: source-node inputs = average of trend (power law), cycle (sine) and noise, indexed by row. NULL cells added. (§2.3; app. A.3)</li>
+        <li><b>[plurel-5] limits they state.</b> no cycles and no self-links (rel-stack posts.ParentId is their example). no text. (app. "Limitations"; §2.3 data types)</li>
+        <li><b>[plurel-6] hyperparameters</b> (table in app. A): 3 to 20 tables; 500 to 1000 rows per entity table; 2000 to 5000 rows per activity table; 3 to 40 columns (power law); timestamps 1990-01-01 to 2025-01-01; 1 to 10 % NULL cells; 2 to 10 categories; MLP hidden 32, depth 2; activations relu, elu, silu, softsign, tanh.</li>
+        <li><b>[plurel-7] pretraining of RT.</b> 12-layer RT, batch 128, context 1024 cells, BFS width 128, AdamW, wd 0.1, peak lr 5e-4. about 3 hours per run on one B200. base model for continued pretraining: 1024 synthetic databases, 4B tokens. (experiments setup)</li>
+        <li><b>[plurel-8] evaluation.</b> 6 relbench databases (not rel-event). zero-shot: 10 binary tasks (AUROC) and 8 regression tasks (R²). continued pretraining on real data: leave-one-database-out. (experiments setup; "continued pretraining")</li>
+        <li>3 claims: pretraining loss follows a power law in the number of databases and tokens; more synthetic databases → better transfer to real ones; synthetic pretraining is a good base for continued real pretraining. (abstract). i did not check the numbers behind these.</li>
+        <li>difference to rdb-pfn's prior: plurel links by block model and has no learned schema model; rdb-pfn links by attention over candidate parents and uses a GNN for content. plurel makes no tasks; rdb-pfn picks target columns. (plurel-to-rdb-pfn §1 introduction)</li>
+    </ul>
+
+    <h3 id="p2r">plurel-to-rdb-pfn (abolhasani and ganapathy 2026, arxiv 2607.29129) - abstract, intro, method, setup, discussion</h3>
+
+    <ul>
+        <li><b>[p2r-1]</b> plurel databases → binary tasks → rdb-pfn DFS → rdb-pfn training. about 5,500 databases, about 33k tasks, no single-table warm-up. best curriculum: 0.6346 average AUC at 1024-shot vs 0.7245 published rdb-pfn = 87.6 %. at 64-shot 0.6116 vs 0.6517 = 93.8 %. (abstract)
+            <ul>
+                <li>my note: 0.5 is chance for AUC. measured above chance, 0.1346 vs 0.2245 is 60 %.</li>
+            </ul>
+        </li>
+        <li><b>[p2r-2]</b> best curriculum: a real schema first (relbench rel-salt: 4 tables, 31 columns, 6 key edges, filled with synthetic rows), then fully synthetic schemas. the reverse order is much worse (0.5544 / 0.5729). (method; results)</li>
+        <li><b>[p2r-3]</b> tasks: up to 6 target columns per database, binary columns preferred, else median split. plurel output forced to INTEGER/FLOAT. small databases: 50 to 200 entity rows, 150 to 450 activity rows. (method)</li>
+        <li><b>[p2r-4]</b> limits they state: not scale-matched; no categorical / text; heuristic tasks; binary only. their open question: is the gap from generator quality or from data scale. (discussion)</li>
+    </ul>
+
+    <h3 id="rt">rt (ranjan et al. 2026, arxiv 2510.06377) - abstract, contribution, method</h3>
+
+    <ul>
+        <li><b>[rt-1]</b> cell = token, embedded from value + "column of table" text embedding. the task is a table attached to the database (task table prompting); prediction = masked cell. (<code>sections/method.tex</code>, input representation)</li>
+        <li><b>[rt-2]</b> context: n cells around the seed row by bounded BFS over key links. parents always included, children subsampled with width w, rows later than the seed row excluded. (same section)</li>
+        <li><b>[rt-3]</b> relational attention: column attention, feature attention (same row + parent rows), neighbour attention (child rows), full attention. no positional encodings. (same section; plurel app. B)</li>
+        <li><b>[rt-4]</b> 22M parameters. pretrained on relbench databases. zero-shot = 90.3 % of the supervised AUROC on average, 93.1 % with continued pretraining on the target database. (<code>sections/abstract.tex</code>; <code>sections/introduction.tex</code> L56-61)</li>
+        <li>"in-context labels" come from task rows that fall into the BFS context. not a global support set. (<code>sections/introduction.tex</code> L51-53). openrfm builds on this point <a href="#openrfm">[openrfm-1]</a>.</li>
+        <li>i did not read results, analysis, appendix.</li>
+    </ul>
+
+    <h3 id="openrfm">openrfm (chen et al. 2026, arxiv 2606.04320) - abstract, intro, start of method</h3>
+
+    <ul>
+        <li><b>[openrfm-1]</b> two diagnoses of RT (<code>chapters/introduction.tex</code>, last paragraphs):
+            <ul>
+                <li>model: RT's failures correlate with how many label-carrying cells land in the sampled context. few label cells → an underdetermined regression.</li>
+                <li>data: plurel-only pretraining gives "a near-fixed, lazy kernel"; pretraining on in-distribution tasks gives a feature-learning regime. the missing part, they say: a "support-identifiable relational latent" in the label generation, realised through relational homophily.</li>
+            </ul>
+        </li>
+        <li><b>[openrfm-2]</b> fixes: RT blocks + a batch-level ICL layer taken from tabicl, so a query attends to its key neighbourhood and to all support rows in the batch; homophily-aware synthetic data + continual real-data pretraining; a prototype regulariser. claim: about 30 % better than RT on average, above kumorfm v1. (<code>chapters/introduction.tex</code>; <code>chapters/method.tex</code> start)</li>
+        <li>their statement on the field: "neither purely synthetic nor real-world pre-training delivers satisfactory downstream performance without task-specific continual training". (<code>chapters/introduction.tex</code>)</li>
+        <li>i did not read analysis, experiments, appendix.</li>
+    </ul>
+
+    <h3 id="rdbbench">rdbbench (akhter et al. 2026, arxiv 2607.03659) - abstract, protocol, results text, conclusion</h3>
+
+    <ul>
+        <li><b>[rdbbench-1]</b> 5 relbench databases, 1 classification + 1 regression task each. models: RT, griffin, dbformer, lightgbm, tabpfn 2.5. all text / categorical encoded with MiniLM-v2. hop 0 / 1 / 2 controls how far tables are joined. regression metric RMSE. 15 cases = 3 hops × 5 databases. (<code>Benchmarking_DRDB_Refined.tex</code> L431-520)</li>
+        <li><b>[rdbbench-2]</b> claims: RT best overall; at hop 0 (one table) RT rank 1.6, then lightgbm, griffin, tabpfn 2.5 fourth. hop 1 → 2 gives little for much more compute. (results; conclusion)</li>
+        <li>why this is not a contradiction of relarena: other task set, their own flattening for tabpfn (not DFS of rdblearn), tabpfn 2.5 with its row limit, RT trained inside their protocol. <mark class="unverified">unverified</mark>: i did not read how RT was trained there or the tables.</li>
+    </ul>
+
+    <h3 id="kumo">kumorfm-2 (hudovernik et al. 2026, arxiv 2604.12596) - abstract, intro claims, experiment setup</h3>
+
+    <ul>
+        <li><b>[kumo-1]</b> closed model. in-context + optional fine-tuning. pretrained on "synthetic and real-world data"; no details. (<code>main.tex</code> L139, L333)</li>
+        <li><b>[kumo-2]</b> evaluation: 41 tasks from relbench v1, relbench v2, SALT, 4dbinfer; none used in pretraining, they say. context = train + val rows, at most 10k examples. (<code>main.tex</code> L371-400)</li>
+        <li><b>[kumo-3]</b> claim on relbench v1: about 10 % above kumorfm v1 and about 5 % above relgnn. (L174). relarena's objections: scripts do not cover all tasks, per-task settings not explained, per-row evaluation regime <a href="#relarena">[relarena-2]</a>.</li>
+        <li>i did not read architecture or result tables.</li>
+    </ul>
+
+    <h3 id="graphpfn">graphpfn (eremeev et al. 2025, arxiv 2509.21489) - abstract, pretraining, result summary</h3>
+
+    <ul>
+        <li><b>[graphpfn-1]</b> PFN for node-level tasks on one graph. prior: multi-level SBM + preferential attachment for structure, graph-aware SCM for attributes. (abstract)</li>
+        <li><b>[graphpfn-2]</b> model: limix + attention-based neighbourhood aggregation layers ("graph adapters"). training continues from the limix checkpoint; <b>all layers frozen except the adapters</b>. 1,600,000 synthetic datasets, 10,000 optimizer steps, about 36 h on 8× A100 80GB, AdamW, lr 1e-3, EMA 0.98. loss = PFN loss + 0.1 × masked-edge loss. (<code>paper.tex</code> §3.2, L246-262)</li>
+        <li><b>[graphpfn-3]</b> result claims: best average rank in ICL on both dataset collections; with fine-tuning best on 11 of 13 datasets. random adapters + fine-tuning is much worse, so the pretraining matters. (<code>paper.tex</code> L396-414)</li>
+        <li>relevance: this is the "add structure layers to a frozen TFM and train only them on a synthetic prior" recipe. it is for one homogeneous graph, not for a database with many tables and time. <mark class="unverified">unverified</mark>: my reading; i did not read their limitations list.</li>
+    </ul>
+
+    <h3 id="repos">method repos</h3>
+
+    <p>shallow clones in <code>workdir/repos/</code> (gitignored): RDBPFN a953782 (2026-07-07), rdblearn 3c5c30f (2026-08-13). relarena was read from your fork.</p>
+
+    <ul>
+        <li><b>[repo-rdblearn-1]</b> defaults: DFS max_depth 2; agg_primitives max, min, mean, count, mode, std; engine dfs2sql; max_train_samples 10,000; tabpfn n_estimators 8. (<code>rdblearn:rdblearn/constants.py:1-17</code>). depends on <code>fastdfs==0.2.1</code> (<code>rdblearn:pyproject.toml:57</code>).
+            <ul>
+                <li>this confirms relicl's "six default aggregation functions".</li>
+                <li>tabpfn-rel in relarena calls fastdfs with only max_depth and engine_path set (<code>relarena-pr:src/relarena/featurization/dfs.py:585-586</code>), so it uses the fastdfs defaults. <mark class="unverified">unverified</mark> that fastdfs 's own default is the same 6; fastdfs is not installed here. check in stage 2.</li>
+            </ul>
+        </li>
+        <li><b>[repo-rdbpfn-1] model size conflict.</b> the training config has embedding_size 96, 4 heads, mlp_hidden_size 192, 6 layers (<code>RDBPFN:model_pretrain/conf_train/RDBPFN.yaml</code>, model block). the paper says d_model 128 <a href="#rdbpfn">[rdbpfn-4]</a>.
+            <ul>
+                <li>my estimate: 6 layers at width 96 with two attentions and one MLP each is about 0.7M parameters. this fits the paper's "0.7M" and not "128". so the released config, not the paper text, matches the parameter count. <mark class="unverified">unverified</mark>: an estimate, not a count.</li>
+                <li>the 2.6M in plurel-to-rdb-pfn would then fit width 128 … also not counted.</li>
+            </ul>
+        </li>
+        <li><b>[repo-rdbpfn-2] training config.</b> lr 0.001, 2,200,000 steps, batch size 1, 8 GPUs, starts from the single-table checkpoint (<code>RDBPFN.yaml</code>, train block). the paper says lr 5e-4 for stage 1.</li>
+        <li><b>[repo-rdbpfn-3] prior mix.</b> the stage 2 data files come in pairs "woGNN" and "wGNN": small 1-hop (2 + 2 files, weight 1), small 2-hop (1 + 1, weight 2), large 1-hop (1 + 1, weight 3), plus single_table_stage2. each relational file: sampled_columns 30, targets_per_subset 6. (<code>RDBPFN.yaml</code>, datasets list)
+            <ul>
+                <li>so about half of the relational pretraining data is generated <b>without</b> the GNN content stage. the paper describes only the GNN version in the main text. <mark class="unverified">unverified</mark>: inferred from the file names.</li>
+            </ul>
+        </li>
+        <li><b>[repo-rdbpfn-4]</b> the single-table prior is "adapted from the tabicl project with slight modifications". (<code>RDBPFN:data_generation/README.md</code>)</li>
+        <li><b>[repo-rdbpfn-5]</b> inference: <code>fit()</code> keeps at most 1024 training rows as context; more rows only by an ensemble of 1024-row contexts; an optional cutoff-time column exists (<code>time_column</code>). (<code>RDBPFN:inference/README.md:121, 193-200</code>). text columns: <mark class="unverified">unverified</mark>, not found yet.</li>
+        <li>not read yet: fastdfs, relicl, relbench, relational-transformer code.</li>
+    </ul>
+
+</main>
+</div>
+<script>
+(function () {
+    // filters: show only top-level findings that contain a chip of the chosen kind
+    var buttons = document.querySelectorAll('.filters button');
+    function apply(kind) {
+        document.querySelectorAll('main li.hit').forEach(function (li) { li.classList.remove('hit'); });
+        document.body.classList.toggle('f-on', !!kind);
+        if (kind) {
+            document.querySelectorAll('main mark.' + kind).forEach(function (m) {
+                var li = m.closest('li');
+                while (li) { li.classList.add('hit'); li = li.parentElement.closest('li'); }
+            });
+        }
+        buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.f === kind)); });
+    }
+    buttons.forEach(function (b) { b.addEventListener('click', function () { apply(b.dataset.f); }); });
+
+    // per-finding check boxes for findings that carry an id like [relbench-1]; remembered in this browser only
+    var KEY = 'relational-log-checked';
+    var state = {};
+    try { state = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { state = {}; }
+    var items = [];
+    document.querySelectorAll('main li > b:first-child').forEach(function (b) {
+        var m = /^\[([a-z0-9-]+)\]/.exec(b.textContent.trim());
+        if (!m) return;
+        var li = b.parentElement, id = m[1];
+        var box = document.createElement('input');
+        box.type = 'checkbox'; box.className = 'chk'; box.id = 'chk-' + id;
+        box.setAttribute('aria-label', 'Checked by Bora: ' + id);
+        box.checked = !!state[id];
+        li.classList.toggle('done', box.checked);
+        box.addEventListener('change', function () {
+            state[id] = box.checked; li.classList.toggle('done', box.checked);
+            try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+            count();
+        });
+        li.insertBefore(box, b);
+        items.push(box);
+    });
+    function count() {
+        var done = items.filter(function (b) { return b.checked; }).length;
+        document.getElementById('progress').textContent = done + ' of ' + items.length + ' findings checked';
+    }
+    count();
+})();
+</script>
