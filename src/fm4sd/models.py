@@ -9,6 +9,10 @@ how much does the tabular foundation model give on top.
 1024 context rows) on the same DFS features. it shows how a pfn plugs in, and it puts
 rdb-pfn into the relarena protocol, where the paper does not report it.
 
+`fm4sd-tabpfn-topk`: tabpfn v3 on the k DFS columns that correlate most with the label
+(k = 30, 120, or all). a controlled test of feature dilution: same model, same rows, fewer
+columns. it is not tabpfn-rel: no recency context, no lag or calendar features.
+
 `DFSTabularModel` is the base for any model that predicts from the flat DFS table. a new
 method only has to give `fit_flat` and `predict_flat`. this is where a pfn of our own
 plugs in.
@@ -233,3 +237,40 @@ class RDBPFN(DFSTabularModel):
     def predict_flat(self, df: pd.DataFrame) -> np.ndarray:
         prob = self._clf.predict_proba(df.reindex(columns=self._cols).reset_index(drop=True), chunk_size=2000)
         return np.asarray(prob)[:, 1]
+
+
+def top_columns(df: pd.DataFrame, y: pd.Series, k: int) -> list[str]:
+    """the k numeric columns with the largest absolute correlation with y on the training rows."""
+    num = df.select_dtypes(include=[np.number, bool]).astype("float64")
+    num = num.loc[:, num.nunique(dropna=True) > 1]
+    corr = num.corrwith(pd.Series(y.to_numpy(dtype="float64"), index=num.index)).abs().fillna(0.0)
+    return list(corr.sort_values(ascending=False).index[:k])
+
+
+TABPFN_TOPK_SPACE = SearchSpace(
+    default_overrides={"max_depth": MIN_DEPTH, "n_features": 0},
+    fixed_grid=[{"max_depth": MIN_DEPTH, "n_features": k} for k in (0, 30, 120)],
+)
+
+
+@register_model(search_space=TABPFN_TOPK_SPACE)
+class TabPFNTopK(DFSTabularModel):
+    """tabpfn v3 on all DFS columns (n_features 0) or on the top-k correlated numeric ones."""
+
+    name = "fm4sd-tabpfn-topk"
+
+    def fit_flat(self, df: pd.DataFrame, cat_cols: list[str], y: pd.Series, task_type: TaskType, *, seed: int) -> None:
+        from relarena_core.tfm import fit_tfm
+        from tabpfn_rel.tfm import TFM_REGISTRY
+
+        k = int(self.config.get("n_features", 0))
+        self._cols = list(df.columns) if k == 0 else top_columns(df, y, k)
+        self._fitted = fit_tfm(df[self._cols], y, task_type, spec=TFM_REGISTRY["tabpfn-v3"], seed=seed)
+
+    def _dump_extra(self) -> dict:
+        return {"n_columns": len(self._cols)}
+
+    def predict_flat(self, df: pd.DataFrame) -> np.ndarray:
+        from relarena_core.tfm import predict_tfm
+
+        return predict_tfm(self._fitted, df.reindex(columns=self._cols))
