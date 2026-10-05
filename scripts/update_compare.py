@@ -9,6 +9,6 @@ log = ROOT / "log.html"
 s = log.read_text()
 a, b = s.index("<!--CMP-START-->"), s.index("<!--CMP-END-->")
 s = s[: a + len("<!--CMP-START-->")] + "\n" + table + s[b:]
-s = re.sub(r"<li>status: .*?</li>", f"<li>status: {n} of 42 runs finished. {status}</li>", s, count=1)
+s = re.sub(r"<li>status: .*?</li>", f"<li>status: {n} of 54 runs finished (21 dfs-lightgbm, 21 tabpfn-rel, 12 rdb-pfn). {status}</li>", s, count=1)
 log.write_text(s)
 print(n)
