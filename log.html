@@ -554,7 +554,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
             <ul>
                 <li>models + systems: tabpfn-rel-client-latest 1991.9, tabpfn-rel-local-latest 1940.6, rt-plurel 1879.2, tabpfn-rel-client-2026-08-15 1833.1, kurversc 1812.5, nori-rel 1765.5, tabpfn-rel-local-2026-08-15 1735.8, graphsage 1686.3, relgt 1592.8.</li>
                 <li>so today a newer tabpfn-rel is first overall, above rt-plurel. the paper's statement (rt-plurel first overall) holds for the august versions only. this changes my correction in <a href="#leads">the leads check</a>: both statements are right, for different dates.</li>
-                <li>the local (no text) tabpfn-rel gained about 200 Elo between 2026-08-15 and "latest". <mark class="unverified">unverified</mark>: what changed. read the tabpfn-rel repo.</li>
+                <li>the local (no text) tabpfn-rel gained about 200 Elo between 2026-08-15 and "latest". what changed: see <a href="#repos">[repo-tabpfnrel-1]</a>.</li>
                 <li>registered names: tabpfn-rel-local-2026-08-15, tabpfn-rel-local-2026-09-28, tabpfn-rel-client-2026-08-15 / -09-18 / -09-28. there is no plain <code>tabpfn-rel-local</code>.</li>
             </ul>
         </li>
@@ -989,7 +989,9 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li><b>[tab-openrfm-1] synthetic-only RT vs RT trained per task</b> (openrfm <code>tables/exp1_full.tex</code>, classification). RT-plurel is lower on almost every task: user-churn 0.593 vs 0.681, user-badge 0.716 vs 0.885, study-outcome 0.493 vs 0.686. close on rel-f1 only (0.764 vs 0.769, 0.824 vs 0.827). mean rank 11.16 vs 7.72.</li>
         <li><b>[tab-openrfm-2] openrfm</b> (same table): mean rank 5.38 with a tabpfn head, 6.69 with a tabicl head, kumorfm v1 7.22, over 16 classification tasks. regression (R², 8 tasks): 4.00 vs kumorfm v1 8.75. evaluation suite: 24 tasks from relbench v1, kaggle, relbench v2, chosen by the authors after filtering.</li>
         <li><b>[tab-rt-1] rt setup</b> (rt <code>sections/results.tex</code>): leave-one-database-out pretraining, 50k steps; fine-tuning 33k steps; they report "significant overfitting during pretraining due to limited pretraining tasks".</li>
-        <li>not checked: rdbbench tables, kumorfm-2 tables, plurel appendix C.</li>
+        <li><b>[tab-kumo-1] kumorfm-2 claims on relbench v1</b> (kumorfm-2 <code>main.tex</code> L566-601, L798): average AUROC 79.60 on the 12 classification tasks, rank 3.08; 3.98 points above the best tabular model; 1.54 points above the strongest supervised baseline. regression: normalised MAE 0.822 relative to lightgbm, best on 5 of 9 tasks. with data-scientist features, lightgbm, autogluon and tabpfn 2.5 "perform similarly on average" and are "competitive with supervised relational models" (L571). these numbers use the per-row evaluation regime <a href="#relarena">[relarena-2]</a>, so they do not compare with relarena.</li>
+        <li><b>[tab-rdbbench-1] rdbbench tables</b> (<code>Benchmarking_DRDB_Refined.tex</code> L294, L367, L484): AUROC and RMSE per task for hop 0 / 1 / 2, 5 methods, plus a win-loss matrix over 15 cases. i read the captions and the result text, not each cell.</li>
+        <li>not checked: plurel appendix C; single cells of the rdbbench tables.</li>
     </ul>
 
     <h3 id="repos">method repos</h3>
@@ -1022,6 +1024,21 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li><b>[repo-rt-2]</b> the RT repo ships pip package <code>relational-transformer</code>, checkpoints and preprocessed databases on hugging face (stanford-star), and recipes for in-context prediction and per-task fine-tuning. (same README)</li>
         <li><b>[repo-relbench-1]</b> relbench package version 3.0.2 (<code>relbench:pyproject.toml:7</code>, clone bbe3b52, 2026-10-05). relarena says results depend on the package version <a href="#relarena">[relarena-2]</a>. pin it in stage 2.</li>
         <li><b>[repo-relicl-1]</b> relicl needs ubuntu 22.04+, python 3.12, a CUDA GPU, poetry. run: <code>poetry run relicl run relbench.db=… relbench.task=…</code>. results are in a second repo, uma-pi1/relicl-results. (<code>relicl:README.md</code>, clone 2e04c1d, 2026-10-02)</li>
+        <li><b>[repo-tabpfnrel-1] what changed in tabpfn-rel after august.</b> (<code>tabpfn-rel:src/tabpfn_rel/model.py:26-31, 58-63, 214-219, 262-293</code>; clone 3866433, 2026-09-29)
+            <ul>
+                <li>2026-08-15 (the paper): tabpfn v3, depth tuned over 2 / 3 / 4, K = 100,000 context rows, local version without text.</li>
+                <li>2026-09-18 (API only): tabpfn 3.5, fixed depth 4, K = 200,000, text.</li>
+                <li>2026-09-28 (local and API): K = 200,000, 8 estimators, fixed depth 4, text on (local: <code>tabpfn-v3.5-tfidf</code>), and <code>"hurdle": "auto"</code> with <code>hurdle_zero_threshold</code> 0.05.</li>
+                <li>hurdle = a two-stage regression for zero-inflated targets: first "is it zero", then the value for the non-zero rows, each with its own recency context. it uses <code>tabpfn_extensions.hurdle.AutoHurdleRegressor</code>. (<code>tabpfn-rel:src/tabpfn_rel/hurdle.py:1-16</code>; <code>model.py:232-258</code>)</li>
+                <li>so prior labs already handles the zero-inflated regression targets that stage 3 found <a href="#stage3">[s3-2]</a>, by a harness trick, not by a prior. and depth is no longer tuned at all. this closes the open point in <a href="#stage2">[s2-6]</a>.</li>
+            </ul>
+        </li>
+        <li><b>[repo-relicl-2] relicl uses text columns.</b> the run config has <code>text: enable: true</code>: free-text columns are embedded with <code>sentence-transformers/all-MiniLM-L6-v2</code> and reduced to 16 dimensions by PCA; a string column counts as text from 20 distinct values. (<code>relicl:config/relicl-example.yaml:36-41</code>; <code>relicl:src/relicl/config.py:318-343</code>). the class default is <code>enable = False</code>, the example config turns it on. <mark class="unverified">unverified</mark>: that the paper runs used this config.
+            <ul>
+                <li>this explains relicl's two largest wins over the text-free tabpfn-rel (user-ignore, user-clicks) <a href="#tables">[tab-relicl-1]</a>. that comparison is text against no text. against the august API version with text (0.8787 on user-ignore, <a href="#relarena">[relarena-9]</a>), relicl's 88.5 is level.</li>
+                <li>relicl drops self-links before it runs: "Drop edges from a table to itself, e.g., rel-stack's posts.ParentId". (<code>relicl:src/relicl/rewrite/drop_self_references.py:13-14</code>)</li>
+            </ul>
+        </li>
         <li>read only at README / config level: relicl, relbench, relational-transformer. their source code is not read.</li>
     </ul>
 
