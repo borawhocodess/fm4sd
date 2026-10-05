@@ -1,0 +1,391 @@
+{
+ "dataset": "rel-event",
+ "val_timestamp": "2012-11-21 00:00:00",
+ "test_timestamp": "2012-11-29 00:00:00",
+ "db_time_min": "1912-01-01 05:59:24.003000",
+ "db_time_max": "2012-11-28 23:59:00.003000",
+ "num_tables": 5,
+ "total_rows": 41328337,
+ "total_columns": 131,
+ "tables": {
+  "event_interest": {
+   "rows": 14978,
+   "columns": 6,
+   "pkey": null,
+   "time_col": "timestamp",
+   "fkeys": {
+    "event": "events",
+    "user": "users"
+   },
+   "feature_kinds": {
+    "numeric": 3
+   },
+   "null_fraction": 0.0094,
+   "time_min": "2012-04-27 21:41:02.227000",
+   "time_max": "2012-11-28 23:48:23.669000",
+   "links": {
+    "event": {
+     "parent": "events",
+     "null_fraction": 0.0563,
+     "parents_with_children": 8119,
+     "parent_rows": 2459811,
+     "parents_without_children_fraction": 0.9967,
+     "children_per_parent": {
+      "mean": 1.741,
+      "median": 1.0,
+      "p90": 2.0,
+      "p99": 13.0,
+      "max": 242.0
+     }
+    },
+    "user": {
+     "parent": "users",
+     "null_fraction": 0.0,
+     "parents_with_children": 1979,
+     "parent_rows": 37143,
+     "parents_without_children_fraction": 0.9467,
+     "children_per_parent": {
+      "mean": 7.5685,
+      "median": 6.0,
+      "p90": 11.0,
+      "p99": 25.0,
+      "max": 85.0
+     }
+    }
+   }
+  },
+  "users": {
+   "rows": 37143,
+   "columns": 7,
+   "pkey": "user_id",
+   "time_col": "joinedAt",
+   "fkeys": {},
+   "feature_kinds": {
+    "categorical": 3,
+    "numeric": 2
+   },
+   "null_fraction": 0.0283,
+   "time_min": "2012-04-13 01:06:25.740000",
+   "time_max": "2012-11-28 23:47:42.125000",
+   "links": {}
+  },
+  "event_attendees": {
+   "rows": 8430002,
+   "columns": 5,
+   "pkey": null,
+   "time_col": "start_time",
+   "fkeys": {
+    "event": "events",
+    "user_id": "users"
+   },
+   "feature_kinds": {
+    "numeric": 1,
+    "categorical": 1
+   },
+   "null_fraction": 0.1988,
+   "time_min": "2012-05-01 19:30:00",
+   "time_max": "2012-11-28 21:00:00.003000",
+   "links": {
+    "event": {
+     "parent": "events",
+     "null_fraction": 0.0,
+     "parents_with_children": 17076,
+     "parent_rows": 2459811,
+     "parents_without_children_fraction": 0.9931,
+     "children_per_parent": {
+      "mean": 493.6755,
+      "median": 161.0,
+      "p90": 1269.5,
+      "p99": 4746.75,
+      "max": 10000.0
+     }
+    },
+    "user_id": {
+     "parent": "users",
+     "null_fraction": 0.9941,
+     "parents_with_children": 9257,
+     "parent_rows": 37143,
+     "parents_without_children_fraction": 0.7508,
+     "children_per_parent": {
+      "mean": 5.3821,
+      "median": 1.0,
+      "p90": 7.0,
+      "p99": 85.88000000000102,
+      "max": 669.0
+     }
+    }
+   }
+  },
+  "user_friends": {
+   "rows": 30386403,
+   "columns": 3,
+   "pkey": null,
+   "time_col": null,
+   "fkeys": {
+    "user": "users",
+    "friend": "users"
+   },
+   "feature_kinds": {
+    "numeric": 1
+   },
+   "null_fraction": 0.3353,
+   "links": {
+    "user": {
+     "parent": "users",
+     "null_fraction": 0.013,
+     "parents_with_children": 37011,
+     "parent_rows": 37143,
+     "parents_without_children_fraction": 0.0036,
+     "children_per_parent": {
+      "mean": 810.3688,
+      "median": 496.0,
+      "p90": 1964.0,
+      "p99": 4559.0,
+      "max": 4964.0
+     }
+    },
+    "friend": {
+     "parent": "users",
+     "null_fraction": 0.9929,
+     "parents_with_children": 28224,
+     "parent_rows": 37143,
+     "parents_without_children_fraction": 0.2401,
+     "children_per_parent": {
+      "mean": 7.6334,
+      "median": 4.0,
+      "p90": 17.0,
+      "p99": 53.0,
+      "max": 144.0
+     }
+    }
+   }
+  },
+  "events": {
+   "rows": 2459811,
+   "columns": 110,
+   "pkey": "event_id",
+   "time_col": "start_time",
+   "fkeys": {
+    "user_id": "users"
+   },
+   "feature_kinds": {
+    "categorical": 3,
+    "text": 1,
+    "numeric": 103
+   },
+   "null_fraction": 0.0387,
+   "time_min": "1912-01-01 05:59:24.003000",
+   "time_max": "2012-11-28 23:59:00.003000",
+   "links": {
+    "user_id": {
+     "parent": "users",
+     "null_fraction": 0.9996,
+     "parents_with_children": 453,
+     "parent_rows": 37143,
+     "parents_without_children_fraction": 0.9878,
+     "children_per_parent": {
+      "mean": 2.0861,
+      "median": 1.0,
+      "p90": 3.8000000000000114,
+      "p99": 17.480000000000018,
+      "max": 34.0
+     }
+    }
+   }
+  }
+ },
+ "tasks": {
+  "user-attendance": {
+   "type": "REGRESSION",
+   "entity_table": "users",
+   "entity_col": "user",
+   "time_col": "timestamp",
+   "target_col": "target",
+   "timedelta": "7 days 00:00:00",
+   "num_eval_timestamps": 1,
+   "splits": {
+    "train": {
+     "rows": 19239,
+     "unique_entities": 8517,
+     "seed_times": 22,
+     "seed_time_min": "2012-06-20 00:00:00",
+     "seed_time_max": "2012-11-14 00:00:00",
+     "rows_per_entity": {
+      "mean": 2.2589,
+      "median": 1.0,
+      "p90": 4.0,
+      "p99": 17.0,
+      "max": 22.0
+     },
+     "target": {
+      "mean": 0.3627,
+      "median": 0.0,
+      "p90": 1.0,
+      "p99": 3.0,
+      "max": 16.0
+     },
+     "target_std": 0.7652,
+     "target_zero_fraction": 0.7237
+    },
+    "val": {
+     "rows": 2013,
+     "unique_entities": 2013,
+     "seed_times": 1,
+     "seed_time_min": "2012-11-21 00:00:00",
+     "seed_time_max": "2012-11-21 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target": {
+      "mean": 0.2618,
+      "median": 0.0,
+      "p90": 1.0,
+      "p99": 2.0,
+      "max": 4.0
+     },
+     "target_std": 0.5243,
+     "target_zero_fraction": 0.769
+    },
+    "test": {
+     "rows": 1958,
+     "unique_entities": 1958,
+     "seed_times": 1,
+     "seed_time_min": "2012-11-29 00:00:00",
+     "seed_time_max": "2012-11-29 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "target": {
+      "mean": 0.2635,
+      "median": 0.0,
+      "p90": 1.0,
+      "p99": 3.0,
+      "max": 8.0
+     },
+     "target_std": 0.6426,
+     "target_zero_fraction": 0.7916
+    }
+   }
+  },
+  "user-repeat": {
+   "type": "BINARY_CLASSIFICATION",
+   "entity_table": "users",
+   "entity_col": "user",
+   "time_col": "timestamp",
+   "target_col": "target",
+   "timedelta": "7 days 00:00:00",
+   "num_eval_timestamps": 1,
+   "splits": {
+    "train": {
+     "rows": 3842,
+     "unique_entities": 1388,
+     "seed_times": 19,
+     "seed_time_min": "2012-07-11 00:00:00",
+     "seed_time_max": "2012-11-14 00:00:00",
+     "rows_per_entity": {
+      "mean": 2.768,
+      "median": 2.0,
+      "p90": 6.0,
+      "p99": 15.0,
+      "max": 19.0
+     },
+     "positive_rate": 0.4898
+    },
+    "val": {
+     "rows": 268,
+     "unique_entities": 268,
+     "seed_times": 1,
+     "seed_time_min": "2012-11-21 00:00:00",
+     "seed_time_max": "2012-11-21 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.4851
+    },
+    "test": {
+     "rows": 246,
+     "unique_entities": 246,
+     "seed_times": 1,
+     "seed_time_min": "2012-11-29 00:00:00",
+     "seed_time_max": "2012-11-29 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.4472
+    }
+   }
+  },
+  "user-ignore": {
+   "type": "BINARY_CLASSIFICATION",
+   "entity_table": "users",
+   "entity_col": "user",
+   "time_col": "timestamp",
+   "target_col": "target",
+   "timedelta": "7 days 00:00:00",
+   "num_eval_timestamps": 1,
+   "splits": {
+    "train": {
+     "rows": 19239,
+     "unique_entities": 8517,
+     "seed_times": 22,
+     "seed_time_min": "2012-06-20 00:00:00",
+     "seed_time_max": "2012-11-14 00:00:00",
+     "rows_per_entity": {
+      "mean": 2.2589,
+      "median": 1.0,
+      "p90": 4.0,
+      "p99": 17.0,
+      "max": 22.0
+     },
+     "positive_rate": 0.1688
+    },
+    "val": {
+     "rows": 2013,
+     "unique_entities": 2013,
+     "seed_times": 1,
+     "seed_time_min": "2012-11-21 00:00:00",
+     "seed_time_max": "2012-11-21 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.1108
+    },
+    "test": {
+     "rows": 1958,
+     "unique_entities": 1958,
+     "seed_times": 1,
+     "seed_time_min": "2012-11-29 00:00:00",
+     "seed_time_max": "2012-11-29 00:00:00",
+     "rows_per_entity": {
+      "mean": 1.0,
+      "median": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "max": 1.0
+     },
+     "positive_rate": 0.1302
+    }
+   }
+  }
+ }
+}
