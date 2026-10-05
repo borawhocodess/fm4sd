@@ -1,0 +1,22 @@
+# the 21 relbench v1 entity tasks, as `relarena --list` prints them. one per line: dataset task
+rel-f1 driver-position
+rel-f1 driver-dnf
+rel-f1 driver-top3
+rel-avito ad-ctr
+rel-avito user-visits
+rel-avito user-clicks
+rel-event user-attendance
+rel-event user-repeat
+rel-event user-ignore
+rel-trial study-outcome
+rel-trial study-adverse
+rel-trial site-success
+rel-stack user-engagement
+rel-stack post-votes
+rel-stack user-badge
+rel-hm user-churn
+rel-hm item-sales
+rel-amazon user-churn
+rel-amazon user-ltv
+rel-amazon item-churn
+rel-amazon item-ltv

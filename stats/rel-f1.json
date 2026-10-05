@@ -1,0 +1,539 @@
+{
+ "dataset": "rel-f1",
+ "val_timestamp": "2005-01-01 00:00:00",
+ "test_timestamp": "2010-01-01 00:00:00",
+ "db_time_min": "1950-05-13 00:00:00",
+ "db_time_max": "2009-11-01 11:00:00",
+ "num_tables": 9,
+ "total_rows": 74063,
+ "total_columns": 67,
+ "tables": {
+  "qualifying": {
+   "rows": 4082,
+   "columns": 7,
+   "pkey": "qualifyId",
+   "time_col": "date",
+   "fkeys": {
+    "raceId": "races",
+    "driverId": "drivers",
+    "constructorId": "constructors"
+   },
+   "feature_kinds": {
+    "numeric": 2
+   },
+   "null_fraction": 0.0,
+   "time_min": "1994-03-26 00:00:00",
+   "time_max": "2009-10-31 11:00:00",
+   "links": {
+    "raceId": {
+     "parent": "races",
+     "null_fraction": 0.0,
+     "parents_with_children": 189,
+     "parent_rows": 820,
+     "parents_without_children_fraction": 0.7695,
+     "children_per_parent": {
+      "mean": 21.5979,
+      "median": 22.0,
+      "p90": 26.0,
+      "p99": 26.0,
+      "max": 28.0
+     }
+    },
+    "driverId": {
+     "parent": "drivers",
+     "null_fraction": 0.0,
+     "parents_with_children": 117,
+     "parent_rows": 857,
+     "parents_without_children_fraction": 0.8635,
+     "children_per_parent": {
+      "mean": 34.8889,
+      "median": 17.0,
+      "p90": 96.00000000000006,
+      "p99": 163.40000000000003,
+      "max": 189.0
+     }
+    },
+    "constructorId": {
+     "parent": "constructors",
+     "null_fraction": 0.0,
+     "parents_with_children": 32,
+     "parent_rows": 211,
+     "parents_without_children_fraction": 0.8483,
+     "children_per_parent": {
+      "mean": 127.5625,
+      "median": 80.0,
+      "p90": 250.0,
+      "p99": 378.0,
+      "max": 378.0
+     }
+    }
+   }
+  },
+  "drivers": {
+   "rows": 857,
+   "columns": 7,
+   "pkey": "driverId",
+   "time_col": null,
+   "fkeys": {},
+   "feature_kinds": {
+    "text": 3,
+    "categorical": 2,
+    "datetime": 1
+   },
+   "null_fraction": 0.0,
+   "links": {}
+  },
+  "results": {
+   "rows": 20323,
+   "columns": 15,
+   "pkey": "resultId",
+   "time_col": "date",
+   "fkeys": {
+    "raceId": "races",
+    "driverId": "drivers",
+    "constructorId": "constructors"
+   },
+   "feature_kinds": {
+    "numeric": 10
+   },
+   "null_fraction": 0.2044,
+   "time_min": "1950-05-13 00:00:00",
+   "time_max": "2009-11-01 11:00:00",
+   "links": {
+    "raceId": {
+     "parent": "races",
+     "null_fraction": 0.0,
+     "parents_with_children": 820,
+     "parent_rows": 820,
+     "parents_without_children_fraction": 0.0,
+     "children_per_parent": {
+      "mean": 24.7841,
+      "median": 24.0,
+      "p90": 31.0,
+      "p99": 39.0,
+      "max": 55.0
+     }
+    },
+    "driverId": {
+     "parent": "drivers",
+     "null_fraction": 0.0,
+     "parents_with_children": 806,
+     "parent_rows": 857,
+     "parents_without_children_fraction": 0.0595,
+     "children_per_parent": {
+      "mean": 25.2146,
+      "median": 6.0,
+      "p90": 81.0,
+      "p99": 209.85000000000014,
+      "max": 288.0
+     }
+    },
+    "constructorId": {
+     "parent": "constructors",
+     "null_fraction": 0.0,
+     "parents_with_children": 199,
+     "parent_rows": 211,
+     "parents_without_children_fraction": 0.0569,
+     "children_per_parent": {
+      "mean": 102.1256,
+      "median": 14.0,
+      "p90": 244.80000000000015,
+      "p99": 1071.9200000000026,
+      "max": 1829.0
+     }
+    }
+   }
+  },
+  "standings": {
+   "rows": 28115,
+   "columns": 7,
+   "pkey": "driverStandingsId",
+   "time_col": "date",
+   "fkeys": {
+    "raceId": "races",
+    "driverId": "drivers"
+   },
+   "feature_kinds": {
+    "numeric": 3
+   },
+   "null_fraction": 0.0,
+   "time_min": "1950-05-13 00:00:00",
+   "time_max": "2009-11-01 11:00:00",
+   "links": {
+    "raceId": {
+     "parent": "races",
+     "null_fraction": 0.0,
+     "parents_with_children": 820,
+     "parent_rows": 820,
+     "parents_without_children_fraction": 0.0,
+     "children_per_parent": {
+      "mean": 34.2866,
+      "median": 30.0,
+      "p90": 57.0,
+      "p99": 93.80999999999995,
+      "max": 108.0
+     }
+    },
+    "driverId": {
+     "parent": "drivers",
+     "null_fraction": 0.0,
+     "parents_with_children": 799,
+     "parent_rows": 857,
+     "parents_without_children_fraction": 0.0677,
+     "children_per_parent": {
+      "mean": 35.1877,
+      "median": 16.0,
+      "p90": 91.20000000000005,
+      "p99": 215.01999999999998,
+      "max": 270.0
+     }
+    }
+   }
+  },
+  "races": {
+   "rows": 820,
+   "columns": 7,
+   "pkey": "raceId",
+   "time_col": "date",
+   "fkeys": {
+    "circuitId": "circuits"
+   },
+   "feature_kinds": {
+    "numeric": 2,
+    "categorical": 2
+   },
+   "null_fraction": 0.0,
+   "time_min": "1950-05-13 00:00:00",
+   "time_max": "2009-11-01 11:00:00",
+   "links": {
+    "circuitId": {
+     "parent": "circuits",
+     "null_fraction": 0.0,
+     "parents_with_children": 66,
+     "parent_rows": 77,
+     "parents_without_children_fraction": 0.1429,
+     "children_per_parent": {
+      "mean": 12.4242,
+      "median": 7.0,
+      "p90": 30.0,
+      "p99": 57.04999999999998,
+      "max": 59.0
+     }
+    }
+   }
+  },
+  "constructors": {
+   "rows": 211,
+   "columns": 4,
+   "pkey": "constructorId",
+   "time_col": null,
+   "fkeys": {},
+   "feature_kinds": {
+    "text": 2,
+    "categorical": 1
+   },
+   "null_fraction": 0.0,
+   "links": {}
+  },
+  "constructor_results": {
+   "rows": 9408,
+   "columns": 5,
+   "pkey": "constructorResultsId",
+   "time_col": "date",
+   "fkeys": {
+    "raceId": "races",
+    "constructorId": "constructors"
+   },
+   "feature_kinds": {
+    "numeric": 1
+   },
+   "null_fraction": 0.0,
+   "time_min": "1956-01-22 00:00:00",
+   "time_max": "2009-11-01 11:00:00",
+   "links": {
+    "raceId": {
+     "parent": "races",
+     "null_fraction": 0.0,
+     "parents_with_children": 757,
+     "parent_rows": 820,
+     "parents_without_children_fraction": 0.0768,
+     "children_per_parent": {
+      "mean": 12.428,
+      "median": 11.0,
+      "p90": 17.0,
+      "p99": 20.0,
+      "max": 20.0
+     }
+    },
+    "constructorId": {
+     "parent": "constructors",
+     "null_fraction": 0.0,
+     "parents_with_children": 163,
+     "parent_rows": 211,
+     "parents_without_children_fraction": 0.2275,
+     "children_per_parent": {
+      "mean": 57.7178,
+      "median": 14.0,
+      "p90": 138.60000000000008,
+      "p99": 570.6799999999996,
+      "max": 741.0
+     }
+    }
+   }
+  },
+  "circuits": {
+   "rows": 77,
+   "columns": 8,
+   "pkey": "circuitId",
+   "time_col": null,
+   "fkeys": {},
+   "feature_kinds": {
+    "text": 3,
+    "categorical": 1,
+    "numeric": 3
+   },
+   "null_fraction": 0.0049,
+   "links": {}
+  },
+  "constructor_standings": {
+   "rows": 10170,
+   "columns": 7,
+   "pkey": "constructorStandingsId",
+   "time_col": "date",
+   "fkeys": {
+    "raceId": "races",
+    "constructorId": "constructors"
+   },
+   "feature_kinds": {
+    "numeric": 3
+   },
+   "null_fraction": 0.0,
+   "time_min": "1958-01-19 00:00:00",
+   "time_max": "2009-11-01 11:00:00",
+   "links": {
+    "raceId": {
+     "parent": "races",
+     "null_fraction": 0.0,
+     "parents_with_children": 756,
+     "parent_rows": 820,
+     "parents_without_children_fraction": 0.078,
+     "children_per_parent": {
+      "mean": 13.4524,
+      "median": 13.0,
+      "p90": 19.0,
+      "p99": 20.0,
+      "max": 22.0
+     }
+    },
+    "constructorId": {
+     "parent": "constructors",
+     "null_fraction": 0.0,
+     "parents_with_children": 147,
+     "parent_rows": 211,
+     "parents_without_children_fraction": 0.3033,
+     "children_per_parent": {
+      "mean": 69.1837,
+      "median": 24.0,
+      "p90": 180.80000000000013,
+      "p99": 590.8799999999994,
+      "max": 753.0
+     }
+    }
+   }
+  }
+ },
+ "tasks": {
+  "driver-dnf": {
+   "type": "BINARY_CLASSIFICATION",
+   "entity_table": "drivers",
+   "entity_col": "driverId",
+   "time_col": "date",
+   "target_col": "did_not_finish",
+   "timedelta": "30 days 00:00:00",
+   "num_eval_timestamps": 40,
+   "splits": {
+    "train": {
+     "rows": 11411,
+     "unique_entities": 780,
+     "seed_times": 420,
+     "seed_time_min": "1950-05-20 00:00:00",
+     "seed_time_max": "2004-10-03 00:00:00",
+     "rows_per_entity": {
+      "mean": 14.6295,
+      "median": 5.0,
+      "p90": 44.10000000000002,
+      "p99": 109.0,
+      "max": 144.0
+     },
+     "positive_rate": 0.8804
+    },
+    "val": {
+     "rows": 566,
+     "unique_entities": 42,
+     "seed_times": 26,
+     "seed_time_min": "2005-03-02 00:00:00",
+     "seed_time_max": "2008-03-16 00:00:00",
+     "rows_per_entity": {
+      "mean": 13.4762,
+      "median": 12.5,
+      "p90": 26.0,
+      "p99": 26.0,
+      "max": 26.0
+     },
+     "positive_rate": 0.7792
+    },
+    "test": {
+     "rows": 702,
+     "unique_entities": 42,
+     "seed_times": 29,
+     "seed_time_min": "2010-03-02 00:00:00",
+     "seed_time_max": "2013-03-16 00:00:00",
+     "rows_per_entity": {
+      "mean": 16.7143,
+      "median": 18.0,
+      "p90": 29.0,
+      "p99": 29.0,
+      "max": 29.0
+     },
+     "positive_rate": 0.7051
+    }
+   }
+  },
+  "driver-top3": {
+   "type": "BINARY_CLASSIFICATION",
+   "entity_table": "drivers",
+   "entity_col": "driverId",
+   "time_col": "date",
+   "target_col": "qualifying",
+   "timedelta": "30 days 00:00:00",
+   "num_eval_timestamps": 40,
+   "splits": {
+    "train": {
+     "rows": 1353,
+     "unique_entities": 92,
+     "seed_times": 59,
+     "seed_time_min": "1994-02-28 00:00:00",
+     "seed_time_max": "2004-10-03 00:00:00",
+     "rows_per_entity": {
+      "mean": 14.7065,
+      "median": 9.0,
+      "p90": 37.900000000000006,
+      "p99": 58.09,
+      "max": 59.0
+     },
+     "positive_rate": 0.1707
+    },
+    "val": {
+     "rows": 588,
+     "unique_entities": 42,
+     "seed_times": 27,
+     "seed_time_min": "2005-03-02 00:00:00",
+     "seed_time_max": "2008-03-16 00:00:00",
+     "rows_per_entity": {
+      "mean": 14.0,
+      "median": 13.0,
+      "p90": 27.0,
+      "p99": 27.0,
+      "max": 27.0
+     },
+     "positive_rate": 0.2024
+    },
+    "test": {
+     "rows": 726,
+     "unique_entities": 42,
+     "seed_times": 30,
+     "seed_time_min": "2010-03-02 00:00:00",
+     "seed_time_max": "2013-03-16 00:00:00",
+     "rows_per_entity": {
+      "mean": 17.2857,
+      "median": 19.0,
+      "p90": 30.0,
+      "p99": 30.0,
+      "max": 30.0
+     },
+     "positive_rate": 0.1763
+    }
+   }
+  },
+  "driver-position": {
+   "type": "REGRESSION",
+   "entity_table": "drivers",
+   "entity_col": "driverId",
+   "time_col": "date",
+   "target_col": "position",
+   "timedelta": "60 days 00:00:00",
+   "num_eval_timestamps": 40,
+   "splits": {
+    "train": {
+     "rows": 7453,
+     "unique_entities": 771,
+     "seed_times": 254,
+     "seed_time_min": "1950-06-19 00:00:00",
+     "seed_time_max": "2004-09-03 00:00:00",
+     "rows_per_entity": {
+      "mean": 9.6667,
+      "median": 4.0,
+      "p90": 28.0,
+      "p99": 63.0,
+      "max": 82.0
+     },
+     "target": {
+      "mean": 13.9014,
+      "median": 13.333333333333334,
+      "p90": 23.0,
+      "p99": 33.0,
+      "max": 39.0
+     },
+     "target_std": 7.0257,
+     "target_zero_fraction": 0.0
+    },
+    "val": {
+     "rows": 499,
+     "unique_entities": 47,
+     "seed_times": 23,
+     "seed_time_min": "2005-03-02 00:00:00",
+     "seed_time_max": "2009-10-07 00:00:00",
+     "rows_per_entity": {
+      "mean": 10.617,
+      "median": 8.0,
+      "p90": 23.0,
+      "p99": 23.0,
+      "max": 23.0
+     },
+     "target": {
+      "mean": 11.0832,
+      "median": 11.4,
+      "p90": 17.0,
+      "p99": 20.0,
+      "max": 22.0
+     },
+     "target_std": 4.6407,
+     "target_zero_fraction": 0.0
+    },
+    "test": {
+     "rows": 760,
+     "unique_entities": 56,
+     "seed_times": 33,
+     "seed_time_min": "2010-03-02 00:00:00",
+     "seed_time_max": "2016-05-29 00:00:00",
+     "rows_per_entity": {
+      "mean": 13.5714,
+      "median": 10.0,
+      "p90": 30.5,
+      "p99": 33.0,
+      "max": 33.0
+     },
+     "target": {
+      "mean": 11.9262,
+      "median": 12.183333333333334,
+      "p90": 18.51666666666667,
+      "p99": 22.0,
+      "max": 24.0
+     },
+     "target_std": 5.2138,
+     "target_zero_fraction": 0.0
+    }
+   }
+  }
+ }
+}

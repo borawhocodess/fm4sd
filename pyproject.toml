@@ -1,0 +1,24 @@
+[project]
+name = "fm4sd"
+version = "0.0.1"
+description = "playground for foundation models on structured data: relarena methods and prior experiments"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "relarena-core[dfs]>=0.0.5",
+    "lightgbm>=4.0,<4.7",
+    "ConfigSpace",
+    "numpy",
+    "pandas",
+]
+
+# relarena finds methods through this entry-point group (relarena docs/adding-a-model.md,
+# "External model packages"). importing the module runs the register_model decorators.
+[project.entry-points."relarena.models"]
+fm4sd = "fm4sd.models"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fm4sd"]
