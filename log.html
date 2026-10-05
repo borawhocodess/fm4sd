@@ -1040,6 +1040,30 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 </li>
             </ul>
         </li>
+        <li><b>[c2] real schemas: studies and corpora</b>
+            <ul>
+                <li><b>[c2-1] schemapile</b> (döhmen, geacu, hulsebos, schelter; SIGMOD 2024, doi 10.1145/3654975). read: §4 of the pdf (ir.cwi.nl/pub/34763), text extracted locally. 221,171 schemas from 373,153 SQL files on github; 1.7M tables; 771K foreign keys.
+                    <ul>
+                        <li>tables per schema: 2 to 5 in 38.8 % of schemas, 1 table in 23.5 %, 6 to 10 in 19.4 %; long tail up to 979. median 4.</li>
+                        <li>columns per table: 2 to 5 in 56.2 % of tables, 6 to 10 in 28.6 %; long tail up to 2,554.</li>
+                        <li>foreign keys per schema: none in 45.9 % of schemas; 1 to 3 in 29.1 %; long tail up to 819. of the foreign keys, 749K are single-column; composite keys are rare (14.6K two-column, 6.4K three-column).</li>
+                        <li>column types: string 39.9 %, integer 33.2 %, float 9.4 %, time 4.4 %. "similar to the type distribution observed in enterprise databases".</li>
+                        <li>data: most schemas with data are tiny; "the overall number of rows is low with a median below" 10 per table. so schemapile is a schema corpus, not a data corpus.</li>
+                    </ul>
+                </li>
+                <li><b>[c2-2] wikidbs</b> (vogel, bodensohn, binnig; neurips 2024 datasets track). read: abstract of the pdf. 100,000 relational databases built from wikidata, "aims to follow certain characteristics of real-world databases"; made for representation learning on databases; tasks shown: missing value imputation, column type annotation. no time, no events: it is a knowledge-graph corpus.</li>
+                <li><b>[c2-3] relbench v2</b> (gu et al., arxiv 2602.12606; workshop at iclr 2026 per THE JOIN readme). from a search summary: 11 curated databases, 66 tasks, new autocomplete tasks, a community repository of 90 databases, links to 4dbinfer, the temporal graph benchmark and redelex (70+ databases). <mark class="unverified">unverified</mark>. it is in <code>workdir/missing-papers-awesome-tfms.md</code>, not in the README.</li>
+                <li><b>[c2-4] rtgl</b> (kolesnichenko, peleška, šír; arxiv 2609.01292, 1 sep 2026): "Relational Task Generation Language", a declarative language for RDL tasks; they rebuild existing benchmark tasks and report "inconsistencies stemming from manually crafted SQL definitions" of the targets. source: arxiv abstract. <mark class="unverified">unverified</mark>. not in the README.</li>
+                <li><b>[c2-5] what this means for the prior</b> (my reading)
+                    <ul>
+                        <li>schema shape has good public statistics now: schemapile gives the distribution of tables per schema, columns per table and keys per schema over 221K real schemas. rdb-pfn trained its schema model on spider and bird only (a few hundred schemas) <a href="#rdbpfn">[rdbpfn-2]</a>. relbench's median of 6 columns per table and 0 to 3 keys per table <a href="#stage3">[s3-1]</a> agrees with schemapile's "2 to 5 columns" and "1 to 3 keys".</li>
+                        <li>about 40 % of real columns are strings. this fits the 17 % text + 26 % categorical in relbench. a prior with no string / high-cardinality columns misses the most common column type.</li>
+                        <li>what no corpus gives: realistic row-level dynamics. schemapile has almost no rows, wikidbs has no time. row-level realism must come from relbench, THE JOIN <a href="#thejoin">[join-4]</a> or from a model of events.</li>
+                        <li>for the task side, there are now three declarative task languages: relarena's RPI, THE JOIN's SQL manifests <a href="#thejoin">[join-7]</a>, and RTGL. a forecasting-task prior can reuse one of them to define labels on synthetic data, and then its tasks are comparable by construction.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="tables">result tables checked</h3>
