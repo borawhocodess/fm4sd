@@ -64,6 +64,7 @@ rm <id>.tar.gz
   - localpfn — [arxiv](https://arxiv.org/abs/2406.05207) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2024/file/c40daf14d7a6469e65116507c21faeb7-Paper-Conference.pdf) — [thomas et al. 2024]
   - tfm-priority — [arxiv](https://arxiv.org/abs/2405.01147) · [icml](https://proceedings.mlr.press/v235/van-breugel24a.html) — [van breugel and van der schaar 2024]
 - relational
+  - relbench — [arxiv](https://arxiv.org/abs/2407.20060) · [github](https://github.com/snap-stanford/relbench) — [robinson et al. 2024]
   - rdbbench — [arxiv](https://arxiv.org/abs/2607.03659) · [github](https://github.com/mdsamad001/Benchmarking-Deep-Relational-Database-Models) — [akhter et al. 2026]
   - rdl-survey — [arxiv](https://arxiv.org/abs/2506.16654) · [kdd](https://doi.org/10.1145/3711896.3736558) — [dwivedi et al. 2025]
   - rt — [arxiv](https://arxiv.org/abs/2510.06377) · [iclr](https://iclr.cc/virtual/2026/poster/10007116) · [github](https://github.com/snap-stanford/relational-transformer) — [ranjan et al. 2026]
@@ -73,6 +74,10 @@ rm <id>.tar.gz
   - plurel — [arxiv](https://arxiv.org/abs/2602.04029) · [icml](https://proceedings.mlr.press/v306/kothapalli26a.html) — [kothapalli et al. 2026]
   - rdblearn — [arxiv](https://arxiv.org/abs/2602.18495) · [arxiv](https://arxiv.org/abs/2602.13697) · [github](https://github.com/HKUSHXLab/rdblearn) — [zhang et al. 2026]
   - relarena-alpha — [arxiv](https://arxiv.org/abs/2608.16319) · [blog](https://priorlabs.ai/blog-posts/introducing-relarena) · [github](https://github.com/PriorLabs/relarena) — [hayler et al. 2026]
+  - relicl — [arxiv](https://arxiv.org/abs/2610.01725) · [github](https://github.com/uma-pi1/relicl) — [forbat and gemulla 2026]
+  - rdb-pfn — [arxiv](https://arxiv.org/abs/2603.03805) · [github](https://github.com/MuLabPKU/RDBPFN) — [wang et al. 2026]
+  - plurel-to-rdb-pfn — [arxiv](https://arxiv.org/abs/2607.29129) — [abolhasani and ganapathy 2026]
+  - graphpfn — [arxiv](https://arxiv.org/abs/2509.21489) — [eremeev et al. 2025]
 - time series
   - forecasting
     - fev-bench — [arxiv](https://arxiv.org/abs/2509.26468) · [github](https://github.com/autogluon/fev) — [shchur et al. 2025]
@@ -239,7 +244,7 @@ not placed yet:
   - ephris — [arxiv](https://arxiv.org/abs/2609.37057) · [github](https://github.com/nums-ai/ephris) — [lee et al. 2026]
   - supportsetleakage — [arxiv](https://arxiv.org/abs/2609.36417) — [upendra et al. 2026]
   - steer — [arxiv](https://arxiv.org/abs/2610.00907) · [github](https://github.com/lids-lab/steer) — [mohamed and aboulnaga 2026]
-  - relicl — [arxiv](https://arxiv.org/abs/2610.01725) · [github](https://github.com/uma-pi1/relicl) — [forbat and gemulla 2026]
+  - g2t-fm — [arxiv](https://arxiv.org/abs/2508.20906) — [eremeev et al. 2025]
 - time series
   - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe) · [icml](https://proceedings.mlr.press/v306/yang26ac.html) — [yang et al. 2026]
   - simpletimebench — [arxiv](https://arxiv.org/abs/2610.02058) · [openreview](https://openreview.net/forum?id=iIRdd86Xkr) — [ghoroghchian et al. 2026]
