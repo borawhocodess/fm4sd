@@ -511,7 +511,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <!-- runs found: 15 -->
 <!--CMP-END-->
             <ul>
-                <li>status: 15 of 54 runs finished (21 dfs-lightgbm, 21 tabpfn-rel, 12 rdb-pfn). rel-f1 and rel-trial done; the other 5 databases still build their DFS cache (24 min so far).</li>
+                <li>status: 15 of 54 runs finished (21 dfs-lightgbm, 21 tabpfn-rel, 12 rdb-pfn). rel-f1 and rel-trial done; rel-hm cache done, its runs started; 4 databases still build their DFS cache.</li>
                 <li>rel-f1 on capella vs the mac: dfs-lightgbm gives 0.6293 / 0.7901 / 3.874 there and 0.6212 / 0.7891 / 3.770 here (dnf / top3 / position). same seed, same 30 configs. so lightgbm is not bit-reproducible across the two machines (8 threads there, 1 here; different platform). differences up to 0.10 MAE.</li>
                 <li>capella job limits, from the submit filter: at most 14 CPU cores and 188,130 MB memory per requested GPU. my first submission asked for 16 cores and 256 GB; the filter warned but accepted the jobs. i cancelled them and resubmitted with 14 cores and 180 GB.</li>
                 <li>rel-f1 cache job on capella: 7 min 27 s, 86 MB. each rel-f1 run job finished in under 2 minutes.</li>
@@ -1060,6 +1060,31 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                         <li>about 40 % of real columns are strings. this fits the 17 % text + 26 % categorical in relbench. a prior with no string / high-cardinality columns misses the most common column type.</li>
                         <li>what no corpus gives: realistic row-level dynamics. schemapile has almost no rows, wikidbs has no time. row-level realism must come from relbench, THE JOIN <a href="#thejoin">[join-4]</a> or from a model of events.</li>
                         <li>for the task side, there are now three declarative task languages: relarena's RPI, THE JOIN's SQL manifests <a href="#thejoin">[join-7]</a>, and RTGL. a forecasting-task prior can reuse one of them to define labels on synthetic data, and then its tasks are comparable by construction.</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><b>[c3] event models for a forecasting-task prior</b>
+            <ul>
+                <li><b>[c3-1] the labels of relbench are functionals of a marked point process.</b> my derivation from <a href="#relbench">[relbench-3]</a> and <a href="#formal">[formal-5]</a>, not from a paper: each fact-table row is an event (time, entity, mark). churn = "zero events of entity e in (t, t+δ]"; count and sum tasks = number of events or sum of a mark in the window; "top 3" or "more than one click" = a threshold on such a count. so a prior over tasks = a prior over event processes per entity + a prior over window functionals <a href="#thejoin">[join-6]</a>.</li>
+                <li><b>[c3-2] "buy till you die" models</b> (marketing science; pareto/NBD, BG/NBD). source: wikipedia page "Buy Till you Die" and a search summary; the original papers are not read. two processes per customer: a repeat-purchase process while "alive" (poisson with a personal rate; rates gamma-distributed over customers → negative binomial counts) and a dropout process (pareto type II, or geometric with beta mixing). the wikipedia page cites fader et al. 2005 for BG/NBD. <mark class="unverified">unverified</mark>
+                    <ul>
+                        <li>why it fits: it makes exactly the things stage 3 found. zero-inflated counts (dropped-out customers), heavy-tailed activity (gamma rates), entity repetition with persistent rates, and churn as a named quantity <a href="#stage3">[s3-2]</a>.</li>
+                    </ul>
+                </li>
+                <li><b>[c3-3] a pfn for point processes exists: FIM-PP</b> (berghaus, seifner, cvejoski, ojeda, sánchez; arxiv 2509.24762; iclr 2026 per arxiv). source: arxiv abstract. "we pretrain a deep neural network to infer, in-context, the conditional intensity functions of event histories"; "pretraining is performed on a large synthetic dataset of MTPPs sampled from a broad distribution of Hawkes processes"; zero-shot on real data, or fine-tuned. a search summary adds: 72,000 hawkes processes, 14.4M events, with self-excitation, inhibition, periodicity. <mark class="unverified">unverified</mark>. not in the README.
+                    <ul>
+                        <li>it works on event sequences, not on databases: no tables, no keys, no attributes of entities. but its prior over hawkes kernels is a tested recipe for the event side.</li>
+                    </ul>
+                </li>
+                <li><b>[c3-4] what the published priors do with time.</b> plurel: trend, cycle and noise on the exogenous inputs, indexed by row number <a href="#plurel">[plurel-4]</a>. rdb-pfn: trend, seasonality, spike on the latent initialisation <a href="#rdbpfn">[rdbpfn-2]</a>. both model how values drift over time. neither models when and how often an entity has events, which is what the labels count.</li>
+                <li><b>[c3-5] what this means for the prior</b> (my reading). a forecasting-task prior can be small:
+                    <ul>
+                        <li>entities with latent traits (rate, dropout hazard, mark scale) drawn from heavy-tailed distributions; traits depend on entity attributes through a random function, as in tabpfn's SCM.</li>
+                        <li>events per entity from a renewal or hawkes process with seasonality and dropout; marks from an SCM conditioned on the entity and on parent rows.</li>
+                        <li>tasks = a seed-time grid + a window functional from the THE JOIN vocabulary.</li>
+                        <li>then DFS + target-history features, as in relarena, and a pfn on the flat table. every part exists; the combination is not in the papers i read.</li>
+                        <li>first test that needs no training: generate such databases, compute the stage 3 statistics on them (zero share, rows per entity, positive rate, fan-out) and compare with <a href="#stage3">[s3-1] [s3-2]</a> and with plurel output.</li>
                     </ul>
                 </li>
             </ul>
