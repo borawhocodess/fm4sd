@@ -486,17 +486,17 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <div class="tw"><table>
 <tr><th>task</th><th>metric</th><th>mine: fm4sd-dfs-lightgbm</th><th>mine: fm4sd-rdbpfn</th><th>mine: tabpfn-rel-local-2026-08-15</th><th>published: lightgbm</th><th>published: rdblearn</th><th>published: tabpfn-rel-local-2026-08-15</th><th>published: tabpfn-rel-local-2026-09-28</th><th>published: rt-plurel</th></tr>
 <tr><td>rel-f1/driver-position</td><td>MAE ↓</td><td>3.8744</td><td></td><td>3.7591</td><td>4.1058</td><td>3.8886</td><td>3.7617</td><td>3.7785</td><td>3.8177</td></tr>
-<tr><td>rel-f1/driver-dnf</td><td>AUC ↑</td><td>0.6293</td><td></td><td>0.7004</td><td>0.7303</td><td>0.7146</td><td>0.7145</td><td>0.7248</td><td>0.7315</td></tr>
-<tr><td>rel-f1/driver-top3</td><td>AUC ↑</td><td>0.7901</td><td></td><td>0.7993</td><td>0.7389</td><td>0.7801</td><td>0.7929</td><td>0.8106</td><td>0.7589</td></tr>
+<tr><td>rel-f1/driver-dnf</td><td>AUC ↑</td><td>0.6293</td><td>0.7326</td><td>0.7004</td><td>0.7303</td><td>0.7146</td><td>0.7145</td><td>0.7248</td><td>0.7315</td></tr>
+<tr><td>rel-f1/driver-top3</td><td>AUC ↑</td><td>0.7901</td><td>0.7895</td><td>0.7993</td><td>0.7389</td><td>0.7801</td><td>0.7929</td><td>0.8106</td><td>0.7589</td></tr>
 <tr><td>rel-avito/ad-ctr</td><td>MAE ↓</td><td></td><td></td><td></td><td>0.0412</td><td>0.0341</td><td>0.0314</td><td>0.0314</td><td>0.0348</td></tr>
 <tr><td>rel-avito/user-visits</td><td>AUC ↑</td><td></td><td></td><td></td><td>0.5293</td><td>0.6596</td><td>0.6688</td><td>0.6716</td><td>0.6709</td></tr>
 <tr><td>rel-avito/user-clicks</td><td>AUC ↑</td><td></td><td></td><td></td><td>0.5642</td><td>0.6788</td><td>0.6145</td><td>0.6986</td><td>0.5834</td></tr>
 <tr><td>rel-event/user-attendance</td><td>MAE ↓</td><td></td><td></td><td></td><td>0.2628</td><td>0.2422</td><td>0.2394</td><td>0.2380</td><td>0.2409</td></tr>
 <tr><td>rel-event/user-repeat</td><td>AUC ↑</td><td></td><td></td><td></td><td>0.7483</td><td>0.7441</td><td>0.7693</td><td>0.7606</td><td>0.7914</td></tr>
 <tr><td>rel-event/user-ignore</td><td>AUC ↑</td><td></td><td></td><td></td><td>0.7772</td><td>0.6644</td><td>0.7014</td><td>0.8176</td><td>0.8476</td></tr>
-<tr><td>rel-trial/study-outcome</td><td>AUC ↑</td><td>0.7129</td><td></td><td>0.7368</td><td>0.7150</td><td>0.7212</td><td>0.7306</td><td>0.7582</td><td>0.7235</td></tr>
+<tr><td>rel-trial/study-outcome</td><td>AUC ↑</td><td>0.7129</td><td>0.6213</td><td>0.7368</td><td>0.7150</td><td>0.7212</td><td>0.7306</td><td>0.7582</td><td>0.7235</td></tr>
 <tr><td>rel-trial/study-adverse</td><td>MAE ↓</td><td>38.68</td><td></td><td>42.41</td><td>44.57</td><td>44.03</td><td>42.59</td><td>35.51</td><td>32.65</td></tr>
-<tr><td>rel-trial/site-success</td><td>MAE ↓</td><td>0.3913</td><td></td><td></td><td>0.4375</td><td>0.4858</td><td>0.3858</td><td>0.4042</td><td>0.4104</td></tr>
+<tr><td>rel-trial/site-success</td><td>MAE ↓</td><td>0.3913</td><td></td><td>0.3948</td><td>0.4375</td><td>0.4858</td><td>0.3858</td><td>0.4042</td><td>0.4104</td></tr>
 <tr><td>rel-stack/user-engagement</td><td>AUC ↑</td><td></td><td></td><td></td><td>0.8118</td><td>0.8587</td><td>0.9058</td><td>0.9077</td><td>0.8968</td></tr>
 <tr><td>rel-stack/post-votes</td><td>MAE ↓</td><td></td><td></td><td></td><td>0.0661</td><td>0.0677</td><td>0.0680</td><td>0.0628</td><td>0.0635</td></tr>
 <tr><td>rel-stack/user-badge</td><td>AUC ↑</td><td></td><td></td><td></td><td>0.5380</td><td>0.7711</td><td>0.8635</td><td>0.8846</td><td>0.8916</td></tr>
@@ -507,10 +507,10 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <tr><td>rel-amazon/item-churn</td><td>AUC ↑</td><td></td><td></td><td></td><td>0.6622</td><td>0.8195</td><td>0.8279</td><td>0.8277</td><td>0.8327</td></tr>
 <tr><td>rel-amazon/item-ltv</td><td>MAE ↓</td><td></td><td></td><td></td><td>55.75</td><td>49.00</td><td>47.77</td><td>45.35</td><td>43.03</td></tr>
 </table></div>
-<!-- runs found: 11 -->
+<!-- runs found: 15 -->
 <!--CMP-END-->
             <ul>
-                <li>status: 11 of 54 runs finished (21 dfs-lightgbm, 21 tabpfn-rel, 12 rdb-pfn). rel-f1 done; rel-trial running; the other 5 databases still build their DFS cache.</li>
+                <li>status: 15 of 54 runs finished (21 dfs-lightgbm, 21 tabpfn-rel, 12 rdb-pfn). rel-f1 and rel-trial done; the other 5 databases still build their DFS cache (24 min so far).</li>
                 <li>rel-f1 on capella vs the mac: dfs-lightgbm gives 0.6293 / 0.7901 / 3.874 there and 0.6212 / 0.7891 / 3.770 here (dnf / top3 / position). same seed, same 30 configs. so lightgbm is not bit-reproducible across the two machines (8 threads there, 1 here; different platform). differences up to 0.10 MAE.</li>
                 <li>capella job limits, from the submit filter: at most 14 CPU cores and 188,130 MB memory per requested GPU. my first submission asked for 16 cores and 256 GB; the filter warned but accepted the jobs. i cancelled them and resubmitted with 14 cores and 180 GB.</li>
                 <li>rel-f1 cache job on capella: 7 min 27 s, 86 MB. each rel-f1 run job finished in under 2 minutes.</li>
