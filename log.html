@@ -116,6 +116,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <a class="n-h2" href="#status">Status</a>
 <a class="n-h2" href="#directions">Candidate directions</a>
 <a class="n-h2" href="#d-2026-10-05">2026-10-05</a>
+<a class="n-h3" href="#priorvsreal">prior against real data</a>
 <a class="n-h3" href="#stage3">stage 3: data</a>
 <a class="n-h3" href="#stage4">stage 4: dev setup</a>
 <a class="n-h3" href="#stage2">stage 2: setup</a>
@@ -227,6 +228,37 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
     </ul>
 
     <h2 id="d-2026-10-05" class="date">2026-10-05</h2>
+
+    <h3 id="priorvsreal">prior against real data</h3>
+
+    <p>left: relbench v1, from <a href="#stage3">[s3-1] [s3-2]</a>. middle: plurel defaults <a href="#plurel">[plurel-6]</a>. right: rdb-pfn, from the paper and the released generator (<code>RDBPFN:data_generation/RDB/dag_to_rdb_config_small.yaml</code>, <code>…_large.yaml</code>, <code>RDB_generate.sh</code>). "?" = i did not find it.</p>
+
+    <ul>
+        <li><b>[pvr-1] table</b>
+            <div class="tw"><table>
+                <tr><th>property</th><th>relbench v1 (7 databases)</th><th>plurel</th><th>rdb-pfn</th><th>gap</th></tr>
+                <tr><td>tables per database</td><td>3 to 15</td><td>3 to 20</td><td>? (from LayerDAG, trained on spider / bird schemas)</td><td>covered</td></tr>
+                <tr><td>rows per table</td><td>68 to 30,386,403; median about 250,000</td><td>500 to 1,000 (entity), 2,000 to 5,000 (activity)</td><td>1,000 to 5,000</td><td>real tables are 50 to 6,000 times larger. only matters through the fan-out and the sampled context.</td></tr>
+                <tr><td>columns per table</td><td>median 6; max 110</td><td>3 to 40, power law</td><td>8 to 12 (small prior), 12 to 24 (large prior)</td><td>rdb-pfn tables are wider than real ones</td></tr>
+                <tr><td>key links per table</td><td>0: 17, 1: 8, 2: 22, 3: 3 tables</td><td>from the schema graph (BA, reverse tree, WS)</td><td>from LayerDAG</td><td>not checked against the 0/1/2/3 split</td></tr>
+                <tr><td>children per parent</td><td>median link: mean 8, max 442; largest 929,887; mean / median about 2.1</td><td>block model: 0.9 inside the block, about 0.001 outside; uniform inside a block</td><td>attention over M candidates, optional preferential attachment</td><td>plurel: no heavy tail inside a block. rdb-pfn: can be heavy-tailed, strength not documented.</td></tr>
+                <tr><td>parents with no child</td><td>median 40 % of parent rows; over half on 24 of 61 links</td><td>?</td><td>?</td><td>not reported by either</td></tr>
+                <tr><td>self-links, cycles</td><td>1 self-link (stack posts)</td><td>no</td><td>no (DAG assumption)</td><td>missing in both</td></tr>
+                <tr><td>feature types</td><td>194 numeric, 90 categorical, 59 text, 2 bool, 1 datetime</td><td>numeric / categorical, 50 : 50; 2 to 10 categories</td><td>continuous or binned</td><td>no text in either. real categoricals can have thousands of values (not measured here).</td></tr>
+                <tr><td>missing values</td><td>median 0.002 per table, max 0.51</td><td>1 to 10 % of cells</td><td>?</td><td>plurel has more nulls than the typical real table</td></tr>
+                <tr><td>time</td><td>34 of 50 tables have a time column; spans from 3 weeks to 100 years</td><td>timestamps 1990 to 2025 on activity tables; trend + cycle + noise on source nodes</td><td>trend, seasonality, spike on the latent init</td><td>both have time. neither models arrival rate per entity.</td></tr>
+                <tr><td>task label</td><td>aggregate over a future window (4 to 365 days) per entity and seed time</td><td>none (masked cells)</td><td>a random column, 6 per schema</td><td>missing in both: window labels</td></tr>
+                <tr><td>same entity at many seed times</td><td>median 1 to 52 rows per entity</td><td>no</td><td>no</td><td>missing in both</td></tr>
+                <tr><td>label balance</td><td>positive rate 0.04 to 0.91</td><td>-</td><td>? (binarised columns)</td><td>not documented</td></tr>
+                <tr><td>regression</td><td>9 of 21 tasks; 6 of them 41 to 94 % zeros</td><td>numeric cells</td><td>no</td><td>rdb-pfn: missing. zero-inflated counts: missing in both.</td></tr>
+                <tr><td>label shift train → test</td><td>yes on several tasks (e.g. 0.039 → 0.015)</td><td>-</td><td>rows sampled uniformly, so no shift</td><td>missing</td></tr>
+                <tr><td>context at test</td><td>up to millions of train rows</td><td>1,024 cells</td><td>600 rows × 30 columns; 1,024 rows at inference</td><td>tabpfn-rel uses 100,000 rows</td></tr>
+            </table></div>
+        </li>
+        <li><b>[pvr-2] the released rdb-pfn generator does not run the bidirectional GNN.</b> "in the original released generation code, the later bidirectional GNN pass is not invoked. As a result, the generated wGNN and woGNN variants follow the same implementation path and both behave like single-directional row-GNN generation." (<code>RDBPFN:data_generation/README.md:112</code>). so stage 3 of the paper's prior <a href="#rdbpfn">[rdbpfn-2]</a> is not what produced the released model. this replaces my guess in <a href="#repos">[repo-rdbpfn-3]</a>.</li>
+        <li><b>[pvr-3] rdb-pfn data volume in the script:</b> 80,000 × 4 + 40,000 × 2 + 20,000 × 4 = 480,000 raw databases (<code>RDB_generate.sh</code>). the README says the default run "could take days". with 6 targets per schema this is in the range of the paper's "about 1.2M relational datasets" <a href="#rdbpfn">[rdbpfn-5]</a>. <mark class="unverified">unverified</mark>: how raw databases map to the 1.2M.</li>
+        <li><b>[pvr-4] what this means</b> (my reading): the three largest gaps between the published priors and the benchmark are all on the task side, not on the table side: window labels, repeated entities over seed times, zero-inflated and shifted targets. this supports <a href="#directions">[dir-2]</a>.</li>
+    </ul>
 
     <h3 id="stage3">stage 3: what the benchmark data looks like</h3>
 
