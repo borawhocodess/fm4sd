@@ -135,6 +135,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <a class="n-h3" href="#p2r">plurel-to-rdb-pfn</a>
 <a class="n-h3" href="#rt">rt</a>
 <a class="n-h3" href="#rtj">rt-j</a>
+<a class="n-h3" href="#thejoin">the join</a>
 <a class="n-h3" href="#openrfm">openrfm</a>
 <a class="n-h3" href="#rdbbench">rdbbench</a>
 <a class="n-h3" href="#kumo">kumorfm-2</a>
@@ -931,6 +932,32 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>real forecasting tasks at scale now exist (THE JOIN). so "no forecasting tasks in pretraining" is true for the synthetic priors only <a href="#directions">[dir-2]</a>.</li>
                 <li>THE JOIN is a resource for you: 639 real schemas for the data statistics of stage 3, and real DFS-flattened tables to train or test a tabular model on.</li>
                 <li>rt-j targets few labels. with many labels the flattening methods are still level or ahead on classification, by their own account.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3 id="thejoin">THE JOIN: the corpus behind rt-j (metadata only)</h3>
+
+    <p>source: hugging face api and files of <code>stanford-star/the-join</code>, read 6 oct 2026: <code>README.md</code>, <code>STATS/databases.parquet</code> (639 rows), <code>STATS/tasks.parquet</code> (16,635 rows), two manifest files. local copy of these small files: <code>workdir/the-join/</code>. the databases themselves are not downloaded.</p>
+
+    <ul>
+        <li><b>[join-1] access.</b> public, not gated. 28,421 files, 52 GB of storage on the hub; the sum of the per-database sizes in the stats file is 29.5 GB. collection license CC BY-SA 4.0; "each database keeps the license of its source" (README). license column: 226 × CC BY-SA 4.0, 99 × "research use (CTU …)", 33 × US public domain, 27 × MIT with amazon terms, and others. so a per-database license check is needed before any redistribution.</li>
+        <li><b>[join-2] format.</b> relbench format: <code>&lt;dataset&gt;/manifest.yaml</code> (tables, primary keys, key graph), <code>db/*.parquet</code>, <code>tasks/&lt;task&gt;/manifest.yaml</code> + <code>train.parquet</code>. loads with <code>relbench.load_dataset("stanford-star/the-join/&lt;dataset&gt;")</code>. "train-only release": no val / test split (README; task manifest comment).</li>
+        <li><b>[join-3] where the 639 databases come from</b> (domain column): 259 text-to-SQL benchmarks, 114 CTU relational repository, 75 stack exchange sites, 34 recommendation datasets, 12 temporal networks, 11 US government, 10 network, 9 motorsport, then small groups. so 58 % are text-to-SQL or CTU databases.</li>
+        <li><b>[join-4] sizes.</b> tables per database: median 4, 90 % ≤ 11, max 70. rows per database: median 34,420, 10 % have under 32 rows, 90 % ≤ 2.65M, max 76.9M. most are much smaller than relbench (median database there: millions of rows <a href="#stage3">[s3-3]</a>).</li>
+        <li><b>[join-5] tasks.</b> 6,023 forecast tasks (2,752 binary, 3,271 regression) on 204 of the 639 databases; 10,612 autocomplete tasks (10,211 regression, 401 binary). forecast tasks per database: median 32, max 67. metrics: roc_auc and nmae.
+            <ul>
+                <li>forecast train rows per task: median 49,210; 10 % under 2,800; max 44M. unique entities: median 6,443. rows per entity: median 6.4, 90 % ≤ 108.</li>
+                <li>window length: median 33.5 days, 10 % under 2.5 days, 90 % ≤ 208 days.</li>
+            </ul>
+        </li>
+        <li><b>[join-6] a ready list of label types.</b> the most frequent forecast task names after the entity prefix: churn (103), days-until-next-post (50), comment-streak-length (42), distinct-voters (41), score-sum-heavytail (40), trend-reversal (39), return (37), repeats-last-vote-type (36), rating-trend (36), rating-volatility (35), review-count (33), new-badge-adoption (32), avg-rating (30), top-rated (26), rating-change (23), answer-to-comment-ratio (21), active (20), beats-peer-score (18). so the label families are: none / any event in the window, count, sum, mean, max, min, distinct count, ratio, time until next event, streak length, trend, volatility, change against the last window, rank among peers, and log1p "heavytail" variants.</li>
+        <li><b>[join-7] every task ships its SQL.</b> example <code>join-act-mooc/tasks/activity-churn/manifest.yaml</code>: entities are "eligible" if they had an event in the last 3 windows; the label is 1 if they have no event in the next window; <code>timedelta</code> is a parameter of the query. the rt-j page says the tasks were proposed by a language model and checked against the schema <a href="#rtj">[rtj-2]</a>.</li>
+        <li><b>[join-8] what this means</b> (my reading)
+            <ul>
+                <li>for <a href="#directions">[dir-2]</a>: the label side of a forecasting prior does not have to be invented. [join-6] and the SQL templates in [join-7] are a task vocabulary that can be applied to synthetic event tables. relbench's own labels (churn, count, sum) are a small subset of it.</li>
+                <li>for <a href="#directions">[dir-5]</a>: realistic. 204 databases with forecast tasks, median 34k rows, 29.5 GB in total. DFS on these is far cheaper than on relbench. limit: 58 % of the corpus is text-to-SQL and CTU data, so the 639 are less diverse than the number says; and licenses differ per database.</li>
+                <li>overlap risk: the corpus has 75 stack exchange sites and several amazon review sets. the page says databases that overlap with relbench are left out <a href="#rtj">[rtj-2]</a>. <mark class="unverified">unverified</mark>: whether stats.stackexchange (rel-stack) and amazon books (rel-amazon) are really absent, and whether sibling sites count as leakage.</li>
             </ul>
         </li>
     </ul>
