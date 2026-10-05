@@ -5,6 +5,10 @@ tabpfn-rel use. relarena lists this baseline as missing (relarena-alpha paper, o
 "missing baselines"). it separates two questions: how much does the flattening give, and
 how much does the tabular foundation model give on top.
 
+`fm4sd-rdbpfn`: the released rdb-pfn checkpoint (0.7M parameters, binary classification,
+1024 context rows) on the same DFS features. it shows how a pfn plugs in, and it puts
+rdb-pfn into the relarena protocol, where the paper does not report it.
+
 `DFSTabularModel` is the base for any model that predicts from the flat DFS table. a new
 method only has to give `fit_flat` and `predict_flat`. this is where a pfn of our own
 plugs in.
@@ -12,6 +16,9 @@ plugs in.
 
 from __future__ import annotations
 
+import os
+import sys
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -135,3 +142,59 @@ class DFSLightGBM(DFSTabularModel):
 
     def predict_flat(self, df: pd.DataFrame) -> np.ndarray:
         return self._booster.predict(self._encode(df))
+
+
+RDBPFN_SPACE = SearchSpace(
+    default_overrides={"max_depth": MIN_DEPTH, "n_features": 30},
+    fixed_grid=[{"max_depth": MIN_DEPTH, "n_features": k} for k in (30, 60, 120)],
+)
+
+
+@register_model(search_space=RDBPFN_SPACE)
+class RDBPFN(DFSTabularModel):
+    """released rdb-pfn checkpoint on DFS features.
+
+    needs a clone of https://github.com/MuLabPKU/RDBPFN. its path comes from the
+    environment variable FM4SD_RDBPFN, default workdir/repos/RDBPFN in this repo.
+    the predictor keeps at most 1024 context rows per forward pass and averages over
+    several random contexts when there are more training rows (its own ensemble logic).
+    search: the number of DFS columns kept (30, 60, 120), at DFS depth 2.
+    """
+
+    name = "fm4sd-rdbpfn"
+    supported_task_types = frozenset({TaskType.BINARY_CLASSIFICATION})
+
+    def fit_flat(self, df: pd.DataFrame, cat_cols: list[str], y: pd.Series, task_type: TaskType, *, seed: int) -> None:
+        import torch
+
+        root = Path(os.environ.get("FM4SD_RDBPFN", Path(__file__).resolve().parents[2] / "workdir/repos/RDBPFN")) / "inference"
+        if str(root) not in sys.path:
+            sys.path.insert(0, str(root))
+        cwd = os.getcwd()
+        os.chdir(root)  # the predictor finds its checkpoint relative to inference/
+        try:
+            from src.predictor import RDBPFNClassifier
+
+            np.random.seed(seed)
+            torch.manual_seed(seed)
+            self._cols = self._select(df, y, int(self.config.get("n_features", 30)))
+            df = df[self._cols]
+            self._clf = RDBPFNClassifier.from_pretrained("RDBPFN")
+            self._clf.fit(df.reset_index(drop=True), y.to_numpy())
+        finally:
+            os.chdir(cwd)
+
+    @staticmethod
+    def _select(df: pd.DataFrame, y: pd.Series, k: int) -> list[str]:
+        # rdb-pfn was pretrained on 30 feature columns; DFS gives hundreds or thousands, and its
+        # feature attention is quadratic in the column count. keep the k numeric columns with the
+        # largest absolute correlation with the label on the training rows. this is our choice,
+        # not part of rdb-pfn.
+        num = df.select_dtypes(include=[np.number, bool]).astype("float64")
+        num = num.loc[:, num.nunique(dropna=True) > 1]
+        corr = num.corrwith(pd.Series(y.to_numpy(dtype="float64"), index=num.index)).abs().fillna(0.0)
+        return list(corr.sort_values(ascending=False).index[:k])
+
+    def predict_flat(self, df: pd.DataFrame) -> np.ndarray:
+        prob = self._clf.predict_proba(df.reindex(columns=self._cols).reset_index(drop=True), chunk_size=2000)
+        return np.asarray(prob)[:, 1]
