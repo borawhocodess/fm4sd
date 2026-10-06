@@ -1415,6 +1415,16 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>no time model: timestamps are ordinary datetime attributes. no order constraint between parent and child times is stated in the text i read. <mark class="unverified">not checked in the appendix</mark>.</li>
             </ul>
         </li>
+        <li><b>[fr-grdm] grdm (ketata et al., neurips 2025), read: introduction, background, the full method section</b> (<code>papers/grdm/raw.txt</code> L1-1500). not read: experiment tables, appendix. earlier: abstract only.
+            <ul>
+                <li>same family and same factorisation as reldiff <a href="#fullreads">[fr-reldiff]</a>: copy one real database; first the key graph, then all attributes jointly by diffusion with a heterogeneous graphsage denoiser (K = 1 hop per step; many steps reach many hops).</li>
+                <li>structure part is simpler than reldiff: take the empirical distribution of children per parent row for each link type, sample children from the root tables down, then merge duplicate nodes by random matching when a table has several parents. it keeps the in-degree distribution only, not the joint degrees or the hierarchy.</li>
+                <li>argument for generating keys before features: with features first, all n × m possible links must be scored. with keys first, only "the number of nodes and their per edge-type degree" must be modelled. plurel and rdb-pfn also do structure before content <a href="#plurel">[plurel-3]</a> <a href="#fullreads">[fr-rdbpfn]</a>.</li>
+                <li>dimension tables (few rows, each a unique real thing, for example countries) are not generated. they are kept fixed as metadata, like the category set of a categorical column. a prior needs the same split: small fixed lookup tables vs growing fact tables.</li>
+                <li>their criticism of parent-to-child generation: fixed table order, no parallel sampling, and conditional independence of rows given parents, where "small errors can accumulate across generation steps". syntherela measured that effect <a href="#fullreads">[fr-syntherela]</a>.</li>
+                <li>claim in the abstract: on 6 real databases better than autoregressive baselines on multi-hop correlations. <mark class="unverified">numbers not read</mark>.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
