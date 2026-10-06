@@ -1449,6 +1449,18 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>so the building blocks exist separately: event dynamics (fim-pp), per-entity heterogeneity (BG/NBD), cross-table content (rdb-pfn, plurel), label vocabulary (RTGL, THE JOIN). nobody has put them into one tabular prior. <mark class="unverified">"nobody" = not found in the papers i read</mark>.</li>
             </ul>
         </li>
+        <li><b>[fr-leak] support-set target leakage in relational foundation models (2026), read: introduction, related work, setup, results, mitigation</b> (<code>papers/supportsetleakage/raw.txt</code> L1-1299, about 28 KB of prose). not read: detector details in the middle, appendix. earlier: abstract only.
+            <ul>
+                <li>the setting: a column that is derived from the label is present for the labelled context rows but absent for the query rows. they inject 20 such columns (on the task table, 1 hop away, 2 hops away) into 13 relbench tasks and test 5 relational in-context models (griffin or bimodal encoder + tabpfn or tabicl v2 head; pretrained on CTU + relbench or on plurel).</li>
+                <li>result 1: leak columns on the task table itself move macro-F1 by a median of 0.02 to 0.11; all 20 together by 0.06 to 0.16. at 1 and 2 hops the median effect rounds to zero, because aggregation turns an exact copy into a noisy proxy and many paths are cut by the time filter.</li>
+                <li>result 2, the important one: model rankings flip. with leaks on the task table, the better model of a pair changes in 14 of 24 non-tied comparisons. 24 of 32 reversals stay when a margin of 0.005 is required. "leakage can change the conclusion of a model comparison even when its average effect is small".</li>
+                <li>result 3: automatic removal of suspicious columns (integrated gradients, mutual information, leave-one-column-out) finds a leak column in the top 5 in about 90 % of the task-table cases, but removal "does not consistently restore the clean evaluation".</li>
+                <li>relevance to DFS pipelines: the context / query mismatch they study is artificial, but a real version exists in flattened tables. for a training row at an early cutoff, target-history features are computed from few past labels; for a test row from many. feature availability differs between context and query by construction. <mark class="unverified">my transfer, not a claim of the paper</mark>. this is one candidate cause for the depth 3-4 collapse on rel-event/user-ignore <a href="#stage4">[s4-9]</a>, still not checked.</li>
+                <li>real-data check they add: on 4 rel-salt tasks, keeping the other target-designated fields in the context lowers macro-F1 from 0.362 to 0.293. relbench v2 removes such columns by hand for autocomplete tasks <a href="#fullreads">[fr-relbenchv2]</a>.</li>
+                <li>side facts: griffin-encoder + tabpfn / tabicl v2 heads exist as a model family (another "relational encoder + tabular ICL head" line next to relicl and openrfm); a plurel-pretrained variant had the smallest effect for single leaks and the largest for all leaks together.</li>
+                <li>metric is macro-F1 on tasks that are often near a constant prediction; several rel-avito tasks do not move at all. their own caveat.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
