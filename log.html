@@ -1225,6 +1225,18 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>consequence for my step 1 <a href="#directions">[dir-update]</a>: this paper does not answer its own question. a controlled version needs equal steps, several seeds and no selection on test tasks. that is a small, clear contribution.</li>
             </ul>
         </li>
+        <li><b>[fr-rdbbench] rdbbench, read: related work, method, both result tables, all result text</b> (<code>papers/rdbbench/src/Benchmarking_DRDB_Refined.tex</code> L136-600). the paper is now fully read. earlier notes: <a href="#rdbbench">[rdbbench-1]</a>, <a href="#rdbbench">[rdbbench-2]</a>.
+            <ul>
+                <li>the regression table cannot be compared across models. RMSE on rel-amazon/item-ltv: lightgbm 8.22, tabpfn 2.5 6.60, dbformer 56.10, griffin 8.17, RT 0.51. on rel-avito/ad-ctr lightgbm has 3.47 for a target between 0 and 1. <mark class="unverified">my reading</mark>: the models use different target scales. the "RT is best at regression" claim rests on this table.</li>
+                <li>RT at hop 0 is far above the tabular models: rel-amazon/item-churn 81.6 vs lightgbm 67.7; rel-stack/user-engagement 89.1 vs 79.1. hop 0 is defined as "only the target row". <mark class="unverified">my guess</mark>: RT still sees the entity's past labels, which the RT paper shows is its main signal <a href="#fullreads">[fr-rt]</a>. the paper does not discuss this.</li>
+                <li>protocol (table "training protocols"): every model is trained per task for 100 epochs, best model on validation, embedding 256, lr 1e-4, batch 256. so RT is used as a supervised model here, not as a zero-shot foundation model. this resolves my open point in <a href="#rdbbench">[rdbbench-2]</a>.</li>
+                <li>flattening for lightgbm and tabpfn 2.5: aggregates over linked tables up to hop H with a time filter, "similar to" relbench's feature baseline. no details on the aggregates and no word on how tabpfn 2.5 handles 2.5M training rows. <mark class="unverified">not stated</mark>.</li>
+                <li>more hops do not always help: on rel-trial/study-outcome lightgbm is best at hop 0 (72.1) and drops to 62.3 and 65.4. all models except RT get worse from hop 1 to hop 2 there. this is the same effect as DFS depth on rel-event/user-ignore <a href="#stage4">[s4-9]</a>.</li>
+                <li>classification ranks (5 tasks): RT 1.6 / 1.2 / 1.0 at hop 0 / 1 / 2. tabpfn 2.5 at hop 2: 67.7, 59.6, 70.8, 82.9, 68.4. tabpfn-rel in relarena is higher on the same tasks, so their flattening is weaker than DFS. <mark class="unverified">not compared number by number</mark>.</li>
+                <li>cost on rel-f1/driver-dnf: griffin 14 → 202 → 403 minutes for hop 0 → 1 → 2; RT 101 → 137 → 158; dbformer 11 → 17 → 23.</li>
+                <li>one seed, 5 of the 12 relbench classification tasks, 5 of 9 regression tasks. the numeric encoders differ per model (linear layer for RT and dbformer, quantile transform + pretrained MLP for griffin); only the text encoder is unified (MiniLM-v2, 384 dims).</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
