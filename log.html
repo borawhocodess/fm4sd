@@ -1165,6 +1165,14 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li><b>meaning for us.</b> (1) openrfm gives the PFN-level argument for a better relational prior: the prior must contain a per-episode latent that the support labels can identify. homophily is their one latent. a forecasting prior has natural ones: the entity's rate and dropout hazard <a href="#research">[c3-5]</a>. (2) most of their gain comes from attaching a tabular ICL model, not from the relational backbone. together with xu and wipf <a href="#research">[c4-6]</a> and my runs, three independent sources now say the tabular model carries the result. (3) they already test synthetic vs real pretraining and find real data hurts unless handled with care: a warning for step 3 of <a href="#directions">[dir-update]</a>. (4) rdb-pfn is one of their baselines; their appendix has its numbers on 24 tasks: read it next.</li>
             </ul>
         </li>
+        <li><b>[fr-openrfm-2] openrfm appendix tables: third-party numbers for rdb-pfn and DFS + TFM</b> (<code>papers/openrfm/src/tables/exp1_full.tex</code>; their 16 classification tasks, AUC).
+            <ul>
+                <li>rel-event/user-ignore: JUICE (DFS + a tabular model, no relational training) 0.896, rdb-pfn 0.904, RT 0.841, relgt 0.823, RDL-GNN 0.723. so a second group gets about 0.90 on this task from flattened features. this supports <a href="#stage4">[s4-10]</a>: the 0.70 of tabpfn-rel there is its depth choice.</li>
+                <li>rdb-pfn in their runs vs mine <a href="#cmp">[s4-6]</a>: user-ignore 0.904 / 0.879; driver-dnf 0.723 / 0.733; driver-top3 0.833 / 0.790; user-repeat 0.775 / 0.776; study-outcome 0.671 / 0.621; user-visits 0.642 / 0.655; user-clicks 0.569 / 0.649; hm user-churn 0.683 / 0.677. same ballpark; theirs uses 8-group ensembling and their own DFS.</li>
+                <li>ranks over their 16 classification tasks (lower is better): relgnn 4.50, NBFNet 4.59, openrfm (tabpfn head) 5.38, RDL-GNN 6.38, relgt 6.44, JUICE 6.66, openrfm (tabicl) 6.69, kumorfm v1 7.22, rdb-pfn 7.44, RT 7.72, griffin 10.16, RT-plurel 11.16. so in their own table two per-task GNNs rank above openrfm on classification.</li>
+                <li>regression (R², 8 tasks): openrfm (tabpfn) rank 4.00 = JUICE with 8 support groups 4.00; JUICE 5.31; rdb-pfn 8.00 (they report regression numbers for it; the released model is binary only <a href="#rdbpfn">[rdbpfn-4]</a>, so <mark class="unverified">unverified</mark> how they ran it).</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
