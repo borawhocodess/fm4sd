@@ -1211,6 +1211,20 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>all ablations use "a subset" of SALT or of relbench v1; the paper text does not say which tasks. <mark class="unverified">not checked in the appendix</mark>.</li>
             </ul>
         </li>
+        <li><b>[fr-p2r] plurel-to-rdb-pfn, read: results and the full appendix</b> (<code>papers/plurel-to-rdb-pfn/src/main.tex</code> L252-404, L442-942). the paper is now fully read. earlier notes: <a href="#p2r">[p2r-1]</a> to <a href="#p2r">[p2r-4]</a>.
+            <ul>
+                <li>the evidence for "curriculum order matters" is weak. per-task AUC jumps between neighbouring runs: rel-stack/user-badge 0.5816 → 0.8005 when the large corpus is added; rel-event/user-ignore 0.7369 → 0.5603 → 0.6627 over three stages (appendix, 1024-shot table). there are no seeds and no error bars.</li>
+                <li>selection on the test tasks: "when a run was repeated with a longer training schedule, we report the better average result" (appendix B).</li>
+                <li>training steps differ between the rows: standalone runs 20,000 steps, real-schema-only 150,000, curricula 50,000 or 100,000 (appendix table, column "steps"). so "standalone pretraining is insufficient" compares runs of different length.</li>
+                <li>adding the large corpus hurts without the real schema (0.6102 → 0.5438 at 1024-shot) and does nothing with it (0.6341 → 0.6346). the large corpus alone is the worst pool (0.5258).</li>
+                <li>one row label in the main table is wrong: "schema-guided only, 64-shot, 0.5431" is a 32-shot result (appendix B.5 says so).</li>
+                <li>corpora (appendix A): 3,000 + 1,000 small databases (2 to 4 tables, 50 to 400 rows per table, about 31 columns), 967 large (5 to 8 tables, about 75 columns), 500 with the real schema (4 tables, 31 columns, 500 to 5,000 rows per table). total 5,467 databases, 5.97M rows.</li>
+                <li>many tasks stay at chance for every one of their models: AVS/repeater, outbrain/CTR and rel-trial/study-outcome are 0.47 to 0.53 everywhere. the average hides this.</li>
+                <li>largest gaps to rdb-pfn at 1024-shot: amazon/churn −0.25, diginetica/CTR −0.18, rel-event/user-ignore −0.16. one task is above rdb-pfn (stackexchange/upvote 0.8535 vs 0.8527).</li>
+                <li>useful reference numbers: published rdb-pfn per task at 64 and 1024 context rows, 19 tasks. for example rel-event/user-ignore 0.7342 (64) and 0.8273 (1024); rel-f1/driver-top3 0.7952 and 0.8115; rel-trial/study-outcome 0.5474 and 0.6159.</li>
+                <li>consequence for my step 1 <a href="#directions">[dir-update]</a>: this paper does not answer its own question. a controlled version needs equal steps, several seeds and no selection on test tasks. that is a small, clear contribution.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
