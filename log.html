@@ -1353,6 +1353,19 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>license: weights are free for research and internal evaluation, not for commercial use; plus and thinking variants are API only and "intentionally not described".</li>
             </ul>
         </li>
+        <li><b>[fr-relbenchv2] relbench v2 (gu et al. 2026), read: all main sections</b> (<code>papers/relbench-v2/raw.txt</code> L1-2190, prose). not read: appendix (task descriptions, standard deviations, TGB details) and the numbers in the tables. earlier: abstract only.
+            <ul>
+                <li>4 new databases (rel-arxiv, rel-salt, rel-ratebeer, rel-mimic): 29 tables, over 22 million rows. total now 11 databases. rel-mimic needs PhysioNet credentials and has shifted dates (2110 to 2200).</li>
+                <li>new task type "autocomplete": predict an existing column of a new row at its seed time, given some observed columns of that row. 23 such tasks, on old and new databases. columns that correlate with the target are removed by hand ("based on domain knowledge and inspection of the training data").</li>
+                <li>this is the task type that current priors do cover: rdb-pfn and plurel predict a column of a row <a href="#rdbpfn">[rdbpfn-5]</a>. the forecasting type (label = SQL aggregate over a future window) stays uncovered <a href="#directions">[dir-update]</a>. good clean split for the talk: autocomplete vs forecasting.</li>
+                <li>13 new forecasting tasks (rel-arxiv, rel-ratebeer, rel-mimic, one for rel-f1), including the first multi-class entity task (rel-arxiv/author-category). regression in v2 is reported in R², with MAE in the appendix.</li>
+                <li>the baseline in every v2 table is weak: lightgbm "over the raw entity table features", "only information from the single entity table is used". the claim "RDL models consistently outperform single-table baselines" therefore says nothing about DFS + a tabular model. kumorfm-2 and xu and wipf add those numbers <a href="#fullreads">[fr-kumo2-b]</a> <a href="#fullreads">[fr-pfe]</a>.</li>
+                <li>simple regression baselines again: global zero / mean / median and entity mean / median.</li>
+                <li>integrations: temporal graph benchmark event streams turned into tables (one table per node and edge type); redelex gives uniform access to 70+ databases of the CTU repository "suitable for pretraining"; 7 datasets and 12 tasks of 4dbinfer.</li>
+                <li>pretraining data note: the CTU repository databases are mostly small and many have no time column <mark class="unverified">from memory of the redelex paper, not checked</mark>. THE JOIN remains the only open corpus with forecasting tasks at scale <a href="#thejoin">[the join]</a>.</li>
+                <li>validation and test cutoffs are shared by all tasks of a database, "enabling multi-task learning and pre-training across predictive tasks defined on the same relational database".</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
