@@ -1436,6 +1436,19 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>keys are "row identifiers and are thus not treated or modeled" as features. only single-column keys.</li>
             </ul>
         </li>
+        <li><b>[fr-fimpp] fim-pp (foundation inference model for point processes, ICLR 2026), read: main text up to the first result table</b> (<code>papers/fim-pp/raw.txt</code> L1-1084, first 27 KB of prose). not read: remaining results, ablations, limits, appendix (process families table 6, prior statistics figure 7). earlier: abstract only.
+            <ul>
+                <li>what it is: the PFN idea for event sequences. a 16M-parameter transformer is pretrained on synthetic marked point processes and then estimates, in context, the intensity (rate per event type, given the history) of a new system. context = a set of other event sequences of the same system; query = the history of one sequence.</li>
+                <li>this is the closest published thing to the event part of my step 2 <a href="#directions">[dir-update]</a>: a database's fact table, grouped by entity, is exactly "a set of event sequences of the same system". the context sequences are the other entities.</li>
+                <li>the prior: intensity λ_κ(t) = base rate μ_κ(t) + Σ over past events of a kernel γ_κκ'(t − t_i). families: poisson (no kernel), classical hawkes (constant base, exponential kernel), high initial excitation (gamma-shaped base), non-monotonic shifted kernels; each pair of event types is excitatory, inhibitory or neutral. sampling by ogata's thinning.</li>
+                <li>scale: 72K sampled processes, 14.4M events, up to 22 event types, up to 2,000 context sequences. small by tabular-prior standards (tabicl v2 uses about 35M datasets <a href="#fullreads">[fr-tabiclv2]</a>).</li>
+                <li>they check the prior against real data with summary statistics, "broad enough to cover the real-world datasets" (appendix figure 7). same check as graphpfn <a href="#fullreads">[fr-graphpfn]</a> and my stage 3.</li>
+                <li>results: zero-shot is "competitive but slightly worse than the baseline models" on average over 5 datasets (taxi, taobao, stackoverflow, amazon, retweet), matching or better on taxi and retweet; after a few minutes of fine-tuning it is best on nearly all metrics.</li>
+                <li>architecture detail to copy: each context sequence is encoded separately into one vector, then the vectors are combined; "much more scalable compared to combining all events into a single long sequence". inputs are normalised per instance for time scale.</li>
+                <li>what it does not have, compared with a relational forecasting task: no entity attributes, no numeric event values (only type and time), no window label; the task is "next N events", not "sum over the next 90 days". all sequences come from one process, so entities do not differ in rate. buy-till-you-die models add exactly that difference per entity <a href="#fullreads">[fr-clava]</a>.</li>
+                <li>so the building blocks exist separately: event dynamics (fim-pp), per-entity heterogeneity (BG/NBD), cross-table content (rdb-pfn, plurel), label vocabulary (RTGL, THE JOIN). nobody has put them into one tabular prior. <mark class="unverified">"nobody" = not found in the papers i read</mark>.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
