@@ -1425,6 +1425,17 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>claim in the abstract: on 6 real databases better than autoregressive baselines on multi-hop correlations. <mark class="unverified">numbers not read</mark>.</li>
             </ul>
         </li>
+        <li><b>[fr-clava] clavaDDPM (pang et al., neurips 2024), read: introduction, related work, definitions, the method up to the design choices</b> (<code>papers/clavaddpm/raw.txt</code>, first 22 KB of prose). not read: multi-parent matching, experiments, appendix. earlier: abstract only.
+            <ul>
+                <li>again a copier of one real database, not a prior. generation is parent-to-child along the schema DAG.</li>
+                <li>the modelling idea, useful for a prior: each parent row gets a latent cluster label c (gaussian mixture on parent + child columns, majority vote per parent). given c: (1) the number of child rows s is sampled from p(s | c); (2) each child row is sampled independently from p(x | c) by classifier-guided diffusion. so fan-out and child content share one latent cause.</li>
+                <li>this is the "one hidden state per entity drives both how many events and what kind of events" structure. it is also the structure of buy-till-you-die models (a hidden rate and a hidden dropout per customer). my step 2 sketch uses the same structure <a href="#directions">[dir-update]</a>; clavaDDPM is a published precedent that it captures cross-table correlation.</li>
+                <li>assumptions they state openly: parent rows are i.i.d.; child rows of one parent are dependent, but independent of other parents' children given the parent; child rows are i.i.d. given the latent; group size is independent of the child rows given the latent. no order and no time between the child rows of one parent.</li>
+                <li>that last point is the gap for forecasting: with exchangeable child rows there is no "before the cutoff / after the cutoff". an event prior needs ordered child rows with timestamps. fim-pp and the BG/NBD paper are the sources for that part.</li>
+                <li>deeper schemas: latents are learned bottom-up (a child's latents are appended to it before its parent is clustered), then generation runs top-down. this is how they get correlations between tables that are 2 or more links apart ("long-range dependency", their new metric).</li>
+                <li>keys are "row identifiers and are thus not treated or modeled" as features. only single-column keys.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
