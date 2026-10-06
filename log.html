@@ -1252,6 +1252,19 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>this confirms my earlier reading that the model is for one homogeneous graph: no table types, no time. that resolves the unverified note under <a href="#graphpfn">[graphpfn-3]</a>.</li>
             </ul>
         </li>
+        <li><b>[fr-plurel] plurel, read: all result sections with tables, appendix on cost, RT background, error bars, query-key norm</b> (<code>papers/plurel/src/main.tex</code> L753-1125, L1413-1510, L1720-2278). the paper is now fully read; lines after L2279 are commented out. earlier notes: <a href="#plurel">[plurel-1]</a> to <a href="#plurel">[plurel-8]</a>.
+            <ul>
+                <li>the numbers behind claim 3 (synthetic is a good base). mean over 10 classification tasks, AUROC: real only 69.2, synthetic only 68.5, synthetic + real 70.4. mean over 8 regression tasks, R²: 22.6, 15.2, 25.7. so plurel alone is 0.7 AUROC points below real pretraining on 5 databases, but far below on regression.</li>
+                <li>the classification gain (+1.2) is small against the noise. standard errors over 3 seeds reach 2.9 points per task. model seeds alone move rel-amazon AUROC by 3.4 and 2.2 points even with their fix (query-key normalisation); without it by 9.4 and 10.5 (appendix D.2).</li>
+                <li>3 of 10 classification tasks get worse with synthetic pretraining: rel-avito/user-clicks −6.8, rel-trial/study-outcome −2.6, rel-hm/user-churn −1.4. their reason: plurel has no text and no column meaning.</li>
+                <li>not strictly zero-shot: "we select the checkpoint with the highest score on the validation split (per task)" of the held-out database (§3.3).</li>
+                <li>the scaling law is on synthetic validation loss, not on real tasks. grid: databases N ∈ {8, …, 1024} × tokens S ∈ {0.5B, …, 32B}; 3 parameters fit on 7 and on 6 points; N = 1024 and S = 32B held out. the law holds only on the frontier (minimum over the other axis).</li>
+                <li>useful design fact: more tokens from few databases overfit, more databases with few tokens underfit ("U-shaped" curves). with 8, 16, 32 databases, more tokens make the loss on relbench go up. diversity and size must grow together. (§3.1, §3.2)</li>
+                <li>on real tasks the curves saturate: "relbench is out-of-distribution for our synthetic data" (§3.2). the paper has no analysis of what is missing in the prior, only the text / semantics guess. this is the gap that my stage 3 comparison addresses <a href="#priorvsreal">[pvr-1]</a>.</li>
+                <li>a base model that is worse alone can be better after real pretraining (512 databases / 16B tokens: synthetic only is worse, synthetic + real regression mean is better). so "synthetic-only score" is not a safe way to pick a prior.</li>
+                <li>generation cost, one CPU thread: 2.5 s for a database of 10 tables, 26.1 s for 80 tables, about 1 GB memory. the row generation along key links dominates. (appendix A.4)</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
