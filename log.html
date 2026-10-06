@@ -1197,6 +1197,20 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>caveat from relarena that applies to all of these numbers: kumorfm-2 uses the per-row evaluation regime, which helps on rel-f1 by more than 10 AUC points <a href="#relarena">[relarena-2]</a>. rel-f1 is one of the four databases where they report the largest wins.</li>
             </ul>
         </li>
+        <li><b>[fr-kumo2-c] kumorfm-2, read: regression, robustness, fine-tuning, usage</b> (<code>main.tex</code> L728-1050). kumorfm-2 main text is now fully read.
+            <ul>
+                <li>regression (11 tasks, relbench v1+v2): MAE normalised to plain lightgbm. v1: 0.822, best on 5 of 9, 4.7 % better than the strongest baseline, 10.5 % better than kumorfm v1. v2: 0.601, rank 1.0.</li>
+                <li>regression is where hand-made features stay competitive: "expert-driven manual feature engineering can occasionally outperform automated graph-based approaches" on tasks with volatile targets. their reason: it is hard to get "long-term, coarse-grained statistical patterns from fine-grained relational subgraphs". their fix is lagged targets in the context. this matches my result that lightgbm on DFS wins 5 of 9 regression tasks <a href="#stage4">[cmp]</a>.</li>
+                <li>they add "global median" and "entity median" baselines for regression as sanity checks. i should add both to my comparison.</li>
+                <li>context size (SALT subset): competitive at 1k context rows (0.05 % of the training rows); keeps improving at larger context more than xgboost and tabicl v2.</li>
+                <li>subgraph depth (SALT subset): at 0 hops it matches tabicl v2 (so it is also a good single-table model); large jump from 0 to 1 hop; saturates at about 4 hops.</li>
+                <li>neighbours per hop (relbench v1 classification subset, 2 hops, 1 to 64): the average improves steadily, but the best value depends on the task. rel-f1/driver-dnf peaks at 4 and then declines; rel-amazon/item-churn keeps improving. they call breadth "a key factor for optimizing task-specific performance". this is the same kind of per-task sensitivity as the DFS depth problem on rel-event/user-ignore <a href="#stage4">[s4-9]</a>.</li>
+                <li>robustness (relbench v1 classification subset): random missing values hurt xgboost and tabicl v2 much more; performance holds with up to 75 % of the links removed and falls to the tabicl v2 level at 100 %; injected noise columns hurt v1 but hardly v2.</li>
+                <li>fine-tuning on SALT with all labels (context uses 0.5 %): +10 MRR points over the best supervised baseline, +6 over the in-context model, "under two minutes per task". fine-tuning is only in enterprise deployments; the public endpoint gives in-context prediction only.</li>
+                <li>usage: python SDK <code>kumoai</code>; a task is a predictive query string, for example <code>PREDICT COUNT(orders.*, 0, 30, days)=0 FOR EACH users.user_id</code>. user-facing settings: <code>run_mode</code> fast/normal/best, <code>num_neighbors=[32, 32]</code>, <code>lag_timesteps=10</code>, <code>num_estimators=4</code> with column and class shuffle.</li>
+                <li>all ablations use "a subset" of SALT or of relbench v1; the paper text does not say which tasks. <mark class="unverified">not checked in the appendix</mark>.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
