@@ -1278,6 +1278,17 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>data notes: rel-avito is a sample of about 100,000 users plus linked rows; rel-avito and rel-hm are kaggle data for non-commercial use; rel-amazon, rel-stack, rel-f1 have no stated license. this matters if a model is trained on them.</li>
             </ul>
         </li>
+        <li><b>[fr-rdbpfn] rdb-pfn, read: proof appendix E</b> (<code>papers/rdb-pfn/src/example_paper.tex</code> L1250-2015; prose and statements, not every equation). earlier notes: <a href="#rdbpfn">section rdb-pfn</a>.
+            <ul>
+                <li>what the theorem says: for every database distribution inside a restricted family, some parameter setting of the 3-stage generator comes arbitrarily close. it is an existence result (universal approximators + chain rule). it does not say that the sampled prior covers real databases, and it says nothing about the trained model.</li>
+                <li>the family is defined by these assumptions: schema is a DAG; a cell depends only on cells within k hops; feature types have a global order, and cells of one type are independent given the earlier types; all cells of one type share one mechanism; aggregation over parent rows is permutation-invariant; primary keys carry no information; a child row picks its parents from candidates, given a local context and a "competition / degree summary" of earlier picks.</li>
+                <li>single-table base case assumes rows are i.i.d. they state the limit themselves: "many real-world tables deviate from i.i.d. sampling due to temporal ordering, distribution shift, repeated measurements, or group-level correlations".</li>
+                <li>time is not in the proof. there is no timestamp, no cutoff, no label window. repeated measurements of one entity at several cutoffs (the relbench training table) are outside the stated family. this supports my step 2 <a href="#directions">[dir-update]</a>: a forecasting-task prior is not covered by their theory or their generator.</li>
+                <li>the stage 3 proof is "stated in terms of" a hierarchy-respecting mechanism; in the model it is a bidirectional GNN, which they argue "is compatible with the proof". the released generator does not run that GNN <a href="#rdbpfn">[my code check]</a>. so the released prior is weaker than the object of the proof.</li>
+                <li>stage 1 (schema) is not analysed: "we treat P(G_S) as an external schema prior (hand-designed or learned)".</li>
+                <li>degree effects are allowed (the summary of earlier picks), so heavy-tailed fan-out is inside the family. whether the sampled prior produces it is an empirical question; my stage 3 statistics give the real target <a href="#stage3">[stage 3]</a>.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
