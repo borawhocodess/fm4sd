@@ -1325,6 +1325,20 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>for a forecasting prior this corpus gives only step 1 (schema shape). it has no time information in the data. unchanged conclusion from [c2-1].</li>
             </ul>
         </li>
+        <li><b>[fr-tabiclv2] tabicl v2 (qu et al. 2026), read: all main sections, appendix C, D, and E up to the function types</b> (<code>papers/tabiclv2/raw.txt</code> L118-1114, L2137-2712). not read: appendix A, B (architecture and stage details), G to K (GP proof, offloading, quantile maths, per-dataset results). earlier: abstract + README only <a href="#research">[c4b-1]</a>.
+            <ul>
+                <li>cost of one full pretraining: 24.5 GPU-days on H100 (stage 1: 500K steps at 1,024 rows, 20 days; stage 2: 40K steps at 400 to 10,240 rows, 2.5 days; stage 3: 10K steps at 400 to 60K rows, 2 days). about 35M synthetic datasets, up to 100 features. (§4)</li>
+                <li>cheap regime exists: their ablations run 280K steps, and the model reaches the level of tabicl v1 "in &lt; 100K steps". so a prior comparison at reduced scale is realistic on Capella; a full run is about 25 GPU-days per variant. (§7, fig. 10)</li>
+                <li>the prior is the largest single factor in their ablation. and prior and architecture interact: v2 architecture + v1 prior "fails" (below tabicl v1, validation loss gets worse); v1 architecture + v2 prior "only matches tabicl". so a prior result measured on one architecture may not transfer to another. this is a risk for my nano-scale step 1 <a href="#directions">[dir-update]</a>.</li>
+                <li>they did not tune the prior on data: "developed mostly without experimental feedback, since fine-grained ablations are impractical and prone to overfitting validation datasets". so even the best open group has no measured answer to "which prior property matters". (§5)</li>
+                <li>pretraining runs are noisy: "the results of pretraining runs are somewhat noisy … reducing the pretraining noise could itself be a useful contribution" (appendix D). same message as graphpfn <a href="#fullreads">[fr-graphpfn]</a>.</li>
+                <li>prior mechanics worth copying (appendix E): properties sampled in a correlated way per name (for example all categorical cardinalities of one dataset from one beta distribution); DAG edges from a logistic model with heavy-tailed (cauchy) node terms; 8 random function types (MLP, tree ensemble, discretise, GP, linear, quadratic, EM-style plateaus, products); several parents joined by concatenation or by sum / product / max / logsumexp; no gaussian noise on nodes (adding it changed nothing).</li>
+                <li>data filtering: datasets where extra-trees cannot beat a constant are dropped (35 % of classification, 25 % of regression datasets). the filter speeds up convergence. a relational prior needs the same kind of "is there signal" filter.</li>
+                <li>architecture changes with about 100 Elo each: target embedding added to every feature token of the training rows at the start; Muon optimiser; query-aware scalable softmax (temperature grows with log n, against attention fading on long contexts). regression head: 999 quantiles with pinball loss.</li>
+                <li>limits they state: no use of column names or text; rows are assumed exchangeable (no handling of distribution shift, they cite drift-resilient tabpfn); missing values are mean-imputed. all three matter for flattened relational tables (text columns, time split, many empty aggregates <a href="#stage3">[stage 3]</a>).</li>
+                <li>they also report that tabpfn v2-type architectures "seemed to perform well" for them; dropped for speed, not for accuracy.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
