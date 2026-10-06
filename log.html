@@ -205,9 +205,9 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li>stage 2 (setup) - done: install works; lightgbm reproduced exactly on rel-f1; tabpfn-rel reproduced within 0.011 AUC on rel-f1/driver-top3</li>
         <li>stage 3 (data) - done: all 7 databases and 21 tasks <a href="#stage3">[s3-1]</a></li>
         <li>stage 4 (dev setup) - package, scripts and a first own method done on the mac; capella script not run; no kislurm script</li>
-        <li>read fully: rdb-pfn, relbench, rdl-survey, relarena-alpha, rdblearn, relicl, plurel (main text + appendix A, B; not the extra experiments in appendix C), rdl §2</li>
-        <li>abstract + intro + results: plurel-to-rdb-pfn, rt (abstract, contribution, method), openrfm (abstract, intro, start of method), rdbbench (abstract, protocol, results text, conclusion)</li>
-        <li>abstract + parts: kumorfm-2 (intro claims, experiment setup), graphpfn (pretraining, result summary)</li>
+        <li>read fully (main text and the relevant appendix): rdb-pfn, relbench, rdl-survey, relarena-alpha, rdblearn, relicl, plurel, plurel-to-rdb-pfn, rdbbench, rdl, rt, rtgl, syntherela, kumorfm-2 (main text), relbench v2 (main text), tabpfn-3.5 (main text), relagent, xu and wipf. see <a href="#fullreads">full reads</a>.</li>
+        <li>read in the main part, with named gaps: openrfm (theory appendix not read), graphpfn (result tables), tabicl v2 (appendix A, B, G to K), schemapile (§4.3 to §6), reldiff, grdm, clavaDDPM (experiments), fim-pp (later results, appendix), leakage paper (detector details), wikidbs (appendix), g2t-fm (results), BG/NBD (empirical section). each entry in <a href="#fullreads">full reads</a> says what is missing.</li>
+        <li>not read, blocked: rt-j (openreview pdf) and kumorfm v1 (kumo.ai pdf) need a manual download. zerorel is ACM only.</li>
         <li>repos read in part: relarena (your fork: tabpfn_rel model, features, context, dfs module headers), rdblearn (defaults), RDBPFN (training config, model config, READMEs)</li>
         <li>repos at README / config level only: fastdfs (defaults read), relicl, relbench, relational-transformer</li>
         <li>not checked: rdbbench and kumorfm-2 result tables; plurel appendix C</li>
@@ -1129,6 +1129,23 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
     <h3 id="fullreads">full reads, second pass (6 oct)</h3>
 
     <p>bora asked for a full read of every paper in the list. one entry per paper, added as i finish it. "read" here means the main text; i name what i left out.</p>
+
+    <p><b>what the second pass changed, most important first</b> (6 oct, 25 papers):</p>
+
+    <ol>
+        <li>relbench task tables contain errors. rel-f1 driver tasks filter entities with information from the future; rel-stack tasks include users before they registered. <a href="#fullreads">[fr-rtgl]</a>. xu and wipf drop rel-f1 and rel-event for "potential leakage" <a href="#fullreads">[fr-pfe]</a>.</li>
+        <li>nobody has a measured answer to "which prior property matters". tabicl v2 built its prior "mostly without experimental feedback"; graphpfn's complex graph prior equals a plain block model; plurel-to-rdb-pfn has no seeds, unequal steps and selects on test tasks. <a href="#fullreads">[fr-tabiclv2]</a> <a href="#fullreads">[fr-graphpfn]</a> <a href="#fullreads">[fr-p2r]</a></li>
+        <li>pretraining noise is 0.3 to 0.7 points between seeds (graphpfn) and several AUROC points for RT (plurel). a prior study needs seeds. <a href="#fullreads">[fr-graphpfn]</a> <a href="#fullreads">[fr-plurel]</a></li>
+        <li>prior and architecture interact: the tabicl v2 architecture fails on the v1 prior. a nano-scale result may not transfer. <a href="#fullreads">[fr-tabiclv2]</a></li>
+        <li>forecasting labels are outside every published relational prior and outside rdb-pfn's theory (no time, rows i.i.d.). relbench v2 names the two task types: autocomplete (covered) and forecasting (not covered). <a href="#fullreads">[fr-rdbpfn]</a> <a href="#fullreads">[fr-relbenchv2]</a></li>
+        <li>the parts for a forecasting prior exist separately: per-entity rate + dropout (BG/NBD), event dynamics (fim-pp), latent per parent row that drives fan-out and content (clavaDDPM), exact degree control (reldiff), label grammar (RTGL). <a href="#fullreads">[fr-bgnbd]</a> <a href="#fullreads">[fr-fimpp]</a> <a href="#fullreads">[fr-clava]</a> <a href="#fullreads">[fr-reldiff]</a></li>
+        <li>a cheap exact test: sample customers from BG/NBD, flatten, and compare a tabular model with the closed-form optimal forecast. <a href="#fullreads">[fr-bgnbd]</a></li>
+        <li>regression is the weak spot of every learned model: relbench's GNN needs a lightgbm head, kumorfm-2 admits hand-made features win there, relagent wins with L1 loss + log target. agrees with my 5 of 9. <a href="#fullreads">[fr-relbench]</a> <a href="#fullreads">[fr-kumo2-c]</a> <a href="#fullreads">[fr-relagent]</a></li>
+        <li>no published relarena number exists for the open tabpfn-3.5 weights; the first place is the closed plus model. <a href="#fullreads">[fr-tabpfn35]</a></li>
+        <li>"prior vs real" can be one number: train a classifier to tell prior rows from real rows, read its feature importance. <a href="#fullreads">[fr-syntherela]</a></li>
+        <li>two cheap add-ons for the DFS pipeline that nobody tested on relbench: conditional aggregates over filtered child rows, and graph position features (degree, pagerank). <a href="#fullreads">[fr-relagent]</a> <a href="#fullreads">[fr-g2tfm]</a></li>
+        <li>rdbbench's "RT is best" rests on a regression table with mixed target scales and on RT trained per task. <a href="#fullreads">[fr-rdbbench]</a></li>
+    </ol>
 
     <ul>
         <li><b>[fr-rt] rt, read: introduction, background, method, results, ablations, conclusion</b> (<code>papers/rt/src/sections/*.tex</code>). not read: related work, appendix.
