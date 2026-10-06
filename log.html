@@ -1378,6 +1378,19 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>evaluation regime: refit on train + validation before test, model selection across 5 searches on validation. not run in relarena. so again not comparable number by number with relarena results <a href="#relarena">[relarena-2]</a>.</li>
             </ul>
         </li>
+        <li><b>[fr-rtgl] rtgl (relational task generation language, CTU prague 2026), read: the whole main text</b> (<code>papers/rtgl/raw.txt</code> L1-904). not read: appendix A (hyperparameters, rel-stack figure). earlier: abstract only.
+            <ul>
+                <li>most important: they rebuilt relbench tasks from a declarative definition and found errors in the official task tables. "the original relbench tables incorrectly contained more rows than the temporally sound RTGL tables".</li>
+                <li>rel-f1 driver tasks: the entity filter for active drivers has no upper time bound. "the query looked into the future, filtering the main table based on driver activity that had not yet occurred at the prediction moment, and occasionally included drivers that did not yet exist".</li>
+                <li>rel-stack user-engagement and user-post-comment: "the original relbench SQL failed to filter users by their creation date", so the tables contain "users who had not yet registered at the given prediction timestamps".</li>
+                <li>consequence 1: the fact that a row exists in the rel-f1 task table carries information about the future. this is a leak through the entity filter, not through the features. it is a candidate explanation for "rel-f1 … potential leakage issues" in xu and wipf <a href="#fullreads">[fr-pfe]</a> and for the large effect of the evaluation regime on rel-f1 <a href="#relarena">[relarena-2]</a>. <mark class="unverified">not verified in the relbench code by me; they give no row counts in the text</mark>.</li>
+                <li>consequence 2 for the talk: slide "relbench caveats" can name this with a source. and rel-f1 is the database where i reproduced lightgbm exactly <a href="#stage2">[stage 2]</a>; the number is correct but the task itself is questionable.</li>
+                <li>the language: <code>PREDICT &lt;aggregate over a future window&gt; FOR EACH &lt;entity&gt; WHERE &lt;condition on the past window&gt; ASSUMING &lt;condition on the future&gt;</code>. aggregates with start and end offsets; comparison turns regression into classification; LIST_DISTINCT gives link / multi-label targets. open-source copy of kumo's predictive query language (same syntax as in <a href="#fullreads">[fr-kumo2-c]</a>).</li>
+                <li>formal task definition i can cite next to fey et al.: temporal task label set Y = {Q_Δw(t) | t ∈ anchor times}, Q a query over the window (t, t+Δw]; static task = masked existing column. same split as autocomplete vs forecasting in relbench v2 <a href="#fullreads">[fr-relbenchv2]</a>.</li>
+                <li>use for my step 2 <a href="#directions">[dir-update]</a>: a forecasting prior needs a label sampler. RTGL's grammar (aggregate × window × comparison × past filter) is a ready, small vocabulary to sample from, and the tool can produce many tasks per real database (they define new tasks on the seznam database of redelex). THE JOIN used label templates of the same kind <a href="#thejoin">[the join]</a>.</li>
+                <li>limit: targets that need a multi-hop path without a direct key need a database view first.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
