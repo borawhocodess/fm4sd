@@ -1461,6 +1461,17 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>metric is macro-F1 on tasks that are often near a constant prediction; several rel-avito tasks do not move at all. their own caveat.</li>
             </ul>
         </li>
+        <li><b>[fr-wikidbs] wikidbs (vogel et al., neurips 2024 datasets track), read: introduction, related work, construction method, corpus description</b> (<code>papers/wikidbs/raw.txt</code> L1-1084, about 35 KB of prose). not read: appendix. earlier notes: <a href="#research">[c2-1]</a>.
+            <ul>
+                <li>100,000 databases, each 2 to 100 tables, about 1.6M tables in total, 162 GB unpacked, CC BY 4.0, on zenodo in 5 parts of 20k databases.</li>
+                <li>how a database is made: pick a wikidata concept as start table (items = rows, properties = columns); columns that point to other wikidata items are key candidates; follow the candidate whose name is closest to the database topic (sentence-BERT cosine, stop below 0.2); repeat. columns with more than 50 % NULL are dropped. GPT-4o renames tables and columns.</li>
+                <li>consequence of this construction: the key links are entity references of a knowledge graph (astronaut → mission, painting → artist). tables are dimension-like. there are no fact tables with repeated interactions per entity, and no event time. so no forecasting task can be defined on it. this confirms [c2-1] from the method itself, not only from the statistics.</li>
+                <li>the schema shape is a tree grown from one start table, one link at a time. real schemas have fact tables with several parents (relbench: reviews → customer + product). <mark class="unverified">share of multi-parent tables in wikidbs: not found in the text i read</mark>.</li>
+                <li>content is real and text-heavy (names, labels, dates as values), so it is useful for the text / semantics side that plurel and rdb-pfn lack <a href="#plurel">[plurel-5]</a>, for example to pretrain a cell or column-name encoder.</li>
+                <li>their own experiments are data-engineering tasks: missing value imputation, table and column name inference, and one downstream task after pretraining. no predictive benchmark task.</li>
+                <li>reference numbers they collect for real corpora: CTU repository 83 databases, SQLShare 64, gitschemas 50k schemas without rows (26 % of them have only two tables).</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
