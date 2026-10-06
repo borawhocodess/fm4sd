@@ -141,6 +141,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <a class="n-h3" href="#rdbbench">rdbbench</a>
 <a class="n-h3" href="#kumo">kumorfm-2</a>
 <a class="n-h3" href="#graphpfn">graphpfn</a>
+<a class="n-h3" href="#fullreads">full reads, second pass</a>
 <a class="n-h3" href="#research">research notes</a>
 <a class="n-h3" href="#tables">result tables checked</a>
 <a class="n-h3" href="#repos">method repos</a>
@@ -1123,6 +1124,27 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li><b>[graphpfn-2]</b> model: limix + attention-based neighbourhood aggregation layers ("graph adapters"). training continues from the limix checkpoint; <b>all layers frozen except the adapters</b>. 1,600,000 synthetic datasets, 10,000 optimizer steps, about 36 h on 8× A100 80GB, AdamW, lr 1e-3, EMA 0.98. loss = PFN loss + 0.1 × masked-edge loss. (<code>paper.tex</code> §3.2, L246-262)</li>
         <li><b>[graphpfn-3]</b> result claims: best average rank in ICL on both dataset collections; with fine-tuning best on 11 of 13 datasets. random adapters + fine-tuning is much worse, so the pretraining matters. (<code>paper.tex</code> L396-414)</li>
         <li>relevance: this is the "add structure layers to a frozen TFM and train only them on a synthetic prior" recipe. it is for one homogeneous graph, not for a database with many tables and time. <mark class="unverified">unverified</mark>: my reading; i did not read their limitations list.</li>
+    </ul>
+
+    <h3 id="fullreads">full reads, second pass (6 oct)</h3>
+
+    <p>bora asked for a full read of every paper in the list. one entry per paper, added as i finish it. "read" here means the main text; i name what i left out.</p>
+
+    <ul>
+        <li><b>[fr-rt] rt, read: introduction, background, method, results, ablations, conclusion</b> (<code>papers/rt/src/sections/*.tex</code>). not read: related work, appendix.
+            <ul>
+                <li>setting, in their words: "zero-shot relational learning" = new targets on a new database with a new schema, no weight updates; the context "need not consist of explicit input-output pairs" (background §2.3). so RT is not few-shot ICL in the tabpfn sense.</li>
+                <li>architecture: 12 layers, hidden 256, 8 heads, gated MLP 1024, MiniLMv2 text embeddings (384 dims); about 22M parameters. (results, architecture details). relarena's rt-plurel is a later 85M version <a href="#relarena">[relarena-4]</a>.</li>
+                <li>training: 50k steps, context 1024 cells, batch 256, AdamW wd 0.1, peak lr 1e-3; fine-tuning 33k steps, lr 1e-4. about 2 h pretraining and 1.5 h fine-tuning on 8× A100. (training details)</li>
+                <li>data: relbench v1 forecasting tasks + autocomplete tasks they define; rel-event skipped "as it has been found to have temporal leakage issues". leave-one-database-out; the best checkpoint is chosen per target task on validation, because of "significant overfitting during pretraining due to limited pretraining tasks". (experimental setup)</li>
+                <li>baselines: griffin (same setup, matched parameters), gemma3 4B / 12B / 27B on serialised subgraphs, RDL-GNN, relLLM, and EntityMean = "the mean of the past labels for the target entity".</li>
+                <li>context ablation, mean over tasks (ablation table): zero-shot AUROC 70.1; without column names 69.5; <b>without the target entity's own past labels 53.8</b>; without other entities' labels 70.6. regression R² 22.8 → −5.5 without self labels. after fine-tuning the effect is small for classification (77.2 → 77.1) and visible for regression (33.2 → 26.7).</li>
+                <li>their own ranking of what enables zero-shot transfer (conclusion): "(1) time-series forecasting from past task rows for the target entity, (2) column attention …, (3) feature attention …, (4) schema semantics from table and column names, (5) in-context learning from task rows for other entities".</li>
+                <li>feature extraction: a 2-layer MLP on frozen RT embeddings is 1.6 AUROC points below full fine-tuning and 4.3 R² points above it (relational feature extraction).</li>
+                <li>limits they state: no recommendation / link prediction; key column names not used; two foreign keys to the same table are not told apart (conclusion).</li>
+                <li>meaning for us: this is the same signal as in my runs, from the other side. RT's zero-shot ability is mostly "the entity's own label history" (53.8 without it), other entities' labels add nothing (70.6 vs 70.1). tabpfn-rel builds exactly that signal as features <a href="#stage4">[s4-9]</a>. so on relbench, the relational model and the flattening methods compete on one feature family, and ICL across entities is not yet shown to matter.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
