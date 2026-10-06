@@ -112,6 +112,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
     </div>
 </header>
 <nav aria-label="Sections">
+<a class="n-h2" href="#overnight">Overnight summary</a>
 <a class="n-h2" href="#questions">Questions for Bora</a>
 <a class="n-h2" href="#status">Status</a>
 <a class="n-h2" href="#directions">Candidate directions</a>
@@ -145,7 +146,49 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <a class="n-h3" href="#repos">method repos</a>
 </nav>
 <main>
-<h2 id="questions">Questions for Bora</h2>
+<h2 id="overnight">Overnight summary (night of 5 to 6 oct)</h2>
+
+    <p>written by claude while bora slept. kept current until the loop ends. numbers are one seed.</p>
+
+    <ul>
+        <li><b>done</b>
+            <ul>
+                <li>stage 2 to 4 finished on the mac and on capella: install, exact lightgbm reproduction, tabpfn-rel reproduction, statistics of all 7 databases, package + scripts + 3 own methods <a href="#stage2">[s2-5]</a> <a href="#stage3">[s3-1]</a> <a href="#stage4">[s4-4]</a>.</li>
+                <li id="sum-count">the 21-task comparison on capella: 52 of 61 runs finished at 02:45 (all 7 caches built; stack, hm, amazon runs still going). table: <a href="#cmp">[s4-6]</a>.</li>
+                <li>side tasks: prior against real data <a href="#priorvsreal">[pvr-1]</a>; tabpfn-rel version changes <a href="#repos">[repo-tabpfnrel-1]</a>; THE JOIN metadata <a href="#thejoin">[join-1]</a>; rdb-pfn inside relarena <a href="#stage4">[s4-7]</a>; deck: 2 slides changed.</li>
+                <li>research notes with sources: <a href="#research">[c1] to [c4b]</a>. 11 papers added to the README queue <a href="#research">[c4b-3]</a>.</li>
+            </ul>
+        </li>
+        <li><b>the three findings i would show alex</b>
+            <ul>
+                <li>on rel-event/user-ignore the text-free tabpfn-rel scores 0.88 to 0.89 at its default depth; validation picks a deeper depth and the test score falls to 0.69 to 0.70. the paper explains this gap by missing text. reproducible from relarena's own result file <a href="#stage4">[s4-10]</a>.</li>
+                <li id="sum-lgb">boosted trees on the same DFS features, the baseline relarena lists as missing, beat tabpfn-rel on 5 of 15 tasks so far <a href="#stage4">[s4-8]</a>.</li>
+                <li>the published relational priors miss the task side of the benchmark: window labels, repeated entities, zero-inflated and shifted targets <a href="#priorvsreal">[pvr-4]</a>. and the released rdb-pfn generator is not the one the paper describes <a href="#priorvsreal">[pvr-2]</a>.</li>
+            </ul>
+        </li>
+        <li><b>what did not work or is not checked</b>
+            <ul>
+                <li>my hypothesis "tabpfn is diluted by hundreds of DFS columns" was wrong <a href="#stage4">[s4-11]</a>.</li>
+                <li id="sum-rdb">rdb-pfn is level with tabpfn-rel on rel-f1 but below it on most tasks: better on 3 of 10 classification tasks so far, worse on 7; −0.12 on study-outcome <a href="#stage4">[s4-8]</a>.</li>
+                <li>my tabpfn-rel run differs from the published one by 0.056 AUC on rel-avito/user-clicks; all other tasks are within 0.016. reason not found.</li>
+                <li>lightgbm on DFS is not bit-reproducible between the mac and capella <a href="#cmp">[s4-6]</a>.</li>
+                <li>my first capella submission was above the site limits (16 cores, 256 GB per GPU); i cancelled and resubmitted inside them. a diagnostic i started on the login node was killed there; diagnostics now go through sbatch.</li>
+                <li>the rt-j paper pdf could not be downloaded by script; rt-j is logged from its project page only <a href="#rtj">[rtj-1]</a>.</li>
+                <li>everything is one seed. the leakage check of user-ignore is by feature names only.</li>
+            </ul>
+        </li>
+        <li><b>what you must decide</b>
+            <ul>
+                <li>the last slide of the deck is now my proposal "one question, three steps" <a href="#directions">[dir-update]</a>. keep, change or revert (the old text is in the slide notes).</li>
+                <li>offer <code>fm4sd-dfs-lightgbm</code> and the user-ignore observation to prior labs (pull request / issue on PriorLabs/relarena) ? i did not contact anyone.</li>
+                <li>push the branch <code>relational</code> to github ? it is local and on capella only.</li>
+                <li>your tabpfn key is in the chat transcript of this session; make a new one if that matters to you.</li>
+                <li>disk: 18 GB relbench cache on the mac (<code>~/Library/Caches/relbench</code>); about 25 GB DFS cache + relbench data on capella under <code>jobs/fm4sd-runs/cache</code> and <code>.cache</code>.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2 id="questions">Questions for Bora</h2>
 
     <ul>
         <li><mark class="open">open</mark> part 5 of the talk: no idea yet (bora, 5 oct). finding one is the goal of this work. next: candidate directions are listed: <a href="#directions">candidate directions</a>. pick, reject or change.</li>
@@ -1180,6 +1223,17 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                         <li>the cheapest strong move: continue the pretraining of an open tabular model (tabicl v2 is open; tabpfn weights are non-commercial but usable for research) on DFS-flattened tables with forecasting labels, from a synthetic event prior and / or THE JOIN, and measure it in relarena against the same model without that step. this is <a href="#directions">[dir-2]</a> + <a href="#directions">[dir-5]</a> with one model and one switch.</li>
                     </ul>
                 </li>
+            </ul>
+        </li>
+        <li><b>[c4-6] xu and wipf, read.</b> pdf in <code>papers/parameterfreeencoders/</code>, read with pdftotext: abstract, §3, §4, §5, §6 (not the proofs in app. D).
+            <ul>
+                <li>proposition 3.1 (§3): for any ego-network with past labels in it, distributions exist where the label is a deterministic function of the database, "and yet any possible fixed encoder … and prediction head … perform no better than chance". so a frozen trainable encoder has no stable rule for how to use neighbourhood labels across tasks. a per-task supervised model can learn one.</li>
+                <li>their reading of why RT still works: in the few real databases used for pretraining, homophily dominates, so "adopting the majority label of local neighbors" is already strong. they cite RT's own table: an entity-mean predictor has 66.7 average AUROC against 69.7 for RT.</li>
+                <li>proposition 4.1 (§4): distributions exist where the labels in the neighbourhood "provide no information" about which feature columns are informative. so labels as encoder inputs do not reliably help to screen columns.</li>
+                <li>they are careful: "while not strictly ruling out any benefit of trainable encoders", it "does mute confidence".</li>
+                <li>empirical part (§5, fig. 1): an updated rdblearn "outperforms all open-source FMs on all benchmarks, and even exceeds closed-source FMs on 4 of 6 benchmarks", "with no task-specific adjustments and zero exposure to RDB data".</li>
+                <li>take-home (§6): "parameter-free RDB encoding combined with frontier single-table FMs is still competitive with the best closed-source industry architectures".</li>
+                <li>meaning for us: these are existence results (worst-case distributions), not claims about typical data. they agree with tonight's numbers: per-entity label history is the dominant feature on user-ignore <a href="#stage4">[s4-9]</a>, and DFS + a single-table model is level with or ahead of relational models. the paper puts the open room in the single-table model and its prior, which is where steps 1 and 2 of <a href="#directions">[dir-update]</a> work.</li>
             </ul>
         </li>
         <li><b>[c4b] the tabular side</b> (round 2)
