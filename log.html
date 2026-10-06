@@ -1265,6 +1265,19 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>generation cost, one CPU thread: 2.5 s for a database of 10 tables, 26.1 s for 80 tables, about 1 GB memory. the row generation along key links dominates. (appendix A.4)</li>
             </ul>
         </li>
+        <li><b>[fr-relbench] relbench, second pass: user study, its appendix, implementation, GNN ablations, data sources</b> (<code>papers/relbench/src/sections/userstudy.tex</code>, <code>appendix/*.tex</code>). details that the first pass did not log.
+            <ul>
+                <li>the "data scientist" baseline is one person (MSc, 5 years in finance) under a fixed protocol: data exploration ≤ 4 h, feature ideas ≤ 1 h on paper, SQL time open, then a given lightgbm script. average 12.3 h per task (std 1.6). lightgbm there: 5 tuning runs × 10 trials. RDL: one default setting. (userstudy.tex)</li>
+                <li>RDL "matches or outperforms the data scientist in 11 of 15 tasks", but weaker on regression. for regression the user-study figure uses GNN embeddings + a lightgbm head, not the plain GNN. the main regression table uses the plain GNN. (userstudy.tex; appendix "regression output head analysis")</li>
+                <li>why regression is hard for the GNN, their test: lightgbm on GNN embeddings helps on regression (rel-f1/driver-position MAE 4.173 → 4.05, rel-amazon/item-ltv 14.31 → 14.10) and not on classification. when regression targets are turned into y &gt; 0, the gap to the data scientist gets small. so the linear output head is the weak part. this fits my zero-inflation statistics <a href="#stage3">[stage 3]</a> and the hurdle head in the september tabpfn-rel.</li>
+                <li>the data scientist leaked validation data into the features on rel-trial/study-outcome first: "extremely high validation performance and very low test performance". found only because the test labels are hidden. time leakage in hand-made joins is a real risk; one more reason to use a harness. (appendix, feature engineering)</li>
+                <li>the strongest hand-made features on rel-hm/user-churn (SHAP): all-time statistics of the user's behaviour and calendar features for seasonality. DFS gives the first group; calendar features of the cutoff time are not in DFS output. <mark class="unverified">not checked in fastdfs</mark>.</li>
+                <li>GNN defaults: 2 layers, hidden 128, sum aggregation, 128 neighbours per key, batch 512, lr 0.005, 10 epochs. rel-trial needed other settings (lr 0.0001, mean aggregation, 64 neighbours, 20 epochs). 5 runs per number. regression loss is L1.</li>
+                <li>ablations (figures only, 3 + 3 tasks): shuffled key links, no node features, no text, no time embedding all make the GNN worse; BERT text is better than GloVe.</li>
+                <li>regression appendix table has the simple baselines: global zero, global mean, global median, entity mean, entity median. same ones as in kumorfm-2 <a href="#fullreads">[fr-kumo2-c]</a>.</li>
+                <li>data notes: rel-avito is a sample of about 100,000 users plus linked rows; rel-avito and rel-hm are kaggle data for non-commercial use; rel-amazon, rel-stack, rel-f1 have no stated license. this matters if a model is trained on them.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
