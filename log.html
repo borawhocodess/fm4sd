@@ -1339,6 +1339,20 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>they also report that tabpfn v2-type architectures "seemed to perform well" for them; dropped for speed, not for accuracy.</li>
             </ul>
         </li>
+        <li><b>[fr-tabpfn35] tabpfn-3.5 report (prior labs 2026), read: all main sections (introduction, results, model design, license) and the note on grouped evaluation</b> (<code>papers/tabpfn-3.5/raw.txt</code> L170-1442, L3545-3600). not read: appendix C benchmark details (L1500-4319), except that note. earlier: abstract only.
+            <ul>
+                <li>relational result: tabpfn-rel on tabpfn-3.5-plus is first on both relarena-α leaderboards, ahead of the RT-plurel system "while requiring significantly less runtime". base model 3-plus → 3.5-plus gives "nearly 90 Elo points"; an internal harness version gives 36 more. (§2.5, fig. 6)</li>
+                <li>this is the closed plus model: "results with open-source checkpoints and with thinking mode are work in progress". so there is no published relarena number for the open tabpfn-3.5 weights. my Capella runs use open tabpfn-3 with the august harness; a run with open 3.5 would be a new data point.</li>
+                <li>"improvements in the base model tend to translate directly into stronger downstream performance on relational tasks". for the thesis: a better single-table model for flattened relational tables is a direct lever, measurable in relarena.</li>
+                <li>where single-table models were weak, in their words: "even the best of them fall behind tuned conventional models on grouped or temporal splits, on tables with many rows or many features, and on tables with text or high-cardinality features". a flattened relbench table has all of these: time split, repeated entities (groups), wide DFS output, id-like columns.</li>
+                <li>after 3.5: "tuned and ensembled MLPs retain the highest performance on grouped, temporal, and large datasets", but the gap is smaller; equal to the best baselines on grouped and temporal data below 100K rows. the temporal subset "is confounded with size".</li>
+                <li>prior change: "tuned towards high-cardinality, wide, and grouped data", with grouped meaning "the test set is from a different group than the train set". that is the cold-start case. the relbench case is different: the same entity appears in training rows at earlier cutoffs. the report does not name a prior for repeated entities over time. <mark class="unverified">my reading; prior details are not published</mark>.</li>
+                <li>on grouped tasks they give the group id to the model as a feature. for relbench the group id is the entity id, which was the second strongest signal on rel-event/user-ignore <a href="#stage4">[s4-9]</a>.</li>
+                <li>new cell encodings: fourier features of the scaled value (helps ordinal-encoded high-cardinality categoricals) and an in-context rank feature (the value's rank among the training rows of its column, so heavy tails are spread evenly). no quantile transform or SVD features any more. heavy-tailed counts and sums are the typical DFS column <a href="#stage3">[stage 3]</a>.</li>
+                <li>one checkpoint for classification and regression (task type is an input); width doubled, parameters about 4×; 8 estimators by default.</li>
+                <li>license: weights are free for research and internal evaluation, not for commercial use; plus and thinking variants are API only and "intentionally not described".</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
