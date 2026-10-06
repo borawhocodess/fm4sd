@@ -1237,6 +1237,21 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>one seed, 5 of the 12 relbench classification tasks, 5 of 9 regression tasks. the numeric encoders differ per model (linear layer for RT and dbformer, quantile transform + pretrained MLP for griffin); only the text encoder is unified (MiniLM-v2, 384 dims).</li>
             </ul>
         </li>
+        <li><b>[fr-graphpfn] graphpfn, read: architecture, pretraining, prior, experiments, all appendix text</b> (<code>papers/graphpfn/src/paper.tex</code> L186-814; result tables not read number by number). earlier notes: <a href="#graphpfn">[graphpfn-1]</a> to <a href="#graphpfn">[graphpfn-3]</a>.
+            <ul>
+                <li>most important for my prior question: their complex graph generator is not better than a simple one. "the degree-corrected SBM performs on par with and on some datasets better than our proposed prior" (appendix B.3). an earlier revision of the paper had the opposite result; it changed when the pretraining procedure changed. erdős-rényi is clearly worse.</li>
+                <li>pretraining is noisy: in-context performance "varied across pretraining seeds, with standard deviations ranging from 0.3 to 0.7 percentage points" (appendix A). a prior comparison below this size is not evidence. plurel-to-rdb-pfn has no seeds at all <a href="#fullreads">[fr-p2r]</a>.</li>
+                <li>adapter: one extra attention layer at the end of every limix block, the same as sample attention but masked by the adjacency matrix (1-hop neighbours only), applied per feature token. labelled and unlabelled nodes exchange information in both directions along edges. (§3.1)</li>
+                <li>attribute prior: the tabicl SCM where each hidden neuron is MLP-type or GNN-type with probability p ∈ {0, 0.1, …, 1}; GNN aggregation from {mean, max, min, GCN, GT}; degree and pagerank added as inputs with probability 0.5 each. with p = 0 it is the plain tabular prior. (§4.2)</li>
+                <li>structure prior: several degree-corrected SBMs joined by a second-level SBM, then preferential attachment to add low-degree nodes. hyperparameters are sampled per graph. (§4.1)</li>
+                <li>loss: PFN loss + 0.1 × masked graph modeling (hide 10 % of the edges, classify edge vs non-edge). removing it is "consistently worse or comparable".</li>
+                <li>most of the gain arrives early: "most of the gap is closed within the first 1-2K gradient steps" of 10,000. so adapter training on a frozen model is cheap to test.</li>
+                <li>ablations: random adapters + fine-tuning is much worse than pretrained adapters; fine-tuning only the adapters is about equal to full fine-tuning on 6 of 8 datasets; attention adapters beat mean and GCN adapters; 8 random input features help on average; ensembling of 10 gives small gains.</li>
+                <li>they check the prior against real data with numbers: average degree, clustering coefficient, average distance, homophily / assortativity, power-law fit, on 10,000 synthetic datasets vs the real ones (appendix B.2). this is the same kind of check as my stage 3 statistics <a href="#priorvsreal">[pvr-1]</a>.</li>
+                <li>limits they state: the whole graph must fit in memory at once (they suggest tabicl as a lighter backbone, or subgraph sampling); prior covers social / information networks only; max 10 classes (limix); node tasks only. evaluation: 13 datasets, 10 / 10 / 80 split, 10 runs.</li>
+                <li>this confirms my earlier reading that the model is for one homogeneous graph: no table types, no time. that resolves the unverified note under <a href="#graphpfn">[graphpfn-3]</a>.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
