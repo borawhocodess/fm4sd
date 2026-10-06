@@ -1302,6 +1302,18 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>result summary (appendix C prose): rdblearn 1.1 is better than every foundation model on every benchmark, except tabpfn-rel and (depending on which reproduction is used) kumorfm-2 on relbench v1. all closed models are quoted from their papers.</li>
             </ul>
         </li>
+        <li><b>[fr-rdl] rdl (fey et al. 2023), read: the whole paper</b> (<code>papers/rdl/src/problem-formulation.tex</code>, <code>db-learning.tex</code>, <code>new-challenges.tex</code>, <code>benchmark.tex</code> first half, <code>related.tex</code>). earlier: only the definitions in <a href="#formal">formal definition</a>.
+            <ul>
+                <li>3 graphs: schema graph (tables as nodes, links + inverse links), relational entity graph (rows as nodes, typed by the schema, each with a time τ(v), −∞ for rows without time), time-consistent computation graph (the sampled subgraph for one training row at its seed time). (§3.1-3.3)</li>
+                <li>temporal sampling (algorithm 1): for L hops, take at most m_i neighbours with τ ≤ seed time. 3 strategies: uniform, latest first, biased by time. relbench's baseline uses uniform <a href="#fullreads">[fr-relbench]</a>.</li>
+                <li>their claim on aggregation: GNN message + aggregate steps "exactly match the functional form of SQL JOIN + AGGREGATE operations". so DFS and a GNN compute the same family; the GNN learns the function, DFS fixes it. good one-line bridge for the talk between the RDL slide and the tabpfn-rel slide.</li>
+                <li>fact vs dimension tables: dimension tables = one row per real object, mostly static; fact tables = interactions, most of the rows, with a time column. plurel uses the same split (entity / activity tables) <a href="#plurel">[plurel-2]</a>.</li>
+                <li>training table: labels come from history alone. for "spend in the next 90 days" at time t, sum over (t, t+90]; move t back in fixed steps to get many rows per entity. default: start at t_val − δ, stride δ; "shorter strides to get more labels" are allowed. this is exactly the label process that no synthetic prior generates <a href="#directions">[dir-update]</a>.</li>
+                <li>open problems they list (§5), still open in 2026 by my reading of the later papers: stale links (old history hurts; prune or pre-aggregate), 4 hops needed to connect two customers of the same product, order-dependent aggregation, multi-task training over several training tables, "techniques for automatically deciding which labels to mine remains unexplored", time-interval data types.</li>
+                <li>"which labels to mine" is the task-generation question. THE JOIN answers it with a vocabulary of label templates <a href="#thejoin">[the join]</a>; rdb-pfn avoids it with random target columns <a href="#rdbpfn">[rdbpfn-5]</a>.</li>
+                <li>this first version had 2 databases with 2 tasks each (rel-amazon, rel-stack); the 7 databases come with the 2024 relbench paper.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
