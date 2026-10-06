@@ -1403,6 +1403,18 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>they do not use relbench: its databases "include modalities such as text, which are not supported by the generative models". sampling a representative part of a database is called an open problem.</li>
             </ul>
         </li>
+        <li><b>[fr-reldiff] reldiff (hudovernik et al. 2025), read: introduction, related work, method, experiments text</b> (<code>papers/reldiff/raw.txt</code> L1-1400). not read: ablations after table 2, appendix. earlier: abstract only.
+            <ul>
+                <li>what it is: a generator that copies one real database. it is trained on that database and samples a synthetic version of it. it is not a prior over many databases. p(database) = p(key graph) · p(attributes | key graph).</li>
+                <li>structure part, the reusable idea: the key graph is sampled from a degree-corrected, nested stochastic block model with hard constraints ("2K+SBM"): fixed number of rows and links per relationship, exact degree sequence, joint degree distribution of linked rows, blocks inside each table found by minimum description length. referential integrity holds by construction.</li>
+                <li>why this matters for a prior: plurel also uses a hierarchical block model for links <a href="#plurel">[plurel-3]</a>, but with sampled block probabilities, not with a target degree sequence. my stage 3 statistics give real degree sequences (heavy tail, 40 % childless parents) <a href="#stage3">[stage 3]</a>. a prior can sample a degree sequence from a fitted family first and then wire the links this way. that controls fan-out directly.</li>
+                <li>their figure 2 point: matching degree distributions alone loses the hierarchy of the F1 database; clavaDDPM keeps some hierarchy but not the degrees. both properties are needed.</li>
+                <li>attribute part: joint diffusion over all tables (gaussian for numbers, masking for categories), denoiser = heterogeneous graphsage with transformer encoders per table, each row conditioned on its noisy k-hop neighbourhood. dimension tables are kept as fixed vocabularies.</li>
+                <li>results they report: 11 databases, 67 tables, 64 key links. best on most multi-table fidelity metrics; the drop from single-table to multi-table detection is 7× smaller than for clavaDDPM; best utility on 4 of 5 databases when a GNN is trained on synthetic and tested on real data.</li>
+                <li>they note that fidelity and utility are different: "methods with lower performance on data fidelity sometimes outperform stronger methods on utility". same lesson as plurel's reversal <a href="#fullreads">[fr-plurel]</a>: a realism score alone is not a safe way to select a prior.</li>
+                <li>no time model: timestamps are ordinary datetime attributes. no order constraint between parent and child times is stated in the text i read. <mark class="unverified">not checked in the appendix</mark>.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
