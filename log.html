@@ -1185,6 +1185,18 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>meaning for us: the closed state of the art uses the same two ingredients that tonight's runs point to: the entity's own lagged targets as local context, and forecasting queries replayed at many time points as pretraining tasks on real data. the second one is what <a href="#directions">[dir-2]</a> proposes to do synthetically. nothing in the paper lets one check how much each ingredient gives.</li>
             </ul>
         </li>
+        <li><b>[fr-kumo2-b] kumorfm-2, read: experiments text up to the regression section</b> (<code>main.tex</code> L400-~800; tables stripped). still to read: regression text, robustness, fine-tuning, "in practice".
+            <ul>
+                <li>41 temporal tasks on 15 databases (relbench v1, relbench v2, SALT, 4dbinfer). context examples are as little as 0.2 % of the available training rows.</li>
+                <li>baselines: "we rely on publicly reported benchmark numbers for baselines as much as possible"; only those marked * are their own runs. this is the copy-the-numbers practice that relarena criticises <a href="#relarena">[relarena-2]</a>. all relational models use two-hop subgraphs.</li>
+                <li>tabular baselines come in three settings: entity table only; "DS+" = features by an expert data scientist per task (the relbench study); "DFS+" = automatic flattening. they describe rdblearn as "DFS+TabPFN-2.5".</li>
+                <li>relbench v1 classification (12 tasks): kumorfm-2 average AUROC 79.60, rank 3.08; +3.98 over the best tabular model, +2.89 over kumorfm v1, +1.54 over relgnn; +8.04 and +3.63 over the other relational FMs and the fixed-encoder pipelines.</li>
+                <li>where it wins and loses, in their words: "particularly effective in smaller training data regimes (f1, avito, event, trial)"; "supervised relational models retain a slight advantage on amazon, stack, and hm due to their larger training set sizes".</li>
+                <li>their view of the competition: griffin and RT-zero "underperform … despite their strong relational prior", because they treat ICL as "label propagation", which "often reduces predictions to its historical mean". DFS pipelines defer "most of the modeling capacity to the underlying tabular foundation model" and are "bounded by … feature-engineered tabular approaches".</li>
+                <li>relbench v2: +8.17 over lightgbm, +1.77 over graphsage, +3.74 over v1; strongest on ratebeer (221 columns), which they attribute to task-conditioned feature processing. 4dbinfer: average 79.96, "does not dominate any single task". SALT (8 multi-class tasks, up to 589 classes, 10k context): hierarchical classification, +6 MRR points over autogluon.</li>
+                <li>caveat from relarena that applies to all of these numbers: kumorfm-2 uses the per-row evaluation regime, which helps on rel-f1 by more than 10 AUC points <a href="#relarena">[relarena-2]</a>. rel-f1 is one of the four databases where they report the largest wins.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
