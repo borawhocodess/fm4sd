@@ -1173,6 +1173,18 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>regression (R², 8 tasks): openrfm (tabpfn) rank 4.00 = JUICE with 8 support groups 4.00; JUICE 5.31; rdb-pfn 8.00 (they report regression numbers for it; the released model is binary only <a href="#rdbpfn">[rdbpfn-4]</a>, so <mark class="unverified">unverified</mark> how they ran it).</li>
             </ul>
         </li>
+        <li><b>[fr-kumo2] kumorfm-2, read so far: sections 2 and 3 (system, architecture)</b> (<code>papers/kumorfm-2/src/main.tex</code> L188-370). earlier: abstract, intro claims, experiment setup <a href="#kumo">[kumo-1]</a>. still to read: result sections, robustness, fine-tuning, "in practice".
+            <ul>
+                <li>formal setting (§2): a database is a temporal heterogeneous graph; a training example is (v_i, t_i, y_i); the task table of such examples is the context; the model predicts y_n for (v_n, t_n) from the context examples and their subgraphs G^{≤t_i}[v_i], with frozen weights.</li>
+                <li>tasks are written in a Predictive Query Language (PQL): "compositions of aggregations, filters, and binary operations". labels of context examples are made by "replaying historical states of the database". up to 10k context examples.</li>
+                <li>architecture (§3), no sizes given: stage 1, a "lightweight network" makes task-conditioned row embeddings per table by alternating column and row attention, with the context targets put into the input tables early; stage 2, a larger network runs foreign-key attention and cross-sample attention over these row embeddings. this avoids attention over every cell.</li>
+                <li>context selection: "local" context from the prediction entity itself (its own lagged targets and earlier subgraphs) + "global" context from the most recent snapshots of other entities.</li>
+                <li>training data: "synthetic tables and graphs … via Structural Causal Models" (they cite tabpfn, hoppe 2025, plurel) + public real databases "paired with a diverse set of predictive queries, executed over a set of random entities at different points in time"; staged from single tables to relational structures. no counts, no names.</li>
+                <li>ensembling: column and class order shuffles, number of hops, post-processing.</li>
+                <li>their argument against DFS (§3 "expressivity"): label = 1 iff binary features A and B co-occur in at least one child row. column-wise aggregates give AUROC 0.5, kumorfm-2 gives 1.0. this is the same counter-example family as relicl's interaction-blindness task <a href="#relicl">[relicl-1]</a>.</li>
+                <li>meaning for us: the closed state of the art uses the same two ingredients that tonight's runs point to: the entity's own lagged targets as local context, and forecasting queries replayed at many time points as pretraining tasks on real data. the second one is what <a href="#directions">[dir-2]</a> proposes to do synthetically. nothing in the paper lets one check how much each ingredient gives.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
