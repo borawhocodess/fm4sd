@@ -368,6 +368,27 @@
 <aside>Leaderboard in the repo on 5 Oct 2026, models plus systems: TabPFN-Rel client latest 1992, local latest 1941, RT-PluRel 1879. RelArena uses one evaluation regime for all methods. RT-PluRel is a relational transformer pretrained on synthetic databases; it is a system submission with its own tuning, up to 50,000 fine-tuning steps per task. The constant predictor returns each entity's own past average and beats RelGNN and RelGT on 4 tasks each. The two text tasks are rel-event/user-ignore and rel-avito/user-clicks.</aside>
 </section>
 
+<section id="ours" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0E7C7B">4 · TabPFN-Rel</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;white-space:nowrap">Our own runs so far</h2>
+<table style="font-size:26px;color:#2E3A46;font-variant-numeric:tabular-nums;white-space:nowrap">
+<tr style="background:#E3F1EF"><th style="width:28%">Task (test AUC)</th><th style="width:18%">LightGBM on DFS</th><th style="width:18%">RDB-PFN, 0.7M</th><th style="width:18%">TabPFN-Rel, ours</th><th style="width:18%">TabPFN-Rel, paper</th></tr>
+<tr><td>rel-f1/driver-dnf</td><td>0.629</td><td>0.733</td><td>0.700</td><td>0.715</td></tr>
+<tr><td>rel-f1/driver-top3</td><td>0.790</td><td>0.790</td><td>0.799</td><td>0.793</td></tr>
+<tr><td>rel-event/user-ignore</td><td>0.873</td><td>0.879</td><td>0.686</td><td>0.701</td></tr>
+<tr><td>rel-event/user-repeat</td><td>0.776</td><td>0.776</td><td>0.758</td><td>0.769</td></tr>
+<tr><td>rel-trial/study-outcome</td><td>0.713</td><td>0.621</td><td>0.737</td><td>0.731</td></tr>
+<tr><td>rel-avito/user-clicks</td><td>0.667</td><td>0.649</td><td>0.670</td><td>0.615</td></tr>
+</table>
+<ul style="font-size:27px;line-height:1.5;color:#2E3A46;white-space:nowrap">
+<li>Setup reproduced: LightGBM exactly; TabPFN-Rel within 0.015 on 12 of 13 tasks.</li>
+<li>Trees on the same DFS features beat TabPFN-Rel on 4 of 12 tasks.</li>
+<li>user-ignore: depth 2 gives 0.89 without text; validation picks depth 4, test 0.69.</li>
+</ul>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6A7480">Capella, H100, seed 0, RelArena protocol · log: s4-6, s4-8, s4-10</p>
+<aside>All numbers are one seed. LightGBM on DFS and RDB-PFN are methods we added to RelArena through this repo. RDB-PFN uses the released 0.7M-parameter checkpoint with the 30 to 120 DFS columns most correlated with the label; that selection is ours. The user-ignore case is reproducible from RelArena's published result file: depth 2 scores 0.8815 there, the selected depth 3 scores 0.7013. The hosted version with text scores 0.8787.</aside>
+</section>
+
 <section id="families" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0E7C7B">5 · Related work</p>
 <h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;white-space:nowrap">Five method families</h2>
@@ -441,14 +462,45 @@
 <aside>RDB-PFN: not tested in the full RelBench protocol; its own ablation shows DFS settings move the average AUC from 0.57 to 0.73; its schema generator is trained on real schemas; its released config has width 96 while the paper says 128. RelICL: its comparison uses numbers copied from the papers. The lazy regime is OpenRFM's finding about synthetic-only pretraining of RT.</aside>
 </section>
 
-<section id="idea" data-transition="fade" style="background:#16202B;color:#F6F7F4;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between;gap:48px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#5FC9C4">5 · Related work</p>
-<div style="display:flex;flex-direction:column;gap:32px">
-<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:96px;font-weight:600;line-height:1.05">My idea</h2>
-<p style="font-size:40px;line-height:1.3;color:#F0C987">[Placeholder. Bora writes this slide.]</p>
+<section id="idea" data-transition="fade" style="background:#F6F7F4;color:#16202B;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:32px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#0E7C7B">5 · Related work</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1;white-space:nowrap">One question, three steps</h2>
+<p style="font-size:30px;line-height:1.3;font-weight:500;background:#E3F1EF;padding:20px 28px;border-radius:12px;white-space:nowrap">Does a prior that matches flattened relational forecasting tasks help a tabular ICL model?</p>
+<div style="display:flex;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFFFE;padding:32px;border:1px solid #D5DAD6;border-radius:12px">
+<h3 style="font-size:34px;font-weight:600;color:#0E7C7B">1 · Controlled study</h3>
+<p style="font-size:26px;font-weight:600;line-height:1.3;color:#16202B;white-space:nowrap">Prior quality vs data scale</p>
+<ul style="font-size:24px;line-height:1.6;color:#2E3A46;white-space:nowrap">
+<li>Rebuild RDB-PFN at nano scale</li>
+<li>Vary generator, DFS, data size</li>
+<li>Evaluate in RelArena</li>
+</ul>
+<p style="font-size:24px;font-weight:600;color:#8A4F0A;white-space:nowrap">Status: first run works</p>
 </div>
-<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8FA3AD">Facts to choose from · log: "what is still open"</p>
-<aside>Open points from the log: RDB-PFN is small and binary-only; no synthetic relational prior at TabPFN-3 scale in the full protocol; regression is 9 of 21 tasks; the flattening is fixed; prior tasks are not time-window tasks; no text in the priors.</aside>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFFFE;padding:32px;border:1px solid #D5DAD6;border-radius:12px">
+<h3 style="font-size:34px;font-weight:600;color:#0E7C7B">2 · Forecasting prior</h3>
+<p style="font-size:26px;font-weight:600;line-height:1.3;color:#16202B;white-space:nowrap">Events and window labels</p>
+<ul style="font-size:24px;line-height:1.6;color:#2E3A46;white-space:nowrap">
+<li>Events per entity, with dropout</li>
+<li>Labels: count, sum, churn, …</li>
+<li>Match RelBench statistics</li>
+</ul>
+<p style="font-size:24px;font-weight:600;color:#8A4F0A;white-space:nowrap">Status: design sketch</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;background:#FFFFFE;padding:32px;border:1px solid #D5DAD6;border-radius:12px">
+<h3 style="font-size:34px;font-weight:600;color:#0E7C7B">3 · Real-data control</h3>
+<p style="font-size:26px;font-weight:600;line-height:1.3;color:#16202B;white-space:nowrap">Same model, real tasks</p>
+<ul style="font-size:24px;line-height:1.6;color:#2E3A46;white-space:nowrap">
+<li>THE JOIN: 204 databases</li>
+<li>6,023 forecasting tasks</li>
+<li>Synthetic vs real, one switch</li>
+</ul>
+<p style="font-size:24px;font-weight:600;color:#8A4F0A;white-space:nowrap">Status: corpus checked</p>
+</div>
+</div>
+<p style="font-size:28px;line-height:1.4;font-weight:500;color:#16202B;white-space:nowrap">Question for Alex: which step is the thesis, and which is groundwork?</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6A7480">Draft by Claude, not yet Bora's decision · log: dir-update, pvr-1, join-8, c3-5</p>
+<aside>Old placeholder text of this slide: "My idea. [Placeholder. Bora writes this slide.] Facts to choose from: log, what is still open." This version is a proposal written overnight; Bora has not approved it. Step 1: nobody has separated prior quality from data scale; the released RDB-PFN already runs in RelArena through this repo. Step 2: published priors use a random column as target and have no repeated entities or window labels. Step 3: THE JOIN is the open corpus behind RT-J. If time allows, repeat the best setting on TabICL v2, which is open with pretraining code.</aside>
 </section>
 
 </body>
