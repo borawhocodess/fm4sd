@@ -1472,6 +1472,17 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>reference numbers they collect for real corpora: CTU repository 83 databases, SQLShare 64, gitschemas 50k schemas without rows (26 % of them have only two tables).</li>
             </ul>
         </li>
+        <li><b>[fr-g2tfm] g2t-fm (eremeev et al., yandex research), read: introduction, related work, the method, the dataset setup</b> (<code>papers/g2t-fm/raw.txt</code>, first 24 KB of prose). not read: result tables, ablations, appendix. earlier: abstract only.
+            <ul>
+                <li>what it is: the graph version of the rdblearn / tabpfn-rel recipe. turn each node into one table row by adding fixed graph features, then use a tabular foundation model (tabpfn v2, tabpfn 2.5 or limix). no graph pretraining.</li>
+                <li>the added features: (1) one-hop neighbour aggregates: mean, max, min of numeric features; mean of one-hot categoricals. (2) degree, pagerank, the first K laplacian eigenvectors. (3) "PEARL": outputs of a GNN on random node inputs, averaged over M repeats; works even with random, untrained weights.</li>
+                <li>(1) is DFS at depth 1. (2) and (3) have no counterpart in tabpfn-rel or rdblearn: position and centrality of a row in the key graph. for a database this would be, for example, the degree and pagerank of a customer in the customer-product graph. cheap to compute, parameter-free, and inside the "vertical only" rule of xu and wipf <a href="#fullreads">[fr-pfe]</a>. a candidate add-on to test in my <code>DFSTabularModel</code> <a href="#stage4">[s4-1]</a>. <mark class="unverified">my idea; not tested by anyone on relbench as far as i read</mark>.</li>
+                <li>claim: in-context it beats earlier graph foundation models and well-tuned GNNs trained from scratch; with fine-tuning the margin grows. graphpfn, from the same group, later beats it with trained adapters <a href="#fullreads">[fr-graphpfn]</a>.</li>
+                <li>the pattern is now seen three times: fixed structural features + a strong tabular model is a hard baseline to beat on graphs (g2t-fm), on databases (rdblearn, tabpfn-rel), and in my own runs (lightgbm on DFS) <a href="#stage4">[cmp]</a>. trained structure layers win only when pretrained on a fitting prior (graphpfn), not when trained from random init.</li>
+                <li>terminology point they make: several graph "zero-shot" methods use labelled nodes at test time; the correct name is in-context learning. the same care is needed for RT ("zero-shot" with past labels in the context) <a href="#fullreads">[fr-rt]</a>.</li>
+                <li>setup limits: at most 10 classes and about 10,000 training nodes (tabpfn v2 limits); 8 graphland datasets with tabular features + 5 classic text-feature graphs; one homogeneous graph, no time.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
