@@ -1483,6 +1483,17 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>setup limits: at most 10 classes and about 10,000 training nodes (tabpfn v2 limits); 8 graphland datasets with tabular features + 5 classic text-feature graphs; one homogeneous graph, no time.</li>
             </ul>
         </li>
+        <li><b>[fr-bgnbd] BG/NBD (fader, hardie, lee 2005, "counting your customers the easy way"), read: the whole model part and the start of the simulation study</b> (<code>papers/bgnbd/raw.txt</code>, first 27 KB of prose). not read: empirical section on the CDNOW data, appendix derivations. earlier: abstract only.
+            <ul>
+                <li>the generative story, 5 assumptions: (1) while active, a customer buys by a poisson process with rate λ; (2) λ differs between customers by a gamma distribution; (3) after each purchase the customer becomes inactive for ever with probability p; (4) p differs between customers by a beta distribution; (5) λ and p are independent. pareto/NBD is the same except that dropout can happen at any time (exponential lifetime, gamma-distributed rate).</li>
+                <li>this is a 4-parameter prior over event sequences per entity with exactly the two effects my stage 3 statistics show in relbench: heavy-tailed activity across entities (gamma mixing) and many entities that stop for ever (dropout → zero-inflated future windows) <a href="#stage3">[stage 3]</a>.</li>
+                <li>the classic tasks of this literature are relbench tasks: "the expected number of transactions in a future period of length t for an individual with past observed behavior" = regression on a count window (ltv / sales tasks); P(active) = churn. the papers have closed-form answers under the model.</li>
+                <li>sufficient statistics under the model: frequency x (number of purchases), recency t_x (time of the last one), and observation length T. "information on the timing of the x transactions is not required". DFS gives count (= x) and max of the time column (= t_x) and min of time (≈ T). so for data that follow this prior, the DFS table already contains everything; the remaining job is the nonlinear map from (x, t_x, T) to the forecast. a tabular ICL model can learn that map only if its prior contains such tables.</li>
+                <li>that gives a clean test for step 2 <a href="#directions">[dir-update]</a>: sample customers from BG/NBD, build the flattened table with a window label, and compare a tabular model against the closed-form bayes-optimal predictor. the gap is a direct measure of what the tabular prior is missing. small, exact, and cheap. <mark class="unverified">my proposal</mark>.</li>
+                <li>their simulation design is a template: 3 levels for each of the 4 parameters = 81 "worlds", 104 weeks, fit on 52, forecast 52. average error 2.68 % MAPE; the model is worst when few customers buy at all or buy rarely.</li>
+                <li>limits as a prior: one event type, no event values (spend needs a second model, gamma-gamma in the later literature), no covariates, stationary rate (no seasonality, no trend), customers independent of each other. fim-pp covers excitation between events but not per-entity heterogeneity <a href="#fullreads">[fr-fimpp]</a>. the two are complementary.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
