@@ -154,7 +154,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li><b>done</b>
             <ul>
                 <li>stage 2 to 4 finished on the mac and on capella: install, exact lightgbm reproduction, tabpfn-rel reproduction, statistics of all 7 databases, package + scripts + 3 own methods <a href="#stage2">[s2-5]</a> <a href="#stage3">[s3-1]</a> <a href="#stage4">[s4-4]</a>.</li>
-                <li id="sum-count">the 21-task comparison on capella: 60 of 61 runs finished at 03:35. tabpfn-rel on all 21 tasks, rdb-pfn on all 12 classification tasks, the top-k test on 7, dfs-lightgbm on 20 (rel-stack/user-badge still running). table: <a href="#cmp">[s4-6]</a>.</li>
+                <li id="sum-count"><b>final state, 06 oct about 04:00:</b> the comparison on capella is complete. 61 of 61 runs finished, none failed: tabpfn-rel august on 21 tasks, dfs-lightgbm on 21, rdb-pfn on the 12 classification tasks, the top-k test on 7. about 50 job ids used. table: <a href="#cmp">[s4-6]</a>.</li>
                 <li>side tasks: prior against real data <a href="#priorvsreal">[pvr-1]</a>; tabpfn-rel version changes <a href="#repos">[repo-tabpfnrel-1]</a>; THE JOIN metadata <a href="#thejoin">[join-1]</a>; rdb-pfn inside relarena <a href="#stage4">[s4-7]</a>; deck: 2 slides changed.</li>
                 <li>research notes with sources: <a href="#research">[c1] to [c4b]</a>. 11 papers added to the README queue <a href="#research">[c4b-3]</a>.</li>
             </ul>
@@ -162,7 +162,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li><b>the three findings i would show alex</b>
             <ul>
                 <li>on rel-event/user-ignore the text-free tabpfn-rel scores 0.88 to 0.89 at its default depth; validation picks a deeper depth and the test score falls to 0.69 to 0.70. the paper explains this gap by missing text. reproducible from relarena's own result file <a href="#stage4">[s4-10]</a>.</li>
-                <li id="sum-lgb">boosted trees on the same DFS features, the baseline relarena lists as missing, beat tabpfn-rel on 7 of 20 tasks so far: event user-ignore and user-repeat, hm item-sales, trial study-adverse and site-success, amazon item-ltv, stack post-votes. 5 of the 7 are regression tasks, so trees win on 5 of 9 regression tasks and on 2 of 11 classification tasks <a href="#stage4">[s4-8]</a>.</li>
+                <li id="sum-lgb">boosted trees on the same DFS features, the baseline relarena lists as missing, beat my tabpfn-rel august runs on 8 of 21 tasks: 5 of the 9 regression tasks (hm item-sales, trial study-adverse, trial site-success, amazon item-ltv, stack post-votes) and 3 of the 12 classification tasks (event user-ignore, event user-repeat, stack user-badge) <a href="#stage4">[s4-8]</a>.</li>
                 <li>the published relational priors miss the task side of the benchmark: window labels, repeated entities, zero-inflated and shifted targets <a href="#priorvsreal">[pvr-4]</a>. and the released rdb-pfn generator is not the one the paper describes <a href="#priorvsreal">[pvr-2]</a>.</li>
             </ul>
         </li>
@@ -566,7 +566,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <tr><td>rel-trial/site-success</td><td>MAE ↓</td><td>0.3913</td><td></td><td></td><td>0.3948</td><td>0.4375</td><td>0.4858</td><td>0.3858</td><td>0.4042</td><td>0.4104</td></tr>
 <tr><td>rel-stack/user-engagement</td><td>AUC ↑</td><td>0.9038</td><td>0.8893</td><td></td><td>0.9056</td><td>0.8118</td><td>0.8587</td><td>0.9058</td><td>0.9077</td><td>0.8968</td></tr>
 <tr><td>rel-stack/post-votes</td><td>MAE ↓</td><td>0.0631</td><td></td><td></td><td>0.0680</td><td>0.0661</td><td>0.0677</td><td>0.0680</td><td>0.0628</td><td>0.0635</td></tr>
-<tr><td>rel-stack/user-badge</td><td>AUC ↑</td><td></td><td>0.8207</td><td></td><td>0.8678</td><td>0.5380</td><td>0.7711</td><td>0.8635</td><td>0.8846</td><td>0.8916</td></tr>
+<tr><td>rel-stack/user-badge</td><td>AUC ↑</td><td>0.8721</td><td>0.8207</td><td></td><td>0.8678</td><td>0.5380</td><td>0.7711</td><td>0.8635</td><td>0.8846</td><td>0.8916</td></tr>
 <tr><td>rel-hm/user-churn</td><td>AUC ↑</td><td>0.7042</td><td>0.6771</td><td></td><td>0.7057</td><td>0.5901</td><td>0.6984</td><td>0.7057</td><td>0.7054</td><td>0.7044</td></tr>
 <tr><td>rel-hm/item-sales</td><td>MAE ↓</td><td>0.0456</td><td></td><td></td><td>0.0614</td><td>0.0753</td><td>0.0671</td><td>0.0614</td><td>0.0365</td><td>0.0403</td></tr>
 <tr><td>rel-amazon/user-churn</td><td>AUC ↑</td><td>0.6965</td><td>0.6520</td><td></td><td>0.7024</td><td>0.5171</td><td>0.6844</td><td>0.7024</td><td>0.7067</td><td>0.7135</td></tr>
@@ -574,10 +574,10 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
 <tr><td>rel-amazon/item-churn</td><td>AUC ↑</td><td>0.8233</td><td>0.7946</td><td></td><td>0.8279</td><td>0.6622</td><td>0.8195</td><td>0.8279</td><td>0.8277</td><td>0.8327</td></tr>
 <tr><td>rel-amazon/item-ltv</td><td>MAE ↓</td><td>46.63</td><td></td><td></td><td>47.77</td><td>55.75</td><td>49.00</td><td>47.77</td><td>45.35</td><td>43.03</td></tr>
 </table></div>
-<!-- runs found: 60 -->
+<!-- runs found: 61 -->
 <!--CMP-END-->
             <ul>
-                <li>status: 60 of 61 runs finished (21 dfs-lightgbm, 21 tabpfn-rel, 12 rdb-pfn, 7 tabpfn-topk). 60 runs in; only dfs-lightgbm on rel-stack/user-badge is still running (49 min, 3.4M training rows).</li>
+                <li>status: 61 of 61 runs finished (21 dfs-lightgbm, 21 tabpfn-rel, 12 rdb-pfn, 7 tabpfn-topk). final: all 61 runs finished, none failed.</li>
                 <li>rel-f1 on capella vs the mac: dfs-lightgbm gives 0.6293 / 0.7901 / 3.874 there and 0.6212 / 0.7891 / 3.770 here (dnf / top3 / position). same seed, same 30 configs. so lightgbm is not bit-reproducible across the two machines (8 threads there, 1 here; different platform). differences up to 0.10 MAE.</li>
                 <li>capella job limits, from the submit filter: at most 14 CPU cores and 188,130 MB memory per requested GPU. my first submission asked for 16 cores and 256 GB; the filter warned but accepted the jobs. i cancelled them and resubmitted with 14 cores and 180 GB.</li>
                 <li>rel-f1 cache job on capella: 7 min 27 s, 86 MB. each rel-f1 run job finished in under 2 minutes.</li>
