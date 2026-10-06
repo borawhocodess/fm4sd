@@ -1391,6 +1391,18 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>limit: targets that need a multi-hop path without a direct key need a database view first.</li>
             </ul>
         </li>
+        <li><b>[fr-syntherela] syntherela (jurkovič et al.), read: the whole main text</b> (<code>papers/syntherela/raw.txt</code> L1-759). not read: appendix (method descriptions, per-dataset tables). earlier: abstract only.
+            <ul>
+                <li>what it is: a benchmark for generators that copy one real database (SDV, RC-TGAN, REaLTabFormer, clavaDDPM, two commercial tools) on 6 small databases. not priors. but its evaluation method is directly usable for a prior.</li>
+                <li>the method i can reuse ("discriminative detection with aggregation"): join each parent table with child-row counts, means of child numeric columns and distinct counts of child categories; label rows real / synthetic; train XGBoost with cross-validation; test the accuracy against 50 %. then read feature importance and partial dependence to see where the synthetic data differ.</li>
+                <li>this turns my stage 3 comparison "prior vs real" <a href="#priorvsreal">[pvr-1]</a> from a list of summary statistics into one number plus a ranked list of the mismatching features. with flattened tables the test is: can a classifier tell DFS rows of prior tasks from DFS rows of relbench tasks. the across-dataset version needs schema-free features (per-column statistics); <mark class="unverified">my extension, not in the paper</mark>.</li>
+                <li>their results: "no method is able to synthesize a dataset that is indistinguishable from original data". almost all methods fail the multi-table test. the most discriminating features are the relational ones (child counts, child aggregates), not the columns of the table itself.</li>
+                <li>error pattern: parent tables are modelled better than child tables; they suspect that errors build up along the hierarchy because children are generated given parents. plurel and rdb-pfn generate in the same parent-to-child order <a href="#plurel">[plurel-3]</a>.</li>
+                <li>why the usual metrics are too lenient: logistic regression as detector cannot see column interactions; denormalised parent-child rows are not independent, so accuracy is above 50 % even for two real samples; "cardinality shape similarity" (KS test on children per parent) checks one aspect only.</li>
+                <li>utility: train on synthetic, test on real, on 3 databases with a time column. for the two regression tasks the result is "at most near the naive baseline, often much worse". model and feature rankings are not preserved well.</li>
+                <li>they do not use relbench: its databases "include modalities such as text, which are not supported by the generative models". sampling a representative part of a database is called an open problem.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
