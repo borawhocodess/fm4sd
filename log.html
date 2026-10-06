@@ -1366,6 +1366,18 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>validation and test cutoffs are shared by all tasks of a database, "enabling multi-task learning and pre-training across predictive tasks defined on the same relational database".</li>
             </ul>
         </li>
+        <li><b>[fr-relagent] relagent (huang et al. 2026), read: all main sections, appendix D (DFS comparison), F (cost), J (limits)</b> (<code>papers/relagent/raw.txt</code>). not read: appendix B (case study), E, G (setup details), the task tables. earlier: abstract only.
+            <ul>
+                <li>what it is: an LLM agent (GPT-5.2, 5 independent searches) writes SQL feature queries, picks one of 7 tree models and its settings, checks on the validation table, and can query a store of its past predictions. at test time only the SQL + the tree model run. no LLM, no foundation model.</li>
+                <li>results they report: relbench v1 classification 78.38 average AUROC, second after kumorfm-2 (79.60), best average rank 3.17. best on all relbench v2 and 4dbinfer classification tasks. best normalised MAE on relbench v1 regression, ahead of kumorfm-2.</li>
+                <li>why regression: targets "are often heavy-tailed, and different tasks benefit from different temporal" windows; the agent "chooses L1 objectives and applies log-target transformations in seven of nine relbench v1 tasks". this is the same finding as mine (lightgbm with L1 on DFS wins 5 of 9) <a href="#stage4">[cmp]</a> and as relbench's own head analysis <a href="#fullreads">[fr-relbench]</a>. a tabular ICL model has no such per-task switch; a prior with heavy-tailed window sums is the matching fix.</li>
+                <li>ablations (classification average): no validation loop 66.86; no store of past predictions 75.78; anonymous schema names 74.44; fixed catboost or lightgbm 75.95 / 75.94; rules instead of a learned model 69.92; smaller LLMs 76.00 (deepseek) and 70.13 (qwen3-32B).</li>
+                <li>the anonymous-schema result matters: 4 points come from names and task text. xu and wipf warn that public benchmarks and their solutions are in LLM training data <a href="#fullreads">[fr-pfe]</a>. relagent's numbers are therefore an upper bound for private databases. <mark class="unverified">my inference; the paper does not test memorisation</mark>.</li>
+                <li>limit of DFS they prove by example (appendix D): column-wise aggregates cannot see joint conditions inside one child row. target "A and B occur together in at least one related row" is not recoverable from agg(A) and agg(B). SQL with a WHERE over the child row can. a cheap DFS extension: aggregate over filtered child rows (conditional aggregates). <mark class="unverified">whether fastdfs supports "where" primitives: not checked</mark>.</li>
+                <li>cost per run: about $1.57 with GPT-5.2, $0.11 with deepseek (appendix F). the search uses the validation labels heavily; they name "leakage and overfitting to the validation set" as a risk.</li>
+                <li>evaluation regime: refit on train + validation before test, model selection across 5 searches on validation. not run in relarena. so again not comparable number by number with relarena results <a href="#relarena">[relarena-2]</a>.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
