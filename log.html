@@ -1289,6 +1289,19 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>degree effects are allowed (the summary of earlier picks), so heavy-tailed fan-out is inside the family. whether the sampled prior produces it is an empirical question; my stage 3 statistics give the real target <a href="#stage3">[stage 3]</a>.</li>
             </ul>
         </li>
+        <li><b>[fr-pfe] xu and wipf (parameter-free encoders), read: introduction, §2, appendix A (rdblearn updates), B (experiment details), C (prose), D (both proofs)</b> (<code>papers/parameterfreeencoders/raw.txt</code>). the paper is now fully read except the numbers in the appendix C tables. earlier notes: <a href="#research">[c4-6]</a>.
+            <ul>
+                <li>the proofs are parity constructions. proposition 3.1: the label is the parity of the past labels in the neighbourhood; a hidden coin picks parity or its negation. a frozen encoder cannot know which; a head that sees in-context examples can, if the encoder passes on the plain sum of the labels. proposition 4.1: the same with the parity of one hidden feature column. so both results are worst-case existence results, as i wrote in [c4-6]. they say nothing about typical data.</li>
+                <li>practical reading that survives: aggregate inside a column ("vertical"), do not mix columns before the labels are known ("horizontal"); leave the mixing to the in-context head. their random-GNN baseline mixes columns and is used as the negative example.</li>
+                <li>rdblearn v1.1 changes (appendix A): new aggregates = 25 % and 75 % quantiles for numeric columns, entropy for categorical columns, option to treat categoricals as numbers; base models tabicl v2 and tabpfn v3 added; SQL feature merge 62× faster (166 s → 2.66 s on rel-avito/user-visits, 296 features, depth 3). validation picks between the old and the new aggregate set.</li>
+                <li>rdblearn still "simply ignores all text-based columns" and gives the encoder no neighbourhood labels. they name both as open improvements. the september tabpfn-rel has text features <a href="#tabpfnrel">[tabpfn-rel]</a>.</li>
+                <li>default without a validation set: tabpfn 2.5, depth 4, the expanded aggregates. note that depth 4 is the setting that fails on rel-event/user-ignore in my runs <a href="#stage4">[s4-9]</a>; they do not evaluate that task.</li>
+                <li>they leave out rel-f1 and rel-event "because of potential leakage issues mentioned elsewhere". no source is given in the text i read. <mark class="unverified">which leakage is meant: not found</mark>. this is relevant because my best finding is on rel-event.</li>
+                <li>on kumorfm-2 (appendix B.3): it merges the training and validation split into the context, which helps because validation is closer in time to the test split; its many hyperparameters "vary across tasks and datasets according to author-provided scripts" and "it remains unclear how these were chosen". same criticism as relarena <a href="#relarena">[relarena-2]</a>.</li>
+                <li>on LLM agents (appendix B.3): the few public relational benchmarks and their hand-made solutions are in LLM training data, so agent results may not transfer to private databases.</li>
+                <li>result summary (appendix C prose): rdblearn 1.1 is better than every foundation model on every benchmark, except tabpfn-rel and (depending on which reproduction is used) kumorfm-2 on relbench v1. all closed models are quoted from their papers.</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
