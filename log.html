@@ -1314,6 +1314,17 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>this first version had 2 databases with 2 tasks each (rel-amazon, rel-stack); the 7 databases come with the 2024 relbench paper.</li>
             </ul>
         </li>
+        <li><b>[fr-schemapile] schemapile, read: §1 to §4.2 in full, §4.3 to §6 not</b> (<code>papers/schemapile/raw.txt</code>; §4.3 is SQL parser evaluation, §5 related work). earlier notes: <a href="#research">[c2-1]</a>.
+            <ul>
+                <li>exact shape statistics, usable as a schema prior target (§3.1): tables per schema: 1 table 23.5 %, 2 to 5 tables 38.8 %, long tail up to 979. columns per table: 2 to 5 columns 56.2 %, 6 to 10 columns 28.6 %, up to 2,554. keys: 45.9 % of the schemas have no foreign key, 29.1 % have 1 to 3, up to 819. 97 % of foreign keys are single-column; 84 % of primary keys are single-column.</li>
+                <li>column types: string 39.9 %, integer 33.2 %, then fractional numbers; they say this is "similar to the type distribution observed in enterprise databases". my relbench count was 17 % text columns <a href="#stage3">[stage 3]</a>, so real schemas have more string columns than relbench.</li>
+                <li>data part confirmed as too small for row statistics: 30.7 % of filled columns have one row; median rows per table below 10; GitHub indexes only files up to 400 kB, so "table content … may not represent the volume of real-world enterprise data".</li>
+                <li>bias they state: public GitHub only, december 2021; healthcare and finance are under-represented; many schemas come from popular open-source projects (quartz scheduler, laravel password_resets). table topics: jobs and education 14 %, online communities 11.2 %, business 11.1 %. 84.1 % english table names.</li>
+                <li>usable subset: schemapile-perm, about 10 % of the corpus, permissive licenses only, PII removed, on zenodo (records/10931803). same average statistics as the full set.</li>
+                <li>side result (§4.1): a code LLM fine-tuned on 468,770 key pairs finds foreign keys from schema text alone with up to 97 % accuracy; gains flatten after 3,000 to 10,000 examples. so missing key links in raw data can be recovered by a model. THE JOIN and wikidbs depend on such links.</li>
+                <li>for a forecasting prior this corpus gives only step 1 (schema shape). it has no time information in the data. unchanged conclusion from [c2-1].</li>
+            </ul>
+        </li>
     </ul>
 
     <h3 id="research">research notes (overnight, from the web)</h3>
