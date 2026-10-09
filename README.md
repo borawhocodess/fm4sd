@@ -274,6 +274,7 @@ not placed yet:
   - t0 — [arxiv](https://arxiv.org/abs/2609.24559) · [github](https://github.com/theforecastingcompany/tfc-t0) — [meyer et al. 2026]
   - exo-zeroshot-tsfm — [ieee](https://ieeexplore.ieee.org/abstract/document/11711112/)
   - race — [arxiv](https://arxiv.org/abs/2610.00405) — [shi et al. 2026]
+  - kit — [arxiv](https://arxiv.org/abs/2609.34507) · [github](https://github.com/Luciferbobo/KiT) — [zhang and li 2026]
 - causal
   - tscausalfm — [openreview](https://openreview.net/forum?id=CAaTQAfq7c) — [thumm et al. 2026]
   - causalfewshot — [openreview](https://openreview.net/forum?id=2yvEiFhNCT) — [ossen et al. 2026]
