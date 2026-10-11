@@ -154,6 +154,7 @@ not placed yet:
   - self-play-zero-data — [arxiv](https://arxiv.org/abs/2609.30063) — [cowsik et al. 2026]
   - adaptive-fgd — [arxiv](https://arxiv.org/abs/2606.16926) · [github](https://github.com/dccsillag/experiments-adaptive-fgd) — [csillag et al. 2026]
   - fim-pp — [arxiv](https://arxiv.org/abs/2509.24762) — [berghaus et al. 2026]
+  - retrieval-icl — [arxiv](https://arxiv.org/abs/2610.05717) — [zhu et al. 2026]
 - tabular
   - npt — [arxiv](https://arxiv.org/abs/2106.02584) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2021/hash/f1507aba9fc82ffa7cc7373c58f8a613-Abstract.html) · [github](https://github.com/OATML/Non-Parametric-Transformers) — [kossen et al. 2021]
   - saint — [arxiv](https://arxiv.org/abs/2106.01342) — [somepalli et al. 2021]
@@ -238,6 +239,10 @@ not placed yet:
   - molecular-shift-tfm — [arxiv](https://arxiv.org/abs/2609.38744) · [github](https://github.com/nums-ai/MolPAIR) — [lee et al. 2026]
   - tfm-distillation — [arxiv](https://arxiv.org/abs/2610.01435) · [github](https://github.com/nums-ai/TFM_Distillation) — [jeong et al. 2026]
   - dr-tfm — [arxiv](https://arxiv.org/abs/2610.01143) — [kim et al. 2026]
+  - contextgap — [arxiv](https://arxiv.org/abs/2610.06679) — [zeldes 2026]
+  - tfm-provenance — [arxiv](https://arxiv.org/abs/2610.02347) — [bouadi et al. 2026]
+  - tfm-streams — [arxiv](https://arxiv.org/abs/2610.05352) — [verma et al. 2026]
+  - pfn-anomaly — [arxiv](https://arxiv.org/abs/2610.06693) — [bershtman and cohen 2026]
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120) — [abolhasani and ganapathy 2026]
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115) — [tian et al. 2026]
@@ -299,6 +304,7 @@ not placed yet:
   - decaf — [arxiv](https://arxiv.org/abs/2110.12884) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2021/hash/ba9fab001f67381e56e410575874d967-Abstract.html) · [github](https://github.com/vanderschaarlab/DECAF) — [van breugel et al. 2021]
   - causal-fluctuate — [arxiv](https://arxiv.org/abs/2609.26290) — [zhang 2026]
   - cider-fm — [arxiv](https://arxiv.org/abs/2609.39523) — [gao et al. 2026]
+  - tiger — [arxiv](https://arxiv.org/abs/2610.06156) — [faouzi 2026]
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
   - grpo — [arxiv](https://arxiv.org/abs/2402.03300) · [github](https://github.com/deepseek-ai/DeepSeek-Math) — [shao et al. 2024]
