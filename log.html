@@ -205,9 +205,9 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li>stage 2 (setup) - done: install works; lightgbm reproduced exactly on rel-f1; tabpfn-rel reproduced within 0.011 AUC on rel-f1/driver-top3</li>
         <li>stage 3 (data) - done: all 7 databases and 21 tasks <a href="#stage3">[s3-1]</a></li>
         <li>stage 4 (dev setup) - package, scripts and a first own method done on the mac; capella script not run; no kislurm script</li>
-        <li>read fully (main text and the relevant appendix): rdb-pfn, relbench, rdl-survey, relarena-alpha, rdblearn, relicl, plurel, plurel-to-rdb-pfn, rdbbench, rdl, rt, rtgl, syntherela, kumorfm-2 (main text), relbench v2 (main text), tabpfn-3.5 (main text), relagent, xu and wipf. see <a href="#fullreads">full reads</a>.</li>
+        <li>read fully (main text and the relevant appendix): rdb-pfn, relbench, rdl-survey, relarena-alpha, rdblearn, relicl, plurel, plurel-to-rdb-pfn, rdbbench, rdl, rt, rtgl, syntherela, kumorfm v1, kumorfm-2 (main text), relbench v2 (main text), tabpfn-3.5 (main text), relagent, xu and wipf. see <a href="#fullreads">full reads</a>.</li>
         <li>read in the main part, with named gaps: openrfm (theory appendix not read), graphpfn (result tables), tabicl v2 (appendix A, B, G to K), schemapile (§4.3 to §6), reldiff, grdm, clavaDDPM (experiments), fim-pp (later results, appendix), leakage paper (detector details), wikidbs (appendix), g2t-fm (results), BG/NBD (empirical section). each entry in <a href="#fullreads">full reads</a> says what is missing.</li>
-        <li>not read, blocked: rt-j (openreview pdf) and kumorfm v1 (kumo.ai pdf) need a manual download. zerorel is ACM only.</li>
+        <li>not read, blocked: rt-j (openreview pdf) needs a manual download. zerorel is ACM only. kumorfm v1 is now read (wayback machine copy) <a href="#fullreads">[fr-kumo1]</a>.</li>
         <li>repos read in part: relarena (your fork: tabpfn_rel model, features, context, dfs module headers), rdblearn (defaults), RDBPFN (training config, model config, READMEs)</li>
         <li>repos at README / config level only: fastdfs (defaults read), relicl, relbench, relational-transformer</li>
         <li>not checked: rdbbench and kumorfm-2 result tables; plurel appendix C</li>
@@ -715,7 +715,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <li>branch <code>relational</code> made from main (db662b2). nothing committed.</li>
         <li>files, untracked: <code>log.html</code> (source of this page), <code>talk.html</code> (old plain draft; the deck replaces it)</li>
         <li>downloaded pdf + tex to <code>papers/</code> (gitignored): relbench 2407.20060, rdb-pfn 2603.03805, plurel-to-rdb-pfn 2607.29129, graphpfn 2509.21489, rdl 2312.04615</li>
-        <li>still not downloaded: kumorfm (pdf only, kumo.ai), zerorel (acm only), g2t-fm 2508.20906</li>
+        <li>still not downloaded: zerorel (acm only). kumorfm v1 came from the wayback machine on 12 oct.</li>
         <li>my mistake, fixed: a shell loop first made 4 wrongly named folders in <code>papers/</code> ("relbench 2407.20060" etc). i removed those 4. <code>papers/tabpfn 2.5</code> is yours and was not touched.</li>
     </ul>
 
@@ -783,7 +783,7 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
         <tr><td>2015</td><td>DFS / featuretools (kanter &amp; veeramachaneni) <mark class="unverified">unverified</mark> year, not read</td><td>can feature engineering on a database be automated ?</td><td>aggregate every column along every key path up to a depth</td><td>-</td></tr>
         <tr><td>2023-12</td><td>rdl (fey et al.)</td><td>how to do deep learning on a database end to end ?</td><td>database = temporal heterogeneous graph; training table; GNN with temporal sampling</td><td>-</td></tr>
         <tr><td>2024-07</td><td>relbench</td><td>how to compare methods ?</td><td>7 databases, 30 tasks, time split, RDL (graphsage) baseline, data-scientist study</td><td>rdl</td></tr>
-        <tr><td>2025 <mark class="unverified">unverified</mark></td><td>kumorfm (not read, pdf only)</td><td>one pretrained model for any database ?</td><td>closed in-context relational model, synthetic + real pretraining</td><td>rdl</td></tr>
+        <tr><td>2025-05</td><td>kumorfm</td><td>one pretrained model for any database ?</td><td>closed in-context relational model, synthetic + real pretraining</td><td>rdl</td></tr>
         <tr><td>2025-06</td><td>rdl-survey</td><td>-</td><td>survey of RDL: datasets, GNNs, transformers, foundation models as future work</td><td>rdl, relbench</td></tr>
         <tr><td>2025-08</td><td>g2t-fm (not read)</td><td>-</td><td>graph node tasks → tabular task for a TFM, hand-made features <mark class="unverified">unverified</mark> (from graphpfn abstract)</td><td>tabpfn</td></tr>
         <tr><td>2025-09</td><td>graphpfn (abstract only)</td><td>a PFN for graphs ?</td><td>synthetic graph prior (multi-level SBM + preferential attachment + graph-aware SCM), limix + neighbourhood attention</td><td>g2t-fm, limix</td></tr>
@@ -1509,6 +1509,22 @@ body.f-on main > ul > li:not(.hit), body.f-on main > ul > li.hit li:not(.hit):no
                 <li>that gives a clean test for step 2 <a href="#directions">[dir-update]</a>: sample customers from BG/NBD, build the flattened table with a window label, and compare a tabular model against the closed-form bayes-optimal predictor. the gap is a direct measure of what the tabular prior is missing. small, exact, and cheap. <mark class="unverified">my proposal</mark>.</li>
                 <li>their simulation design is a template: 3 levels for each of the 4 parameters = 81 "worlds", 104 weeks, fit on 52, forecast 52. average error 2.68 % MAPE; the model is worst when few customers buy at all or buy rarely.</li>
                 <li>limits as a prior: one event type, no event values (spend needs a second model, gamma-gamma in the later literature), no covariates, stationary rate (no seasonality, no trend), customers independent of each other. fim-pp covers excitation between events but not per-entity heterogeneity <a href="#fullreads">[fr-fimpp]</a>. the two are complementary.</li>
+            </ul>
+        </li>
+        <li><b>[fr-kumo1] kumorfm v1 (fey, kocijan, lopez, lenssen, leskovec; kumo.ai, pdf created 20 may 2025), read: the whole paper</b> (<code>papers/kumorfm/raw.txt</code>, 15 pages of text; references not read). the pdf is gone from kumo.ai (the address now returns an nvidia overview page); i took the wayback machine snapshot of 17 jan 2026. earlier: not read.
+            <ul>
+                <li>the definition (eq. 1): ỹ_e^(t) = KumoRFM_θ( G_k^{≤t}[e], { G_k^{≤t̂}[ê], y_ê^{t̂} } for t̂ &lt; t, ê ∼ G ). input = the k-hop subgraph of entity e up to time t, plus context subgraphs of sampled entities ê at earlier times t̂ with their labels. the model is frozen; the labels that RDL uses for training are given as a prompt.</li>
+                <li>the task is a PQL string: PREDICT (label) FOR (entity) WHERE (filter). "the aggregation scheme and the semantic type of the target column uniquely determine the underlying machine learning task" (fig. 3): COUNT(...) &gt; 0 = binary, FIRST(category) = multi-class, SUM = regression, LIST_DISTINCT(foreign key) = link prediction.</li>
+                <li>context labels are made at query time: a forward-looking sampler computes the label, a backward-looking sampler builds the input subgraph. "≈ 2M in-context labels in less than one second".</li>
+                <li>most important for my work: the labels are also put <b>into the graph</b>. a training table T̂ with the past labels of every entity in the test subgraph (the seed entity too) is attached by key. so the model sees the entity's own past labels ("autoregressive labels") and the past labels of nearby entities ("relational proximity", useful "in homophilous tasks"). openrfm's diagnosis that RT fails with few label cells in context points at the same thing <a href="#openrfm">[openrfm-2]</a>.</li>
+                <li>architecture, 3 stages: (1) cell encoder per semantic type, then a transformer over the row × column grid gives one vector per row; (2) relational graph transformer over the subgraph with 4 position encodings (table type, hop, relative time, subgraph structure); (3) an ICL transformer over the stacked context and test vectors with the context labels.</li>
+                <li>pretraining data: one sentence. "trained on a mix of both publicly available real-world databases and synthetic data. no private enterprise data was used". nothing on the synthetic generator, the number of databases, model size, or training cost. no ablation in the paper.</li>
+                <li>results, relbench v1, 30 tasks, "has not seen any relbench dataset during its pre-training phase". 12 classification tasks, all binary, average AUROC: lightgbm 62.44, LLM (llama 3.2 3B) 68.06, RDL 75.83, kumorfm in-context 76.71, fine-tuned 81.14 (table 2).</li>
+                <li>regression, 9 tasks, MAE normalised to RDL: lightgbm 1.100, in-context 0.984, fine-tuned 0.862. the data scientist is best on 3 of 9. they say "the regression tasks pose unique challenges" (table 3). same pattern as in the later papers <a href="#fullreads">[fr-kumo2]</a>.</li>
+                <li>recommendation, 9 tasks, average MAP@k: lightgbm 1.79, graphsage 1.85, nbfnet 6.74, in-context 7.29, fine-tuned 8.82 (table 4).</li>
+                <li>fine-tuning = replace the table-invariant encoders by dataset-specific ones and the ICL head by a task head, then train as RDL. so the fine-tuned number is a supervised model with a pretrained middle part, not in-context.</li>
+                <li>effort claim (fig. 4): about 1 second and 1 line of code, against about 30 minutes and 56 lines for RDL, and 12.3 hours and 878 lines for the data scientist.</li>
+                <li>not in the paper: seeds or variance, context size used in the tables, which relbench split protocol for the context. table 1 lists rel-hm twice (the second row is rel-stack by its numbers).</li>
             </ul>
         </li>
     </ul>
