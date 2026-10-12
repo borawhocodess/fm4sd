@@ -218,7 +218,7 @@ not placed yet:
   - tfmphysics — [arxiv](https://arxiv.org/abs/2609.02766) — [tenachi et al. 2026]
   - agentic-search-spaces — [arxiv](https://arxiv.org/abs/2609.16309) · [github](https://github.com/yandex-research/agentic-hpset) — [sergazinov et al. 2026]
   - temporal-tabular-shift — [arxiv](https://arxiv.org/abs/2609.12136) — [wang et al. 2026]
-  - icl-order — [researchgate](https://www.researchgate.net/publication/414216215_Investigating_the_role_of_Order_for_In-Context_Learning_in_Tabular_Foundation_Models)
+  - icl-order — [researchgate](https://www.researchgate.net/publication/414216215_Investigating_the_role_of_Order_for_In-Context_Learning_in_Tabular_Foundation_Models) — [owoeye 2026]
   - cattle — [arxiv](https://arxiv.org/abs/2608.28209) · [doi](https://doi.org/10.1016/j.neunet.2026.109568) — [akhter et al. 2027]
   - tabssldataselect — [springer](https://link.springer.com/article/10.1007/s10994-026-07133-8) — [stevanoska et al. 2026]
   - augtab — [springer](https://link.springer.com/chapter/10.1007/978-3-032-37670-1_24)
@@ -251,7 +251,6 @@ not placed yet:
   - tfm-streams — [arxiv](https://arxiv.org/abs/2610.05352) — [verma et al. 2026]
   - pfn-anomaly — [arxiv](https://arxiv.org/abs/2610.06693) — [bershtman and cohen 2026]
   - geneicl — [arxiv](https://arxiv.org/abs/2610.08694) — [bohl et al. 2026]
-  - icl-order — [researchgate](https://www.researchgate.net/publication/414216215_Investigating_the_role_of_Order_for_In-Context_Learning_in_Tabular_Foundation_Models) — [owoeye 2026]
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120) — [abolhasani and ganapathy 2026]
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115) — [tian et al. 2026]
