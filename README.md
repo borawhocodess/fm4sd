@@ -65,6 +65,7 @@ rm <id>.tar.gz
   - tfm-priority — [arxiv](https://arxiv.org/abs/2405.01147) · [icml](https://proceedings.mlr.press/v235/van-breugel24a.html) — [van breugel and van der schaar 2024]
 - relational
   - dfs — [pdf](https://groups.csail.mit.edu/EVO-DesignOpt/groupWebSite/uploads/Site/DSAA_DSM_2015.pdf) — [kanter and veeramachaneni 2015]
+  - graphsage — [arxiv](https://arxiv.org/abs/1706.02216) · [neurips](https://papers.nips.cc/paper/2017/hash/5dd9db5e033da9c6fb5ba83c7a7ebea9-Abstract.html) — [hamilton et al. 2017]
   - rdl — [arxiv](https://arxiv.org/abs/2312.04615) — [fey et al. 2023]
   - relgnn — [arxiv](https://arxiv.org/abs/2502.06784) — [chen et al. 2025]
   - relgt — [arxiv](https://arxiv.org/abs/2505.10960) — [dwivedi et al. 2025]
