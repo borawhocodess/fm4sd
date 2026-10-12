@@ -155,6 +155,7 @@ not placed yet:
   - adaptive-fgd — [arxiv](https://arxiv.org/abs/2606.16926) · [github](https://github.com/dccsillag/experiments-adaptive-fgd) — [csillag et al. 2026]
   - fim-pp — [arxiv](https://arxiv.org/abs/2509.24762) — [berghaus et al. 2026]
   - retrieval-icl — [arxiv](https://arxiv.org/abs/2610.05717) — [zhu et al. 2026]
+  - adaptive-mean-icl — [arxiv](https://arxiv.org/abs/2610.07804) — [eppert et al. 2026]
 - tabular
   - npt — [arxiv](https://arxiv.org/abs/2106.02584) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2021/hash/f1507aba9fc82ffa7cc7373c58f8a613-Abstract.html) · [github](https://github.com/OATML/Non-Parametric-Transformers) — [kossen et al. 2021]
   - saint — [arxiv](https://arxiv.org/abs/2106.01342) — [somepalli et al. 2021]
@@ -243,6 +244,8 @@ not placed yet:
   - tfm-provenance — [arxiv](https://arxiv.org/abs/2610.02347) — [bouadi et al. 2026]
   - tfm-streams — [arxiv](https://arxiv.org/abs/2610.05352) — [verma et al. 2026]
   - pfn-anomaly — [arxiv](https://arxiv.org/abs/2610.06693) — [bershtman and cohen 2026]
+  - geneicl — [arxiv](https://arxiv.org/abs/2610.08694) — [bohl et al. 2026]
+  - icl-order — [researchgate](https://www.researchgate.net/publication/414216215_Investigating_the_role_of_Order_for_In-Context_Learning_in_Tabular_Foundation_Models) — [owoeye 2026]
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120) — [abolhasani and ganapathy 2026]
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115) — [tian et al. 2026]
@@ -305,6 +308,7 @@ not placed yet:
   - causal-fluctuate — [arxiv](https://arxiv.org/abs/2609.26290) — [zhang 2026]
   - cider-fm — [arxiv](https://arxiv.org/abs/2609.39523) — [gao et al. 2026]
   - tiger — [arxiv](https://arxiv.org/abs/2610.06156) — [faouzi 2026]
+  - proximalfm — [arxiv](https://arxiv.org/abs/2610.08078) — [muller et al. 2026]
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
   - grpo — [arxiv](https://arxiv.org/abs/2402.03300) · [github](https://github.com/deepseek-ai/DeepSeek-Math) — [shao et al. 2024]
@@ -321,6 +325,7 @@ not placed yet:
     - where-computation — [arxiv](https://arxiv.org/abs/2606.12917) · [github](https://github.com/atharva7-g/tabfm-interp) — [gupta et al. 2026]
     - kernelicl — [arxiv](https://arxiv.org/abs/2602.02162) — [miftachov et al. 2026]
     - rules-or-exemplars — [openreview](https://openreview.net/forum?id=9nCMtYGxQt) — [balef et al. 2026]
+    - standardization-trap — [arxiv](https://arxiv.org/abs/2610.08314) — [nguyen et al. 2026]
   - circuits
     - circuits-framework — [blog](https://transformer-circuits.pub/2021/framework/index.html)
     - induction-heads — [arxiv](https://arxiv.org/abs/2209.11895) — [olsson et al. 2022]
