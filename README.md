@@ -251,6 +251,9 @@ not placed yet:
   - tfm-streams — [arxiv](https://arxiv.org/abs/2610.05352) — [verma et al. 2026]
   - pfn-anomaly — [arxiv](https://arxiv.org/abs/2610.06693) — [bershtman and cohen 2026]
   - geneicl — [arxiv](https://arxiv.org/abs/2610.08694) — [bohl et al. 2026]
+  - test-time-compute — [arxiv](https://arxiv.org/abs/2610.12005) · [github](https://github.com/kanghui-learning/test-time-compute-for-tabular-foundation-models) — [ning et al. 2026]
+  - retrospective-inference — [arxiv](https://arxiv.org/abs/2610.10317) — [cai et al. 2026]
+  - privtab — [arxiv](https://arxiv.org/abs/2610.10068) — [alrawajfeh et al. 2026]
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120) — [abolhasani and ganapathy 2026]
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115) — [tian et al. 2026]
@@ -288,6 +291,7 @@ not placed yet:
   - exo-zeroshot-tsfm — [ieee](https://ieeexplore.ieee.org/abstract/document/11711112/)
   - race — [arxiv](https://arxiv.org/abs/2610.00405) — [shi et al. 2026]
   - kit — [arxiv](https://arxiv.org/abs/2609.34507) · [github](https://github.com/Luciferbobo/KiT) — [zhang and li 2026]
+  - timer-m1 — [arxiv](https://arxiv.org/abs/2610.11734) — [zhang et al. 2026]
 - causal
   - tscausalfm — [openreview](https://openreview.net/forum?id=CAaTQAfq7c) — [thumm et al. 2026]
   - causalfewshot — [openreview](https://openreview.net/forum?id=2yvEiFhNCT) — [ossen et al. 2026]
