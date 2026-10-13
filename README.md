@@ -162,6 +162,7 @@ not placed yet:
   - retrieval-icl — [arxiv](https://arxiv.org/abs/2610.05717) — [zhu et al. 2026]
   - adaptive-mean-icl — [arxiv](https://arxiv.org/abs/2610.07804) — [eppert et al. 2026]
   - illusion-of-replacement — [arxiv](https://arxiv.org/abs/2608.28980) · [github](https://github.com/kiyan-rezaee/language-vs-structure) — [rezaee 2026]
+  - dust — [site](https://qlabs.sh/research/dust) · [github](https://github.com/qlabs-eng/dust) — [dahal et al. 2026]
 - tabular
   - npt — [arxiv](https://arxiv.org/abs/2106.02584) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2021/hash/f1507aba9fc82ffa7cc7373c58f8a613-Abstract.html) · [github](https://github.com/OATML/Non-Parametric-Transformers) — [kossen et al. 2021]
   - saint — [arxiv](https://arxiv.org/abs/2106.01342) — [somepalli et al. 2021]
