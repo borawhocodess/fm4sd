@@ -19,6 +19,7 @@ rm <id>.tar.gz
   - pfns — [arxiv](https://arxiv.org/abs/2112.10510) · [video](https://youtu.be/XnngBWe2WYE) · [video](https://www.youtube.com/watch?v=0Pi9ARZjIGg) · [iclr](https://iclr.cc/virtual/2022/poster/6595) · [github](https://github.com/automl/TransformersCanDoBayesianInference) — [müller et al. 2022]
   - priorfitted — [arxiv](https://arxiv.org/abs/2505.23947) · [icml](https://proceedings.mlr.press/v267/muller25d.html) — [müller et al. 2025]
   - sfopfn — [arxiv](https://arxiv.org/abs/2305.11097) · [icml](https://proceedings.mlr.press/v202/nagler23a) · [gist](https://gist.github.com/tnagler/62f6ce1f996333c799c81f1aef147e72) — [nagler 2023]
+  - pfn-amortization — [arxiv](https://arxiv.org/abs/2610.13764) — [hülskamp et al. 2026]
   - gnr — [arxiv](https://arxiv.org/abs/cond-mat/0011094) · [doi](https://doi.org/10.1103/PhysRevE.63.066123) — [krapivsky and redner 2001]
 - tabular
   - tabpfn — [arxiv](https://arxiv.org/abs/2207.01848) · [video](https://www.youtube.com/watch?v=9cE8lqQiLyM) · [iclr](https://iclr.cc/virtual/2023/poster/12113) · [github](https://github.com/automl/TabPFN) — [hollmann et al. 2023]
@@ -256,7 +257,6 @@ not placed yet:
   - test-time-compute — [arxiv](https://arxiv.org/abs/2610.12005) · [github](https://github.com/kanghui-learning/test-time-compute-for-tabular-foundation-models) — [ning et al. 2026]
   - retrospective-inference — [arxiv](https://arxiv.org/abs/2610.10317) — [cai et al. 2026]
   - privtab — [arxiv](https://arxiv.org/abs/2610.10068) — [alrawajfeh et al. 2026]
-  - pfn-amortization — [arxiv](https://arxiv.org/abs/2610.13764) — [hülskamp et al. 2026]
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120) — [abolhasani and ganapathy 2026]
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115) — [tian et al. 2026]
