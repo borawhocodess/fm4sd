@@ -102,6 +102,7 @@ rm <id>.tar.gz
     - tirex — [arxiv](https://arxiv.org/abs/2505.23719) · [neurips](https://neurips.cc/virtual/2025/poster/115439) · [github](https://github.com/NX-AI/tirex) — [auer et al. 2025]
     - tirex-2 — [arxiv](https://arxiv.org/abs/2607.01204) — [podest et al. 2026]
     - timesfm-3 — [blog](https://research.google/blog/timesfm-3-a-zero-shot-foundation-model-for-multivariate-forecasting/)
+    - timersi — [arxiv](https://arxiv.org/abs/2610.19725) · [github](https://github.com/haoxin1998/TimeRSI) — [liu et al. 2026]
   - classification
     - timee — [arxiv](https://arxiv.org/abs/2607.07500) · [github](https://github.com/automl/timee) — [küken et al. 2026]
     - mantis — [arxiv](https://arxiv.org/abs/2502.15637) · [icml](https://proceedings.mlr.press/v306/feofanov26a.html) · [github](https://github.com/vfeofanov/mantis) — [feofanov et al. 2026]
