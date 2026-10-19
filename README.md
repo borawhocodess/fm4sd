@@ -257,6 +257,10 @@ not placed yet:
   - test-time-compute — [arxiv](https://arxiv.org/abs/2610.12005) · [github](https://github.com/kanghui-learning/test-time-compute-for-tabular-foundation-models) — [ning et al. 2026]
   - retrospective-inference — [arxiv](https://arxiv.org/abs/2610.10317) — [cai et al. 2026]
   - privtab — [arxiv](https://arxiv.org/abs/2610.10068) — [alrawajfeh et al. 2026]
+  - recurrent-icl — [arxiv](https://arxiv.org/abs/2610.14998) — [vaidhya et al. 2026]
+  - orionmoe — [arxiv](https://arxiv.org/abs/2610.20418) · [github](https://github.com/Lexsi-Labs/OrionMoE) — [bouadi et al. 2026]
+  - tabgift — [arxiv](https://arxiv.org/abs/2610.16990) — [li et al. 2026]
+  - tabmosaic — [arxiv](https://arxiv.org/abs/2610.15699) — [kim et al. 2026]
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120) — [abolhasani and ganapathy 2026]
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115) — [tian et al. 2026]
