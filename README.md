@@ -370,3 +370,4 @@ not placed yet:
 - tfm-survey — [site](https://tfm-survey.com)
 - tabularfoundationmodels-guide — [site](https://tabularfoundationmodels.com)
 - awesome-tfms — [github](https://github.com/jxucoder/Awesome-Tabular-Foundation-Models)
+- paperswithcode-tabular — [site](https://paperswithcode.co/tasks/tabular-learning)
