@@ -21,6 +21,7 @@ rm <id>.tar.gz
   - sfopfn — [arxiv](https://arxiv.org/abs/2305.11097) · [icml](https://proceedings.mlr.press/v202/nagler23a) · [gist](https://gist.github.com/tnagler/62f6ce1f996333c799c81f1aef147e72) — [nagler 2023]
   - pfn-amortization — [arxiv](https://arxiv.org/abs/2610.13764) — [hülskamp et al. 2026]
   - gnr — [arxiv](https://arxiv.org/abs/cond-mat/0011094) · [doi](https://doi.org/10.1103/PhysRevE.63.066123) — [krapivsky and redner 2001]
+  - principled-datagen — [openreview](https://openreview.net/forum?id=zm8rhu1kzf)
 - tabular
   - tabpfn — [arxiv](https://arxiv.org/abs/2207.01848) · [video](https://www.youtube.com/watch?v=9cE8lqQiLyM) · [iclr](https://iclr.cc/virtual/2023/poster/12113) · [github](https://github.com/automl/TabPFN) — [hollmann et al. 2023]
   - tabpfnv2 — [nature](https://www.nature.com/articles/s41586-024-08328-6) · [pmc](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11711098/) · [video](https://youtu.be/qFnYgM2Yvfs) · [video](https://www.youtube.com/watch?v=SOXK7AJLOY4) · [video](https://www.youtube.com/watch?v=9IkwXGe2Gaw) — [hollmann et al. 2025]
