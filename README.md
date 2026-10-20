@@ -262,6 +262,7 @@ not placed yet:
   - orionmoe — [arxiv](https://arxiv.org/abs/2610.20418) · [github](https://github.com/Lexsi-Labs/OrionMoE) — [bouadi et al. 2026]
   - tabgift — [arxiv](https://arxiv.org/abs/2610.16990) — [li et al. 2026]
   - tabmosaic — [arxiv](https://arxiv.org/abs/2610.15699) — [kim et al. 2026]
+  - survicl — [arxiv](https://arxiv.org/abs/2610.22242) — [alberge et al. 2026]
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120) — [abolhasani and ganapathy 2026]
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115) — [tian et al. 2026]
