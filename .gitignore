@@ -1,8 +1,5 @@
 papers/
 build/
 workdir/
-scripts/slurm/
 
 .DS_Store
-__pycache__/
-*.egg-info/
