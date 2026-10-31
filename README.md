@@ -78,7 +78,7 @@ rm <id>.tar.gz
   - rdbbench — [arxiv](https://arxiv.org/abs/2607.03659) · [github](https://github.com/mdsamad001/Benchmarking-Deep-Relational-Database-Models) — [akhter et al. 2026]
   - rdl-survey — [arxiv](https://arxiv.org/abs/2506.16654) · [kdd](https://doi.org/10.1145/3711896.3736558) — [dwivedi et al. 2025]
   - rt — [arxiv](https://arxiv.org/abs/2510.06377) · [iclr](https://iclr.cc/virtual/2026/poster/10007116) · [github](https://github.com/snap-stanford/relational-transformer) — [ranjan et al. 2026]
-  - rt-j — [openreview](https://openreview.net/forum?id=oQINTd9din) · [site](https://star-project.stanford.edu/rt-j) · [github](https://github.com/stanford-star/relational-transformer) — [ranjan et al. 2026]
+  - rt-j — [arxiv](https://arxiv.org/abs/2610.17867) · [openreview](https://openreview.net/forum?id=oQINTd9din) · [site](https://star-project.stanford.edu/rt-j) · [github](https://github.com/stanford-star/relational-transformer) · [model](https://huggingface.co/stanford-star/rt-j) · [synthetic model](https://huggingface.co/stanford-star/rt-plurel) · [the join data](https://huggingface.co/datasets/stanford-star/the-join) · [plurel data](https://huggingface.co/datasets/stanford-star/plurel) · [post](https://x.com/_rishabhranjan_/status/2115887295991799887) — [ranjan et al. 2026]
   - kumorfm — [pdf](https://kumo.ai/research/kumo_relational_foundation_model.pdf) · [archive](https://web.archive.org/web/20260117003632/https://kumo.ai/research/kumo_relational_foundation_model.pdf) — [fey et al. 2025]
   - kumorfm-2 — [arxiv](https://arxiv.org/abs/2604.12596) · [github](https://github.com/kumo-ai/kumo-rfm) — [hudovernik et al. 2026]
   - openrfm — [arxiv](https://arxiv.org/abs/2606.04320) — [chen et al. 2026]
@@ -397,6 +397,7 @@ not placed yet:
 
 ## extras
 
+- star-project — [site](https://star-project.stanford.edu)
 - icml-structured-fm-workshop — [site](https://icml-structured-fm-workshop.github.io)
 - mechinterpworkshop — [site](https://mechinterpworkshop.com)
 - tada2026 — [site](https://tabular-data-analysis.github.io/tada2026/)
