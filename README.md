@@ -227,6 +227,7 @@ not placed yet:
   - tfmphysics — [arxiv](https://arxiv.org/abs/2609.02766) — [tenachi et al. 2026]
   - agentic-search-spaces — [arxiv](https://arxiv.org/abs/2609.16309) · [github](https://github.com/yandex-research/agentic-hpset) — [sergazinov et al. 2026]
   - temporal-tabular-shift — [arxiv](https://arxiv.org/abs/2609.12136) — [wang et al. 2026]
+  - beyond-temporal-encoding — [doi](https://doi.org/10.1016/j.neunet.2026.109802) — [wang et al. 2026]
   - icl-order — [researchgate](https://www.researchgate.net/publication/414216215_Investigating_the_role_of_Order_for_In-Context_Learning_in_Tabular_Foundation_Models) — [owoeye 2026]
   - cattle — [arxiv](https://arxiv.org/abs/2608.28209) · [doi](https://doi.org/10.1016/j.neunet.2026.109568) — [akhter et al. 2027]
   - tabssldataselect — [springer](https://link.springer.com/article/10.1007/s10994-026-07133-8) — [stevanoska et al. 2026]
@@ -357,6 +358,7 @@ not placed yet:
   - tiger — [arxiv](https://arxiv.org/abs/2610.06156) — [faouzi 2026]
   - proximalfm — [arxiv](https://arxiv.org/abs/2610.08078) — [muller et al. 2026]
   - market-impact-cfm — [arxiv](https://arxiv.org/abs/2610.12537) — [thumm and chen 2026]
+  - picle-pfn — [arxiv](https://arxiv.org/abs/2610.32863) — [chen et al. 2026]
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
   - grpo — [arxiv](https://arxiv.org/abs/2402.03300) · [github](https://github.com/deepseek-ai/DeepSeek-Math) — [shao et al. 2024]
