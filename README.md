@@ -271,6 +271,7 @@ not placed yet:
   - survicl — [arxiv](https://arxiv.org/abs/2610.22242) — [alberge et al. 2026]
   - tabregobjectives — [arxiv](https://arxiv.org/abs/2610.13909) · [github](https://github.com/yandex-research/tabular-regression) — [rudenko et al. 2026]
   - ftfm — [arxiv](https://arxiv.org/abs/2610.25558) · [github](https://github.com/machinelearningnuremberg/ftfm-official) — [grabocka 2026]
+  - two-is-enough — [arxiv](https://arxiv.org/abs/2610.27569) — [cheng et al. 2026]
   - apt — [arxiv](https://arxiv.org/abs/2502.04573) — [wu and bergman 2025]
   - tabiclr — [github](https://github.com/s-marton/TabICLR)
   - ramanbench — [arxiv](https://arxiv.org/abs/2605.02003) · [github](https://github.com/ml-lab-htw/RamanBench) — [koddenbrock et al. 2026]
