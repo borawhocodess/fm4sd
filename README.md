@@ -132,6 +132,46 @@ rm <id>.tar.gz
   - rlfm — [arxiv](https://arxiv.org/abs/2606.18812) · [github](https://github.com/Shika-B/One-Shot-Reinforcement-Learning) — [zighem and vie 2026]
   - lejepa — [arxiv](https://arxiv.org/abs/2511.08544) · [video](https://www.youtube.com/watch?v=gVEr2cnDE_8&t=1944s) — [balestriero and lecun 2025]
 
+- actuarial / loss modelling
+  Actuarial tail and count modelling. The index is ML-methods only and is silent on
+  actuarial tail and count modelling -- a sweep for `Tweedie|compound Poisson|loss ratio|actuarial|claim
+  frequency` across the papers here returned two incidental hits. These papers ground the
+  comparison on the modelling side that the ML literature rarely discusses.
+
+  ## severity: loss distributions and heavy tails
+  - one-family-six-distributions-a-flexible-model-for-insurance — [arxiv](https://arxiv.org/abs/1805.10854) — [bølviken and haff 2018]
+  - robust-estimation-of-loss-models-for-lognormal-insurance-pay — [arxiv](https://arxiv.org/abs/2103.02089) — [chudamani poudyal 2021]
+  - robust-estimation-of-loss-models-for-truncated-and-censored — [arxiv](https://arxiv.org/abs/2202.13000) — [poudyal and brazauskas 2022]
+  - truncated-censored-and-actuarial-payment-type-moments-for-ro — [arxiv](https://arxiv.org/abs/2102.10154) — [chudamani poudyal 2021]
+  - phase-type-distributions-for-claim-severity-regression-model — [arxiv](https://arxiv.org/abs/2110.05207) — [martin bladt 2021]
+  - phase-type-mixture-of-experts-regression-for-loss-severities — [arxiv](https://arxiv.org/abs/2111.00581) — [bladt and yslas 2021]
+  - mixture-composite-regression-models-with-multi-type-feature — [arxiv](https://arxiv.org/abs/2103.07200) — [fung et al. 2021]
+  - composite-lognormal-t-regression-models-with-varying-thresho — [arxiv](https://arxiv.org/abs/2208.01262) — [aradhye et al. 2022]
+  - a-copula-based-family-of-bivariate-composite-models-for-clai — [arxiv](https://arxiv.org/abs/2210.05091) — [aradhye et al. 2022]
+  - beyond-the-pearson-correlation-heavy-tailed-risks-weighted-g — [arxiv](https://arxiv.org/abs/1607.02623) — [furman and zitikis 2016]
+
+  ## frequency and count models: Tweedie, compound Poisson, zero-inflated
+  - insurance-premium-prediction-via-gradient-tree-boosted-tweed — [arxiv](https://arxiv.org/abs/1508.06378) — [yang et al. 2015]
+  - tweedie-gradient-boosting-for-extremely-unbalanced-zero-infl — [arxiv](https://arxiv.org/abs/1811.10192) — [zhou et al. 2018]
+  - model-uncertainty-in-claims-reserving-within-tweedie-s-compo — [arxiv](https://arxiv.org/abs/0904.1483) — [peters et al. 2009]
+  - spatial-risk-estimation-in-tweedie-compound-poisson-double-g — [arxiv](https://arxiv.org/abs/1912.12356) — [halder et al. 2019]
+  - bonus-malus-scale-premiums-for-tweedie-s-compound-poisson-mo — [arxiv](https://arxiv.org/abs/2311.03222) — [boucher and coulibaly 2023]
+  - enhanced-gradient-boosting-for-zero-inflated-insurance-claim — [arxiv](https://arxiv.org/abs/2307.07771) — [banghee so 2023]
+  - a-comparative-analysis-of-several-multivariate-zero-inflated — [arxiv](https://arxiv.org/abs/2212.00985) — [zhang et al. 2022]
+  - a-k-inflated-negative-binomial-mixture-regression-model-appl — [arxiv](https://arxiv.org/abs/1701.05452) — [najafabadi and mohammadpour 2017]
+  - comparing-tobit-and-two-part-hurdle-models-for-semi-continuo — [arxiv](https://arxiv.org/abs/2608.09725) — [bandreddi et al. 2026]
+  - bayesian-cart-models-for-insurance-claims-frequency — [arxiv](https://arxiv.org/abs/2303.01923) — [zhang et al. 2023]
+  - dynamic-online-prediction-model-and-its-application-to-autom — [arxiv](https://arxiv.org/abs/2301.03005) — [jiang et al. 2023]
+
+  ## tail metrics, quantiles, reserving
+  - local-quantile-regression — [arxiv](https://arxiv.org/abs/1208.5384) — [spokoiny et al. 2012]
+  - high-dimensional-extreme-quantile-regression — [arxiv](https://arxiv.org/abs/2411.13822) — [tang et al. 2024]
+  - generalized-linear-models-for-extremes-estimation-and-infere — [arxiv](https://arxiv.org/abs/2608.16137) — [chen and zhou 2026]
+  - constant-versus-covariate-dependent-threshold-in-the-peaks-o — [arxiv](https://arxiv.org/abs/1812.03432) — [minkah and wet 2018]
+  - deeptriangle-a-deep-learning-approach-to-loss-reserving — [arxiv](https://arxiv.org/abs/1804.09253) — [kevin kuo 2018]
+  - micro-level-reserving-for-general-insurance-claims-using-a-l — [arxiv](https://arxiv.org/abs/2201.13267) — [chaoubi et al. 2022]
+  - synthetic-an-individual-insurance-claim-simulator-with-featu — [arxiv](https://arxiv.org/abs/2008.05693) — [avanzi et al. 2020]
+
 ## queue
 
 not placed yet:
