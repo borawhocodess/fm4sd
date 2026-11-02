@@ -113,6 +113,7 @@ rm <id>.tar.gz
     - timee — [arxiv](https://arxiv.org/abs/2607.07500) · [github](https://github.com/automl/timee) — [küken et al. 2026]
     - mantis — [arxiv](https://arxiv.org/abs/2502.15637) · [icml](https://proceedings.mlr.press/v306/feofanov26a.html) · [github](https://github.com/vfeofanov/mantis) — [feofanov et al. 2026]
     - rocketpfn — [arxiv](https://arxiv.org/abs/2606.21786) — [o'rourke et al. 2026]
+    - tiger — [arxiv](https://arxiv.org/abs/2610.06156) — [faouzi 2026]
 - causal
   - avici — [arxiv](https://arxiv.org/abs/2205.12934) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2022/hash/54f7125dee9b8b3dc798bb9a082b09e2-Abstract-Conference.html) · [github](https://github.com/larslorch/avici) — [lorch et al. 2022]
   - bcnp — [arxiv](https://arxiv.org/abs/2412.16577) · [iclr](https://iclr.cc/virtual/2025/poster/28913) · [github](https://github.com/Anish144/CausalStructureNeuralProcess) — [dhir et al. 2025]
@@ -328,7 +329,7 @@ not placed yet:
   - kit — [arxiv](https://arxiv.org/abs/2609.34507) · [github](https://github.com/Luciferbobo/KiT) — [zhang and li 2026]
   - timer-m1 — [arxiv](https://arxiv.org/abs/2610.11734) — [zhang et al. 2026]
   - morpheus-2 — [arxiv](https://arxiv.org/abs/2610.24321) — [aakriti et al. 2026]
-  - timestral — [site](https://timestral.org)
+  - timestral — [arxiv](https://arxiv.org/abs/2610.37585) — [petralia et al. 2026]
   - turkforecast — [github](https://github.com/Verm1lion/turkforecast-fm-chronos2-lora-v1)
   - tsfm-identification — [arxiv](https://arxiv.org/abs/2610.08118) — [won 2026]
 - causal
@@ -355,7 +356,6 @@ not placed yet:
   - decaf — [arxiv](https://arxiv.org/abs/2110.12884) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2021/hash/ba9fab001f67381e56e410575874d967-Abstract.html) · [github](https://github.com/vanderschaarlab/DECAF) — [van breugel et al. 2021]
   - causal-fluctuate — [arxiv](https://arxiv.org/abs/2609.26290) — [zhang 2026]
   - cider-fm — [arxiv](https://arxiv.org/abs/2609.39523) — [gao et al. 2026]
-  - tiger — [arxiv](https://arxiv.org/abs/2610.06156) — [faouzi 2026]
   - proximalfm — [arxiv](https://arxiv.org/abs/2610.08078) — [muller et al. 2026]
   - market-impact-cfm — [arxiv](https://arxiv.org/abs/2610.12537) — [thumm and chen 2026]
   - picle-pfn — [arxiv](https://arxiv.org/abs/2610.32863) — [chen et al. 2026]
