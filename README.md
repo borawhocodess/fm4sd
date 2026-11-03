@@ -359,6 +359,8 @@ not placed yet:
   - proximalfm — [arxiv](https://arxiv.org/abs/2610.08078) — [muller et al. 2026]
   - market-impact-cfm — [arxiv](https://arxiv.org/abs/2610.12537) — [thumm and chen 2026]
   - picle-pfn — [arxiv](https://arxiv.org/abs/2610.32863) — [chen et al. 2026]
+  - activation-bias — [arxiv](https://arxiv.org/abs/2610.14500) — [peng et al. 2026]
+  - error-surfaces — [neurips](https://proceedings.neurips.cc/paper/1990/hash/758874998f5bd0c393da094e1967a72b-Abstract.html) — [lecun et al. 1990]
 - other
   - cdc-prompt — [pdf](https://cdn.openai.com/pdf/04d1d1e4-bc75-476a-97cf-49055cd98d31/cdc_prompt.pdf)
   - grpo — [arxiv](https://arxiv.org/abs/2402.03300) · [github](https://github.com/deepseek-ai/DeepSeek-Math) — [shao et al. 2024]
