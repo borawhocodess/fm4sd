@@ -173,6 +173,7 @@ not placed yet:
   - dust — [site](https://qlabs.sh/research/dust) · [github](https://github.com/qlabs-eng/dust) — [dahal et al. 2026]
   - softmax-ce-fix — [arxiv](https://arxiv.org/abs/2610.31642) — [barron et al. 2026]
   - synthetic-claims — [arxiv](https://arxiv.org/abs/2008.05693) — [avanzi et al. 2020]
+  - atr-pfn — [arxiv](https://arxiv.org/abs/2610.37737) · [github](https://github.com/youngers2006/Trust-Region-Warping-For-PFNs) — [younger et al. 2026]
 - tabular
   - npt — [arxiv](https://arxiv.org/abs/2106.02584) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2021/hash/f1507aba9fc82ffa7cc7373c58f8a613-Abstract.html) · [github](https://github.com/OATML/Non-Parametric-Transformers) — [kossen et al. 2021]
   - saint — [arxiv](https://arxiv.org/abs/2106.01342) — [somepalli et al. 2021]
@@ -290,6 +291,8 @@ not placed yet:
   - crash-kumo — [arxiv](https://arxiv.org/abs/2610.10321) · [github](https://github.com/pozapas/kumo-jev-crash-records) — [rafe and das 2026]
   - powergrid-tfm — [arxiv](https://arxiv.org/abs/2610.20462) — [arowolo et al. 2026]
   - tabular-data-scaling — [arxiv](https://arxiv.org/abs/2610.26794) · [github](https://github.com/yandex-research/tabular-dl-more-data) — [rubachev et al. 2026]
+  - ticl3 — [arxiv](https://arxiv.org/abs/2610.39506) — [eisenberg et al. 2026]
+  - context-budgeting-churn — [ieee](https://ieeexplore.ieee.org/document/11755932) — [sika et al. 2026]
 - relational
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120) — [abolhasani and ganapathy 2026]
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115) — [tian et al. 2026]
