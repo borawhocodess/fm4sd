@@ -156,6 +156,7 @@ not placed yet:
   - sol-pi — [arxiv](https://arxiv.org/abs/2609.20519) · [github](https://github.com/NVlabs/SoL-Pi) — [liu et al. 2026]
   - ckda — [arxiv](https://arxiv.org/abs/2609.24797) · [github](https://github.com/OpenEuroLLM/ComplexKDA) — [siems et al. 2026]
   - jepa-anything — [arxiv](https://arxiv.org/abs/2609.20800) · [github](https://github.com/Gen-Verse/JEPA-Anything) — [cui et al. 2026]
+  - platonic-jepa — [arxiv](https://arxiv.org/abs/2610.39302) — [balestriero and lecun 2026]
   - hp-scaling-laws-lmo — [arxiv](https://arxiv.org/abs/2603.15958) — [shulgin et al. 2026]
   - warmstarting-scaling — [arxiv](https://arxiv.org/abs/2605.13405) — [mallik et al. 2026]
   - depth-recurrent-attention-mixtures — [arxiv](https://arxiv.org/abs/2601.21582) — [knupp et al. 2026]
