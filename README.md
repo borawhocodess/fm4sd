@@ -176,6 +176,7 @@ not placed yet:
   - synthetic-claims — [arxiv](https://arxiv.org/abs/2008.05693) — [avanzi et al. 2020]
   - atr-pfn — [arxiv](https://arxiv.org/abs/2610.37737) · [github](https://github.com/youngers2006/Trust-Region-Warping-For-PFNs) — [younger et al. 2026]
 - tabular
+  - ccd — [arxiv](https://arxiv.org/abs/2611.01489) — [wu et al. 2026]
   - npt — [arxiv](https://arxiv.org/abs/2106.02584) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2021/hash/f1507aba9fc82ffa7cc7373c58f8a613-Abstract.html) · [github](https://github.com/OATML/Non-Parametric-Transformers) — [kossen et al. 2021]
   - saint — [arxiv](https://arxiv.org/abs/2106.01342) — [somepalli et al. 2021]
   - flextab — [arxiv](https://arxiv.org/abs/2606.30336) · [github](https://github.com/SAP-samples/flextab) — [polewczyk et al. 2026]
