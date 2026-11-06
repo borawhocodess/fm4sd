@@ -296,6 +296,7 @@ not placed yet:
   - ticl3 — [arxiv](https://arxiv.org/abs/2610.39506) — [eisenberg et al. 2026]
   - context-budgeting-churn — [ieee](https://ieeexplore.ieee.org/document/11755932) — [sika et al. 2026]
 - relational
+  - why-tfms-relational — [arxiv](https://arxiv.org/abs/2611.02936) — [xu et al. 2026]
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120) — [abolhasani and ganapathy 2026]
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115) — [tian et al. 2026]
   - adatkg — [arxiv](https://arxiv.org/abs/2605.07121) · [github](https://github.com/seunghan96/AdaTKG) — [lee et al. 2026]
