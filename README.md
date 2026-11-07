@@ -138,6 +138,9 @@ rm <id>.tar.gz
 not placed yet:
 
 - general
+  - debiased-pfn — [arxiv](https://arxiv.org/abs/2610.28314) — [melnychuk et al. 2026]
+  - adaptive-pfn — [openreview](https://openreview.net/forum?id=hGe8dX4HTW)
+  - priorfuse — [openreview](https://openreview.net/forum?id=sZkIrOMTAS)
   - martingale — [arxiv](https://arxiv.org/abs/2103.15671) · [doi](https://doi.org/10.1093/jrsssb/qkad005) · [github](https://github.com/edfong/MP) — [fong et al. 2023]
   - pfnuq — [arxiv](https://arxiv.org/abs/2505.11325) — [nagler and rügamer 2025]
   - alberta-plan — [arxiv](https://arxiv.org/abs/2208.11173) — [sutton et al. 2022]
@@ -176,6 +179,10 @@ not placed yet:
   - synthetic-claims — [arxiv](https://arxiv.org/abs/2008.05693) — [avanzi et al. 2020]
   - atr-pfn — [arxiv](https://arxiv.org/abs/2610.37737) · [github](https://github.com/youngers2006/Trust-Region-Warping-For-PFNs) — [younger et al. 2026]
 - tabular
+  - pace — [openreview](https://openreview.net/forum?id=4RzWLdQgcX)
+  - tabmoc — [openreview](https://openreview.net/forum?id=0hXjEg6gzd)
+  - latte — [openreview](https://openreview.net/forum?id=ee5VY7QruR)
+  - coclusterpfn — [openreview](https://openreview.net/forum?id=W2NxJnnjAm)
   - ccd — [arxiv](https://arxiv.org/abs/2611.01489) — [wu et al. 2026]
   - npt — [arxiv](https://arxiv.org/abs/2106.02584) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2021/hash/f1507aba9fc82ffa7cc7373c58f8a613-Abstract.html) · [github](https://github.com/OATML/Non-Parametric-Transformers) — [kossen et al. 2021]
   - saint — [arxiv](https://arxiv.org/abs/2106.01342) — [somepalli et al. 2021]
@@ -296,6 +303,11 @@ not placed yet:
   - ticl3 — [arxiv](https://arxiv.org/abs/2610.39506) — [eisenberg et al. 2026]
   - context-budgeting-churn — [ieee](https://ieeexplore.ieee.org/document/11755932) — [sika et al. 2026]
 - relational
+  - relcraft — [openreview](https://openreview.net/forum?id=QBvPMEK8Vf)
+  - hgraphfm — [openreview](https://openreview.net/forum?id=8ya6lgk3Zt)
+  - rama — [openreview](https://openreview.net/forum?id=oaPOjHKT4s)
+  - qcrp — [openreview](https://openreview.net/forum?id=88HAs7RtqH)
+  - universal-schema-rfm — [openreview](https://openreview.net/forum?id=lUusjOJd13)
   - why-tfms-relational — [arxiv](https://arxiv.org/abs/2611.02936) — [xu et al. 2026]
   - curriculummatters — [arxiv](https://arxiv.org/abs/2607.29120) — [abolhasani and ganapathy 2026]
   - zerorel — [acm](https://dl.acm.org/doi/10.1145/3770855.3818115) — [tian et al. 2026]
@@ -318,6 +330,7 @@ not placed yet:
   - wikidbs — [neurips](https://proceedings.neurips.cc/paper_files/paper/2024/file/4847447cae911dde321ca19afe7d8707-Paper-Datasets_and_Benchmarks_Track.pdf) — [vogel et al. 2024]
   - path-to-pfrm — [arxiv](https://arxiv.org/abs/2610.23073) — [abolhasani and ganapathy 2026]
 - time series
+  - seriespfn — [openreview](https://openreview.net/forum?id=TpAM77Nqmu)
   - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe) · [icml](https://proceedings.mlr.press/v306/yang26ac.html) — [yang et al. 2026]
   - simpletimebench — [arxiv](https://arxiv.org/abs/2610.02058) · [openreview](https://openreview.net/forum?id=iIRdd86Xkr) — [ghoroghchian et al. 2026]
   - finstar — [arxiv](https://arxiv.org/abs/2605.03460) · [github](https://github.com/seunghan96/FinSTaR) — [lee et al. 2026]
@@ -340,6 +353,7 @@ not placed yet:
   - turkforecast — [github](https://github.com/Verm1lion/turkforecast-fm-chronos2-lora-v1)
   - tsfm-identification — [arxiv](https://arxiv.org/abs/2610.08118) — [won 2026]
 - causal
+  - causal-sensitivity-pfn — [openreview](https://openreview.net/forum?id=LNDn6Nbr2h)
   - tscausalfm — [openreview](https://openreview.net/forum?id=CAaTQAfq7c) — [thumm et al. 2026]
   - causalfewshot — [openreview](https://openreview.net/forum?id=2yvEiFhNCT) — [ossen et al. 2026]
   - partialcausalid — [arxiv](https://arxiv.org/abs/2608.20841) · [openreview](https://openreview.net/forum?id=jCbehzZBsk) — [bellot and dhir 2026]
@@ -381,6 +395,8 @@ not placed yet:
   - pde-pfn — [arxiv](https://arxiv.org/abs/2610.13334) — [park et al. 2026]
 - mechanistic interpretability
   - tabular
+    - spectral-pfn — [arxiv](https://arxiv.org/abs/2601.21731) — [sharma et al. 2026]
+    - qutab — [openreview](https://openreview.net/forum?id=ftyxA5CVXR)
     - tabfmmechanistic — [arxiv](https://arxiv.org/abs/2605.21288) — [biloš et al. 2026]
     - onelayerenough — [arxiv](https://arxiv.org/abs/2605.06510) · [icml](https://proceedings.mlr.press/v306/balef26a.html) · [github](https://github.com/amirbalef/is_one_layer_enough) — [balef et al. 2026]
     - looking-glass — [arxiv](https://arxiv.org/abs/2601.08181) — [gupta et al. 2026]
@@ -420,3 +436,4 @@ not placed yet:
 - awesome-tfms — [github](https://github.com/jxucoder/Awesome-Tabular-Foundation-Models)
 - paperswithcode-tabular — [site](https://paperswithcode.co/tasks/tabular-learning)
 - data-foundry — [site](https://tabarena.github.io/data-foundry/) · [skills](https://github.com/TabArena/data-foundry/tree/main/.claude/skills)
+- iclr-2027-scores — [site](https://shiqiangw.github.io/iclr-2027-scores/)
