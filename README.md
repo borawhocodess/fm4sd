@@ -138,6 +138,7 @@ rm <id>.tar.gz
 not placed yet:
 
 - general
+  - structured-priors — [arxiv](https://arxiv.org/abs/2611.04056) — [bartz-beielstein 2026]
   - debiased-pfn — [arxiv](https://arxiv.org/abs/2610.28314) — [melnychuk et al. 2026]
   - adaptive-pfn — [openreview](https://openreview.net/forum?id=hGe8dX4HTW)
   - priorfuse — [openreview](https://openreview.net/forum?id=sZkIrOMTAS)
@@ -179,6 +180,7 @@ not placed yet:
   - synthetic-claims — [arxiv](https://arxiv.org/abs/2008.05693) — [avanzi et al. 2020]
   - atr-pfn — [arxiv](https://arxiv.org/abs/2610.37737) · [github](https://github.com/youngers2006/Trust-Region-Warping-For-PFNs) — [younger et al. 2026]
 - tabular
+  - priortune — [arxiv](https://arxiv.org/abs/2611.05141) — [chistyakov et al. 2026]
   - pace — [openreview](https://openreview.net/forum?id=4RzWLdQgcX)
   - tabmoc — [openreview](https://openreview.net/forum?id=0hXjEg6gzd)
   - latte — [openreview](https://openreview.net/forum?id=ee5VY7QruR)
@@ -303,6 +305,7 @@ not placed yet:
   - ticl3 — [arxiv](https://arxiv.org/abs/2610.39506) — [eisenberg et al. 2026]
   - context-budgeting-churn — [ieee](https://ieeexplore.ieee.org/document/11755932) — [sika et al. 2026]
 - relational
+  - cl-dgfm — [arxiv](https://arxiv.org/abs/2611.03246) — [ma et al. 2026]
   - relcraft — [openreview](https://openreview.net/forum?id=QBvPMEK8Vf)
   - hgraphfm — [openreview](https://openreview.net/forum?id=8ya6lgk3Zt)
   - rama — [openreview](https://openreview.net/forum?id=oaPOjHKT4s)
