@@ -115,7 +115,7 @@
         slides[cur].querySelectorAll('[data-build-in],[data-build-out]').forEach((e) => e.classList.toggle('hid', bnum(e.dataset.buildIn) > shown || (!!e.dataset.buildOut && bnum(e.dataset.buildOut) <= shown)));
         // data-focus="k-u[-a-b…]": washed out after its own step k until step u, except at steps a, b, … (only the newest reveal is full)
         slides[cur].querySelectorAll('[data-focus]').forEach((e) => { const [k, u, ...at] = e.dataset.focus.split('-').map(Number); e.classList.toggle('dim', shown > k && shown < u && !at.includes(shown)); });
-        history.replaceState(null, '', '#' + (cur + 1));
+        history.replaceState(null, '', '#' + (cur + 1) + (step < steps[cur].length ? '.' + step : ''));   // #slide or #slide.build (a reload keeps the build)
     }
 
     function next() {
@@ -130,9 +130,9 @@
         show();
     }
 
-    function go(i, full) {
+    function go(i, full, at) {
         cur = Math.max(0, Math.min(slides.length - 1, i));
-        step = full ? steps[cur].length : 0;
+        step = at !== undefined ? Math.max(0, Math.min(steps[cur].length, at)) : full ? steps[cur].length : 0;
         show();
     }
 
@@ -147,7 +147,9 @@
     addEventListener('resize', fit);
 
     fit();
-    go((parseInt(location.hash.slice(1), 10) || 1) - 1, true);
+    // url: #3 = slide 3 fully built, #3.14 = slide 3 at build 14 (#3.0 = before the first build)
+    const [hs, hb] = location.hash.slice(1).split('.');
+    go((parseInt(hs, 10) || 1) - 1, true, hb !== undefined && hb !== '' ? parseInt(hb, 10) : undefined);
 </script>
 
 </body>
