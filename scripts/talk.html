@@ -262,7 +262,7 @@
 <p style="position:absolute;right:24px;bottom:16px;width:80px;text-align:right;line-height:1.3;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#8a8a8e">4</p>
 </section>
 <script>
-    // one slide at a time, scaled to the window. right / space / click: next build step, then next slide. data-builds="off" on a slide: only its last build; b: builds off for the whole deck.
+    // one slide at a time, scaled to the window. right / space / click: next build step, then next slide. data-builds="off" on a slide: only its last build; b: builds off for the whole deck; Shift+B: for this slide only.
     // left / backspace: back. home / end: first / last slide. f: fullscreen. the slide number is kept in the url hash.
     const slides = [...document.querySelectorAll('section')];
     const bnum = (v) => (v ? parseInt(v.split(' ')[1], 10) || 1 : 0);   // 'fade k' -> k
@@ -289,9 +289,11 @@
 
     // builds off: a slide with data-builds="off" (Bora: slide 2) always shows its last build; b switches them off for the whole deck
     // (remembered across reloads). an off slide has no steps, the arrows pass it as one slide; "builds off" sits in front of its page number
-    let builds = true;
-    try { builds = localStorage.getItem('deck-builds') !== 'off'; } catch (e) {}
-    const off = (i) => !builds || slides[i].dataset.builds === 'off';
+    // Shift+B switches the current slide alone (remembered per slide, overrides its data-builds)
+    let builds = true, per = {};
+    try { builds = localStorage.getItem('deck-builds') !== 'off'; per = JSON.parse(localStorage.getItem('deck-builds-slides') || '{}'); } catch (e) {}
+    const slideOff = (i) => (slides[i].id in per ? per[slides[i].id] === 'off' : slides[i].dataset.builds === 'off');
+    const off = (i) => !builds || slideOff(i);
     function mode() {
         slides.forEach((s, i) => {
             const pn = s.querySelector(':scope > p:last-of-type'); if (!pn) return;
@@ -300,6 +302,12 @@
                 tag.style.cssText = "font-family:'IBM Plex Sans', Arial, sans-serif;margin-right:12px"; pn.prepend(tag); pn.style.width = 'auto'; }
             if (!off(i) && tag) { tag.remove(); pn.style.width = ''; }
         });
+    }
+    function toggleSlideBuilds() {
+        per[slides[cur].id] = slideOff(cur) ? 'on' : 'off';
+        try { localStorage.setItem('deck-builds-slides', JSON.stringify(per)); } catch (e) {}
+        if (off(cur)) step = steps[cur].length;
+        mode(); show();
     }
     function toggleBuilds() {
         builds = !builds;
@@ -333,6 +341,7 @@
         else if (e.key === 'Home') go(0);
         else if (e.key === 'End') go(slides.length - 1, true);
         else if (e.key === 'b') toggleBuilds();
+        else if (e.key === 'B') toggleSlideBuilds();
         else if (e.key === 'f') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
     });
     addEventListener('click', next);
