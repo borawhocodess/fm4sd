@@ -1,5 +1,11 @@
 todo: relational presentation - problem definition - what does rel arena and tabpfn rel do - what does kumo do ?
-todo: relarena model and https://rikiyat.github.io/blog/weight-space-programming/
+todo: ask claude look at relarena 
+    - fill weights ? 
+        - ask it to also come up with a model 
+        - https://rikiyat.github.io/blog/weight-space-programming/
+        - https://nathan.rs/posts/weight-space-lp/
+    - is this cheating ? 
+        - no if no forward pass allowed ?
 todo: add missing awesome-tfms repo papers
 todo: add country flags ? 
 todo: turn this repo into fm4sd playground package ? import fm4sd sounds really cool from fm4sd import xxmodel
