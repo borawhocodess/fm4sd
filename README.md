@@ -178,6 +178,7 @@ not placed yet:
   - adaptive-mean-icl — [arxiv](https://arxiv.org/abs/2610.07804) — [eppert et al. 2026]
   - illusion-of-replacement — [arxiv](https://arxiv.org/abs/2608.28980) · [github](https://github.com/kiyan-rezaee/language-vs-structure) — [rezaee 2026]
   - dust — [site](https://qlabs.sh/research/dust) · [github](https://github.com/qlabs-eng/dust) — [dahal et al. 2026]
+  - alien-optimizers — [site](https://qlabs.sh/research/alien) — [vegesna et al. 2026]
   - softmax-ce-fix — [arxiv](https://arxiv.org/abs/2610.31642) — [barron et al. 2026]
   - synthetic-claims — [arxiv](https://arxiv.org/abs/2008.05693) — [avanzi et al. 2020]
   - atr-pfn — [arxiv](https://arxiv.org/abs/2610.37737) · [github](https://github.com/youngers2006/Trust-Region-Warping-For-PFNs) — [younger et al. 2026]
