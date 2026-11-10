@@ -138,6 +138,7 @@ rm <id>.tar.gz
 not placed yet:
 
 - general
+  - deletion-tuning — [arxiv](https://arxiv.org/abs/2611.10866) — [lu et al. 2026]
   - structured-priors — [arxiv](https://arxiv.org/abs/2611.04056) — [bartz-beielstein 2026]
   - debiased-pfn — [arxiv](https://arxiv.org/abs/2610.28314) — [melnychuk et al. 2026]
   - adaptive-pfn — [openreview](https://openreview.net/forum?id=hGe8dX4HTW)
