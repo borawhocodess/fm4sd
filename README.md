@@ -138,6 +138,7 @@ rm <id>.tar.gz
 not placed yet:
 
 - general
+  - incope — [arxiv](https://arxiv.org/abs/2610.34035) — [yu et al. 2026]
   - deletion-tuning — [arxiv](https://arxiv.org/abs/2611.10866) — [lu et al. 2026]
   - structured-priors — [arxiv](https://arxiv.org/abs/2611.04056) — [bartz-beielstein 2026]
   - debiased-pfn — [arxiv](https://arxiv.org/abs/2610.28314) — [melnychuk et al. 2026]
@@ -181,6 +182,7 @@ not placed yet:
   - synthetic-claims — [arxiv](https://arxiv.org/abs/2008.05693) — [avanzi et al. 2020]
   - atr-pfn — [arxiv](https://arxiv.org/abs/2610.37737) · [github](https://github.com/youngers2006/Trust-Region-Warping-For-PFNs) — [younger et al. 2026]
 - tabular
+  - active-icl — [arxiv](https://arxiv.org/abs/2611.07886) — [frey 2026]
   - priortune — [arxiv](https://arxiv.org/abs/2611.05141) — [chistyakov et al. 2026]
   - pace — [openreview](https://openreview.net/forum?id=4RzWLdQgcX)
   - tabmoc — [openreview](https://openreview.net/forum?id=0hXjEg6gzd)
