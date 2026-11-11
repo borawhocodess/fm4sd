@@ -402,7 +402,7 @@
             const pn = s.querySelector(':scope > p:last-of-type'); if (!pn) return;
             let tag = pn.querySelector('.deck-mode');
             if (off(i) && !tag) { tag = document.createElement('span'); tag.className = 'deck-mode'; tag.textContent = 'builds off';
-                tag.style.cssText = "font-family:'IBM Plex Sans', Arial, sans-serif;margin-right:12px"; pn.prepend(tag); pn.style.width = 'auto'; }
+                tag.style.cssText = "font-family:'IBM Plex Sans', Arial, sans-serif;margin-right:12px;color:#c8313a";   /* red (Bora): the deck's red text shade, 5.3:1 on white */ pn.prepend(tag); pn.style.width = 'auto'; }
             if (!off(i) && tag) { tag.remove(); pn.style.width = ''; }
         });
     }
