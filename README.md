@@ -2,6 +2,8 @@
 
 started with [foundation models for structured data (fm4sd) seminar](https://ml.informatik.uni-freiburg.de/teaching/summer-semester-2026/seminar-seminar-on-foundation-models-for-structured-data/) , added more...
 
+[website](https://borawhocodess.github.io/fm4sd/) · [talk](https://borawhocodess.github.io/fm4sd/scripts/talk.html)
+
 ## how 2 set up
 
 grab the tex sources and download under `papers/papername` (gitignored):
