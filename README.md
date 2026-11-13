@@ -184,6 +184,9 @@ not placed yet:
   - softmax-ce-fix — [arxiv](https://arxiv.org/abs/2610.31642) — [barron et al. 2026]
   - synthetic-claims — [arxiv](https://arxiv.org/abs/2008.05693) — [avanzi et al. 2020]
   - atr-pfn — [arxiv](https://arxiv.org/abs/2610.37737) · [github](https://github.com/youngers2006/Trust-Region-Warping-For-PFNs) — [younger et al. 2026]
+  - stuck-in-a-loop — [site](https://hyperstition.cc/stuck-in-a-loop) — [eyler et al. 2026]
+  - checkpoint-forensics — [site](https://unemploymentlabs.com/checkpoint-forensics) · [github](https://github.com/macrogrants/checkpoint-forensics) — [depue 2026]
+  - cram — [arxiv](https://arxiv.org/abs/2611.17309v1) · [github](https://github.com/Prefrontal-AI/CRAM) — [hoover et al. 2026]
 - tabular
   - active-icl — [arxiv](https://arxiv.org/abs/2611.07886) — [frey 2026]
   - priortune — [arxiv](https://arxiv.org/abs/2611.05141) — [chistyakov et al. 2026]
@@ -311,6 +314,7 @@ not placed yet:
   - ticl3 — [arxiv](https://arxiv.org/abs/2610.39506) — [eisenberg et al. 2026]
   - context-budgeting-churn — [ieee](https://ieeexplore.ieee.org/document/11755932) — [sika et al. 2026]
 - relational
+  - onebm — [arxiv](https://arxiv.org/abs/1706.00327) — [lam et al. 2017]
   - cl-dgfm — [arxiv](https://arxiv.org/abs/2611.03246) — [ma et al. 2026]
   - relcraft — [openreview](https://openreview.net/forum?id=QBvPMEK8Vf)
   - hgraphfm — [openreview](https://openreview.net/forum?id=8ya6lgk3Zt)
@@ -339,6 +343,7 @@ not placed yet:
   - wikidbs — [neurips](https://proceedings.neurips.cc/paper_files/paper/2024/file/4847447cae911dde321ca19afe7d8707-Paper-Datasets_and_Benchmarks_Track.pdf) — [vogel et al. 2024]
   - path-to-pfrm — [arxiv](https://arxiv.org/abs/2610.23073) — [abolhasani and ganapathy 2026]
 - time series
+  - ci-proto — [github](https://github.com/continuousintelligence/ci)
   - seriespfn — [openreview](https://openreview.net/forum?id=TpAM77Nqmu)
   - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe) · [icml](https://proceedings.mlr.press/v306/yang26ac.html) — [yang et al. 2026]
   - simpletimebench — [arxiv](https://arxiv.org/abs/2610.02058) · [openreview](https://openreview.net/forum?id=iIRdd86Xkr) — [ghoroghchian et al. 2026]
