@@ -140,6 +140,7 @@ rm <id>.tar.gz
 not placed yet:
 
 - general
+  - co-improvement — [arxiv](https://arxiv.org/abs/2512.05356) · [x](https://x.com/j_foerst/status/2121523241697047012) — [weston and foerster 2025]
   - incope — [arxiv](https://arxiv.org/abs/2610.34035) — [yu et al. 2026]
   - deletion-tuning — [arxiv](https://arxiv.org/abs/2611.10866) — [lu et al. 2026]
   - structured-priors — [arxiv](https://arxiv.org/abs/2611.04056) — [bartz-beielstein 2026]
