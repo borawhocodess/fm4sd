@@ -191,6 +191,7 @@ not placed yet:
   - cram — [arxiv](https://arxiv.org/abs/2611.17309v1) · [github](https://github.com/Prefrontal-AI/CRAM) — [hoover et al. 2026]
 - tabular
   - megatabicl — [openreview](https://openreview.net/forum?id=WfamdVi3VV) — [kaushal et al. 2026]
+  - tfm-world-models — [arxiv](https://arxiv.org/abs/2611.11921) — [lee et al. 2026]
   - active-icl — [arxiv](https://arxiv.org/abs/2611.07886) — [frey 2026]
   - priortune — [arxiv](https://arxiv.org/abs/2611.05141) — [chistyakov et al. 2026]
   - pace — [openreview](https://openreview.net/forum?id=4RzWLdQgcX)
@@ -347,6 +348,7 @@ not placed yet:
   - path-to-pfrm — [arxiv](https://arxiv.org/abs/2610.23073) — [abolhasani and ganapathy 2026]
 - time series
   - ci-proto — [github](https://github.com/continuousintelligence/ci)
+  - braincot — [arxiv](https://arxiv.org/abs/2611.09082) — [gui et al. 2026]
   - seriespfn — [openreview](https://openreview.net/forum?id=TpAM77Nqmu)
   - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe) · [icml](https://proceedings.mlr.press/v306/yang26ac.html) — [yang et al. 2026]
   - simpletimebench — [arxiv](https://arxiv.org/abs/2610.02058) · [openreview](https://openreview.net/forum?id=iIRdd86Xkr) — [ghoroghchian et al. 2026]
