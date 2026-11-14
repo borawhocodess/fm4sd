@@ -188,6 +188,7 @@ not placed yet:
   - checkpoint-forensics — [site](https://unemploymentlabs.com/checkpoint-forensics) · [github](https://github.com/macrogrants/checkpoint-forensics) — [depue 2026]
   - cram — [arxiv](https://arxiv.org/abs/2611.17309v1) · [github](https://github.com/Prefrontal-AI/CRAM) — [hoover et al. 2026]
 - tabular
+  - megatabicl — [openreview](https://openreview.net/forum?id=WfamdVi3VV) — [kaushal et al. 2026]
   - active-icl — [arxiv](https://arxiv.org/abs/2611.07886) — [frey 2026]
   - priortune — [arxiv](https://arxiv.org/abs/2611.05141) — [chistyakov et al. 2026]
   - pace — [openreview](https://openreview.net/forum?id=4RzWLdQgcX)
