@@ -140,6 +140,7 @@ rm <id>.tar.gz
 not placed yet:
 
 - general
+  - training-forensics — [x](https://x.com/alapanchaudhuri/status/2121439269772492848) — [chaudhuri 2026]
   - co-improvement — [arxiv](https://arxiv.org/abs/2512.05356) · [x](https://x.com/j_foerst/status/2121523241697047012) — [weston and foerster 2025]
   - incope — [arxiv](https://arxiv.org/abs/2610.34035) — [yu et al. 2026]
   - deletion-tuning — [arxiv](https://arxiv.org/abs/2611.10866) — [lu et al. 2026]
