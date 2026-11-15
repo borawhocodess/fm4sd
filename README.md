@@ -448,6 +448,7 @@ not placed yet:
 
 - star-project — [site](https://star-project.stanford.edu)
 - icml-structured-fm-workshop — [site](https://icml-structured-fm-workshop.github.io)
+- trl-acl2025 — [site](https://table-representation-learning.github.io/ACL2025/)
 - mechinterpworkshop — [site](https://mechinterpworkshop.com)
 - tada2026 — [site](https://tabular-data-analysis.github.io/tada2026/)
 - fsml2026 — [site](https://fsml-ims-workshop.org)
