@@ -187,6 +187,7 @@ not placed yet:
   - synthetic-claims — [arxiv](https://arxiv.org/abs/2008.05693) — [avanzi et al. 2020]
   - atr-pfn — [arxiv](https://arxiv.org/abs/2610.37737) · [github](https://github.com/youngers2006/Trust-Region-Warping-For-PFNs) — [younger et al. 2026]
   - stuck-in-a-loop — [site](https://hyperstition.cc/stuck-in-a-loop) — [eyler et al. 2026]
+  - against-all-likelihood — [arxiv](https://arxiv.org/abs/2611.09385v1) — [lopez-paz 2026]
   - checkpoint-forensics — [site](https://unemploymentlabs.com/checkpoint-forensics) · [github](https://github.com/macrogrants/checkpoint-forensics) — [depue 2026]
   - cram — [arxiv](https://arxiv.org/abs/2611.17309v1) · [github](https://github.com/Prefrontal-AI/CRAM) — [hoover et al. 2026]
 - tabular
