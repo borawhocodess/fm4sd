@@ -321,6 +321,7 @@ not placed yet:
   - context-budgeting-churn — [ieee](https://ieeexplore.ieee.org/document/11755932) — [sika et al. 2026]
 - relational
   - onebm — [arxiv](https://arxiv.org/abs/1706.00327) — [lam et al. 2017]
+  - relational-scm — [acl](https://aclanthology.org/2025.trl-1.2/) — [hoppe et al. 2025]
   - cl-dgfm — [arxiv](https://arxiv.org/abs/2611.03246) — [ma et al. 2026]
   - relcraft — [openreview](https://openreview.net/forum?id=QBvPMEK8Vf)
   - hgraphfm — [openreview](https://openreview.net/forum?id=8ya6lgk3Zt)
