@@ -191,6 +191,8 @@ not placed yet:
   - cram — [arxiv](https://arxiv.org/abs/2611.17309v1) · [github](https://github.com/Prefrontal-AI/CRAM) — [hoover et al. 2026]
 - tabular
   - megatabicl — [openreview](https://openreview.net/forum?id=WfamdVi3VV) — [kaushal et al. 2026]
+  - mambapfn — [arxiv](https://arxiv.org/abs/2611.04848) — [zhu and zhu 2026]
+  - tfm-financial-predictions — [arxiv](https://arxiv.org/abs/2611.13550) — [dehaan and huang 2026]
   - tababax — [arxiv](https://arxiv.org/abs/2611.00562) · [github](https://github.com/tababax-research/TabAbax) — [cheng et al. 2026]
   - otbench — [arxiv](https://arxiv.org/abs/2611.13001) — [wang et al. 2026]
   - tfm-world-models — [arxiv](https://arxiv.org/abs/2611.11921) — [lee et al. 2026]
