@@ -192,6 +192,7 @@ not placed yet:
   - cram — [arxiv](https://arxiv.org/abs/2611.17309v1) · [github](https://github.com/Prefrontal-AI/CRAM) — [hoover et al. 2026]
 - tabular
   - megatabicl — [openreview](https://openreview.net/forum?id=WfamdVi3VV) — [kaushal et al. 2026]
+  - tabomics — [arxiv](https://arxiv.org/abs/2611.15329) — [lópez-garcía et al. 2026]
   - mambapfn — [arxiv](https://arxiv.org/abs/2611.04848) — [zhu and zhu 2026]
   - tfm-financial-predictions — [arxiv](https://arxiv.org/abs/2611.13550) — [dehaan and huang 2026]
   - tababax — [arxiv](https://arxiv.org/abs/2611.00562) · [github](https://github.com/tababax-research/TabAbax) — [cheng et al. 2026]
@@ -325,6 +326,7 @@ not placed yet:
 - relational
   - onebm — [arxiv](https://arxiv.org/abs/1706.00327) — [lam et al. 2017]
   - relational-scm — [acl](https://aclanthology.org/2025.trl-1.2/) — [hoppe et al. 2025]
+  - grables — [arxiv](https://arxiv.org/abs/2602.03945) · [openreview](https://openreview.net/forum?id=j2M2n1gstx) · [github](https://github.com/TamaraCucumides/Grables) — [cucumides and geerts 2026]
   - cl-dgfm — [arxiv](https://arxiv.org/abs/2611.03246) — [ma et al. 2026]
   - relcraft — [openreview](https://openreview.net/forum?id=QBvPMEK8Vf)
   - hgraphfm — [openreview](https://openreview.net/forum?id=8ya6lgk3Zt)
@@ -380,6 +382,7 @@ not placed yet:
 - causal
   - causal-sensitivity-pfn — [openreview](https://openreview.net/forum?id=LNDn6Nbr2h)
   - tscausalfm — [openreview](https://openreview.net/forum?id=CAaTQAfq7c) — [thumm et al. 2026]
+  - temporal-causal-response — [arxiv](https://arxiv.org/abs/2611.15009) — [hong et al. 2026]
   - causalfewshot — [openreview](https://openreview.net/forum?id=2yvEiFhNCT) — [ossen et al. 2026]
   - partialcausalid — [arxiv](https://arxiv.org/abs/2608.20841) · [openreview](https://openreview.net/forum?id=jCbehzZBsk) — [bellot and dhir 2026]
   - causalorder — [openreview](https://openreview.net/forum?id=U4KiOBxY1X) — [xu et al. 2026]
