@@ -423,6 +423,7 @@ not placed yet:
   - pde-pfn — [arxiv](https://arxiv.org/abs/2610.13334) — [park et al. 2026]
 - mechanistic interpretability
   - tabular
+    - weights-and-caches — [arxiv](https://arxiv.org/abs/2611.20174) — [hoo et al. 2026]
     - spectral-pfn — [arxiv](https://arxiv.org/abs/2601.21731) — [sharma et al. 2026]
     - qutab — [openreview](https://openreview.net/forum?id=ftyxA5CVXR)
     - tabfmmechanistic — [arxiv](https://arxiv.org/abs/2605.21288) — [biloš et al. 2026]
