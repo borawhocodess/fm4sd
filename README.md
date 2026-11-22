@@ -198,6 +198,14 @@ not placed yet:
   - compile-the-table — [arxiv](https://arxiv.org/abs/2610.11784) — [zhao et al. 2026]
   - tabswift — [arxiv](https://arxiv.org/abs/2606.07345) — [liu and ye 2026]
   - crumb — [arxiv](https://arxiv.org/abs/2606.11473) — [heredge et al. 2026]
+  - tabclustpfn — [arxiv](https://arxiv.org/abs/2601.21656) — [zhao et al. 2026]
+  - tabpfn-fairness — [arxiv](https://arxiv.org/abs/2601.17912) — [liu et al. 2026]
+  - distributional-regression-tfm — [arxiv](https://arxiv.org/abs/2603.08206) — [landsgesell et al. 2026]
+  - causal-tabpfn-generation — [arxiv](https://arxiv.org/abs/2603.10254) — [tugnoli et al. 2026]
+  - tactic — [arxiv](https://arxiv.org/abs/2603.14171) — [marszałek et al. 2026]
+  - tembed — [arxiv](https://arxiv.org/abs/2604.21696) — [vogel et al. 2026]
+  - tabpfn-mt — [arxiv](https://arxiv.org/abs/2605.20234) — [cureton and armanfard 2026]
+  - pfn-class-imbalance — [arxiv](https://arxiv.org/abs/2605.21742) — [mcdowell et al. 2026]
   - tabmf — [arxiv](https://arxiv.org/abs/2610.13818) — [kamel et al. 2026]
   - tile — [arxiv](https://arxiv.org/abs/2610.17065) — [lefebvre et al. 2026]
   - vrllm — [arxiv](https://arxiv.org/abs/2611.22308) — [dou et al. 2026]
@@ -371,6 +379,11 @@ not placed yet:
 - time series
   - ci-proto — [github](https://github.com/continuousintelligence/ci)
   - flexcast — [arxiv](https://arxiv.org/abs/2611.17862) — [shen et al. 2026]
+  - oats — [arxiv](https://arxiv.org/abs/2601.19040) — [deng et al. 2026]
+  - time-bench — [arxiv](https://arxiv.org/abs/2602.12147) — [qiao et al. 2026]
+  - eidos — [arxiv](https://arxiv.org/abs/2602.14024) — [zhou et al. 2026]
+  - timer-s1 — [arxiv](https://arxiv.org/abs/2603.04791) — [liu et al. 2026]
+  - chronicle — [arxiv](https://arxiv.org/abs/2605.20268) — [quinlan et al. 2026]
   - tsfm-break-even — [arxiv](https://arxiv.org/abs/2607.04919) — [jerome and simon 2026]
   - tsfm-post-training-survey — [arxiv](https://arxiv.org/abs/2607.20002) — [xie et al. 2026]
   - causal-analysis-tsfm — [arxiv](https://arxiv.org/abs/2608.24303) — [jander et al. 2026]
@@ -409,7 +422,8 @@ not placed yet:
   - turkforecast — [github](https://github.com/Verm1lion/turkforecast-fm-chronos2-lora-v1)
   - tsfm-identification — [arxiv](https://arxiv.org/abs/2610.08118) — [won 2026]
 - causal
-  - causal-sensitivity-pfn — [openreview](https://openreview.net/forum?id=LNDn6Nbr2h)
+  - causal-sensitivity-pfn — [arxiv](https://arxiv.org/abs/2605.10590) · [openreview](https://openreview.net/forum?id=LNDn6Nbr2h) — [javurek et al. 2026]
+  - pfn-causal-simulation — [arxiv](https://arxiv.org/abs/2603.15928) — [mourao et al. 2026]
   - tscausalfm — [openreview](https://openreview.net/forum?id=CAaTQAfq7c) — [thumm et al. 2026]
   - temporal-causal-response — [arxiv](https://arxiv.org/abs/2611.15009) — [hong et al. 2026]
   - causalfewshot — [openreview](https://openreview.net/forum?id=2yvEiFhNCT) — [ossen et al. 2026]
