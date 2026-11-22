@@ -194,6 +194,7 @@ not placed yet:
 - tabular
   - megatabicl — [openreview](https://openreview.net/forum?id=WfamdVi3VV) — [kaushal et al. 2026]
   - tfm-scaling-laws — [arxiv](https://arxiv.org/abs/2611.24214) — [hog et al. 2026]
+  - rad-tfm — [arxiv](https://arxiv.org/abs/2611.10230) — [peroni et al. 2026]
   - vrllm — [arxiv](https://arxiv.org/abs/2611.22308) — [dou et al. 2026]
   - tabbiomed — [arxiv](https://arxiv.org/abs/2611.23779) — [mateo-bernadó et al. 2026]
   - pritabicl — [arxiv](https://arxiv.org/abs/2611.25073) — [shah et al. 2026]
@@ -330,6 +331,8 @@ not placed yet:
   - context-budgeting-churn — [ieee](https://ieeexplore.ieee.org/document/11755932) — [sika et al. 2026]
 - relational
   - onebm — [arxiv](https://arxiv.org/abs/1706.00327) — [lam et al. 2017]
+  - moregt — [arxiv](https://arxiv.org/abs/2611.18315) — [madhu et al. 2026]
+  - streamtab — [arxiv](https://arxiv.org/abs/2611.09052) — [yang and wu 2026]
   - antom — [arxiv](https://arxiv.org/abs/2611.25403) — [han et al. 2026]
   - relational-scm — [acl](https://aclanthology.org/2025.trl-1.2/) — [hoppe et al. 2025]
   - grables — [arxiv](https://arxiv.org/abs/2602.03945) · [openreview](https://openreview.net/forum?id=j2M2n1gstx) · [github](https://github.com/TamaraCucumides/Grables) — [cucumides and geerts 2026]
@@ -362,6 +365,7 @@ not placed yet:
   - path-to-pfrm — [arxiv](https://arxiv.org/abs/2610.23073) — [abolhasani and ganapathy 2026]
 - time series
   - ci-proto — [github](https://github.com/continuousintelligence/ci)
+  - flexcast — [arxiv](https://arxiv.org/abs/2611.17862) — [shen et al. 2026]
   - pact — [arxiv](https://arxiv.org/abs/2611.24075) — [abeywickrama et al. 2026]
   - braincot — [arxiv](https://arxiv.org/abs/2611.09082) — [gui et al. 2026]
   - seriespfn — [openreview](https://openreview.net/forum?id=TpAM77Nqmu)
