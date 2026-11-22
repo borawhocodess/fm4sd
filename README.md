@@ -196,6 +196,8 @@ not placed yet:
   - tfm-scaling-laws — [arxiv](https://arxiv.org/abs/2611.24214) — [hog et al. 2026]
   - rad-tfm — [arxiv](https://arxiv.org/abs/2611.10230) — [peroni et al. 2026]
   - compile-the-table — [arxiv](https://arxiv.org/abs/2610.11784) — [zhao et al. 2026]
+  - tabswift — [arxiv](https://arxiv.org/abs/2606.07345) — [liu and ye 2026]
+  - crumb — [arxiv](https://arxiv.org/abs/2606.11473) — [heredge et al. 2026]
   - tabmf — [arxiv](https://arxiv.org/abs/2610.13818) — [kamel et al. 2026]
   - tile — [arxiv](https://arxiv.org/abs/2610.17065) — [lefebvre et al. 2026]
   - vrllm — [arxiv](https://arxiv.org/abs/2611.22308) — [dou et al. 2026]
@@ -369,6 +371,10 @@ not placed yet:
 - time series
   - ci-proto — [github](https://github.com/continuousintelligence/ci)
   - flexcast — [arxiv](https://arxiv.org/abs/2611.17862) — [shen et al. 2026]
+  - tsfm-break-even — [arxiv](https://arxiv.org/abs/2607.04919) — [jerome and simon 2026]
+  - tsfm-post-training-survey — [arxiv](https://arxiv.org/abs/2607.20002) — [xie et al. 2026]
+  - causal-analysis-tsfm — [arxiv](https://arxiv.org/abs/2608.24303) — [jander et al. 2026]
+  - tsfm-fine-tuning — [arxiv](https://arxiv.org/abs/2607.23146) — [laglil et al. 2026]
   - flowtsfm — [arxiv](https://arxiv.org/abs/2609.13640) — [abdessalem et al. 2026]
   - later-test-set — [arxiv](https://arxiv.org/abs/2609.10357) — [naser moghadasi and ghaderi 2026]
   - loss-guided-tsfm — [arxiv](https://arxiv.org/abs/2609.37255) — [li et al. 2026]
