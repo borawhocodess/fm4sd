@@ -64,7 +64,7 @@ rm <id>.tar.gz
   - causilo — [arxiv](https://arxiv.org/abs/2609.22866) · [github](https://github.com/nums-ai/causilo) — [cho et al. 2026]
   - aplr — [github](https://github.com/ottenbreit-data-science/aplr)
   - tfm-agents-humans — [pdf](https://ir.cwi.nl/pub/36086/36086.pdf) — [cong et al. 2025]
-  - kumo-tabular — [blog](https://huggingface.co/blog/nvidia/kumo-tabular) · [github](https://github.com/NVIDIA/structured-data-models)
+  - kumo-tabular — [arxiv](https://arxiv.org/abs/2611.23001) · [blog](https://huggingface.co/blog/nvidia/kumo-tabular) · [github](https://github.com/NVIDIA/structured-data-models) — [qu et al. 2026]
   - earlystoppingicl — [arxiv](https://arxiv.org/abs/2506.21387) — [küken et al. 2025]
   - localpfn — [arxiv](https://arxiv.org/abs/2406.05207) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2024/file/c40daf14d7a6469e65116507c21faeb7-Paper-Conference.pdf) — [thomas et al. 2024]
   - tfm-priority — [arxiv](https://arxiv.org/abs/2405.01147) · [icml](https://proceedings.mlr.press/v235/van-breugel24a.html) — [van breugel and van der schaar 2024]
@@ -140,6 +140,7 @@ rm <id>.tar.gz
 not placed yet:
 
 - general
+  - icicle — [arxiv](https://arxiv.org/abs/2611.24469) — [fredsgaard et al. 2026]
   - training-forensics — [x](https://x.com/alapanchaudhuri/status/2121439269772492848) — [chaudhuri 2026]
   - co-improvement — [arxiv](https://arxiv.org/abs/2512.05356) · [x](https://x.com/j_foerst/status/2121523241697047012) — [weston and foerster 2025]
   - incope — [arxiv](https://arxiv.org/abs/2610.34035) — [yu et al. 2026]
@@ -192,6 +193,10 @@ not placed yet:
   - cram — [arxiv](https://arxiv.org/abs/2611.17309v1) · [github](https://github.com/Prefrontal-AI/CRAM) — [hoover et al. 2026]
 - tabular
   - megatabicl — [openreview](https://openreview.net/forum?id=WfamdVi3VV) — [kaushal et al. 2026]
+  - tfm-scaling-laws — [arxiv](https://arxiv.org/abs/2611.24214) — [hog et al. 2026]
+  - vrllm — [arxiv](https://arxiv.org/abs/2611.22308) — [dou et al. 2026]
+  - tabbiomed — [arxiv](https://arxiv.org/abs/2611.23779) — [mateo-bernadó et al. 2026]
+  - pritabicl — [arxiv](https://arxiv.org/abs/2611.25073) — [shah et al. 2026]
   - tabomics — [arxiv](https://arxiv.org/abs/2611.15329) — [lópez-garcía et al. 2026]
   - mambapfn — [arxiv](https://arxiv.org/abs/2611.04848) — [zhu and zhu 2026]
   - tfm-financial-predictions — [arxiv](https://arxiv.org/abs/2611.13550) — [dehaan and huang 2026]
@@ -325,6 +330,7 @@ not placed yet:
   - context-budgeting-churn — [ieee](https://ieeexplore.ieee.org/document/11755932) — [sika et al. 2026]
 - relational
   - onebm — [arxiv](https://arxiv.org/abs/1706.00327) — [lam et al. 2017]
+  - antom — [arxiv](https://arxiv.org/abs/2611.25403) — [han et al. 2026]
   - relational-scm — [acl](https://aclanthology.org/2025.trl-1.2/) — [hoppe et al. 2025]
   - grables — [arxiv](https://arxiv.org/abs/2602.03945) · [openreview](https://openreview.net/forum?id=j2M2n1gstx) · [github](https://github.com/TamaraCucumides/Grables) — [cucumides and geerts 2026]
   - cl-dgfm — [arxiv](https://arxiv.org/abs/2611.03246) — [ma et al. 2026]
@@ -356,6 +362,7 @@ not placed yet:
   - path-to-pfrm — [arxiv](https://arxiv.org/abs/2610.23073) — [abolhasani and ganapathy 2026]
 - time series
   - ci-proto — [github](https://github.com/continuousintelligence/ci)
+  - pact — [arxiv](https://arxiv.org/abs/2611.24075) — [abeywickrama et al. 2026]
   - braincot — [arxiv](https://arxiv.org/abs/2611.09082) — [gui et al. 2026]
   - seriespfn — [openreview](https://openreview.net/forum?id=TpAM77Nqmu)
   - baguan-ts — [openreview](https://openreview.net/forum?id=xO10rIopwe) · [icml](https://proceedings.mlr.press/v306/yang26ac.html) — [yang et al. 2026]
@@ -445,6 +452,8 @@ not placed yet:
     - vit-registers — [arxiv](https://arxiv.org/abs/2309.16588) · [video](https://youtu.be/QgH9sr7G13Q?t=1672) · [iclr](https://iclr.cc/virtual/2024/poster/19541) — [darcet et al. 2024]
     - test-time-registers — [arxiv](https://arxiv.org/abs/2506.08010) · [neurips](https://neurips.cc/virtual/2025/poster/117199) · [github](https://github.com/nickjiang2378/test-time-registers) — [jiang et al. 2025]
   - icl
+    - transformer-preconditioner — [arxiv](https://arxiv.org/abs/2611.22941) — [lutz et al. 2026]
+    - task-descriptions — [arxiv](https://arxiv.org/abs/2611.25560) — [nguyen et al. 2026]
     - icl-regression — [arxiv](https://arxiv.org/abs/2208.01066) · [neurips](https://proceedings.neurips.cc/paper_files/paper/2022/hash/c529dba08a146ea8d6cf715ae8930cbe-Abstract-Conference.html) · [github](https://github.com/dtsip/in-context-learning) — [garg et al. 2022]
     - icl-learning-alg — [arxiv](https://arxiv.org/abs/2211.15661) · [iclr](https://iclr.cc/virtual/2023/poster/10852) · [github](https://github.com/ekinakyurek/google-research/blob/master/incontext) — [akyürek et al. 2023]
     - icl-gd — [arxiv](https://arxiv.org/abs/2212.07677) · [icml](https://proceedings.mlr.press/v202/von-oswald23a.html) — [von oswald et al. 2023]
