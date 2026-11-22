@@ -195,6 +195,9 @@ not placed yet:
   - megatabicl — [openreview](https://openreview.net/forum?id=WfamdVi3VV) — [kaushal et al. 2026]
   - tfm-scaling-laws — [arxiv](https://arxiv.org/abs/2611.24214) — [hog et al. 2026]
   - rad-tfm — [arxiv](https://arxiv.org/abs/2611.10230) — [peroni et al. 2026]
+  - compile-the-table — [arxiv](https://arxiv.org/abs/2610.11784) — [zhao et al. 2026]
+  - tabmf — [arxiv](https://arxiv.org/abs/2610.13818) — [kamel et al. 2026]
+  - tile — [arxiv](https://arxiv.org/abs/2610.17065) — [lefebvre et al. 2026]
   - vrllm — [arxiv](https://arxiv.org/abs/2611.22308) — [dou et al. 2026]
   - tabbiomed — [arxiv](https://arxiv.org/abs/2611.23779) — [mateo-bernadó et al. 2026]
   - pritabicl — [arxiv](https://arxiv.org/abs/2611.25073) — [shah et al. 2026]
@@ -366,6 +369,11 @@ not placed yet:
 - time series
   - ci-proto — [github](https://github.com/continuousintelligence/ci)
   - flexcast — [arxiv](https://arxiv.org/abs/2611.17862) — [shen et al. 2026]
+  - qiyao-i — [arxiv](https://arxiv.org/abs/2610.06936) — [wang et al. 2026]
+  - tsfm-scaling-law — [arxiv](https://arxiv.org/abs/2610.05269) — [dai et al. 2026]
+  - pythia — [arxiv](https://arxiv.org/abs/2610.05240) — [dai et al. 2026]
+  - scale-invariant-tsfm — [arxiv](https://arxiv.org/abs/2610.07324) — [stepka et al. 2026]
+  - r2r — [arxiv](https://arxiv.org/abs/2610.26114) — [liu et al. 2026]
   - pact — [arxiv](https://arxiv.org/abs/2611.24075) — [abeywickrama et al. 2026]
   - braincot — [arxiv](https://arxiv.org/abs/2611.09082) — [gui et al. 2026]
   - seriespfn — [openreview](https://openreview.net/forum?id=TpAM77Nqmu)
