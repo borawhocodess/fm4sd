@@ -369,6 +369,10 @@ not placed yet:
 - time series
   - ci-proto — [github](https://github.com/continuousintelligence/ci)
   - flexcast — [arxiv](https://arxiv.org/abs/2611.17862) — [shen et al. 2026]
+  - flowtsfm — [arxiv](https://arxiv.org/abs/2609.13640) — [abdessalem et al. 2026]
+  - later-test-set — [arxiv](https://arxiv.org/abs/2609.10357) — [naser moghadasi and ghaderi 2026]
+  - loss-guided-tsfm — [arxiv](https://arxiv.org/abs/2609.37255) — [li et al. 2026]
+  - dynamical-parameters — [arxiv](https://arxiv.org/abs/2609.34316) — [yang et al. 2026]
   - qiyao-i — [arxiv](https://arxiv.org/abs/2610.06936) — [wang et al. 2026]
   - tsfm-scaling-law — [arxiv](https://arxiv.org/abs/2610.05269) — [dai et al. 2026]
   - pythia — [arxiv](https://arxiv.org/abs/2610.05240) — [dai et al. 2026]
