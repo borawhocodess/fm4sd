@@ -197,6 +197,10 @@ not placed yet:
   - rad-tfm — [arxiv](https://arxiv.org/abs/2611.10230) — [peroni et al. 2026]
   - compile-the-table — [arxiv](https://arxiv.org/abs/2610.11784) — [zhao et al. 2026]
   - tabswift — [arxiv](https://arxiv.org/abs/2606.07345) — [liu and ye 2026]
+  - tabpfn-unleashed — [arxiv](https://arxiv.org/abs/2502.02527) — [liu and ye 2025]
+  - boostpfn — [arxiv](https://arxiv.org/abs/2503.01256) — [wang et al. 2025]
+  - contexttab — [arxiv](https://arxiv.org/abs/2506.10707) — [spinaci et al. 2025]
+  - chunked-tabpfn — [arxiv](https://arxiv.org/abs/2509.00326) — [sergazinov and yin 2025]
   - crumb — [arxiv](https://arxiv.org/abs/2606.11473) — [heredge et al. 2026]
   - tabclustpfn — [arxiv](https://arxiv.org/abs/2601.21656) — [zhao et al. 2026]
   - tabpfn-fairness — [arxiv](https://arxiv.org/abs/2601.17912) — [liu et al. 2026]
@@ -379,6 +383,7 @@ not placed yet:
 - time series
   - ci-proto — [github](https://github.com/continuousintelligence/ci)
   - flexcast — [arxiv](https://arxiv.org/abs/2611.17862) — [shen et al. 2026]
+  - toto — [arxiv](https://arxiv.org/abs/2505.14766) — [cohen et al. 2025]
   - oats — [arxiv](https://arxiv.org/abs/2601.19040) — [deng et al. 2026]
   - time-bench — [arxiv](https://arxiv.org/abs/2602.12147) — [qiao et al. 2026]
   - eidos — [arxiv](https://arxiv.org/abs/2602.14024) — [zhou et al. 2026]
@@ -423,6 +428,7 @@ not placed yet:
   - tsfm-identification — [arxiv](https://arxiv.org/abs/2610.08118) — [won 2026]
 - causal
   - causal-sensitivity-pfn — [arxiv](https://arxiv.org/abs/2605.10590) · [openreview](https://openreview.net/forum?id=LNDn6Nbr2h) — [javurek et al. 2026]
+  - amortized-causal-discovery — [arxiv](https://arxiv.org/abs/2512.11840) — [sypniewski et al. 2025]
   - pfn-causal-simulation — [arxiv](https://arxiv.org/abs/2603.15928) — [mourao et al. 2026]
   - tscausalfm — [openreview](https://openreview.net/forum?id=CAaTQAfq7c) — [thumm et al. 2026]
   - temporal-causal-response — [arxiv](https://arxiv.org/abs/2611.15009) — [hong et al. 2026]
