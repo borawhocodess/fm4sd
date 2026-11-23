@@ -140,6 +140,7 @@ rm <id>.tar.gz
 not placed yet:
 
 - general
+  - semiparametric-transformers — [arxiv](https://arxiv.org/abs/2611.27666) — [yan et al. 2026]
   - icicle — [arxiv](https://arxiv.org/abs/2611.24469) — [fredsgaard et al. 2026]
   - training-forensics — [x](https://x.com/alapanchaudhuri/status/2121439269772492848) — [chaudhuri 2026]
   - co-improvement — [arxiv](https://arxiv.org/abs/2512.05356) · [x](https://x.com/j_foerst/status/2121523241697047012) — [weston and foerster 2025]
