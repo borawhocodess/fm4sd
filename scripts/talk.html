@@ -45,7 +45,6 @@
 </div>
 <div style="display:flex;justify-content:space-between;align-items:end">
 <p style="font-size:24px;color:#8A8A8E">salih bora öztürk &amp; claude</p>
-<p style="font-size:24px;color:#C8313A">press (<span style="font-family:'JetBrains Mono', 'Courier New', monospace">b</span>) to toggle builds</p>   <!-- key hint (Bora 2026-11-12): bottom right, red like the "builds off" tag (#c8313a), on the name's baseline -->
 </div>
 <p style="position:absolute;right:24px;bottom:16px;width:80px;text-align:right;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.3;color:#8A8A8E">1</p>
 </section>
@@ -539,9 +538,15 @@
         slides.forEach((s, i) => {
             const pn = s.querySelector(':scope > p:last-of-type'); if (!pn) return;
             let tag = pn.querySelector('.deck-mode');
-            if (off(i) && !tag) { tag = document.createElement('span'); tag.className = 'deck-mode'; tag.textContent = 'builds off';
-                tag.style.cssText = "font-family:'IBM Plex Sans', Arial, sans-serif;margin-right:12px;color:#c8313a";   /* red (Bora): the deck's red text shade, 5.3:1 on white */ pn.prepend(tag); pn.style.width = 'auto'; }
-            if (!off(i) && tag) { tag.remove(); pn.style.width = ''; }
+            if (!tag) { tag = document.createElement('span'); tag.className = 'deck-mode';
+                tag.style.cssText = "position:absolute;right:41px;top:0;white-space:nowrap;font-family:'IBM Plex Sans', Arial, sans-serif;color:#c8313a";   /* red (Bora): the deck's red text shade, 5.3:1 on white */ pn.prepend(tag); }
+            // pinned (Bora: "it moves from slide 9 to 10 / on off"): right-anchored at a fixed offset from the page-number box (2 mono digits 28.8 + 12 gap),
+            // so neither the digit count nor "on" / "off" moves "(press b)"; the state word is a right-aligned first column
+            // always there (Bora), washed out like the deck's [data-focus].dim in both states
+            // the state word left-aligned in a column as wide as "builds off" (both words stacked in one grid cell, the other one hidden; Bora)
+            const w = (s, on) => `<span style="grid-area:1/1;visibility:${on ? 'visible' : 'hidden'}">${s}</span>`;
+            tag.innerHTML = `<span style="display:inline-grid;text-align:left">${w('builds off', off(i))}${w('builds on', !off(i))}</span>` + ' (<span style="padding:0 0.08em">press b</span>)';
+            tag.style.filter = 'contrast(0.12) brightness(1.79)';   // always washed (Bora), on and off alike
         });
     }
     function toggleSlideBuilds() {
