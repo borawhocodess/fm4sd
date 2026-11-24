@@ -76,6 +76,7 @@ rm <id>.tar.gz
   - relgnn — [arxiv](https://arxiv.org/abs/2502.06784) — [chen et al. 2025]
   - relgt — [arxiv](https://arxiv.org/abs/2505.10960) — [dwivedi et al. 2025]
   - griffin — [arxiv](https://arxiv.org/abs/2505.05568) — [wang et al. 2025]
+  - 4dbinfer — [arxiv](https://arxiv.org/abs/2404.18209) · [github](https://github.com/awslabs/multi-table-benchmark) — [wang et al. 2024]
   - relbench — [arxiv](https://arxiv.org/abs/2407.20060) · [github](https://github.com/snap-stanford/relbench) — [robinson et al. 2024]
   - rdbbench — [arxiv](https://arxiv.org/abs/2607.03659) · [github](https://github.com/mdsamad001/Benchmarking-Deep-Relational-Database-Models) — [akhter et al. 2026]
   - rdl-survey — [arxiv](https://arxiv.org/abs/2506.16654) · [kdd](https://doi.org/10.1145/3711896.3736558) — [dwivedi et al. 2025]
