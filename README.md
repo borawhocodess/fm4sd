@@ -401,7 +401,10 @@ not placed yet:
   - wikidbs — [neurips](https://proceedings.neurips.cc/paper_files/paper/2024/file/4847447cae911dde321ca19afe7d8707-Paper-Datasets_and_Benchmarks_Track.pdf) — [vogel et al. 2024]
   - path-to-pfrm — [arxiv](https://arxiv.org/abs/2610.23073) — [abolhasani & ganapathy 2026]
 - time series
-  - ci-proto — [github](https://github.com/continuousintelligence/ci)
+  - ci-proto — [arxiv](https://arxiv.org/abs/2611.16934) · [github](https://github.com/continuousintelligence/ci) — [berndt et al. 2026]
+  - aurora-x — [arxiv](https://arxiv.org/abs/2609.31038) — [wu et al. 2026]
+  - fracast-0 — [arxiv](https://arxiv.org/abs/2609.32209) · [github](https://github.com/ztxtech/fracast-0) — [zhan et al. 2026]
+  - kumo-forecast — [ieee](https://ieeexplore.ieee.org/document/11402442) · [github](https://github.com/NVIDIA/Kumo-TS) — [gautam et al. 2025]
   - flexcast — [arxiv](https://arxiv.org/abs/2611.17862) — [shen et al. 2026]
   - unitfu — [arxiv](https://arxiv.org/abs/2611.31921) — [li et al. 2026]
   - toto — [arxiv](https://arxiv.org/abs/2505.14766) — [cohen et al. 2025]
