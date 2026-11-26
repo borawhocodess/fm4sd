@@ -195,6 +195,11 @@ not placed yet:
   - cram — [arxiv](https://arxiv.org/abs/2611.17309v1) · [github](https://github.com/Prefrontal-AI/CRAM) — [hoover et al. 2026]
 - tabular
   - megatabicl — [openreview](https://openreview.net/forum?id=WfamdVi3VV) — [kaushal et al. 2026]
+  - seldon — [arxiv](https://arxiv.org/abs/2611.32257) — [angebault et al. 2026]
+  - inducedtfms — [arxiv](https://arxiv.org/abs/2611.32504) — [gobbi et al. 2026]
+  - joint-classification-generation — [arxiv](https://arxiv.org/abs/2611.32225) — [d'hondt et al. 2026]
+  - tabra-blends — [arxiv](https://arxiv.org/abs/2611.32859) — [jia and wang 2026]
+  - local-subspace-spectra — [arxiv](https://arxiv.org/abs/2611.31245) — [beurier et al. 2026]
   - tfm-scaling-laws — [arxiv](https://arxiv.org/abs/2611.24214) — [hog et al. 2026]
   - rad-tfm — [arxiv](https://arxiv.org/abs/2611.10230) — [peroni et al. 2026]
   - compile-the-table — [arxiv](https://arxiv.org/abs/2610.11784) — [zhao et al. 2026]
@@ -398,6 +403,7 @@ not placed yet:
 - time series
   - ci-proto — [github](https://github.com/continuousintelligence/ci)
   - flexcast — [arxiv](https://arxiv.org/abs/2611.17862) — [shen et al. 2026]
+  - unitfu — [arxiv](https://arxiv.org/abs/2611.31921) — [li et al. 2026]
   - toto — [arxiv](https://arxiv.org/abs/2505.14766) — [cohen et al. 2025]
   - oats — [arxiv](https://arxiv.org/abs/2601.19040) — [deng et al. 2026]
   - time-bench — [arxiv](https://arxiv.org/abs/2602.12147) — [qiao et al. 2026]
