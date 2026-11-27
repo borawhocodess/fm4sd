@@ -141,6 +141,7 @@ rm <id>.tar.gz
 not placed yet:
 
 - general
+  - model-carving — [arxiv](https://arxiv.org/abs/2611.27962) · [site](https://kadenzheng.com/model-carving/) — [zheng & sharma 2026]
   - semiparametric-transformers — [arxiv](https://arxiv.org/abs/2611.27666) — [yan et al. 2026]
   - icicle — [arxiv](https://arxiv.org/abs/2611.24469) — [fredsgaard et al. 2026]
   - training-forensics — [x](https://x.com/alapanchaudhuri/status/2121439269772492848) — [chaudhuri 2026]
@@ -195,6 +196,8 @@ not placed yet:
   - cram — [arxiv](https://arxiv.org/abs/2611.17309v1) · [github](https://github.com/Prefrontal-AI/CRAM) — [hoover et al. 2026]
 - tabular
   - megatabicl — [openreview](https://openreview.net/forum?id=WfamdVi3VV) — [kaushal et al. 2026]
+  - cald — [arxiv](https://arxiv.org/abs/2611.34767) · [github](https://github.com/teivng/cald) — [nguyen et al. 2026]
+  - large-payments-model — [arxiv](https://arxiv.org/abs/2611.15814) — [raman et al. 2026]
   - seldon — [arxiv](https://arxiv.org/abs/2611.32257) — [angebault et al. 2026]
   - inducedtfms — [arxiv](https://arxiv.org/abs/2611.32504) — [gobbi et al. 2026]
   - joint-classification-generation — [arxiv](https://arxiv.org/abs/2611.32225) — [d'hondt et al. 2026]
@@ -402,6 +405,8 @@ not placed yet:
   - path-to-pfrm — [arxiv](https://arxiv.org/abs/2610.23073) — [abolhasani & ganapathy 2026]
 - time series
   - ci-proto — [arxiv](https://arxiv.org/abs/2611.16934) · [github](https://github.com/continuousintelligence/ci) — [berndt et al. 2026]
+  - covnovbench — [arxiv](https://arxiv.org/abs/2611.33732) — [pan et al. 2026]
+  - c2lora-ts — [arxiv](https://arxiv.org/abs/2611.34206) — [li et al. 2026]
   - aurora-x — [arxiv](https://arxiv.org/abs/2609.31038) — [wu et al. 2026]
   - fracast-0 — [arxiv](https://arxiv.org/abs/2609.32209) · [github](https://github.com/ztxtech/fracast-0) — [zhan et al. 2026]
   - kumo-forecast — [ieee](https://ieeexplore.ieee.org/document/11402442) · [github](https://github.com/NVIDIA/Kumo-TS) — [gautam et al. 2025]
